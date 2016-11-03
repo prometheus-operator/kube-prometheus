@@ -39,6 +39,10 @@ scrape_configs:
     source_labels: [__meta_kubernetes_service_name]
     target_label: job
   - action: replace
+    source_labels: [__meta_kubernetes_service_annotation_prometheus_io_job]
+    target_label: job
+    regex: (.+)
+  - action: replace
     source_labels: [__meta_kubernetes_service_name]
     regex: kubernetes
     target_label: __scheme__

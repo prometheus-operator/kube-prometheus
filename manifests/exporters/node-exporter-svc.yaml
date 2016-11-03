@@ -5,6 +5,7 @@ metadata:
     app: node-exporter
   annotations:
     prometheus.io/scrape: 'true'
+    prometheus.io/job: node
   name: node-exporter
 spec:
   type: ClusterIP
