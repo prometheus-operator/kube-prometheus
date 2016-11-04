@@ -7,6 +7,7 @@ metadata:
     etcd: k8s
   annotations:
     prometheus.io/scrape: 'true'
+    prometheus.io/job: etcd
 spec:
   type: ClusterIP
   clusterIP: None
