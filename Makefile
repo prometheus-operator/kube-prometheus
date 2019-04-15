@@ -5,21 +5,21 @@ EMBEDMD_BINARY:=$(GOPATH)/bin/embedmd
 
 all: generate fmt test
 
-../../hack/jsonnet-docker-image: ../../scripts/jsonnet/Dockerfile
+hack/jsonnet-docker-image: scripts/jsonnet/Dockerfile
 # Create empty target file, for the sole purpose of recording when this target
 # was last executed via the last-modification timestamp on the file. See
 # https://www.gnu.org/software/make/manual/make.html#Empty-Targets
-	docker build -f - -t po-jsonnet . < ../../scripts/jsonnet/Dockerfile
+	docker build -f - -t po-jsonnet . < scripts/jsonnet/Dockerfile
 	touch $@
 
-generate-in-docker: ../../hack/jsonnet-docker-image
+generate-in-docker: hack/jsonnet-docker-image
 	@echo ">> Compiling assets and generating Kubernetes manifests"
 	docker run \
 	--rm \
 	-u=$(shell id -u $(USER)):$(shell id -g $(USER)) \
-	-v $(shell dirname $(dir $(abspath $(dir $$PWD)))):/go/src/github.com/coreos/prometheus-operator/ \
+	-v $$PWD:/go/src/github.com/coreos/kube-prometheus/ \
 	-v $(shell go env GOCACHE):/.cache/go-build \
-	--workdir /go/src/github.com/coreos/prometheus-operator/contrib/kube-prometheus \
+	--workdir /go/src/github.com/coreos/kube-prometheus \
 	po-jsonnet make generate
 
 generate: manifests **.md
@@ -46,14 +46,14 @@ test: $(JB_BINARY)
 test-e2e:
 	go test -timeout 55m -v ./tests/e2e -count=1
 
-test-in-docker: ../../hack/jsonnet-docker-image
+test-in-docker: hack/jsonnet-docker-image
 	@echo ">> Compiling assets and generating Kubernetes manifests"
 	docker run \
 	--rm \
 	-u=$(shell id -u $(USER)):$(shell id -g $(USER)) \
-	-v $(shell dirname $(dir $(abspath $(dir $$PWD)))):/go/src/github.com/coreos/prometheus-operator/ \
+	-v $$PWD:/go/src/github.com/coreos/kube-prometheus/ \
 	-v $(shell go env GOCACHE):/.cache/go-build \
-	--workdir /go/src/github.com/coreos/prometheus-operator/contrib/kube-prometheus \
+	--workdir /go/src/github.com/coreos/kube-prometheus \
 	po-jsonnet make test
 
 $(JB_BINARY):

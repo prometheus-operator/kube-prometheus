@@ -1,0 +1,21 @@
+sudo: required
+dist: xenial
+language: go
+
+go:
+- "1.12.x"
+go_import_path: github.com/coreos/kube-prometheus
+
+cache:
+  directories:
+  - $GOCACHE
+  - $GOPATH/pkg/mod
+
+services:
+- docker
+
+jobs:
+  include:
+  - script: make --always-make generate-in-docker && git diff --exit-code
+  - script: make --always-make test-in-docker
+  - script: GO111MODULE=on ./tests/e2e/travis-e2e.sh

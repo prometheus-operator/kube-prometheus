@@ -25,4 +25,3 @@ local kustomization = {
 manifests {
   '../kustomization': kustomization,
 }
-
