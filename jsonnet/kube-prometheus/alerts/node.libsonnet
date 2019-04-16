@@ -80,19 +80,6 @@
             },
           },
           {
-            alert: 'NodeNetworkInterfaceDown',
-            annotations: {
-              message: 'Network interface "{{ $labels.device }}" down on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}"',
-            },
-            expr: |||
-              node_network_up{%(nodeExporterSelector)s,%(hostNetworkInterfaceSelector)s} == 0
-            ||| % $._config,
-            'for': '2m',
-            labels: {
-              severity: 'warning',
-            },
-          },
-          {
             alert: 'NodeNetworkInterfaceFlapping',
             annotations: {
               message: 'Network interface "{{ $labels.device }}" changing it\'s up status often on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}"',
