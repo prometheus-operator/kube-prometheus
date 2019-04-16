@@ -962,15 +962,6 @@ spec:
       for: 2m
       labels:
         severity: warning
-    - alert: NodeNetworkInterfaceDown
-      annotations:
-        message: Network interface "{{ $labels.device }}" down on node-exporter {{
-          $labels.namespace }}/{{ $labels.pod }}"
-      expr: |
-        node_network_up{job="node-exporter",device!~"veth.+"} == 0
-      for: 2m
-      labels:
-        severity: warning
     - alert: NodeNetworkInterfaceFlapping
       annotations:
         message: Network interface "{{ $labels.device }}" changing it's up status
