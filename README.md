@@ -136,7 +136,7 @@ Install this library in your own project with [jsonnet-bundler](https://github.c
 $ mkdir my-kube-prometheus; cd my-kube-prometheus
 $ jb init  # Creates the initial/empty `jsonnetfile.json`
 # Install the kube-prometheus dependency
-$ jb install github.com/coreos/prometheus-operator/contrib/kube-prometheus/jsonnet/kube-prometheus  # Creates `vendor/` & `jsonnetfile.lock.json`, and fills in `jsonnetfile.json`
+$ jb install github.com/coreos/kube-prometheus/jsonnet/kube-prometheus # Creates `vendor/` & `jsonnetfile.lock.json`, and fills in `jsonnetfile.json`
 ```
 
 > `jb` can be installed with `go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb`
