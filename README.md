@@ -58,17 +58,17 @@ This adapter is an Extension API Server and Kubernetes needs to be have this fea
 
 ### minikube
 
-In order to just try out this stack, start minikube with the following command:
+In order to just try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
 
-```
-$ minikube delete && minikube start --kubernetes-version=v1.13.2 --memory=4096 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
+```shell
+$ minikube delete && minikube start --kubernetes-version=v1.13.5 --memory=4096 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
 ```
 
-> The kube-prometheus stack includes a resource metrics API server, like the metrics-server does. So ensure the metrics-server plugin is disabled on minikube:
->
-> ```
-> minikube addons disable metrics-server
-> ```
+The kube-prometheus stack includes a resource metrics API server, like the metrics-server does. So ensure the metrics-server plugin is disabled on minikube:
+
+```shell
+$ minikube addons disable metrics-server
+```
 
 ## Quickstart
 
@@ -76,7 +76,7 @@ This project is intended to be used as a library (i.e. the intent is not for you
 
 Though for a quickstart a compiled version of the Kubernetes [manifests](manifests) generated with this library (specifically with `example.jsonnet`) is checked into this repository in order to try the content out quickly. To try out the stack un-customized run:
  * Simply create the stack:
-```
+```shell
 $ kubectl create -f manifests/
 
 # It can take a few seconds for the above 'create manifests' command to fully create the following resources, so verify the resources are ready before proceeding.
@@ -87,7 +87,7 @@ $ kubectl apply -f manifests/ # This command sometimes may need to be done twice
 ```
 
  * And to teardown the stack:
-```
+```shell
 $ kubectl delete -f manifests/
 ```
 
@@ -100,7 +100,7 @@ Prometheus, Grafana, and Alertmanager dashboards can be accessed quickly using `
 Prometheus
 
 ```shell
-kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090
+$ kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090
 ```
 
 Then access via [http://localhost:9090](http://localhost:9090)
@@ -108,7 +108,7 @@ Then access via [http://localhost:9090](http://localhost:9090)
 Grafana
 
 ```shell
-kubectl --namespace monitoring port-forward svc/grafana 3000
+$ kubectl --namespace monitoring port-forward svc/grafana 3000
 ```
 
 Then access via [http://localhost:3000](http://localhost:3000) and use the default grafana user:password of `admin:admin`.
@@ -116,7 +116,7 @@ Then access via [http://localhost:3000](http://localhost:3000) and use the defau
 Alert Manager
 
 ```shell
-kubectl --namespace monitoring port-forward svc/alertmanager-main 9093
+$ kubectl --namespace monitoring port-forward svc/alertmanager-main 9093
 ```
 
 Then access via [http://localhost:9093](http://localhost:9093)
@@ -132,7 +132,7 @@ This section:
 The content of this project consists of a set of [jsonnet](http://jsonnet.org/) files making up a library to be consumed.
 
 Install this library in your own project with [jsonnet-bundler](https://github.com/jsonnet-bundler/jsonnet-bundler#install) (the jsonnet package manager):
-```
+```shell
 $ mkdir my-kube-prometheus; cd my-kube-prometheus
 $ jb init  # Creates the initial/empty `jsonnetfile.json`
 # Install the kube-prometheus dependency
@@ -144,7 +144,9 @@ $ jb install github.com/coreos/kube-prometheus/jsonnet/kube-prometheus # Creates
 > An e.g. of how to install a given version of this library: `jb install github.com/coreos/prometheus-operator/contrib/kube-prometheus/jsonnet/kube-prometheus/@v0.22.0`
 
 In order to update the kube-prometheus dependency, simply use the jsonnet-bundler update functionality:
-`$ jb update`
+```shell
+$ jb update
+```
 
 ### Compiling
 
@@ -201,54 +203,41 @@ This script runs the jsonnet code, then reads each key of the generated json and
 
 ### Apply the kube-prometheus stack
 The previous steps (compilation) has created a bunch of manifest files in the manifest/ folder.
-Now simply use kubectl to install Prometheus and Grafana as per your configuration:
+Now simply use `kubectl` to install Prometheus and Grafana as per your configuration:
 
-`kubectl apply -f manifests/`
+```shell
+$ kubectl apply -f manifests/
+```
 
 Check the monitoring namespace (or the namespace you have specific in `namespace: `) and make sure the pods are running. Prometheus and Grafana should be up and running soon.
 
 ### Containerized Installing and Compiling
 
 If you don't care to have `jb` nor `jsonnet` nor `gojsontoyaml` installed, then build the `po-jsonnet` Docker image (this is something you'll need a copy of this repository for). Do the following from this `kube-prometheus` directory:
-```
-$ make ../../hack/jsonnet-docker-image
+```shell
+$ make hack/jsonnet-docker-image
 ```
 
 Then you can do commands such as the following:
-```
-docker run \
-	--rm \
-	-v `pwd`:`pwd` \
-	--workdir `pwd` \
-	po-jsonnet jb init
-
-docker run \
-	--rm \
-	-v `pwd`:`pwd` \
-	--workdir `pwd` \
-	po-jsonnet jb install github.com/coreos/prometheus-operator/contrib/kube-prometheus/jsonnet/kube-prometheus
-
-docker run \
-	--rm \
-	-v `pwd`:`pwd` \
-	--workdir `pwd` \
-	po-jsonnet ./build.sh example.jsonnet
+```shell
+$ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) po-jsonnet jb update
+$ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) po-jsonnet ./build.sh example.jsonnet
 ```
 
 ## Update from upstream project
 You may wish to fetch changes made on this project so they are available to you.
 
 ### Update jb
-jb may have been updated so it's a good idea to get the latest version of this binary
+`jb` may have been updated so it's a good idea to get the latest version of this binary:
 
-```
-go get -u github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+```shell
+$ go get -u github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
 ```
 
 ### Update kube-prometheus
-The command below will sync with upstream project.
-```
-jb update
+The command below will sync with upstream project:
+```shell
+$ jb update
 ```
 
 ### Compile the manifests and apply
@@ -266,13 +255,13 @@ These are the available fields with their respective default values:
     namespace: "default",
 
     versions+:: {
-        alertmanager: "v0.16.1",
+        alertmanager: "v0.16.2",
         nodeExporter: "v0.17.0",
         kubeStateMetrics: "v1.5.0",
         kubeRbacProxy: "v0.4.1",
         addonResizer: "1.8.4",
         prometheusOperator: "v0.29.0",
-        prometheus: "v2.5.0",
+        prometheus: "v2.7.2",
     },
 
     imageRepos+:: {
@@ -408,12 +397,12 @@ To produce the `docker pull/tag/push` commands that will synchronize upstream im
 
 ```shell
 $ jsonnet -J vendor -S --tla-str repository=internal-registry.com/organization sync-to-internal-registry.jsonnet
-docker pull k8s.gcr.io/addon-resizer:1.8.4
-docker tag k8s.gcr.io/addon-resizer:1.8.4 internal-registry.com/organization/addon-resizer:1.8.4
-docker push internal-registry.com/organization/addon-resizer:1.8.4
-docker pull quay.io/prometheus/alertmanager:v0.16.1
-docker tag quay.io/prometheus/alertmanager:v0.16.1 internal-registry.com/organization/alertmanager:v0.16.1
-docker push internal-registry.com/organization/alertmanager:v0.16.1
+$ docker pull k8s.gcr.io/addon-resizer:1.8.4
+$ docker tag k8s.gcr.io/addon-resizer:1.8.4 internal-registry.com/organization/addon-resizer:1.8.4
+$ docker push internal-registry.com/organization/addon-resizer:1.8.4
+$ docker pull quay.io/prometheus/alertmanager:v0.16.2
+$ docker tag quay.io/prometheus/alertmanager:v0.16.2 internal-registry.com/organization/alertmanager:v0.16.2
+$ docker push internal-registry.com/organization/alertmanager:v0.16.2
 ...
 ```
 
@@ -626,7 +615,6 @@ the following process:
 1. Make your changes in the respective `*.jsonnet` file.
 2. Commit your changes (This is currently necessary due to our vendoring
    process. This is likely to change in the future).
-3. Update the pinned kube-prometheus dependency in `jsonnetfile.lock.json`: `jb
-   update`.
-3. Generate dependent `*.yaml` files: `make generate-in-docker`.
+3. Update the pinned kube-prometheus dependency in `jsonnetfile.lock.json`: `jb update`
+3. Generate dependent `*.yaml` files: `make generate-in-docker`
 4. Commit the generated changes.
