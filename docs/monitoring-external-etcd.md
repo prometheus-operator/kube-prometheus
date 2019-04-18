@@ -53,7 +53,7 @@ So if you load a dashboard through the Grafana UI, it won't be kept unless saved
 Read [the document](developing-prometheus-rules-and-grafana-dashboards.md), but in summary:
 
 ### Copy your dashboard:
-Once you are happy with the dashboard, export it and move it to `prometheus-operator/contrib/kube-prometheus/assets/grafana/` (ending in "-dashboard.json")
+Once you are happy with the dashboard, export it and move it to `kube-prometheus/assets/grafana/` (ending in "-dashboard.json")
 
 ### Regenetate the grafana dashboard manifest:
 `hack/scripts/generate-dashboards-configmap.sh > manifests/grafana/grafana-dashboards.yaml`
