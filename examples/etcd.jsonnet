@@ -3,7 +3,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
   _config+:: {
     namespace: 'monitoring',
 
-    // Reference info: https://github.com/coreos/prometheus-operator/blob/master/contrib/kube-prometheus/README.md#static-etcd-configuration
+    // Reference info: https://github.com/coreos/kube-prometheus/blob/master/README.md#static-etcd-configuration
     etcd+:: {
       // Configure this to be the IP(s) to scrape - i.e. your etcd node(s) (use commas to separate multiple values).
       ips: ['127.0.0.1'],

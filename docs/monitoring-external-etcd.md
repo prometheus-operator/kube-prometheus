@@ -38,27 +38,3 @@ On the :9090/targets page:
  * You should see "etcd" with the UP state. If not, check the Error column for more information.
  * If no "etcd" targets are even shown on this page, prometheus isn't attempting to scrape it.
 
-# Step 3: Grafana dashboard
-
-## Find a dashboard you like
-
-Try to load this dashboard:
-https://grafana.com/dashboards/3070
-
-## Save the dashboard in the configmap
-
-As documented here, [Developing Alerts and Dashboards](developing-prometheus-rules-and-grafana-dashboards.md), the Grafana instances are stateless. The dashboards are automatically re-loaded from the ConfigMap.
-So if you load a dashboard through the Grafana UI, it won't be kept unless saved in ConfigMap
-
-Read [the document](developing-prometheus-rules-and-grafana-dashboards.md), but in summary:
-
-### Copy your dashboard:
-Once you are happy with the dashboard, export it and move it to `prometheus-operator/contrib/kube-prometheus/assets/grafana/` (ending in "-dashboard.json")
-
-### Regenetate the grafana dashboard manifest:
-`hack/scripts/generate-dashboards-configmap.sh > manifests/grafana/grafana-dashboards.yaml`
-
-### Reload the manifest in Kubernetes:
-` kubectl -n monitoring replace -f manifests/grafana/grafana-dashboards.yaml`
-
-After a few minutes your dasboard will be available permanently to all Grafana instances

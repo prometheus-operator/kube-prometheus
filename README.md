@@ -141,7 +141,7 @@ $ jb install github.com/coreos/kube-prometheus/jsonnet/kube-prometheus # Creates
 
 > `jb` can be installed with `go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb`
 
-> An e.g. of how to install a given version of this library: `jb install github.com/coreos/prometheus-operator/contrib/kube-prometheus/jsonnet/kube-prometheus/@v0.22.0`
+> An e.g. of how to install a given version of this library: `jb install github.com/coreos/kube-prometheus/jsonnet/kube-prometheus/@v0.22.0`
 
 In order to update the kube-prometheus dependency, simply use the jsonnet-bundler update functionality:
 ```shell
