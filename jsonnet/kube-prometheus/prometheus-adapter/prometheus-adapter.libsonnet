@@ -184,6 +184,25 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       clusterRole.mixin.metadata.withName('resource-metrics-server-resources') +
       clusterRole.withRules(rules),
 
+    clusterRoleAggregatedMetricsReader:
+      local clusterRole = k.rbac.v1.clusterRole;
+      local policyRule = clusterRole.rulesType;
+
+      local rules =
+        policyRule.new() +
+        policyRule.withApiGroups(['metrics.k8s.io']) +
+        policyRule.withResources(['pods']) +
+        policyRule.withVerbs(['get','list','watch']);
+
+      clusterRole.new() +
+      clusterRole.mixin.metadata.withName('system:aggregated-metrics-reader') +
+      clusterRole.mixin.metadata.withLabels({
+        "rbac.authorization.k8s.io/aggregate-to-admin": "true",
+        "rbac.authorization.k8s.io/aggregate-to-edit": "true",
+        "rbac.authorization.k8s.io/aggregate-to-view": "true",
+      }) +
+      clusterRole.withRules(rules),
+
     roleBindingAuthReader:
       local roleBinding = k.rbac.v1.roleBinding;
 
