@@ -40,6 +40,7 @@ resources:
 - ./manifests/node-exporter-serviceMonitor.yaml
 - ./manifests/prometheus-adapter-apiService.yaml
 - ./manifests/prometheus-adapter-clusterRole.yaml
+- ./manifests/prometheus-adapter-clusterRoleAggregatedMetricsReader.yaml
 - ./manifests/prometheus-adapter-clusterRoleBinding.yaml
 - ./manifests/prometheus-adapter-clusterRoleBindingDelegator.yaml
 - ./manifests/prometheus-adapter-clusterRoleServerResources.yaml
