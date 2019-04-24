@@ -41,7 +41,7 @@
               message: 'Clock skew detected on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}. Ensure NTP is configured correctly on this host.',
             },
             expr: |||
-              node_ntp_offset_seconds{%(nodeExporterSelector)s} < -0.03 or node_ntp_offset_seconds{%(nodeExporterSelector)s} > 0.03
+              abs(node_timex_offset_seconds{%(nodeExporterSelector)s}) > 0.03
             ||| % $._config,
             'for': '2m',
             labels: {
