@@ -1,4 +1,4 @@
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
+local k = import 'ksonnet4/ksonnet.beta.4/k.libsonnet';
 
 {
   _config+:: {
@@ -87,7 +87,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       service.mixin.metadata.withLabels($._config.prometheusAdapter.labels),
 
     deployment:
-      local deployment = k.apps.v1beta2.deployment;
+      local deployment = k.apps.v1.deployment;
       local volume = deployment.mixin.spec.template.spec.volumesType;
       local container = deployment.mixin.spec.template.spec.containersType;
       local containerVolumeMount = container.volumeMountsType;

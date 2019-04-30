@@ -49,6 +49,16 @@
                 }
             },
             "version": "master"
+        },
+        {
+            "name": "ksonnet4",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/metalmatze/ksonnet-lib",
+                    "subdir": ""
+                }
+            },
+            "version": "ksonnet.beta.4"
         }
     ]
 }

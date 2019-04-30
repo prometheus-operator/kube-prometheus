@@ -1,4 +1,5 @@
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
+local k = import 'ksonnet4/ksonnet.beta.4/k.libsonnet';
+local k3 = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
 {
   _config+:: {
@@ -69,7 +70,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
         roleBinding.mixin.roleRef.mixinInstance({ kind: 'Role' }) +
         roleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + $._config.prometheus.name, namespace: $._config.namespace }]);
 
-      local roleBindigList = k.rbac.v1.roleBindingList;
+      local roleBindigList = k3.rbac.v1.roleBindingList;
       roleBindigList.new([newSpecificRoleBinding(x) for x in $._config.prometheus.namespaces]),
     clusterRole:
       local clusterRole = k.rbac.v1.clusterRole;
@@ -141,10 +142,10 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
         role.mixin.metadata.withNamespace(namespace) +
         role.withRules(coreRule);
 
-      local roleList = k.rbac.v1.roleList;
+      local roleList = k3.rbac.v1.roleList;
       roleList.new([newSpecificRole(x) for x in $._config.prometheus.namespaces]),
     prometheus:
-      local statefulSet = k.apps.v1beta2.statefulSet;
+      local statefulSet = k.apps.v1.statefulSet;
       local container = statefulSet.mixin.spec.template.spec.containersType;
       local resourceRequirements = container.mixin.resourcesType;
       local selector = statefulSet.mixin.spec.selectorType;

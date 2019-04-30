@@ -1,4 +1,4 @@
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
+local k = import 'ksonnet4/ksonnet.beta.4/k.libsonnet';
 
 {
   _config+:: {
@@ -122,9 +122,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       clusterRole.mixin.metadata.withName('kube-state-metrics') +
       clusterRole.withRules(rules),
     deployment:
-      local deployment = k.apps.v1beta2.deployment;
-      local container = k.apps.v1beta2.deployment.mixin.spec.template.spec.containersType;
-      local volume = k.apps.v1beta2.deployment.mixin.spec.template.spec.volumesType;
+      local deployment = k.apps.v1.deployment;
+      local container = deployment.mixin.spec.template.spec.containersType;
+      local volume = deployment.mixin.spec.template.spec.volumesType;
       local containerPort = container.portsType;
       local containerVolumeMount = container.volumeMountsType;
       local podSelector = deployment.mixin.spec.template.spec.selectorType;
@@ -139,7 +139,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           '--tls-cipher-suites=' + std.join(',', $._config.tlsCipherSuites),
           '--upstream=http://127.0.0.1:8081/',
         ]) +
-        container.withPorts(containerPort.newNamed('https-main', 8443)) +
+        container.withPorts(containerPort.newNamed(8443, 'https-main',)) +
         container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }) +
         container.mixin.resources.withLimits({ cpu: '20m', memory: '40Mi' });
 
@@ -151,7 +151,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           '--tls-cipher-suites=' + std.join(',', $._config.tlsCipherSuites),
           '--upstream=http://127.0.0.1:8082/',
         ]) +
-        container.withPorts(containerPort.newNamed('https-self', 9443)) +
+        container.withPorts(containerPort.newNamed(9443, 'https-self',)) +
         container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }) +
         container.mixin.resources.withLimits({ cpu: '20m', memory: '40Mi' });
 
@@ -259,7 +259,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
     service:
       local service = k.core.v1.service;
-      local servicePort = k.core.v1.service.mixin.spec.portsType;
+      local servicePort = service.mixin.spec.portsType;
 
       local ksmServicePortMain = servicePort.newNamed('https-main', 8443, 'https-main');
       local ksmServicePortSelf = servicePort.newNamed('https-self', 9443, 'https-self');

@@ -21,6 +21,16 @@
             "version": "d03da231d6c8bd74437b74a1e9e8b966f13dffa2"
         },
         {
+            "name": "ksonnet4",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/metalmatze/ksonnet-lib",
+                    "subdir": ""
+                }
+            },
+            "version": "3e10db7d0dce7c175ac03be631001489b5578744"
+        },
+        {
             "name": "kubernetes-mixin",
             "source": {
                 "git": {
