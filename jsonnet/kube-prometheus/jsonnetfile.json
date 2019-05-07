@@ -18,7 +18,7 @@
                     "subdir": ""
                 }
             },
-            "version": "master"
+            "version": "release-0.1"
         },
         {
             "name": "grafana",
