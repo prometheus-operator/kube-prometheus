@@ -10,21 +10,21 @@ local kp =
   {
     _config+:: {
       namespace: 'monitoring',
+      grafana+:: {
+        config+: {
+          sections+: {
+            server+: {
+              root_url: 'http://grafana.example.com/',
+            },
+          },
+        },
+      },
     },
     // Configure External URL's per application
     alertmanager+:: {
       alertmanager+: {
         spec+: {
           externalUrl: 'http://alertmanager.example.com',
-        },
-      },
-    },
-    grafana+:: {
-      config+: {
-        sections+: {
-          server+: {
-            root_url: 'http://grafana.example.com/',
-          },
         },
       },
     },
