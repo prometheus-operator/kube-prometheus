@@ -1,6 +1,6 @@
 # kube-prometheus
 
-> Note that everything in the `contrib/kube-prometheus/` directory is experimental and may change significantly at any time.
+> Note that everything is experimental and may change significantly at any time.
 
 This repository collects Kubernetes manifests, [Grafana](http://grafana.com/) dashboards, and [Prometheus rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with [Prometheus](https://prometheus.io/) using the Prometheus Operator.
 
