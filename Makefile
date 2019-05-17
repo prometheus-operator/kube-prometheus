@@ -2,25 +2,19 @@ JSONNET_FMT := jsonnet fmt -n 2 --max-blank-lines 2 --string-style s --comment-s
 
 JB_BINARY:=$(GOPATH)/bin/jb
 EMBEDMD_BINARY:=$(GOPATH)/bin/embedmd
+CONTAINER_CMD:=docker run --rm \
+		-u="$(shell id -u):$(shell id -g)" \
+		-v "$(shell go env GOCACHE):/.cache/go-build" \
+		-v "$(PWD):/go/src/github.com/coreos/kube-prometheus:Z" \
+		-w "/go/src/github.com/coreos/kube-prometheus" \
+		quay.io/coreos/jsonnet-ci
 
 all: generate fmt test
 
-hack/jsonnet-docker-image: scripts/jsonnet/Dockerfile
-# Create empty target file, for the sole purpose of recording when this target
-# was last executed via the last-modification timestamp on the file. See
-# https://www.gnu.org/software/make/manual/make.html#Empty-Targets
-	docker build -f - -t po-jsonnet . < scripts/jsonnet/Dockerfile
-	touch $@
-
-generate-in-docker: hack/jsonnet-docker-image
+.PHONY: generate-in-docker
+generate-in-docker:
 	@echo ">> Compiling assets and generating Kubernetes manifests"
-	docker run \
-	--rm \
-	-u=$(shell id -u $(USER)):$(shell id -g $(USER)) \
-	-v $$PWD:/go/src/github.com/coreos/kube-prometheus/ \
-	-v $(shell go env GOCACHE):/.cache/go-build \
-	--workdir /go/src/github.com/coreos/kube-prometheus \
-	po-jsonnet make generate
+	$(CONTAINER_CMD) $(MAKE) $(MFLAGS) generate
 
 generate: manifests **.md
 
@@ -46,15 +40,9 @@ test: $(JB_BINARY)
 test-e2e:
 	go test -timeout 55m -v ./tests/e2e -count=1
 
-test-in-docker: hack/jsonnet-docker-image
+test-in-docker:
 	@echo ">> Compiling assets and generating Kubernetes manifests"
-	docker run \
-	--rm \
-	-u=$(shell id -u $(USER)):$(shell id -g $(USER)) \
-	-v $$PWD:/go/src/github.com/coreos/kube-prometheus/ \
-	-v $(shell go env GOCACHE):/.cache/go-build \
-	--workdir /go/src/github.com/coreos/kube-prometheus \
-	po-jsonnet make test
+	$(CONTAINER_CMD) $(MAKE) $(MFLAGS) test
 
 $(JB_BINARY):
 	go get -u github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
