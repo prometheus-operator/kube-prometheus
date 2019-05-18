@@ -14,7 +14,7 @@ all: generate fmt test
 .PHONY: generate-in-docker
 generate-in-docker:
 	@echo ">> Compiling assets and generating Kubernetes manifests"
-	$(CONTAINER_CMD) $(MAKE) $(MFLAGS) generate
+	$(CONTAINER_CMD) make $(MFLAGS) generate
 
 generate: manifests **.md
 
@@ -42,7 +42,7 @@ test-e2e:
 
 test-in-docker:
 	@echo ">> Compiling assets and generating Kubernetes manifests"
-	$(CONTAINER_CMD) $(MAKE) $(MFLAGS) test
+	$(CONTAINER_CMD) make $(MFLAGS) test
 
 $(JB_BINARY):
 	go get -u github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb

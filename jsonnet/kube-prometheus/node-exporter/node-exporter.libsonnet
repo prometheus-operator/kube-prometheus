@@ -125,7 +125,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
         // it so that the scheduler can decide if the pod is schedulable.
         container.withPorts(containerPort.new($._config.nodeExporter.port) + containerPort.withHostPort($._config.nodeExporter.port) + containerPort.withName('https')) +
         container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '20m', memory: '40Mi' }) +
+        container.mixin.resources.withLimits({ cpu: '20m', memory: '60Mi' }) +
         container.withEnv([ip]);
 
       local c = [nodeExporter, proxy];
