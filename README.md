@@ -214,15 +214,10 @@ Check the monitoring namespace (or the namespace you have specific in `namespace
 
 ### Containerized Installing and Compiling
 
-If you don't care to have `jb` nor `jsonnet` nor `gojsontoyaml` installed, then build the `po-jsonnet` Docker image (this is something you'll need a copy of this repository for). Do the following from this `kube-prometheus` directory:
+If you don't care to have `jb` nor `jsonnet` nor `gojsontoyaml` installed, then use `quay.io/coreos/jsonnet-ci` container image. Do the following from this `kube-prometheus` directory:
 ```shell
-$ make hack/jsonnet-docker-image
-```
-
-Then you can do commands such as the following:
-```shell
-$ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) po-jsonnet jb update
-$ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) po-jsonnet ./build.sh example.jsonnet
+$ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) quay.io/coreos/jsonnet-ci jb update
+$ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) quay.io/coreos/jsonnet-ci ./build.sh example.jsonnet
 ```
 
 ## Update from upstream project
