@@ -8,11 +8,7 @@
                     "subdir": "jsonnet/kube-prometheus"
                 }
             },
-<<<<<<< HEAD
-            "version": "bedeadb7f5686537b7733096dcbb86ab0f722ce8"
-=======
-            "version": "c5c70e2101c29818d350a3b90ae0e417a5602507"
->>>>>>> Remove extra ksonnet4 dependency
+            "version": "107028fff38b6e3dce3e1ef110222474fb01b31c"
         },
         {
             "name": "ksonnet",
