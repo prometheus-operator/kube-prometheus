@@ -3048,7 +3048,7 @@ items:
                                   "unit": "short"
                               },
                               {
-                                  "alias": "Memory Usage",
+                                  "alias": "CPU Usage",
                                   "colorMode": null,
                                   "colors": [
 
@@ -3063,10 +3063,10 @@ items:
 
                                   ],
                                   "type": "number",
-                                  "unit": "bytes"
+                                  "unit": "short"
                               },
                               {
-                                  "alias": "Memory Requests",
+                                  "alias": "Memory Usage",
                                   "colorMode": null,
                                   "colors": [
 
@@ -3084,7 +3084,7 @@ items:
                                   "unit": "bytes"
                               },
                               {
-                                  "alias": "Memory Requests %",
+                                  "alias": "Memory Requests",
                                   "colorMode": null,
                                   "colors": [
 
@@ -3095,6 +3095,24 @@ items:
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
+                                  "thresholds": [
+
+                                  ],
+                                  "type": "number",
+                                  "unit": "bytes"
+                              },
+                              {
+                                  "alias": "Memory Requests %",
+                                  "colorMode": null,
+                                  "colors": [
+
+                                  ],
+                                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                                  "decimals": 2,
+                                  "link": false,
+                                  "linkTooltip": "Drill down",
+                                  "linkUrl": "",
+                                  "pattern": "Value #F",
                                   "thresholds": [
 
                                   ],
@@ -3112,7 +3130,7 @@ items:
                                   "link": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
-                                  "pattern": "Value #F",
+                                  "pattern": "Value #G",
                                   "thresholds": [
 
                                   ],
@@ -3130,7 +3148,7 @@ items:
                                   "link": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
-                                  "pattern": "Value #G",
+                                  "pattern": "Value #H",
                                   "thresholds": [
 
                                   ],
@@ -7987,18 +8005,11 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "max by (namespace, pod, device) ((node_filesystem_size_bytes{cluster=\"$cluster\", fstype=~\"ext[234]|btrfs|xfs|zfs\", instance=\"$instance\", job=\"node-exporter\"} - node_filesystem_avail_bytes{cluster=\"$cluster\", fstype=~\"ext[234]|btrfs|xfs|zfs\", instance=\"$instance\", job=\"node-exporter\"}) / node_filesystem_size_bytes{cluster=\"$cluster\", fstype=~\"ext[234]|btrfs|xfs|zfs\", instance=\"$instance\", job=\"node-exporter\"})",
+                                  "expr": "node:node_filesystem_usage:{cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
-                                  "legendFormat": "disk used",
+                                  "legendFormat": "{{device}}",
                                   "refId": "A"
-                              },
-                              {
-                                  "expr": "max by (namespace, pod, device) (node_filesystem_avail_bytes{cluster=\"$cluster\", fstype=~\"ext[234]|btrfs|xfs|zfs\", instance=\"$instance\", job=\"node-exporter\"} / node_filesystem_size_bytes{cluster=\"$cluster\", fstype=~\"ext[234]|btrfs|xfs|zfs\", instance=\"$instance\", job=\"node-exporter\"})",
-                                  "format": "time_series",
-                                  "intervalFactor": 2,
-                                  "legendFormat": "disk free",
-                                  "refId": "B"
                               }
                           ],
                           "thresholds": [
