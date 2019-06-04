@@ -1,4 +1,4 @@
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
+local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
 (import 'etcd-mixin/mixin.libsonnet') + {
   _config+:: {

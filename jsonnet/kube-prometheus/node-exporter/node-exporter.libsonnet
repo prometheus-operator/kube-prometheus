@@ -1,4 +1,4 @@
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
+local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
 {
   _config+:: {
@@ -55,7 +55,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       clusterRole.withRules(rules),
 
     daemonset:
-      local daemonset = k.apps.v1beta2.daemonSet;
+      local daemonset = k.apps.v1.daemonSet;
       local container = daemonset.mixin.spec.template.spec.containersType;
       local volume = daemonset.mixin.spec.template.spec.volumesType;
       local containerPort = container.portsType;

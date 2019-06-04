@@ -1,5 +1,6 @@
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
-local configMapList = k.core.v1.configMapList;
+local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
+local k3 = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
+local configMapList = k3.core.v1.configMapList;
 
 (import 'grafana/grafana.libsonnet') +
 (import 'kube-state-metrics/kube-state-metrics.libsonnet') +

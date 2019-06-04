@@ -1,4 +1,4 @@
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
+local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 local service = k.core.v1.service;
 local servicePort = k.core.v1.service.mixin.spec.portsType;
 
@@ -68,8 +68,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         },
       },
     thanosQueryDeployment:
-      local deployment = k.apps.v1beta2.deployment;
-      local container = k.apps.v1beta2.deployment.mixin.spec.template.spec.containersType;
+      local deployment = k.apps.v1.deployment;
+      local container = k.apps.v1.deployment.mixin.spec.template.spec.containersType;
       local containerPort = container.portsType;
 
       local thanosQueryContainer =
@@ -99,7 +99,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       service.mixin.metadata.withLabels({ app: 'thanos-query' }),
 
     thanosStoreStatefulset:
-      local statefulSet = k.apps.v1beta2.statefulSet;
+      local statefulSet = k.apps.v1.statefulSet;
       local volume = statefulSet.mixin.spec.template.spec.volumesType;
       local container = statefulSet.mixin.spec.template.spec.containersType;
       local containerEnv = container.envType;
@@ -177,7 +177,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       service.mixin.metadata.withLabels({ app: 'thanos-compactor' }),
 
     thanosCompactorStatefulset:
-      local statefulSet = k.apps.v1beta2.statefulSet;
+      local statefulSet = k.apps.v1.statefulSet;
       local volume = statefulSet.mixin.spec.template.spec.volumesType;
       local container = statefulSet.mixin.spec.template.spec.containersType;
       local containerEnv = container.envType;
