@@ -20,30 +20,42 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
 
 ## Table of contents
 
-* [Prerequisites](#prerequisites)
-    * [minikube](#minikube)
-* [Quickstart](#quickstart)
-* [Customizing Kube-Prometheus](#customizing-kube-prometheus)
-    * [Installing](#installing)
-    * [Compiling](#compiling)
-    * [Containerized Installing and Compiling](#containerized-installing-and-compiling)
-* [Configuration](#configuration)
-* [Customization Examples](#customization-examples)
-    * [Cluster Creation Tools](#cluster-creation-tools)
-    * [Internal Registries](#internal-registries)
-    * [NodePorts](#nodeports)
-    * [Prometheus Object Name](#prometheus-object-name)
-    * [node-exporter DaemonSet namespace](#node-exporter-daemonset-namespace)
-    * [Alertmanager configuration](#alertmanager-configuration)
-    * [Static etcd configuration](#static-etcd-configuration)
-    * [Pod Anti-Affinity](#pod-anti-affinity)
-    * [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
-    * [Exposing Prometheus/Alermanager/Grafana via Ingress](#exposing-prometheusalermanagergrafana-via-ingress)
-* [Minikube Example](#minikube-example)
-* [Troubleshooting](#troubleshooting)
-    * [Error retrieving kubelet metrics](#error-retrieving-kubelet-metrics)
-    * [kube-state-metrics resource usage](#kube-state-metrics-resource-usage)
-* [Contributing](#contributing)
+- [kube-prometheus](#kube-prometheus)
+  - [Table of contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+    - [minikube](#minikube)
+  - [Quickstart](#quickstart)
+    - [Access the dashboards](#access-the-dashboards)
+  - [Customizing Kube-Prometheus](#customizing-kube-prometheus)
+    - [Installing](#installing)
+    - [Compiling](#compiling)
+    - [Apply the kube-prometheus stack](#apply-the-kube-prometheus-stack)
+    - [Containerized Installing and Compiling](#containerized-installing-and-compiling)
+  - [Update from upstream project](#update-from-upstream-project)
+    - [Update jb](#update-jb)
+    - [Update kube-prometheus](#update-kube-prometheus)
+    - [Compile the manifests and apply](#compile-the-manifests-and-apply)
+  - [Configuration](#configuration)
+  - [Customization Examples](#customization-examples)
+    - [Cluster Creation Tools](#cluster-creation-tools)
+    - [Internal Registry](#internal-registry)
+    - [NodePorts](#nodeports)
+    - [Prometheus Object Name](#prometheus-object-name)
+    - [node-exporter DaemonSet namespace](#node-exporter-daemonset-namespace)
+    - [Alertmanager configuration](#alertmanager-configuration)
+    - [Adding additional namespaces to monitor](#adding-additional-namespaces-to-monitor)
+      - [Defining the ServiceMonitor for each addional Namespace](#defining-the-servicemonitor-for-each-addional-namespace)
+    - [Static etcd configuration](#static-etcd-configuration)
+    - [Pod Anti-Affinity](#pod-anti-affinity)
+    - [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
+    - [Exposing Prometheus/Alermanager/Grafana via Ingress](#exposing-prometheusalermanagergrafana-via-ingress)
+  - [Minikube Example](#minikube-example)
+  - [Troubleshooting](#troubleshooting)
+    - [Error retrieving kubelet metrics](#error-retrieving-kubelet-metrics)
+      - [Authentication problem](#authentication-problem)
+      - [Authorization problem](#authorization-problem)
+    - [kube-state-metrics resource usage](#kube-state-metrics-resource-usage)
+  - [Contributing](#contributing)
 
 ## Prerequisites
 
@@ -545,42 +557,54 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 
 #### Defining the ServiceMonitor for each addional Namespace
 
-In order to Prometheus be able to discovery and scrap services inside the additional namespaces specified in previous step you need to define a ServiceMonitor resource.
+In order to Prometheus be able to discovery and scrape services inside the additional namespaces specified in previous step you need to define a ServiceMonitor resource.
+
+> Typically it is up to the users of a namespace to provision the ServiceMonitor resource, but in case you want to generate it with the same tooling as the rest of the cluster monitoring infrastructure, this is a guide on how to achieve this. 
 
 You can define ServiceMonitor resources in your `jsonnet` spec. See the snippet bellow:
 
-```
+[embedmd]:# (examples/additional-namespaces-servicemonitor.jsonnet)
+```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   _config+:: {
-    namespace: 'monitoring',
-
+      namespace: 'monitoring',
+      prometheus+:: {
+        namespaces+: ['my-namespace', 'my-second-namespace'],
+      }
+    },
     prometheus+:: {
-      namespaces+: ['my-namespace', 'my-second-namespace'],
-
-      serviceMonitorKubeScheduler: {
-        apiVersion: 'monitoring.coreos.com/v1',
-        kind: 'ServiceMonitor',
-        metadata: {
-            name: 'my-servicemonitor',
-            namespace: 'my-namespace',
-        },
-        spec: {
-            jobLabel: 'app',
-            endpoints: [
-            {
-                port: 'http-metrics',
-            },
-            ],
-            selector: {
-                matchLabels: {
-                    'app': 'myapp',
-                },
-            },
+      serviceMonitorMyNamespace: {
+          apiVersion: 'monitoring.coreos.com/v1',
+          kind: 'ServiceMonitor',
+          metadata: {
+              name: 'my-servicemonitor',
+              namespace: 'my-namespace',
+          },
+          spec: {
+              jobLabel: 'app',
+              endpoints: [
+              {
+                  port: 'http-metrics',
+              },
+              ],
+              selector: {
+                  matchLabels: {
+                      'app': 'myapp',
+                  },
+              },
+          },
         },
       },      
-    },
-  },
+
 };
+
+{ ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{ ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
+{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
+{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
 > NOTE: make sure your service resources has the right labels (eg. `'app': 'myapp'`) applied. Prometheus use kubernetes labels to discovery resources inside the namespaces.
