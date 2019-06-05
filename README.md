@@ -543,6 +543,48 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
+#### Defining the ServiceMonitor for each addional Namespace
+
+In order to Prometheus be able to discovery and scrap services inside the additional namespaces specified in previous step you need to define a ServiceMonitor resource.
+
+You can define ServiceMonitor resources in your `jsonnet` spec. See the snippet bellow:
+
+```
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+  _config+:: {
+    namespace: 'monitoring',
+
+    prometheus+:: {
+      namespaces+: ['my-namespace', 'my-second-namespace'],
+
+      serviceMonitorKubeScheduler: {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ServiceMonitor',
+        metadata: {
+            name: 'my-servicemonitor',
+            namespace: 'my-namespace',
+        },
+        spec: {
+            jobLabel: 'app',
+            endpoints: [
+            {
+                port: 'http-metrics',
+            },
+            ],
+            selector: {
+                matchLabels: {
+                    'app': 'myapp',
+                },
+            },
+        },
+      },      
+    },
+  },
+};
+```
+
+> NOTE: make sure your service resources has the right labels (eg. `'app': 'myapp'`) applied. Prometheus use kubernetes labels to discovery resources inside the namespaces.
+
 ### Static etcd configuration
 
 In order to configure a static etcd cluster to scrape there is a simple [kube-prometheus-static-etcd.libsonnet](jsonnet/kube-prometheus/kube-prometheus-static-etcd.libsonnet) mixin prepared - see [etcd.jsonnet](examples/etcd.jsonnet) for an example of how to use that mixin, and [Monitoring external etcd](docs/monitoring-external-etcd.md) for more information.
