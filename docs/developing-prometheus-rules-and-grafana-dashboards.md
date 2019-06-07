@@ -11,7 +11,14 @@ As a basis, all examples in this guide are based on the base example of the kube
 [embedmd]:# (../example.jsonnet)
 ```jsonnet
 local kp =
-  (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  // Uncomment the following imports to enable its patches
+  // (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-managed-cluster.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-node-ports.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-thanos.libsonnet') +
+  {
     _config+:: {
       namespace: 'monitoring',
     },
