@@ -52,6 +52,7 @@ spec:
                             type: boolean
                         required:
                         - key
+                        type: object
                       username:
                         description: SecretKeySelector selects a key of a Secret.
                         properties:
@@ -68,6 +69,8 @@ spec:
                             type: boolean
                         required:
                         - key
+                        type: object
+                    type: object
                   bearerTokenFile:
                     description: File to read bearer token for scraping targets.
                     type: string
@@ -121,6 +124,7 @@ spec:
                             in a replace action. It is mandatory for replace actions.
                             Regex capture groups are available.
                           type: string
+                      type: object
                     type: array
                   params:
                     description: Optional HTTP URL parameters
@@ -180,6 +184,7 @@ spec:
                             in a replace action. It is mandatory for replace actions.
                             Regex capture groups are available.
                           type: string
+                      type: object
                     type: array
                   scheme:
                     description: HTTP scheme to use for scraping.
@@ -209,6 +214,8 @@ spec:
                       serverName:
                         description: Used to verify the hostname for the targets.
                         type: string
+                    type: object
+                type: object
               type: array
             jobLabel:
               description: The label to use to retrieve the job name from.
@@ -226,6 +233,7 @@ spec:
                   items:
                     type: string
                   type: array
+              type: object
             podTargetLabels:
               description: PodTargetLabels transfers labels on the Kubernetes Pod
                 onto the target.
@@ -271,6 +279,7 @@ spec:
                     required:
                     - key
                     - operator
+                    type: object
                   type: array
                 matchLabels:
                   description: matchLabels is a map of {key,value} pairs. A single
@@ -279,6 +288,7 @@ spec:
                     "In", and the values array contains only "value". The requirements
                     are ANDed.
                   type: object
+              type: object
             targetLabels:
               description: TargetLabels transfers labels on the Kubernetes Service
                 onto the target.
@@ -288,4 +298,6 @@ spec:
           required:
           - endpoints
           - selector
+          type: object
+      type: object
   version: v1
