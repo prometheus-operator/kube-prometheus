@@ -5,7 +5,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      nodeExporter: 'v0.17.0',
+      nodeExporter: 'v0.18.1',
       kubeRbacProxy: 'v0.4.1',
     },
 
