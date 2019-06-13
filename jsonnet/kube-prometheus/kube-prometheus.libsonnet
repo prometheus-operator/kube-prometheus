@@ -44,7 +44,7 @@ local configMapList = k3.core.v1.configMapList;
     namespace: 'default',
 
     versions+:: {
-      grafana: '6.0.1',
+      grafana: '6.2.2',
     },
 
     tlsCipherSuites: [
