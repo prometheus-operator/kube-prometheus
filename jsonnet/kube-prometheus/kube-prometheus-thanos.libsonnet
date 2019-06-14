@@ -33,8 +33,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
     },
     thanosPeerService:
       service.new('thanos-peers', { 'thanos-peers': 'true' }, [
-        servicePort.newNamed('cluster', 10900, 'cluster'),
-        servicePort.newNamed('http', 10902, 'http'),
+        servicePort.newNamed('cluster', 10900, 10900),
+        servicePort.newNamed('http', 10902, 10902),
       ]) +
       service.mixin.metadata.withNamespace($._config.namespace) +
       service.mixin.metadata.withLabels({ 'thanos-peers': 'true' }) +
@@ -75,9 +75,9 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       local thanosQueryContainer =
         container.new('thanos-query', $._config.imageRepos.thanos + ':' + $._config.versions.thanos) +
         container.withPorts([
-          containerPort.newNamed('http', 10902),
-          containerPort.newNamed('grpc', 10901),
-          containerPort.newNamed('cluster', 10900),
+          containerPort.newNamed(10902, 'http'),
+          containerPort.newNamed(10901, 'grpc'),
+          containerPort.newNamed(10900, 'cluster'),
         ]) +
         container.withArgs([
           'query',
