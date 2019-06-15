@@ -70,8 +70,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         roleBinding.mixin.roleRef.mixinInstance({ kind: 'Role' }) +
         roleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + $._config.prometheus.name, namespace: $._config.namespace }]);
 
-      local roleBindigList = k3.rbac.v1.roleBindingList;
-      roleBindigList.new([newSpecificRoleBinding(x) for x in $._config.prometheus.namespaces]),
+      local roleBindingList = k3.rbac.v1.roleBindingList;
+      roleBindingList.new([newSpecificRoleBinding(x) for x in $._config.prometheus.namespaces]),
     clusterRole:
       local clusterRole = k.rbac.v1.clusterRole;
       local policyRule = clusterRole.rulesType;
