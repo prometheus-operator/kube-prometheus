@@ -67,7 +67,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local podLabels = { app: 'node-exporter' };
 
       local existsToleration = toleration.new() +
-                                  toleration.withOperator('Exists')
+                               toleration.withOperator('Exists');
       local procVolumeName = 'proc';
       local procVolume = volume.fromHostPath(procVolumeName, '/proc');
       local procVolumeMount = containerVolumeMount.new(procVolumeName, '/host/proc');
