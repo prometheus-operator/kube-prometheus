@@ -2015,6 +2015,94 @@ spec:
                     Populated by the system. Read-only. More info: http://kubernetes.io/docs/user-guide/identifiers#uids
                   type: string
               type: object
+            podMonitorNamespaceSelector:
+              description: A label selector is a label query over a set of resources.
+                The result of matchLabels and matchExpressions are ANDed. An empty
+                label selector matches all objects. A null label selector matches
+                no objects.
+              properties:
+                matchExpressions:
+                  description: matchExpressions is a list of label selector requirements.
+                    The requirements are ANDed.
+                  items:
+                    description: A label selector requirement is a selector that contains
+                      values, a key, and an operator that relates the key and values.
+                    properties:
+                      key:
+                        description: key is the label key that the selector applies
+                          to.
+                        type: string
+                      operator:
+                        description: operator represents a key's relationship to a
+                          set of values. Valid operators are In, NotIn, Exists and
+                          DoesNotExist.
+                        type: string
+                      values:
+                        description: values is an array of string values. If the operator
+                          is In or NotIn, the values array must be non-empty. If the
+                          operator is Exists or DoesNotExist, the values array must
+                          be empty. This array is replaced during a strategic merge
+                          patch.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - key
+                    - operator
+                    type: object
+                  type: array
+                matchLabels:
+                  description: matchLabels is a map of {key,value} pairs. A single
+                    {key,value} in the matchLabels map is equivalent to an element
+                    of matchExpressions, whose key field is "key", the operator is
+                    "In", and the values array contains only "value". The requirements
+                    are ANDed.
+                  type: object
+              type: object
+            podMonitorSelector:
+              description: A label selector is a label query over a set of resources.
+                The result of matchLabels and matchExpressions are ANDed. An empty
+                label selector matches all objects. A null label selector matches
+                no objects.
+              properties:
+                matchExpressions:
+                  description: matchExpressions is a list of label selector requirements.
+                    The requirements are ANDed.
+                  items:
+                    description: A label selector requirement is a selector that contains
+                      values, a key, and an operator that relates the key and values.
+                    properties:
+                      key:
+                        description: key is the label key that the selector applies
+                          to.
+                        type: string
+                      operator:
+                        description: operator represents a key's relationship to a
+                          set of values. Valid operators are In, NotIn, Exists and
+                          DoesNotExist.
+                        type: string
+                      values:
+                        description: values is an array of string values. If the operator
+                          is In or NotIn, the values array must be non-empty. If the
+                          operator is Exists or DoesNotExist, the values array must
+                          be empty. This array is replaced during a strategic merge
+                          patch.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - key
+                    - operator
+                    type: object
+                  type: array
+                matchLabels:
+                  description: matchLabels is a map of {key,value} pairs. A single
+                    {key,value} in the matchLabels map is equivalent to an element
+                    of matchExpressions, whose key field is "key", the operator is
+                    "In", and the values array contains only "value". The requirements
+                    are ANDed.
+                  type: object
+              type: object
             priorityClassName:
               description: Priority class assigned to the Pods
               type: string
@@ -2336,6 +2424,9 @@ spec:
               description: Time duration Prometheus shall retain data for. Default
                 is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)`
                 (milliseconds seconds minutes hours days weeks years).
+              type: string
+            retentionSize:
+              description: Maximum amount of disk space used by blocks.
               type: string
             routePrefix:
               description: The route prefix Prometheus registers HTTP handlers for.
@@ -3215,42 +3306,6 @@ spec:
                 baseImage:
                   description: Thanos base image if other than default.
                   type: string
-                clusterAdvertiseAddress:
-                  description: Explicit (external) ip:port address to advertise for
-                    gossip in gossip cluster. Used internally for membership only.
-                  type: string
-                gcs:
-                  description: 'Deprecated: ThanosGCSSpec should be configured with
-                    an ObjectStorageConfig secret starting with Thanos v0.2.0. ThanosGCSSpec
-                    will be removed.'
-                  properties:
-                    bucket:
-                      description: Google Cloud Storage bucket name for stored blocks.
-                        If empty it won't store any block inside Google Cloud Storage.
-                      type: string
-                    credentials:
-                      description: SecretKeySelector selects a key of a Secret.
-                      properties:
-                        key:
-                          description: The key of the secret to select from.  Must
-                            be a valid secret key.
-                          type: string
-                        name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                          type: string
-                        optional:
-                          description: Specify whether the Secret or it's key must
-                            be defined
-                          type: boolean
-                      required:
-                      - key
-                      type: object
-                  type: object
-                grpcAdvertiseAddress:
-                  description: Explicit (external) host:port address to advertise
-                    for gRPC StoreAPI in gossip cluster. If empty, 'grpc-address'
-                    will be used.
-                  type: string
                 image:
                   description: Image if specified has precedence over baseImage, tag
                     and sha combinations. Specifying the version is still necessary
@@ -3274,9 +3329,6 @@ spec:
                   required:
                   - key
                   type: object
-                peers:
-                  description: Peers is a DNS name for Thanos to discover peers through.
-                  type: string
                 resources:
                   description: ResourceRequirements describes the compute resource
                     requirements.
@@ -3291,63 +3343,6 @@ spec:
                         it defaults to Limits if that is explicitly specified, otherwise
                         to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                       type: object
-                  type: object
-                s3:
-                  description: 'Deprecated: ThanosS3Spec should be configured with
-                    an ObjectStorageConfig secret starting with Thanos v0.2.0. ThanosS3Spec
-                    will be removed.'
-                  properties:
-                    accessKey:
-                      description: SecretKeySelector selects a key of a Secret.
-                      properties:
-                        key:
-                          description: The key of the secret to select from.  Must
-                            be a valid secret key.
-                          type: string
-                        name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                          type: string
-                        optional:
-                          description: Specify whether the Secret or it's key must
-                            be defined
-                          type: boolean
-                      required:
-                      - key
-                      type: object
-                    bucket:
-                      description: S3-Compatible API bucket name for stored blocks.
-                      type: string
-                    encryptsse:
-                      description: Whether to use Server Side Encryption
-                      type: boolean
-                    endpoint:
-                      description: S3-Compatible API endpoint for stored blocks.
-                      type: string
-                    insecure:
-                      description: Whether to use an insecure connection with an S3-Compatible
-                        API.
-                      type: boolean
-                    secretKey:
-                      description: SecretKeySelector selects a key of a Secret.
-                      properties:
-                        key:
-                          description: The key of the secret to select from.  Must
-                            be a valid secret key.
-                          type: string
-                        name:
-                          description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
-                          type: string
-                        optional:
-                          description: Specify whether the Secret or it's key must
-                            be defined
-                          type: boolean
-                      required:
-                      - key
-                      type: object
-                    signatureVersion2:
-                      description: Whether to use S3 Signature Version 2; otherwise
-                        Signature Version 4 will be used.
-                      type: boolean
                   type: object
                 sha:
                   description: SHA of Thanos container image to be deployed. Defaults
