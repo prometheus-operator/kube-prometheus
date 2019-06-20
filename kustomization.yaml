@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
 - ./manifests/00namespace-namespace.yaml
 - ./manifests/0prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
+- ./manifests/0prometheus-operator-0podmonitorCustomResourceDefinition.yaml
 - ./manifests/0prometheus-operator-0prometheusCustomResourceDefinition.yaml
 - ./manifests/0prometheus-operator-0prometheusruleCustomResourceDefinition.yaml
 - ./manifests/0prometheus-operator-0servicemonitorCustomResourceDefinition.yaml
