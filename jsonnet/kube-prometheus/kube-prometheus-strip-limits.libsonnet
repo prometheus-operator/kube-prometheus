@@ -7,10 +7,10 @@
         template+: {
           spec+: {
             local stripLimits(c) =
-                if std.count([
-                    'node-exporter',
-                    'kube-rbac-proxy'
-                ], c.name) > 0
+                if std.setMember(c.name, [
+                  'kube-rbac-proxy',
+                  'node-exporter',
+                ])
                 then c + {resources+: {limits: {}}}
                 else c,
             containers: std.map(stripLimits, super.containers),
@@ -40,11 +40,11 @@
         template+: {
           spec+: {
             local stripLimits(c) =
-                if std.count([
-                    'kube-rbac-proxy-main',
-                    'kube-rbac-proxy-self',
-                    'addon-resizer'
-                ], c.name) > 0
+                if std.setMember(c.name, [
+                  'addon-resizer',
+                  'kube-rbac-proxy-main',
+                  'kube-rbac-proxy-self',
+                ])
                 then c + {resources+: {limits: {}}}
                 else c,
             containers: std.map(stripLimits, super.containers),
