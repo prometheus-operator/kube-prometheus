@@ -11,30 +11,44 @@ spec:
   - name: k8s.rules
     rules:
     - expr: |
-        sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container_name!=""}[5m])) by (namespace)
+        sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container!="POD"}[5m])) by (namespace)
       record: namespace:container_cpu_usage_seconds_total:sum_rate
     - expr: |
-        sum(container_memory_usage_bytes{job="kubelet", image!="", container_name!=""}) by (namespace)
+        sum by (namespace, pod, container) (
+          rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container!="POD"}[5m])
+        )
+      record: namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
+    - expr: |
+        sum(container_memory_usage_bytes{job="kubelet", image!="", container!="POD"}) by (namespace)
       record: namespace:container_memory_usage_bytes:sum
     - expr: |
-        sum by (namespace, pod_name, container_name) (
-          rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container_name!=""}[5m])
+        sum by (namespace, label_name) (
+            sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container!="POD"}[5m])) by (namespace, pod)
+          * on (namespace, pod)
+            group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
         )
-      record: namespace_pod_name_container_name:container_cpu_usage_seconds_total:sum_rate
+      record: namespace:container_cpu_usage_seconds_total:sum_rate
     - expr: |
-        sum by(namespace) (
-            kube_pod_container_resource_requests_memory_bytes{job="kube-state-metrics"}
-          * on (endpoint, instance, job, namespace, pod, service)
-            group_left(phase) (kube_pod_status_phase{phase=~"^(Pending|Running)$"} == 1)
+        sum by (namespace, label_name) (
+            sum(container_memory_usage_bytes{job="kubelet",image!="", container!="POD"}) by (pod, namespace)
+          * on (namespace, pod)
+            group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
         )
-      record: namespace_name:kube_pod_container_resource_requests_memory_bytes:sum
+      record: namespace:container_memory_usage_bytes:sum
     - expr: |
-        sum by (namespace) (
-            kube_pod_container_resource_requests_cpu_cores{job="kube-state-metrics"}
-          * on (endpoint, instance, job, namespace, pod, service)
-            group_left(phase) (kube_pod_status_phase{phase=~"^(Pending|Running)$"} == 1)
+        sum by (namespace, label_name) (
+            sum(kube_pod_container_resource_requests_memory_bytes{job="kube-state-metrics"} * on (endpoint, instance, job, namespace, pod, service) group_left(phase) (kube_pod_status_phase{phase=~"^(Pending|Running)$"} == 1)) by (namespace, pod)
+          * on (namespace, pod)
+            group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
         )
-      record: namespace_name:kube_pod_container_resource_requests_cpu_cores:sum
+      record: namespace:kube_pod_container_resource_requests_memory_bytes:sum
+    - expr: |
+        sum by (namespace, label_name) (
+            sum(kube_pod_container_resource_requests_cpu_cores{job="kube-state-metrics"} * on (endpoint, instance, job, namespace, pod, service) group_left(phase) (kube_pod_status_phase{phase=~"^(Pending|Running)$"} == 1)) by (namespace, pod)
+          * on (namespace, pod)
+            group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
+        )
+      record: namespace:kube_pod_container_resource_requests_cpu_cores:sum
     - expr: |
         sum(
           label_replace(
@@ -71,67 +85,67 @@ spec:
   - name: kube-scheduler.rules
     rules:
     - expr: |
-        histogram_quantile(0.99, sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.99, sum(rate(scheduler_e2e_scheduling_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.99"
-      record: cluster_quantile:scheduler_e2e_scheduling_latency:histogram_quantile
+      record: cluster_quantile:scheduler_e2e_scheduling_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.99, sum(rate(scheduler_scheduling_algorithm_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.99, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.99"
-      record: cluster_quantile:scheduler_scheduling_algorithm_latency:histogram_quantile
+      record: cluster_quantile:scheduler_scheduling_algorithm_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.99, sum(rate(scheduler_binding_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.99, sum(rate(scheduler_binding_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.99"
-      record: cluster_quantile:scheduler_binding_latency:histogram_quantile
+      record: cluster_quantile:scheduler_binding_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.9, sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.9, sum(rate(scheduler_e2e_scheduling_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.9"
-      record: cluster_quantile:scheduler_e2e_scheduling_latency:histogram_quantile
+      record: cluster_quantile:scheduler_e2e_scheduling_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.9, sum(rate(scheduler_scheduling_algorithm_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.9, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.9"
-      record: cluster_quantile:scheduler_scheduling_algorithm_latency:histogram_quantile
+      record: cluster_quantile:scheduler_scheduling_algorithm_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.9, sum(rate(scheduler_binding_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.9, sum(rate(scheduler_binding_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.9"
-      record: cluster_quantile:scheduler_binding_latency:histogram_quantile
+      record: cluster_quantile:scheduler_binding_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.5, sum(rate(scheduler_e2e_scheduling_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.5, sum(rate(scheduler_e2e_scheduling_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.5"
-      record: cluster_quantile:scheduler_e2e_scheduling_latency:histogram_quantile
+      record: cluster_quantile:scheduler_e2e_scheduling_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.5, sum(rate(scheduler_scheduling_algorithm_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.5, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.5"
-      record: cluster_quantile:scheduler_scheduling_algorithm_latency:histogram_quantile
+      record: cluster_quantile:scheduler_scheduling_algorithm_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.5, sum(rate(scheduler_binding_latency_microseconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.5, sum(rate(scheduler_binding_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.5"
-      record: cluster_quantile:scheduler_binding_latency:histogram_quantile
+      record: cluster_quantile:scheduler_binding_duration_seconds:histogram_quantile
   - name: kube-apiserver.rules
     rules:
     - expr: |
-        histogram_quantile(0.99, sum(rate(apiserver_request_latencies_bucket{job="apiserver"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
       labels:
         quantile: "0.99"
-      record: cluster_quantile:apiserver_request_latencies:histogram_quantile
+      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.9, sum(rate(apiserver_request_latencies_bucket{job="apiserver"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.9, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
       labels:
         quantile: "0.9"
-      record: cluster_quantile:apiserver_request_latencies:histogram_quantile
+      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.5, sum(rate(apiserver_request_latencies_bucket{job="apiserver"}[5m])) without(instance, pod)) / 1e+06
+        histogram_quantile(0.5, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
       labels:
         quantile: "0.5"
-      record: cluster_quantile:apiserver_request_latencies:histogram_quantile
+      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
   - name: node.rules
     rules:
     - expr: sum(min(kube_pod_info) by (node))
@@ -593,11 +607,11 @@ spec:
           tolerate node failure.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecpuovercommit
       expr: |
-        sum(namespace_name:kube_pod_container_resource_requests_cpu_cores:sum)
+        sum(namespace:kube_pod_container_resource_requests_cpu_cores:sum)
           /
-        sum(node:node_num_cpu:sum)
+        sum(kube_node_status_allocatable_cpu_cores)
           >
-        (count(node:node_num_cpu:sum)-1) / count(node:node_num_cpu:sum)
+        (count(kube_node_status_allocatable_cpu_cores)-1) / count(kube_node_status_allocatable_cpu_cores)
       for: 5m
       labels:
         severity: warning
@@ -607,13 +621,13 @@ spec:
           tolerate node failure.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubememovercommit
       expr: |
-        sum(namespace_name:kube_pod_container_resource_requests_memory_bytes:sum)
+        sum(namespace:kube_pod_container_resource_requests_memory_bytes:sum)
           /
-        sum(node_memory_MemTotal_bytes)
+        sum(kube_node_status_allocatable_memory_bytes)
           >
-        (count(node:node_num_cpu:sum)-1)
+        (count(kube_node_status_allocatable_memory_bytes)-1)
           /
-        count(node:node_num_cpu:sum)
+        count(kube_node_status_allocatable_memory_bytes)
       for: 5m
       labels:
         severity: warning
@@ -624,7 +638,7 @@ spec:
       expr: |
         sum(kube_resourcequota{job="kube-state-metrics", type="hard", resource="cpu"})
           /
-        sum(node:node_num_cpu:sum)
+        sum(kube_node_status_allocatable_cpu_cores)
           > 1.5
       for: 5m
       labels:
@@ -636,7 +650,7 @@ spec:
       expr: |
         sum(kube_resourcequota{job="kube-state-metrics", type="hard", resource="memory"})
           /
-        sum(node_memory_MemTotal_bytes{job="node-exporter"})
+        sum(kube_node_status_allocatable_memory_bytes{job="node-exporter"})
           > 1.5
       for: 5m
       labels:
@@ -657,12 +671,11 @@ spec:
     - alert: CPUThrottlingHigh
       annotations:
         message: '{{ printf "%0.0f" $value }}% throttling of CPU in namespace {{ $labels.namespace
-          }} for container {{ $labels.container_name }} in pod {{ $labels.pod_name
-          }}.'
+          }} for container {{ $labels.container }} in pod {{ $labels.pod }}.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh
-      expr: "100 * sum(increase(container_cpu_cfs_throttled_periods_total{container_name!=\"\",
-        }[5m])) by (container_name, pod_name, namespace)\n  /\nsum(increase(container_cpu_cfs_periods_total{}[5m]))
-        by (container_name, pod_name, namespace)\n  > 25 \n"
+      expr: "100 * sum(increase(container_cpu_cfs_throttled_periods_total{container!=\"\",
+        }[5m])) by (container, pod, namespace)\n  /\nsum(increase(container_cpu_cfs_periods_total{}[5m]))
+        by (container, pod, namespace)\n  > 25 \n"
       for: 15m
       labels:
         severity: warning
@@ -769,7 +782,7 @@ spec:
           for {{ $labels.verb }} {{ $labels.resource }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh
       expr: |
-        cluster_quantile:apiserver_request_latencies:histogram_quantile{job="apiserver",quantile="0.99",subresource!="log",verb!~"^(?:LIST|WATCH|WATCHLIST|PROXY|CONNECT)$"} > 1
+        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99",subresource!="log",verb!~"^(?:LIST|WATCH|WATCHLIST|PROXY|CONNECT)$"} > 1
       for: 10m
       labels:
         severity: warning
@@ -779,7 +792,7 @@ spec:
           for {{ $labels.verb }} {{ $labels.resource }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh
       expr: |
-        cluster_quantile:apiserver_request_latencies:histogram_quantile{job="apiserver",quantile="0.99",subresource!="log",verb!~"^(?:LIST|WATCH|WATCHLIST|PROXY|CONNECT)$"} > 4
+        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99",subresource!="log",verb!~"^(?:LIST|WATCH|WATCHLIST|PROXY|CONNECT)$"} > 4
       for: 10m
       labels:
         severity: critical
@@ -788,9 +801,9 @@ spec:
         message: API server is returning errors for {{ $value }}% of requests.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
-        sum(rate(apiserver_request_count{job="apiserver",code=~"^(?:5..)$"}[5m]))
+        sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m]))
           /
-        sum(rate(apiserver_request_count{job="apiserver"}[5m])) * 100 > 3
+        sum(rate(apiserver_request_total{job="apiserver"}[5m])) * 100 > 3
       for: 10m
       labels:
         severity: critical
@@ -799,9 +812,9 @@ spec:
         message: API server is returning errors for {{ $value }}% of requests.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
-        sum(rate(apiserver_request_count{job="apiserver",code=~"^(?:5..)$"}[5m]))
+        sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m]))
           /
-        sum(rate(apiserver_request_count{job="apiserver"}[5m])) * 100 > 1
+        sum(rate(apiserver_request_total{job="apiserver"}[5m])) * 100 > 1
       for: 10m
       labels:
         severity: warning
@@ -811,9 +824,9 @@ spec:
           {{ $labels.verb }} {{ $labels.resource }} {{ $labels.subresource }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
-        sum(rate(apiserver_request_count{job="apiserver",code=~"^(?:5..)$"}[5m])) by (resource,subresource,verb)
+        sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m])) by (resource,subresource,verb)
           /
-        sum(rate(apiserver_request_count{job="apiserver"}[5m])) by (resource,subresource,verb) * 100 > 10
+        sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) * 100 > 10
       for: 10m
       labels:
         severity: critical
@@ -823,9 +836,9 @@ spec:
           {{ $labels.verb }} {{ $labels.resource }} {{ $labels.subresource }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
-        sum(rate(apiserver_request_count{job="apiserver",code=~"^(?:5..)$"}[5m])) by (resource,subresource,verb)
+        sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m])) by (resource,subresource,verb)
           /
-        sum(rate(apiserver_request_count{job="apiserver"}[5m])) by (resource,subresource,verb) * 100 > 5
+        sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) * 100 > 5
       for: 10m
       labels:
         severity: warning
