@@ -5,7 +5,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
 {
   _config+:: {
     versions+:: {
-      thanos: 'v0.3.2',
+      thanos: 'v0.5.0',
     },
     imageRepos+:: {
       thanos: 'improbable/thanos',
@@ -20,53 +20,13 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
   prometheus+:: {
     prometheus+: {
       spec+: {
-        podMetadata+: {
-          labels+: { 'thanos-peers': 'true' },
-        },
         thanos+: {
-          peers: 'thanos-peers.' + $._config.namespace + '.svc:10900',
           version: $._config.versions.thanos,
           baseImage: $._config.imageRepos.thanos,
           objectStorageConfig: $._config.thanos.objectStorageConfig,
         },
       },
     },
-    thanosPeerService:
-      service.new('thanos-peers', { 'thanos-peers': 'true' }, [
-        servicePort.newNamed('cluster', 10900, 10900),
-        servicePort.newNamed('http', 10902, 10902),
-      ]) +
-      service.mixin.metadata.withNamespace($._config.namespace) +
-      service.mixin.metadata.withLabels({ 'thanos-peers': 'true' }) +
-      service.mixin.spec.withType('ClusterIP') +
-      service.mixin.spec.withClusterIp('None'),
-
-    serviceMonitorThanosPeer:
-      {
-        apiVersion: 'monitoring.coreos.com/v1',
-        kind: 'ServiceMonitor',
-        metadata: {
-          name: 'thanos-peers',
-          namespace: $._config.namespace,
-          labels: {
-            'k8s-app': 'thanos-peers',
-          },
-        },
-        spec: {
-          jobLabel: 'k8s-app',
-          endpoints: [
-            {
-              port: 'http',
-              interval: '30s',
-            },
-          ],
-          selector: {
-            matchLabels: {
-              'thanos-peers': 'true',
-            },
-          },
-        },
-      },
     thanosQueryDeployment:
       local deployment = k.apps.v1.deployment;
       local container = k.apps.v1.deployment.mixin.spec.template.spec.containersType;
@@ -77,26 +37,31 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         container.withPorts([
           containerPort.newNamed(10902, 'http'),
           containerPort.newNamed(10901, 'grpc'),
-          containerPort.newNamed(10900, 'cluster'),
         ]) +
         container.withArgs([
           'query',
           '--log.level=debug',
           '--query.replica-label=prometheus_replica',
           '--query.auto-downsampling',
-          '--cluster.peers=thanos-peers.' + $._config.namespace + '.svc:10900',
+          '--store=dnssrv+thanos-sidecar.' + $._config.namespace + '.svc',
         ]);
-      local podLabels = { app: 'thanos-query', 'thanos-peers': 'true' };
+      local podLabels = { app: 'thanos-query' };
       deployment.new('thanos-query', 1, thanosQueryContainer, podLabels) +
       deployment.mixin.metadata.withNamespace($._config.namespace) +
       deployment.mixin.metadata.withLabels(podLabels) +
       deployment.mixin.spec.selector.withMatchLabels(podLabels) +
       deployment.mixin.spec.template.spec.withServiceAccountName('prometheus-' + $._config.prometheus.name),
     thanosQueryService:
-      local thanosQueryPort = servicePort.newNamed('http-query', 9090, 'http');
+      local thanosQueryPort = servicePort.newNamed('http', 9090, 'http');
       service.new('thanos-query', { app: 'thanos-query' }, thanosQueryPort) +
       service.mixin.metadata.withNamespace($._config.namespace) +
       service.mixin.metadata.withLabels({ app: 'thanos-query' }),
+    thanosSidecarService:
+      local thanosSidecarPort = servicePort.newNamed('grpc', 10901, 'grpc');
+      service.new('thanos-sidecar', { app: 'thanos-sidecar' }, thanosSidecarPort) +
+      service.mixin.metadata.withNamespace($._config.namespace) +
+      service.mixin.metadata.withLabels({ app: 'thanos-sidecar' }) +
+      service.mixin.spec.withSelector({ prometheus: 'k8s' }), 
 
     thanosStoreStatefulset:
       local statefulSet = k.apps.v1.statefulSet;
@@ -105,7 +70,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       local containerEnv = container.envType;
       local containerVolumeMount = container.volumeMountsType;
 
-      local labels = { app: 'thanos', 'thanos-peers': 'true' };
+      local labels = { app: 'thanos' };
 
       local c =
         container.new('thanos-store', $._config.imageRepos.thanos + ':' + $._config.versions.thanos) +
@@ -113,7 +78,6 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
           'store',
           '--log.level=debug',
           '--data-dir=/var/thanos/store',
-          '--cluster.peers=thanos-peers.' + $._config.namespace + '.svc:10900',
           '--objstore.config=$(OBJSTORE_CONFIG)',
         ]) +
         container.withEnv([
@@ -124,7 +88,6 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
           ),
         ]) +
         container.withPorts([
-          { name: 'cluster', containerPort: 10900 },
           { name: 'grpc', containerPort: 10901 },
           { name: 'http', containerPort: 10902 },
         ]) +
