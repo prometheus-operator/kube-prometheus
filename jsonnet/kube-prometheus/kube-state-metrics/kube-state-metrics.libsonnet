@@ -67,6 +67,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                                'daemonsets',
                                'deployments',
                                'replicasets',
+                               'ingresses',
                              ]) +
                              rulesType.withVerbs(['list', 'watch']);
 
@@ -115,8 +116,15 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                            'poddisruptionbudgets',
                          ]) +
                          rulesType.withVerbs(['list', 'watch']);
+                         
+      local certificateRule = rulesType.new() +
+                         rulesType.withApiGroups(['certificates.k8s.io']) +
+                         rulesType.withResources([
+                           'certificatesigningrequests',
+                         ]) +
+                         rulesType.withVerbs(['list', 'watch']);
 
-      local rules = [coreRule, extensionsRule, appsRule, batchRule, autoscalingRule, authenticationRole, authorizationRole, policyRule];
+      local rules = [coreRule, extensionsRule, appsRule, batchRule, autoscalingRule, authenticationRole, authorizationRole, policyRule, certificateRule];
 
       clusterRole.new() +
       clusterRole.mixin.metadata.withName('kube-state-metrics') +
