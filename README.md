@@ -261,7 +261,7 @@ These are the available fields with their respective default values:
         kubeStateMetrics: "v1.5.0",
         kubeRbacProxy: "v0.4.1",
         addonResizer: "1.8.4",
-        prometheusOperator: "v0.29.0",
+        prometheusOperator: "v0.31.0",
         prometheus: "v2.7.2",
     },
 
