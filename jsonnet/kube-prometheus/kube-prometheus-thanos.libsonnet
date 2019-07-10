@@ -43,7 +43,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
           '--log.level=debug',
           '--query.replica-label=prometheus_replica',
           '--query.auto-downsampling',
-          '--store=dnssrv+thanos-sidecar.' + $._config.namespace + '.svc',
+          '--store=dnssrv+thanos-store.' + $._config.namespace + '.svc:10901',
         ]);
       local podLabels = { app: 'thanos-query' };
       deployment.new('thanos-query', 1, thanosQueryContainer, podLabels) +
@@ -52,17 +52,10 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       deployment.mixin.spec.selector.withMatchLabels(podLabels) +
       deployment.mixin.spec.template.spec.withServiceAccountName('prometheus-' + $._config.prometheus.name),
     thanosQueryService:
-      local thanosQueryPort = servicePort.newNamed('http', 9090, 'http');
+      local thanosQueryPort = servicePort.newNamed('http', 10902, 'http');
       service.new('thanos-query', { app: 'thanos-query' }, thanosQueryPort) +
       service.mixin.metadata.withNamespace($._config.namespace) +
       service.mixin.metadata.withLabels({ app: 'thanos-query' }),
-    thanosSidecarService:
-      local thanosSidecarPort = servicePort.newNamed('grpc', 10901, 'grpc');
-      service.new('thanos-sidecar', { app: 'thanos-sidecar' }, thanosSidecarPort) +
-      service.mixin.metadata.withNamespace($._config.namespace) +
-      service.mixin.metadata.withLabels({ app: 'thanos-sidecar' }) +
-      service.mixin.spec.withSelector({ prometheus: 'k8s' }), 
-
     thanosStoreStatefulset:
       local statefulSet = k.apps.v1.statefulSet;
       local volume = statefulSet.mixin.spec.template.spec.volumesType;
@@ -70,7 +63,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       local containerEnv = container.envType;
       local containerVolumeMount = container.volumeMountsType;
 
-      local labels = { app: 'thanos' };
+      local labels = { app: 'thanos-store' };
 
       local c =
         container.new('thanos-store', $._config.imageRepos.thanos + ':' + $._config.versions.thanos) +
@@ -102,7 +95,12 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       statefulSet.mixin.spec.template.spec.withVolumes([
         volume.fromEmptyDir('data'),
       ]),
-
+    thanosStoreService:
+      local thanosSidecarPort = servicePort.newNamed('grpc', 10901, 'grpc');
+      service.new('thanos-store', { app: 'thanos-store' }, thanosSidecarPort) +
+      service.mixin.metadata.withNamespace($._config.namespace) +
+      service.mixin.metadata.withLabels({ app: 'thanos-store' }) +
+      service.mixin.spec.withSelector({ app: 'thanos-store' }), 
     serviceMonitorThanosCompactor:
       {
         apiVersion: 'monitoring.coreos.com/v1',
