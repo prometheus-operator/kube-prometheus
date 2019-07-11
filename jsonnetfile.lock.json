@@ -8,7 +8,7 @@
                     "subdir": "jsonnet/kube-prometheus"
                 }
             },
-            "version": "daf2e76bc6615ca264d424203ca1584da7cad36e"
+            "version": "3c02bd5ed7f6cb0094ba2956b32d445d2900b908"
         },
         {
             "name": "ksonnet",
@@ -48,7 +48,7 @@
                     "subdir": "grafana-builder"
                 }
             },
-            "version": "6daf3fa9b87e45009c377247f64005f6949c886f"
+            "version": "3daf42722ee2008cae15267ee7380a58988d60cd"
         },
         {
             "name": "grafana",
@@ -79,6 +79,16 @@
                 }
             },
             "version": "eb7dd97135a5c60d9d9259886100823114e45815"
+        },
+        {
+            "name": "prometheus",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/prometheus/prometheus",
+                    "subdir": "documentation/prometheus-mixin"
+                }
+            },
+            "version": "28e56d974a8b5bfed7e3d1d621b203d62bac708c"
         }
     ]
 }
