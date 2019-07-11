@@ -10,6 +10,7 @@ local configMapList = k3.core.v1.configMapList;
 (import 'prometheus/prometheus.libsonnet') +
 (import 'prometheus-adapter/prometheus-adapter.libsonnet') +
 (import 'kubernetes-mixin/mixin.libsonnet') +
+(import 'prometheus/mixin.libsonnet') +
 (import 'alerts/alerts.libsonnet') +
 (import 'rules/rules.libsonnet') + {
   kubePrometheus+:: {
@@ -89,6 +90,7 @@ local configMapList = k3.core.v1.configMapList;
 
     alertmanagerSelector: 'job="alertmanager-main",namespace="' + $._config.namespace + '"',
     prometheusSelector: 'job="prometheus-' + $._config.prometheus.name + '",namespace="' + $._config.namespace + '"',
+    prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
     prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + $._config.namespace + '"',
 
     jobs: {
@@ -111,5 +113,6 @@ local configMapList = k3.core.v1.configMapList;
     grafana+:: {
       dashboards: $.grafanaDashboards,
     },
+
   },
 }

@@ -49,6 +49,16 @@
                 }
             },
             "version": "master"
+        },
+        {
+            "name": "prometheus",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/prometheus/prometheus",
+                    "subdir": "documentation/prometheus-mixin"
+                }
+            },
+            "version": "master"
         }
     ]
 }

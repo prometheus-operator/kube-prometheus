@@ -16,6 +16,11 @@ generate-in-docker:
 	@echo ">> Compiling assets and generating Kubernetes manifests"
 	$(CONTAINER_CMD) make $(MFLAGS) generate
 
+.PHONY: clean
+clean:
+	# Remove all files and directories ignored by git.
+	git clean -Xfd .
+
 generate: manifests **.md
 
 **.md: $(EMBEDMD_BINARY) $(shell find examples) build.sh example.jsonnet
