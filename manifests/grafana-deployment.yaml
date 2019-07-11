@@ -81,6 +81,12 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/pods
           name: grafana-dashboard-pods
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/prometheus-remote-write
+          name: grafana-dashboard-prometheus-remote-write
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/prometheus
+          name: grafana-dashboard-prometheus
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/proxy
           name: grafana-dashboard-proxy
           readOnly: false
@@ -144,6 +150,12 @@ spec:
       - configMap:
           name: grafana-dashboard-pods
         name: grafana-dashboard-pods
+      - configMap:
+          name: grafana-dashboard-prometheus-remote-write
+        name: grafana-dashboard-prometheus-remote-write
+      - configMap:
+          name: grafana-dashboard-prometheus
+        name: grafana-dashboard-prometheus
       - configMap:
           name: grafana-dashboard-proxy
         name: grafana-dashboard-proxy
