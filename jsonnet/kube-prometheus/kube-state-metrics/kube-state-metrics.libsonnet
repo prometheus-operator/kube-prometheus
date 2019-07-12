@@ -43,88 +43,89 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local clusterRole = k.rbac.v1.clusterRole;
       local rulesType = clusterRole.rulesType;
 
-      local coreRule = rulesType.new() +
-                       rulesType.withApiGroups(['']) +
-                       rulesType.withResources([
-                         'configmaps',
-                         'secrets',
-                         'nodes',
-                         'pods',
-                         'services',
-                         'resourcequotas',
-                         'replicationcontrollers',
-                         'limitranges',
-                         'persistentvolumeclaims',
-                         'persistentvolumes',
-                         'namespaces',
-                         'endpoints',
-                       ]) +
-                       rulesType.withVerbs(['list', 'watch']);
+      local rules = [
+        rulesType.new() +
+        rulesType.withApiGroups(['']) +
+        rulesType.withResources([
+          'configmaps',
+          'secrets',
+          'nodes',
+          'pods',
+          'services',
+          'resourcequotas',
+          'replicationcontrollers',
+          'limitranges',
+          'persistentvolumeclaims',
+          'persistentvolumes',
+          'namespaces',
+          'endpoints',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
 
-      local extensionsRule = rulesType.new() +
-                             rulesType.withApiGroups(['extensions']) +
-                             rulesType.withResources([
-                               'daemonsets',
-                               'deployments',
-                               'replicasets',
-                               'ingresses',
-                             ]) +
-                             rulesType.withVerbs(['list', 'watch']);
+        rulesType.new() +
+        rulesType.withApiGroups(['extensions']) +
+        rulesType.withResources([
+          'daemonsets',
+          'deployments',
+          'replicasets',
+          'ingresses',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
 
-      local appsRule = rulesType.new() +
-                       rulesType.withApiGroups(['apps']) +
-                       rulesType.withResources([
-                         'statefulsets',
-                         'daemonsets',
-                         'deployments',
-                         'replicasets',
-                       ]) +
-                       rulesType.withVerbs(['list', 'watch']);
+        rulesType.new() +
+        rulesType.withApiGroups(['apps']) +
+        rulesType.withResources([
+          'statefulsets',
+          'daemonsets',
+          'deployments',
+          'replicasets',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
 
-      local batchRule = rulesType.new() +
-                        rulesType.withApiGroups(['batch']) +
-                        rulesType.withResources([
-                          'cronjobs',
-                          'jobs',
-                        ]) +
-                        rulesType.withVerbs(['list', 'watch']);
+        rulesType.new() +
+        rulesType.withApiGroups(['batch']) +
+        rulesType.withResources([
+          'cronjobs',
+          'jobs',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
 
-      local autoscalingRule = rulesType.new() +
-                              rulesType.withApiGroups(['autoscaling']) +
-                              rulesType.withResources([
-                                'horizontalpodautoscalers',
-                              ]) +
-                              rulesType.withVerbs(['list', 'watch']);
+        rulesType.new() +
+        rulesType.withApiGroups(['autoscaling']) +
+        rulesType.withResources([
+          'horizontalpodautoscalers',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
 
-      local authenticationRole = rulesType.new() +
-                                 rulesType.withApiGroups(['authentication.k8s.io']) +
-                                 rulesType.withResources([
-                                   'tokenreviews',
-                                 ]) +
-                                 rulesType.withVerbs(['create']);
+        rulesType.new() +
+        rulesType.withApiGroups(['authentication.k8s.io']) +
+        rulesType.withResources([
+          'tokenreviews',
+        ]) +
+        rulesType.withVerbs(['create']),
 
-      local authorizationRole = rulesType.new() +
-                                rulesType.withApiGroups(['authorization.k8s.io']) +
-                                rulesType.withResources([
-                                  'subjectaccessreviews',
-                                ]) +
-                                rulesType.withVerbs(['create']);
+        rulesType.new() +
+        rulesType.withApiGroups(['authorization.k8s.io']) +
+        rulesType.withResources([
+          'subjectaccessreviews',
+        ]) +
+        rulesType.withVerbs(['create']),
 
-      local policyRule = rulesType.new() +
-                         rulesType.withApiGroups(['policy']) +
-                         rulesType.withResources([
-                           'poddisruptionbudgets',
-                         ]) +
-                         rulesType.withVerbs(['list', 'watch']);
-                         
-      local certificateRule = rulesType.new() +
-                         rulesType.withApiGroups(['certificates.k8s.io']) +
-                         rulesType.withResources([
-                           'certificatesigningrequests',
-                         ]) +
-                         rulesType.withVerbs(['list', 'watch']);
+        rulesType.new() +
+        rulesType.withApiGroups(['policy']) +
+        rulesType.withResources([
+          'poddisruptionbudgets',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
 
-      local rules = [coreRule, extensionsRule, appsRule, batchRule, autoscalingRule, authenticationRole, authorizationRole, policyRule, certificateRule];
+        rulesType.new() +
+        rulesType.withApiGroups(['certificates.k8s.io']) +
+        rulesType.withResources([
+          'certificatesigningrequests',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
+
+      ];
 
       clusterRole.new() +
       clusterRole.mixin.metadata.withName('kube-state-metrics') +
