@@ -16,7 +16,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     },
 
     versions+:: {
-      kubeStateMetrics: 'v1.6.0',
+      kubeStateMetrics: 'v1.7.0-rc.1',
       kubeRbacProxy: 'v0.4.1',
       addonResizer: '1.8.4',
     },
@@ -125,6 +125,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         ]) +
         rulesType.withVerbs(['list', 'watch']),
 
+        rulesType.new() +
+        rulesType.withApiGroups(['storage.k8s.io']) +
+        rulesType.withResources([
+          'storageclass',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
       ];
 
       clusterRole.new() +
