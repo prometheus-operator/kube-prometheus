@@ -172,7 +172,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           serviceMonitorSelector: {},
           podMonitorSelector: {},
           serviceMonitorNamespaceSelector: {},
-          nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
+          nodeSelector: { 'kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
             role: 'alert-rules',
             prometheus: $._config.prometheus.name,
