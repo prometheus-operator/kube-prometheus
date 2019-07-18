@@ -8,7 +8,7 @@ metadata:
 spec:
   baseImage: quay.io/prometheus/alertmanager
   nodeSelector:
-    beta.kubernetes.io/os: linux
+    kubernetes.io/os: linux
   replicas: 3
   securityContext:
     fsGroup: 2000
