@@ -94,7 +94,7 @@ spec:
             cpu: 10m
             memory: 30Mi
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
