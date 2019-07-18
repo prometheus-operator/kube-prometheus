@@ -170,6 +170,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           baseImage: $._config.imageRepos.prometheus,
           serviceAccountName: 'prometheus-' + $._config.prometheus.name,
           serviceMonitorSelector: {},
+          podMonitorSelector: {},
           serviceMonitorNamespaceSelector: {},
           nodeSelector: { 'beta.kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
