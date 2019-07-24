@@ -40,6 +40,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         ],
       },
       replicas: 3,
+      resources: {
+        limits: { cpu: '100m', memory: '100Mi' },
+        requests: { cpu: '100m', memory: '100Mi' },
+      },
     },
   },
 
@@ -109,6 +113,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           },
         },
         spec: {
+          resources: $._config.alertmanager.resources,
           replicas: $._config.alertmanager.replicas,
           version: $._config.versions.alertmanager,
           baseImage: $._config.imageRepos.alertmanager,
