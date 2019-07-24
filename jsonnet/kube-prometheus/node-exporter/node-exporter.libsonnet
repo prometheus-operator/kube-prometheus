@@ -170,6 +170,15 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
               scheme: 'https',
               interval: '30s',
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              relabelings: [
+                {
+                  action: 'replace',
+                  regex: '(.*)',
+                  replacment: '$1',
+                  sourceLabels: ['__meta_kubernetes_pod_node_name'],
+                  targetLabel: 'instance',
+                },
+              ],
               tlsConfig: {
                 insecureSkipVerify: true,
               },
