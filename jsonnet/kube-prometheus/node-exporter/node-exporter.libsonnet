@@ -48,11 +48,39 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                                 ]) +
                                 policyRule.withVerbs(['create']);
 
-      local rules = [authenticationRole, authorizationRole];
+      local podSecurityRole = policyRule.new() +
+                              policyRule.withApiGroups(['extensions']) +      
+                              policyRule.withResourceNames(['psp-node-exporter']) +
+                              policyRule.withResources([
+                                'podsecuritypolicies',
+                              ]) +
+                              policyRule.withVerbs(['use']);
+
+      local rules = [authenticationRole, authorizationRole, podSecurityRole];
 
       clusterRole.new() +
       clusterRole.mixin.metadata.withName('node-exporter') +
       clusterRole.withRules(rules),
+
+    podSecurityPolicy: 
+      local policy = k.policy.v1beta1.podSecurityPolicy;
+
+      policy.new() +
+      policy.mixin.metadata.withName("psp-node-exporter") +
+      policy.mixin.metadata.withLabels({ app: 'node-exporter' }) +
+      policy.mixin.spec.withPrivileged(false) +
+      policy.mixin.spec.withVolumes(['configMap', 'emptyDir', 'projected' ,'secret','downwardAPI','persistentVolumeClaim', 'hostPath']) +
+      policy.mixin.spec.withHostNetwork(true) + 
+      policy.mixin.spec.withHostIpc(false) +
+      policy.mixin.spec.withHostPid(true) +
+      policy.mixin.spec.withHostPorts({min: 0, max: 65535}) +
+      policy.mixin.spec.runAsUser.withRule('RunAsAny') +
+      policy.mixin.spec.seLinux.withRule('RunAsAny') +
+      policy.mixin.spec.supplementalGroups.withRule('RunAsAny') +
+      policy.mixin.spec.supplementalGroups.withRanges({min: 0, max: 65535}) +
+      policy.mixin.spec.fsGroup.withRule('RunAsAny') +
+      policy.mixin.spec.fsGroup.withRanges({min: 0, max: 65535}) +
+      policy.mixin.spec.withReadOnlyRootFilesystem(false),  
 
     daemonset:
       local daemonset = k.apps.v1.daemonSet;
