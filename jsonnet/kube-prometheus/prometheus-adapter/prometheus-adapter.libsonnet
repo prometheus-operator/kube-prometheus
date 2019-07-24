@@ -103,6 +103,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           '--secure-port=6443',
         ]) +
         container.withPorts([{ containerPort: 6443 }]) +
+        container.mixin.resources.withRequests({ cpu: '20m', memory: '100Mi' }) +
+        container.mixin.resources.withLimits({ cpu: '20m', memory: '100Mi' }) +
         container.withVolumeMounts([
           containerVolumeMount.new('tmpfs', '/tmp'),
           containerVolumeMount.new('volume-serving-cert', '/var/run/serving-cert'),
