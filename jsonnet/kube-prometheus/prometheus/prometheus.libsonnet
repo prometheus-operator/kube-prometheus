@@ -152,7 +152,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
       local resources =
         resourceRequirements.new() +
-        resourceRequirements.withRequests({ memory: '400Mi' });
+        resourceRequirements.withRequests({ cpu: '200m', memory: '400Mi' }) +
+        resourceRequirements.withLimits({ cpu: '500m', memory: '1024Mi' });
 
       {
         apiVersion: 'monitoring.coreos.com/v1',
