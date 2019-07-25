@@ -39,6 +39,7 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
     * [Pod Anti-Affinity](#pod-anti-affinity)
     * [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
     * [Exposing Prometheus/Alermanager/Grafana via Ingress](#exposing-prometheusalermanagergrafana-via-ingress)
+    * [Prometheus Push Gateway](#prometheus-push-gateway)
 * [Minikube Example](#minikube-example)
 * [Troubleshooting](#troubleshooting)
     * [Error retrieving kubelet metrics](#error-retrieving-kubelet-metrics)
@@ -566,6 +567,10 @@ See [developing Prometheus rules and Grafana dashboards](docs/developing-prometh
 ### Exposing Prometheus/Alermanager/Grafana via Ingress
 
 See [exposing Prometheus/Alertmanager/Grafana](docs/exposing-prometheus-alertmanager-grafana-ingress.md) guide.
+
+### Prometheus Push Gateway
+
+See [Prometheus Push Gateway](docs/prometheus-pushgateway.md) guide.
 
 ## Minikube Example
 
