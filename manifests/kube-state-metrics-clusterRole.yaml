@@ -85,7 +85,7 @@ rules:
 - apiGroups:
   - storage.k8s.io
   resources:
-  - storageclass
+  - storageclasses
   verbs:
   - list
   - watch
