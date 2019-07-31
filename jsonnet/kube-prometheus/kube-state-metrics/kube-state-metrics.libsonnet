@@ -128,7 +128,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         rulesType.new() +
         rulesType.withApiGroups(['storage.k8s.io']) +
         rulesType.withResources([
-          'storageclass',
+          'storageclasses',
         ]) +
         rulesType.withVerbs(['list', 'watch']),
       ];
