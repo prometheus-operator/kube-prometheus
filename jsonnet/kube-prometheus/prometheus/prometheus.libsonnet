@@ -285,6 +285,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               metricRelabelings: [
+                // Drop container_* metrics with no image.
+                {
+                  source_labels: ['__name__', 'image'],
+                  regex: 'container_([a-z_]+);',
+                  action: 'drop',
+                },
                 // Drop a bunch of metrics which are disabled but still sent, see
                 // https://github.com/google/cadvisor/issues/1925.
                 {
