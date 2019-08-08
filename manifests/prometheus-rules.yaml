@@ -23,13 +23,6 @@ spec:
       record: namespace:container_memory_usage_bytes:sum
     - expr: |
         sum by (namespace, label_name) (
-            sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container!="POD"}[5m])) by (namespace, pod)
-          * on (namespace, pod)
-            group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
-        )
-      record: namespace:container_cpu_usage_seconds_total:sum_rate
-    - expr: |
-        sum by (namespace, label_name) (
             sum(container_memory_usage_bytes{job="kubelet",image!="", container!="POD"}) by (pod, namespace)
           * on (namespace, pod)
             group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
