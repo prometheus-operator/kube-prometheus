@@ -3,13 +3,13 @@
 {
   _config+:: {
     resources+:: {
-      'addon-resizer': {
+      'addon-resizer'+: {
         limits: {},
       },
-      'kube-rbac-proxy': {
+      'kube-rbac-proxy'+: {
         limits: {},
       },
-      'node-exporter': {
+      'node-exporter'+: {
         limits: {},
       },
     },
