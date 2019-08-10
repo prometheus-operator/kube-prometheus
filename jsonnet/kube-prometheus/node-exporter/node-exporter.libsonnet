@@ -97,8 +97,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           '--collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$',
         ]) +
         container.withVolumeMounts([procVolumeMount, sysVolumeMount, rootVolumeMount]) +
-        container.mixin.resources.withRequests({ cpu: '102m', memory: '180Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '250m', memory: '180Mi' });
+        container.mixin.resources.withRequests($._config.resources['node-exporter'].requests) +
+        container.mixin.resources.withLimits($._config.resources['node-exporter'].requests);
 
       local ip = containerEnv.fromFieldPath('IP', 'status.podIP');
       local proxy =

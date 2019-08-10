@@ -104,6 +104,20 @@ local configMapList = k3.core.v1.configMapList;
       CoreDNS: $._config.coreDNSSelector,
     },
 
+    resources+:: {
+      'addon-resizer': {
+        requests: { cpu: '10m', memory: '30Mi' },
+        limits: { cpu: '50m', memory: '30Mi' },
+      },
+      'kube-rbac-proxy': {
+        requests: { cpu: '10m', memory: '20Mi' },
+        limits: { cpu: '20m', memory: '40Mi' },
+      },
+      'node-exporter': {
+        requests: { cpu: '102m', memory: '180Mi' },
+        limits: { cpu: '250m', memory: '180Mi' },
+      },
+    },
     prometheus+:: {
       rules: $.prometheusRules + $.prometheusAlerts,
     },
