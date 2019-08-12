@@ -98,7 +98,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         ]) +
         container.withVolumeMounts([procVolumeMount, sysVolumeMount, rootVolumeMount]) +
         container.mixin.resources.withRequests($._config.resources['node-exporter'].requests) +
-        container.mixin.resources.withLimits($._config.resources['node-exporter'].requests);
+        container.mixin.resources.withLimits($._config.resources['node-exporter'].limits);
 
       local ip = containerEnv.fromFieldPath('IP', 'status.podIP');
       local proxy =
