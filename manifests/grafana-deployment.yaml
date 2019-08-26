@@ -72,6 +72,12 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/kubelet
           name: grafana-dashboard-kubelet
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/node-cluster-rsrc-use
+          name: grafana-dashboard-node-cluster-rsrc-use
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/node-rsrc-use
+          name: grafana-dashboard-node-rsrc-use
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/nodes
           name: grafana-dashboard-nodes
           readOnly: false
@@ -141,6 +147,12 @@ spec:
       - configMap:
           name: grafana-dashboard-kubelet
         name: grafana-dashboard-kubelet
+      - configMap:
+          name: grafana-dashboard-node-cluster-rsrc-use
+        name: grafana-dashboard-node-cluster-rsrc-use
+      - configMap:
+          name: grafana-dashboard-node-rsrc-use
+        name: grafana-dashboard-node-rsrc-use
       - configMap:
           name: grafana-dashboard-nodes
         name: grafana-dashboard-nodes
