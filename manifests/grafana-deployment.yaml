@@ -48,12 +48,6 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/controller-manager
           name: grafana-dashboard-controller-manager
           readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/k8s-cluster-rsrc-use
-          name: grafana-dashboard-k8s-cluster-rsrc-use
-          readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/k8s-node-rsrc-use
-          name: grafana-dashboard-k8s-node-rsrc-use
-          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-cluster
           name: grafana-dashboard-k8s-resources-cluster
           readOnly: false
@@ -123,12 +117,6 @@ spec:
       - configMap:
           name: grafana-dashboard-controller-manager
         name: grafana-dashboard-controller-manager
-      - configMap:
-          name: grafana-dashboard-k8s-cluster-rsrc-use
-        name: grafana-dashboard-k8s-cluster-rsrc-use
-      - configMap:
-          name: grafana-dashboard-k8s-node-rsrc-use
-        name: grafana-dashboard-k8s-node-rsrc-use
       - configMap:
           name: grafana-dashboard-k8s-resources-cluster
         name: grafana-dashboard-k8s-resources-cluster
