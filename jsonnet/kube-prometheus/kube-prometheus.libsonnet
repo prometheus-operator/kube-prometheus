@@ -86,7 +86,7 @@ local configMapList = k.core.v1.configMapList;
     coreDNSSelector: 'job="kube-dns"',
     podLabel: 'pod',
 
-    alertmanagerSelector: 'job="alertmanager-main",namespace="' + $._config.namespace + '"',
+    alertmanagerSelector: 'job="alertmanager-' + $._config.alertmanager.name + '",namespace="' + $._config.namespace + '"',
     prometheusSelector: 'job="prometheus-' + $._config.prometheus.name + '",namespace="' + $._config.namespace + '"',
     prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + $._config.namespace + '"',
 
