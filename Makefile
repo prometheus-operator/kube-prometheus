@@ -3,6 +3,7 @@ JSONNET_FMT := jsonnet fmt -n 2 --max-blank-lines 2 --string-style s --comment-s
 JB_BINARY:=$(GOPATH)/bin/jb
 EMBEDMD_BINARY:=$(GOPATH)/bin/embedmd
 CONTAINER_CMD:=docker run --rm \
+		-e http_proxy -e https_proxy -e no_proxy \
 		-u="$(shell id -u):$(shell id -g)" \
 		-v "$(shell go env GOCACHE):/.cache/go-build" \
 		-v "$(PWD):/go/src/github.com/coreos/kube-prometheus:Z" \
