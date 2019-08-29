@@ -35,7 +35,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
             nodeQuery: sum(node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>} - node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}) by (<<.GroupBy>>)
             resources:
               overrides:
-                node:
+                instance:
                   resource: node
                 namespace:
                   resource: namespace
