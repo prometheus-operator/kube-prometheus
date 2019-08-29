@@ -19,7 +19,7 @@ data:
         nodeQuery: sum(node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>} - node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}) by (<<.GroupBy>>)
         resources:
           overrides:
-            node:
+            instance:
               resource: node
             namespace:
               resource: namespace
