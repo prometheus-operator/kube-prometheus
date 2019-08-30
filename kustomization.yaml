@@ -36,6 +36,7 @@ resources:
 - ./manifests/node-exporter-clusterRole.yaml
 - ./manifests/node-exporter-clusterRoleBinding.yaml
 - ./manifests/node-exporter-daemonset.yaml
+- ./manifests/node-exporter-podSecurityPolicy.yaml
 - ./manifests/node-exporter-service.yaml
 - ./manifests/node-exporter-serviceAccount.yaml
 - ./manifests/node-exporter-serviceMonitor.yaml
