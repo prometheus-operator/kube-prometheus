@@ -5,10 +5,10 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
 {
   _config+:: {
     versions+:: {
-      thanos: 'v0.5.0',
+      thanos: 'v0.7.0',
     },
     imageRepos+:: {
-      thanos: 'improbable/thanos',
+      thanos: quay.io/thanos/thanos',
     },
     thanos+:: {
       objectStorageConfig: {
