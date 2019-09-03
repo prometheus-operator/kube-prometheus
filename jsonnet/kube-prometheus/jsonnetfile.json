@@ -38,7 +38,7 @@
                     "subdir": "jsonnet/prometheus-operator"
                 }
             },
-            "version": "release-0.31"
+            "version": "release-0.32"
         },
         {
             "name": "etcd-mixin",
@@ -56,6 +56,16 @@
                 "git": {
                     "remote": "https://github.com/prometheus/prometheus",
                     "subdir": "documentation/prometheus-mixin"
+                }
+            },
+            "version": "master"
+        },
+        {
+            "name": "node-mixin",
+            "source": {
+                "git": {
+                    "remote": "https://github.com/prometheus/node_exporter",
+                    "subdir": "docs/node-mixin"
                 }
             },
             "version": "master"

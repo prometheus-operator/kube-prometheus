@@ -5,6 +5,7 @@ local configMapList = k3.core.v1.configMapList;
 (import 'grafana/grafana.libsonnet') +
 (import 'kube-state-metrics/kube-state-metrics.libsonnet') +
 (import 'node-exporter/node-exporter.libsonnet') +
+(import 'node-mixin/mixin.libsonnet') +
 (import 'alertmanager/alertmanager.libsonnet') +
 (import 'prometheus-operator/prometheus-operator.libsonnet') +
 (import 'prometheus/prometheus.libsonnet') +
@@ -88,7 +89,7 @@ local configMapList = k3.core.v1.configMapList;
     coreDNSSelector: 'job="kube-dns"',
     podLabel: 'pod',
 
-    alertmanagerSelector: 'job="alertmanager-main",namespace="' + $._config.namespace + '"',
+    alertmanagerSelector: 'job="alertmanager-' + $._config.alertmanager.name + '",namespace="' + $._config.namespace + '"',
     prometheusSelector: 'job="prometheus-' + $._config.prometheus.name + '",namespace="' + $._config.namespace + '"',
     prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
     prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + $._config.namespace + '"',
@@ -106,6 +107,20 @@ local configMapList = k3.core.v1.configMapList;
       CoreDNS: $._config.coreDNSSelector,
     },
 
+    resources+:: {
+      'addon-resizer': {
+        requests: { cpu: '10m', memory: '30Mi' },
+        limits: { cpu: '50m', memory: '30Mi' },
+      },
+      'kube-rbac-proxy': {
+        requests: { cpu: '10m', memory: '20Mi' },
+        limits: { cpu: '20m', memory: '40Mi' },
+      },
+      'node-exporter': {
+        requests: { cpu: '102m', memory: '180Mi' },
+        limits: { cpu: '250m', memory: '180Mi' },
+      },
+    },
     prometheus+:: {
       rules: $.prometheusRules + $.prometheusAlerts,
     },

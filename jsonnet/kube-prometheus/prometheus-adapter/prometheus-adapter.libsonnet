@@ -32,10 +32,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
             containerLabel: container_name
           memory:
             containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,container_name!="POD",container_name!="",pod_name!=""}) by (<<.GroupBy>>)
-            nodeQuery: sum(node:node_memory_bytes_total:sum{<<.LabelMatchers>>} - node:node_memory_bytes_available:sum{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+            nodeQuery: sum(node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>} - node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}) by (<<.GroupBy>>)
             resources:
               overrides:
-                node:
+                instance:
                   resource: node
                 namespace:
                   resource: namespace

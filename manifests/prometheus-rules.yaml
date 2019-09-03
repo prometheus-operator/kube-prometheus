@@ -8,6 +8,67 @@ metadata:
   namespace: monitoring
 spec:
   groups:
+  - name: node-exporter.rules
+    rules:
+    - expr: |
+        count without (cpu) (
+          count without (mode) (
+            node_cpu_seconds_total{job="node-exporter"}
+          )
+        )
+      record: instance:node_num_cpu:sum
+    - expr: |
+        1 - avg without (cpu, mode) (
+          rate(node_cpu_seconds_total{job="node-exporter", mode="idle"}[1m])
+        )
+      record: instance:node_cpu_utilisation:rate1m
+    - expr: |
+        (
+          node_load1{job="node-exporter"}
+        /
+          instance:node_num_cpu:sum{job="node-exporter"}
+        )
+      record: instance:node_load1_per_cpu:ratio
+    - expr: |
+        1 - (
+          node_memory_MemAvailable_bytes{job="node-exporter"}
+        /
+          node_memory_MemTotal_bytes{job="node-exporter"}
+        )
+      record: instance:node_memory_utilisation:ratio
+    - expr: |
+        (
+          rate(node_vmstat_pgpgin{job="node-exporter"}[1m])
+        +
+          rate(node_vmstat_pgpgout{job="node-exporter"}[1m])
+        )
+      record: instance:node_memory_swap_io_pages:rate1m
+    - expr: |
+        rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m])
+      record: instance_device:node_disk_io_time_seconds:rate1m
+    - expr: |
+        rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m])
+      record: instance_device:node_disk_io_time_weighted_seconds:rate1m
+    - expr: |
+        sum without (device) (
+          rate(node_network_receive_bytes_total{job="node-exporter", device!="lo"}[1m])
+        )
+      record: instance:node_network_receive_bytes_excluding_lo:rate1m
+    - expr: |
+        sum without (device) (
+          rate(node_network_transmit_bytes_total{job="node-exporter", device!="lo"}[1m])
+        )
+      record: instance:node_network_transmit_bytes_excluding_lo:rate1m
+    - expr: |
+        sum without (device) (
+          rate(node_network_receive_drop_total{job="node-exporter", device!="lo"}[1m])
+        )
+      record: instance:node_network_receive_drop_excluding_lo:rate1m
+    - expr: |
+        sum without (device) (
+          rate(node_network_transmit_drop_total{job="node-exporter", device!="lo"}[1m])
+        )
+      record: instance:node_network_transmit_drop_excluding_lo:rate1m
   - name: k8s.rules
     rules:
     - expr: |
@@ -20,20 +81,6 @@ spec:
       record: namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
     - expr: |
         sum(container_memory_usage_bytes{job="kubelet", image!="", container!="POD"}) by (namespace)
-      record: namespace:container_memory_usage_bytes:sum
-    - expr: |
-        sum by (namespace, label_name) (
-            sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container!="POD"}[5m])) by (namespace, pod)
-          * on (namespace, pod)
-            group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
-        )
-      record: namespace:container_cpu_usage_seconds_total:sum_rate
-    - expr: |
-        sum by (namespace, label_name) (
-            sum(container_memory_usage_bytes{job="kubelet",image!="", container!="POD"}) by (pod, namespace)
-          * on (namespace, pod)
-            group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
-        )
       record: namespace:container_memory_usage_bytes:sum
     - expr: |
         sum by (namespace, label_name) (
@@ -161,176 +208,8 @@ spec:
         ))
       record: node:node_num_cpu:sum
     - expr: |
-        1 - avg(rate(node_cpu_seconds_total{job="node-exporter",mode="idle"}[1m]))
-      record: :node_cpu_utilisation:avg1m
-    - expr: |
-        1 - avg by (node) (
-          rate(node_cpu_seconds_total{job="node-exporter",mode="idle"}[1m])
-        * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:)
-      record: node:node_cpu_utilisation:avg1m
-    - expr: |
-        node:node_cpu_utilisation:avg1m
-          *
-        node:node_num_cpu:sum
-          /
-        scalar(sum(node:node_num_cpu:sum))
-      record: node:cluster_cpu_utilisation:ratio
-    - expr: |
-        sum(node_load1{job="node-exporter"})
-        /
-        sum(node:node_num_cpu:sum)
-      record: ':node_cpu_saturation_load1:'
-    - expr: |
-        sum by (node) (
-          node_load1{job="node-exporter"}
-        * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:
-        )
-        /
-        node:node_num_cpu:sum
-      record: 'node:node_cpu_saturation_load1:'
-    - expr: |
-        1 -
-        sum(node_memory_MemFree_bytes{job="node-exporter"} + node_memory_Cached_bytes{job="node-exporter"} + node_memory_Buffers_bytes{job="node-exporter"})
-        /
-        sum(node_memory_MemTotal_bytes{job="node-exporter"})
-      record: ':node_memory_utilisation:'
-    - expr: |
         sum(node_memory_MemFree_bytes{job="node-exporter"} + node_memory_Cached_bytes{job="node-exporter"} + node_memory_Buffers_bytes{job="node-exporter"})
       record: :node_memory_MemFreeCachedBuffers_bytes:sum
-    - expr: |
-        sum(node_memory_MemTotal_bytes{job="node-exporter"})
-      record: :node_memory_MemTotal_bytes:sum
-    - expr: |
-        sum by (node) (
-          (node_memory_MemFree_bytes{job="node-exporter"} + node_memory_Cached_bytes{job="node-exporter"} + node_memory_Buffers_bytes{job="node-exporter"})
-          * on (namespace, pod) group_left(node)
-            node_namespace_pod:kube_pod_info:
-        )
-      record: node:node_memory_bytes_available:sum
-    - expr: |
-        sum by (node) (
-          node_memory_MemTotal_bytes{job="node-exporter"}
-          * on (namespace, pod) group_left(node)
-            node_namespace_pod:kube_pod_info:
-        )
-      record: node:node_memory_bytes_total:sum
-    - expr: |
-        (node:node_memory_bytes_total:sum - node:node_memory_bytes_available:sum)
-        /
-        node:node_memory_bytes_total:sum
-      record: node:node_memory_utilisation:ratio
-    - expr: |
-        (node:node_memory_bytes_total:sum - node:node_memory_bytes_available:sum)
-        /
-        scalar(sum(node:node_memory_bytes_total:sum))
-      record: node:cluster_memory_utilisation:ratio
-    - expr: |
-        1e3 * sum(
-          (rate(node_vmstat_pgpgin{job="node-exporter"}[1m])
-         + rate(node_vmstat_pgpgout{job="node-exporter"}[1m]))
-        )
-      record: :node_memory_swap_io_bytes:sum_rate
-    - expr: |
-        1 -
-        sum by (node) (
-          (node_memory_MemFree_bytes{job="node-exporter"} + node_memory_Cached_bytes{job="node-exporter"} + node_memory_Buffers_bytes{job="node-exporter"})
-        * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:
-        )
-        /
-        sum by (node) (
-          node_memory_MemTotal_bytes{job="node-exporter"}
-        * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:
-        )
-      record: 'node:node_memory_utilisation:'
-    - expr: |
-        1 - (node:node_memory_bytes_available:sum / node:node_memory_bytes_total:sum)
-      record: 'node:node_memory_utilisation_2:'
-    - expr: |
-        1e3 * sum by (node) (
-          (rate(node_vmstat_pgpgin{job="node-exporter"}[1m])
-         + rate(node_vmstat_pgpgout{job="node-exporter"}[1m]))
-         * on (namespace, pod) group_left(node)
-           node_namespace_pod:kube_pod_info:
-        )
-      record: node:node_memory_swap_io_bytes:sum_rate
-    - expr: |
-        avg(irate(node_disk_io_time_seconds_total{job="node-exporter",device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m]))
-      record: :node_disk_utilisation:avg_irate
-    - expr: |
-        avg by (node) (
-          irate(node_disk_io_time_seconds_total{job="node-exporter",device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m])
-        * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:
-        )
-      record: node:node_disk_utilisation:avg_irate
-    - expr: |
-        avg(irate(node_disk_io_time_weighted_seconds_total{job="node-exporter",device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m]))
-      record: :node_disk_saturation:avg_irate
-    - expr: |
-        avg by (node) (
-          irate(node_disk_io_time_weighted_seconds_total{job="node-exporter",device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m])
-        * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:
-        )
-      record: node:node_disk_saturation:avg_irate
-    - expr: |
-        max by (instance, namespace, pod, device) ((node_filesystem_size_bytes{fstype=~"ext[234]|btrfs|xfs|zfs"}
-        - node_filesystem_avail_bytes{fstype=~"ext[234]|btrfs|xfs|zfs"})
-        / node_filesystem_size_bytes{fstype=~"ext[234]|btrfs|xfs|zfs"})
-      record: 'node:node_filesystem_usage:'
-    - expr: |
-        max by (instance, namespace, pod, device) (node_filesystem_avail_bytes{fstype=~"ext[234]|btrfs|xfs|zfs"} / node_filesystem_size_bytes{fstype=~"ext[234]|btrfs|xfs|zfs"})
-      record: 'node:node_filesystem_avail:'
-    - expr: |
-        sum(irate(node_network_receive_bytes_total{job="node-exporter",device!~"veth.+"}[1m])) +
-        sum(irate(node_network_transmit_bytes_total{job="node-exporter",device!~"veth.+"}[1m]))
-      record: :node_net_utilisation:sum_irate
-    - expr: |
-        sum by (node) (
-          (irate(node_network_receive_bytes_total{job="node-exporter",device!~"veth.+"}[1m]) +
-          irate(node_network_transmit_bytes_total{job="node-exporter",device!~"veth.+"}[1m]))
-        * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:
-        )
-      record: node:node_net_utilisation:sum_irate
-    - expr: |
-        sum(irate(node_network_receive_drop_total{job="node-exporter",device!~"veth.+"}[1m])) +
-        sum(irate(node_network_transmit_drop_total{job="node-exporter",device!~"veth.+"}[1m]))
-      record: :node_net_saturation:sum_irate
-    - expr: |
-        sum by (node) (
-          (irate(node_network_receive_drop_total{job="node-exporter",device!~"veth.+"}[1m]) +
-          irate(node_network_transmit_drop_total{job="node-exporter",device!~"veth.+"}[1m]))
-        * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:
-        )
-      record: node:node_net_saturation:sum_irate
-    - expr: |
-        max(
-          max(
-            kube_pod_info{job="kube-state-metrics", host_ip!=""}
-          ) by (node, host_ip)
-          * on (host_ip) group_right (node)
-          label_replace(
-            (max(node_filesystem_files{job="node-exporter", mountpoint="/"}) by (instance)), "host_ip", "$1", "instance", "(.*):.*"
-          )
-        ) by (node)
-      record: 'node:node_inodes_total:'
-    - expr: |
-        max(
-          max(
-            kube_pod_info{job="kube-state-metrics", host_ip!=""}
-          ) by (node, host_ip)
-          * on (host_ip) group_right (node)
-          label_replace(
-            (max(node_filesystem_files_free{job="node-exporter", mountpoint="/"}) by (instance)), "host_ip", "$1", "instance", "(.*):.*"
-          )
-        ) by (node)
-      record: 'node:node_inodes_free:'
   - name: kube-prometheus-node-recording.rules
     rules:
     - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[3m])) BY
@@ -352,6 +231,162 @@ spec:
     - expr: cluster:node_cpu_seconds_total:rate5m / count(sum(node_cpu_seconds_total)
         BY (instance, cpu))
       record: cluster:node_cpu:ratio
+  - name: node-exporter
+    rules:
+    - alert: NodeFilesystemSpaceFillingUp
+      annotations:
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
+          has only {{ printf "%.2f" $value }}% available space left and is filling
+          up.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemspacefillingup
+        summary: Filesystem is predicted to run out of space within the next 24 hours.
+      expr: |
+        (
+          node_filesystem_avail_bytes{job="node-exporter",} / node_filesystem_size_bytes{job="node-exporter",} < 0.4
+        and
+          predict_linear(node_filesystem_avail_bytes{job="node-exporter",}[6h], 24*60*60) < 0
+        and
+          node_filesystem_readonly{job="node-exporter",} == 0
+        )
+      for: 1h
+      labels:
+        severity: warning
+    - alert: NodeFilesystemSpaceFillingUp
+      annotations:
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
+          has only {{ printf "%.2f" $value }}% available space left and is filling
+          up fast.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemspacefillingup
+        summary: Filesystem is predicted to run out of space within the next 4 hours.
+      expr: |
+        (
+          node_filesystem_avail_bytes{job="node-exporter",} / node_filesystem_size_bytes{job="node-exporter",} < 0.2
+        and
+          predict_linear(node_filesystem_avail_bytes{job="node-exporter",}[6h], 4*60*60) < 0
+        and
+          node_filesystem_readonly{job="node-exporter",} == 0
+        )
+      for: 1h
+      labels:
+        severity: critical
+    - alert: NodeFilesystemAlmostOutOfSpace
+      annotations:
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
+          has only {{ printf "%.2f" $value }}% available space left.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemalmostoutofspace
+        summary: Filesystem has less than 5% space left.
+      expr: |
+        (
+          node_filesystem_avail_bytes{job="node-exporter",} / node_filesystem_size_bytes{job="node-exporter",} * 100 < 5
+        and
+          node_filesystem_readonly{job="node-exporter",} == 0
+        )
+      for: 1h
+      labels:
+        severity: warning
+    - alert: NodeFilesystemAlmostOutOfSpace
+      annotations:
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
+          has only {{ printf "%.2f" $value }}% available space left.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemalmostoutofspace
+        summary: Filesystem has less than 3% space left.
+      expr: |
+        (
+          node_filesystem_avail_bytes{job="node-exporter",} / node_filesystem_size_bytes{job="node-exporter",} * 100 < 3
+        and
+          node_filesystem_readonly{job="node-exporter",} == 0
+        )
+      for: 1h
+      labels:
+        severity: critical
+    - alert: NodeFilesystemFilesFillingUp
+      annotations:
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
+          has only {{ printf "%.2f" $value }}% available inodes left and is filling
+          up.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemfilesfillingup
+        summary: Filesystem is predicted to run out of inodes within the next 24 hours.
+      expr: |
+        (
+          node_filesystem_files_free{job="node-exporter",} / node_filesystem_files{job="node-exporter",} < 0.4
+        and
+          predict_linear(node_filesystem_files_free{job="node-exporter",}[6h], 24*60*60) < 0
+        and
+          node_filesystem_readonly{job="node-exporter",} == 0
+        )
+      for: 1h
+      labels:
+        severity: warning
+    - alert: NodeFilesystemFilesFillingUp
+      annotations:
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
+          has only {{ printf "%.2f" $value }}% available inodes left and is filling
+          up fast.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemfilesfillingup
+        summary: Filesystem is predicted to run out of inodes within the next 4 hours.
+      expr: |
+        (
+          node_filesystem_files_free{job="node-exporter",} / node_filesystem_files{job="node-exporter",} < 0.2
+        and
+          predict_linear(node_filesystem_files_free{job="node-exporter",}[6h], 4*60*60) < 0
+        and
+          node_filesystem_readonly{job="node-exporter",} == 0
+        )
+      for: 1h
+      labels:
+        severity: critical
+    - alert: NodeFilesystemAlmostOutOfFiles
+      annotations:
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
+          has only {{ printf "%.2f" $value }}% available inodes left.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemalmostoutoffiles
+        summary: Filesystem has less than 5% inodes left.
+      expr: |
+        (
+          node_filesystem_files_free{job="node-exporter",} / node_filesystem_files{job="node-exporter",} * 100 < 5
+        and
+          node_filesystem_readonly{job="node-exporter",} == 0
+        )
+      for: 1h
+      labels:
+        severity: warning
+    - alert: NodeFilesystemAlmostOutOfFiles
+      annotations:
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
+          has only {{ printf "%.2f" $value }}% available inodes left.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemalmostoutoffiles
+        summary: Filesystem has less than 3% inodes left.
+      expr: |
+        (
+          node_filesystem_files_free{job="node-exporter",} / node_filesystem_files{job="node-exporter",} * 100 < 3
+        and
+          node_filesystem_readonly{job="node-exporter",} == 0
+        )
+      for: 1h
+      labels:
+        severity: critical
+    - alert: NodeNetworkReceiveErrs
+      annotations:
+        description: '{{ $labels.instance }} interface {{ $labels.device }} has encountered
+          {{ printf "%.0f" $value }} receive errors in the last two minutes.'
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodenetworkreceiveerrs
+        summary: Network interface is reporting many receive errors.
+      expr: |
+        increase(node_network_receive_errs_total[2m]) > 10
+      for: 1h
+      labels:
+        severity: warning
+    - alert: NodeNetworkTransmitErrs
+      annotations:
+        description: '{{ $labels.instance }} interface {{ $labels.device }} has encountered
+          {{ printf "%.0f" $value }} transmit errors in the last two minutes.'
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodenetworktransmiterrs
+        summary: Network interface is reporting many transmit errors.
+      expr: |
+        increase(node_network_transmit_errs_total[2m]) > 10
+      for: 1h
+      labels:
+        severity: warning
   - name: kubernetes-absent
     rules:
     - alert: AlertmanagerDown
@@ -453,17 +488,17 @@ spec:
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodcrashlooping
       expr: |
         rate(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[15m]) * 60 * 5 > 0
-      for: 1h
+      for: 15m
       labels:
         severity: critical
     - alert: KubePodNotReady
       annotations:
         message: Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready
-          state for longer than an hour.
+          state for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodnotready
       expr: |
         sum by (namespace, pod) (kube_pod_status_phase{job="kube-state-metrics", phase=~"Failed|Pending|Unknown"}) > 0
-      for: 1h
+      for: 15m
       labels:
         severity: critical
     - alert: KubeDeploymentGenerationMismatch
@@ -482,13 +517,13 @@ spec:
     - alert: KubeDeploymentReplicasMismatch
       annotations:
         message: Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not
-          matched the expected number of replicas for longer than an hour.
+          matched the expected number of replicas for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedeploymentreplicasmismatch
       expr: |
         kube_deployment_spec_replicas{job="kube-state-metrics"}
           !=
         kube_deployment_status_replicas_available{job="kube-state-metrics"}
-      for: 1h
+      for: 15m
       labels:
         severity: critical
     - alert: KubeStatefulSetReplicasMismatch
@@ -596,7 +631,7 @@ spec:
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobfailed
       expr: |
         kube_job_status_failed{job="kube-state-metrics"}  > 0
-      for: 1h
+      for: 15m
       labels:
         severity: warning
   - name: kubernetes-resources
@@ -730,7 +765,7 @@ spec:
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodenotready
       expr: |
         kube_node_status_condition{job="kube-state-metrics",condition="Ready",status="true"} == 0
-      for: 1h
+      for: 15m
       labels:
         severity: warning
     - alert: KubeVersionMismatch
@@ -739,8 +774,8 @@ spec:
           components running.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeversionmismatch
       expr: |
-        count(count by (gitVersion) (label_replace(kubernetes_build_info{job!="kube-dns"},"gitVersion","$1","gitVersion","(v[0-9]*.[0-9]*.[0-9]*).*"))) > 1
-      for: 1h
+        count(count by (gitVersion) (label_replace(kubernetes_build_info{job!~"kube-dns|coredns"},"gitVersion","$1","gitVersion","(v[0-9]*.[0-9]*.[0-9]*).*"))) > 1
+      for: 15m
       labels:
         severity: warning
     - alert: KubeClientErrors
@@ -1061,7 +1096,7 @@ spec:
         message: The configuration of the instances of the Alertmanager cluster `{{$labels.service}}`
           are out of sync.
       expr: |
-        count_values("config_hash", alertmanager_config_hash{job="alertmanager-main",namespace="monitoring"}) BY (service) / ON(service) GROUP_LEFT() label_replace(prometheus_operator_spec_replicas{job="prometheus-operator",namespace="monitoring",controller="alertmanager"}, "service", "alertmanager-$1", "name", "(.*)") != 1
+        count_values("config_hash", alertmanager_config_hash{job="alertmanager-main",namespace="monitoring"}) BY (service) / ON(service) GROUP_LEFT() label_replace(max(prometheus_operator_spec_replicas{job="prometheus-operator",namespace="monitoring",controller="alertmanager"}) by (name, job, namespace, controller), "service", "alertmanager-$1", "name", "(.*)") != 1
       for: 5m
       labels:
         severity: critical
@@ -1089,7 +1124,8 @@ spec:
     - alert: TargetDown
       annotations:
         message: '{{ $value }}% of the {{ $labels.job }} targets are down.'
-      expr: 100 * (count(up == 0) BY (job) / count(up) BY (job)) > 10
+      expr: 100 * (count(up == 0) BY (job, namespace, service) / count(up) BY (job,
+        namespace, service)) > 10
       for: 10m
       labels:
         severity: warning
@@ -1104,26 +1140,6 @@ spec:
       expr: vector(1)
       labels:
         severity: none
-  - name: kube-prometheus-node-alerting.rules
-    rules:
-    - alert: NodeDiskRunningFull
-      annotations:
-        message: Device {{ $labels.device }} of node-exporter {{ $labels.namespace
-          }}/{{ $labels.pod }} will be full within the next 24 hours.
-      expr: |
-        (node:node_filesystem_usage: > 0.85) and (predict_linear(node:node_filesystem_avail:[6h], 3600 * 24) < 0)
-      for: 30m
-      labels:
-        severity: warning
-    - alert: NodeDiskRunningFull
-      annotations:
-        message: Device {{ $labels.device }} of node-exporter {{ $labels.namespace
-          }}/{{ $labels.pod }} will be full within the next 2 hours.
-      expr: |
-        (node:node_filesystem_usage: > 0.85) and (predict_linear(node:node_filesystem_avail:[30m], 3600 * 2) < 0)
-      for: 10m
-      labels:
-        severity: critical
   - name: node-time
     rules:
     - alert: ClockSkewDetected
@@ -1131,30 +1147,12 @@ spec:
         message: Clock skew detected on node-exporter {{ $labels.namespace }}/{{ $labels.pod
           }}. Ensure NTP is configured correctly on this host.
       expr: |
-        abs(node_timex_offset_seconds{job="node-exporter"}) > 0.03
+        abs(node_timex_offset_seconds{job="node-exporter"}) > 0.05
       for: 2m
       labels:
         severity: warning
   - name: node-network
     rules:
-    - alert: NetworkReceiveErrors
-      annotations:
-        message: Network interface "{{ $labels.device }}" showing receive errors on
-          node-exporter {{ $labels.namespace }}/{{ $labels.pod }}"
-      expr: |
-        rate(node_network_receive_errs_total{job="node-exporter",device!~"veth.+"}[2m]) > 0
-      for: 2m
-      labels:
-        severity: warning
-    - alert: NetworkTransmitErrors
-      annotations:
-        message: Network interface "{{ $labels.device }}" showing transmit errors
-          on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}"
-      expr: |
-        rate(node_network_transmit_errs_total{job="node-exporter",device!~"veth.+"}[2m]) > 0
-      for: 2m
-      labels:
-        severity: warning
     - alert: NodeNetworkInterfaceFlapping
       annotations:
         message: Network interface "{{ $labels.device }}" changing it's up status

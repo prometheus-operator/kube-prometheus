@@ -48,12 +48,6 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/controller-manager
           name: grafana-dashboard-controller-manager
           readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/k8s-cluster-rsrc-use
-          name: grafana-dashboard-k8s-cluster-rsrc-use
-          readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/k8s-node-rsrc-use
-          name: grafana-dashboard-k8s-node-rsrc-use
-          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-cluster
           name: grafana-dashboard-k8s-resources-cluster
           readOnly: false
@@ -71,6 +65,12 @@ spec:
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/kubelet
           name: grafana-dashboard-kubelet
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/node-cluster-rsrc-use
+          name: grafana-dashboard-node-cluster-rsrc-use
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/node-rsrc-use
+          name: grafana-dashboard-node-rsrc-use
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/nodes
           name: grafana-dashboard-nodes
@@ -118,12 +118,6 @@ spec:
           name: grafana-dashboard-controller-manager
         name: grafana-dashboard-controller-manager
       - configMap:
-          name: grafana-dashboard-k8s-cluster-rsrc-use
-        name: grafana-dashboard-k8s-cluster-rsrc-use
-      - configMap:
-          name: grafana-dashboard-k8s-node-rsrc-use
-        name: grafana-dashboard-k8s-node-rsrc-use
-      - configMap:
           name: grafana-dashboard-k8s-resources-cluster
         name: grafana-dashboard-k8s-resources-cluster
       - configMap:
@@ -141,6 +135,12 @@ spec:
       - configMap:
           name: grafana-dashboard-kubelet
         name: grafana-dashboard-kubelet
+      - configMap:
+          name: grafana-dashboard-node-cluster-rsrc-use
+        name: grafana-dashboard-node-cluster-rsrc-use
+      - configMap:
+          name: grafana-dashboard-node-rsrc-use
+        name: grafana-dashboard-node-rsrc-use
       - configMap:
           name: grafana-dashboard-nodes
         name: grafana-dashboard-nodes

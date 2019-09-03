@@ -47,7 +47,7 @@ spec:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                             type: string
                           optional:
-                            description: Specify whether the Secret or it's key must
+                            description: Specify whether the Secret or its key must
                               be defined
                             type: boolean
                         required:
@@ -64,7 +64,7 @@ spec:
                             description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
                             type: string
                           optional:
-                            description: Specify whether the Secret or it's key must
+                            description: Specify whether the Secret or its key must
                               be defined
                             type: boolean
                         required:
@@ -141,7 +141,7 @@ spec:
                       to proxy through this endpoint.
                     type: string
                   relabelings:
-                    description: 'RelabelConfigs to apply to samples before ingestion.
+                    description: 'RelabelConfigs to apply to samples before scraping.
                       More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config'
                     items:
                       description: 'RelabelConfig allows dynamic rewriting of the
