@@ -8,7 +8,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       thanos: 'v0.7.0',
     },
     imageRepos+:: {
-      thanos: quay.io/thanos/thanos',
+      thanos: 'quay.io/thanos/thanos',
     },
     thanos+:: {
       objectStorageConfig: {
