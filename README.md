@@ -178,7 +178,7 @@ local kp =
   // (import 'kube-prometheus/kube-prometheus-managed-cluster.libsonnet') +
   // (import 'kube-prometheus/kube-prometheus-node-ports.libsonnet') +
   // (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-thanos-sidecar.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-thanos.libsonnet') +
   {
     _config+:: {
       namespace: 'monitoring',
