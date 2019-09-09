@@ -4,12 +4,6 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
 
 {
 
-  _config+:: {
-    jobs+: {
-      CoreDNS: 'job="coredns"',
-    },
-  },
-
   prometheus+: {
     kubeControllerManagerPrometheusDiscoveryService:
       service.new('kube-controller-manager-prometheus-discovery', { 'component': 'kube-controller-manager' }, servicePort.newNamed('http-metrics', 10252, 10252)) +
@@ -21,16 +15,6 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       service.mixin.metadata.withNamespace('kube-system') +
       service.mixin.metadata.withLabels({ 'k8s-app': 'kube-scheduler' }) +
       service.mixin.spec.withClusterIp('None'),
-
-    serviceMonitorCoreDNS+: {
-      spec+: {
-        selector: {
-          matchLabels: {
-            'k8s-app': 'coredns',
-          },
-        },
-      },
-    },
 
     serviceMonitorKubeScheduler+: {
       spec+: {
