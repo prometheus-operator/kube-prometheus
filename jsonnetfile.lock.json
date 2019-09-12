@@ -67,7 +67,7 @@
                     "subdir": "jsonnet/prometheus-operator"
                 }
             },
-            "version": "d6ba399c064c47fea536f08d438a572588b256da"
+            "version": "908ee0372a9ac2c6574d589fdc56a4f3cb5f12d1"
         },
         {
             "name": "etcd-mixin",
