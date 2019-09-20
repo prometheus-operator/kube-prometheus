@@ -85,6 +85,8 @@ $ minikube addons disable metrics-server
 
 ## Quickstart
 
+>Note: For versions before Kubernetes v1.14.0 use the release-0.1 branch instead of master.
+
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 
 Though for a quickstart a compiled version of the Kubernetes [manifests](manifests) generated with this library (specifically with `example.jsonnet`) is checked into this repository in order to try the content out quickly. To try out the stack un-customized run:
