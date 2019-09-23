@@ -310,6 +310,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
               scrapeTimeout: $._config.kubeStateMetrics.scrapeTimeout,
               honorLabels: true,
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              relabelings: [
+                {
+                  regex: '(pod|service|job|endpoint|namespace)',
+                  action: 'labeldrop',
+                },
+              ],
               tlsConfig: {
                 insecureSkipVerify: true,
               },
