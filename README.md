@@ -276,7 +276,6 @@ These are the available fields with their respective default values:
         nodeExporter: "v0.18.1",
         kubeStateMetrics: "v1.5.0",
         kubeRbacProxy: "v0.4.1",
-        addonResizer: "1.8.4",
         prometheusOperator: "v0.30.0",
         prometheus: "v2.10.0",
     },
@@ -286,7 +285,6 @@ These are the available fields with their respective default values:
         alertmanager: "quay.io/prometheus/alertmanager",
         kubeStateMetrics: "quay.io/coreos/kube-state-metrics",
         kubeRbacProxy: "quay.io/coreos/kube-rbac-proxy",
-        addonResizer: "k8s.gcr.io/addon-resizer",
         nodeExporter: "quay.io/prometheus/node-exporter",
         prometheusOperator: "quay.io/coreos/prometheus-operator",
     },
@@ -325,8 +323,6 @@ These are the available fields with their respective default values:
 
       baseCPU: '100m',
       baseMemory: '150Mi',
-      cpuPerNode: '2m',
-      memoryPerNode: '30Mi',
     },
 
     nodeExporter+:: {

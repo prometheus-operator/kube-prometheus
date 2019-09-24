@@ -11,20 +11,16 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
       baseCPU: '100m',
       baseMemory: '150Mi',
-      cpuPerNode: '2m',
-      memoryPerNode: '30Mi',
     },
 
     versions+:: {
       kubeStateMetrics: 'v1.7.2',
       kubeRbacProxy: 'v0.4.1',
-      addonResizer: '1.8.4',
     },
 
     imageRepos+:: {
       kubeStateMetrics: 'quay.io/coreos/kube-state-metrics',
       kubeRbacProxy: 'quay.io/coreos/kube-rbac-proxy',
-      addonResizer: 'k8s.gcr.io/addon-resizer',
     },
   },
 
@@ -181,36 +177,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         container.mixin.resources.withRequests({ cpu: $._config.kubeStateMetrics.baseCPU, memory: $._config.kubeStateMetrics.baseMemory }) +
         container.mixin.resources.withLimits({ cpu: $._config.kubeStateMetrics.baseCPU, memory: $._config.kubeStateMetrics.baseMemory });
 
-      local addonResizer =
-        container.new('addon-resizer', $._config.imageRepos.addonResizer + ':' + $._config.versions.addonResizer) +
-        container.withCommand([
-          '/pod_nanny',
-          '--container=kube-state-metrics',
-          '--cpu=' + $._config.kubeStateMetrics.baseCPU,
-          '--extra-cpu=' + $._config.kubeStateMetrics.cpuPerNode,
-          '--memory=' + $._config.kubeStateMetrics.baseMemory,
-          '--extra-memory=' + $._config.kubeStateMetrics.memoryPerNode,
-          '--threshold=5',
-          '--deployment=kube-state-metrics',
-        ]) +
-        container.withEnv([
-          {
-            name: 'MY_POD_NAME',
-            valueFrom: {
-              fieldRef: { apiVersion: 'v1', fieldPath: 'metadata.name' },
-            },
-          },
-          {
-            name: 'MY_POD_NAMESPACE',
-            valueFrom: {
-              fieldRef: { apiVersion: 'v1', fieldPath: 'metadata.namespace' },
-            },
-          },
-        ]) +
-        container.mixin.resources.withRequests($._config.resources['addon-resizer'].requests) +
-        container.mixin.resources.withLimits($._config.resources['addon-resizer'].limits);
-
-      local c = [proxyClusterMetrics, proxySelfMetrics, kubeStateMetrics, addonResizer];
+      local c = [proxyClusterMetrics, proxySelfMetrics, kubeStateMetrics];
 
       deployment.new('kube-state-metrics', 1, c, podLabels) +
       deployment.mixin.metadata.withNamespace($._config.namespace) +
