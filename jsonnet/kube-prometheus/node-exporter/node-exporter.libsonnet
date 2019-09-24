@@ -174,7 +174,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 {
                   action: 'replace',
                   regex: '(.*)',
-                  replacment: '$1',
+                  replacement: '$1',
                   sourceLabels: ['__meta_kubernetes_pod_node_name'],
                   targetLabel: 'instance',
                 },
