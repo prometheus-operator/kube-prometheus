@@ -1,4 +1,11 @@
-JSONNET_FMT := jsonnet fmt -n 2 --max-blank-lines 2 --string-style s --comment-style s
+JSONNET_ARGS := -n 2 --max-blank-lines 2 --string-style s --comment-style s
+ifneq (,$(shell which jsonnetfmt))
+	JSONNET_FMT_CMD := jsonnetfmt
+else
+	JSONNET_FMT_CMD := jsonnet
+	JSONNET_FMT_ARGS := fmt $(JSONNET_ARGS)
+endif
+JSONNET_FMT := $(JSONNET_FMT_CMD) $(JSONNET_FMT_ARGS)
 
 JB_BINARY:=$(GOPATH)/bin/jb
 EMBEDMD_BINARY:=$(GOPATH)/bin/embedmd
