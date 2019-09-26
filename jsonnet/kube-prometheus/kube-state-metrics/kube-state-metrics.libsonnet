@@ -279,7 +279,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               relabelings: [
                 {
-                  regex: '(pod|service|job|endpoint|namespace)',
+                  regex: '(pod|service|endpoint|namespace)',
                   action: 'labeldrop',
                 },
               ],
