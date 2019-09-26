@@ -77,6 +77,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
@@ -113,6 +114,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
@@ -135,7 +137,12 @@ Then import it in jsonnet:
 [embedmd]:# (../examples/prometheus-additional-rendered-rule-example.jsonnet)
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  prometheusAlerts+:: (import 'existingrule.json'),
+  _config+:: {
+    namespace: 'monitoring',
+  },
+  prometheusAlerts+:: {
+    groups+: (import 'existingrule.json').groups,
+  },
 };
 
 { ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
@@ -144,6 +151,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 ### Changing default rules
