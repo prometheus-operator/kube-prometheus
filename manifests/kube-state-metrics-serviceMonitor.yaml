@@ -13,7 +13,7 @@ spec:
     port: https-main
     relabelings:
     - action: labeldrop
-      regex: (pod|service|job|endpoint|namespace)
+      regex: (pod|service|endpoint|namespace)
     scheme: https
     scrapeTimeout: 30s
     tlsConfig:
