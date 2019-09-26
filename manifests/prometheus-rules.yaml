@@ -497,7 +497,7 @@ spec:
           state for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodnotready
       expr: |
-        sum by (namespace, pod) (kube_pod_status_phase{job="kube-state-metrics", phase=~"Failed|Pending|Unknown"}) > 0
+        sum by (namespace, pod) (kube_pod_status_phase{job="kube-state-metrics", phase=~"Failed|Pending|Unknown"} * on(namespace, pod) group_left(owner_kind) kube_pod_owner{owner_kind!="Job"}) > 0
       for: 15m
       labels:
         severity: critical
@@ -630,7 +630,33 @@ spec:
         message: Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobfailed
       expr: |
-        kube_job_status_failed{job="kube-state-metrics"}  > 0
+        kube_job_failed{job="kube-state-metrics"}  > 0
+      for: 15m
+      labels:
+        severity: warning
+    - alert: KubeHpaReplicasMismatch
+      annotations:
+        message: HPA {{ $labels.namespace }}/{{ $labels.hpa }} has not matched the
+          desired number of replicas for longer than 15 minutes.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubehpareplicasmismatch
+      expr: |
+        (kube_hpa_status_desired_replicas{job="kube-state-metrics"}
+          !=
+        kube_hpa_status_current_replicas{job="kube-state-metrics"})
+          and
+        changes(kube_hpa_status_current_replicas[15m]) == 0
+      for: 15m
+      labels:
+        severity: warning
+    - alert: KubeHpaMaxedOut
+      annotations:
+        message: HPA {{ $labels.namespace }}/{{ $labels.hpa }} has been running at
+          max replicas for longer than 15 minutes.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubehpamaxedout
+      expr: |
+        kube_hpa_status_current_replicas{job="kube-state-metrics"}
+          ==
+        kube_hpa_spec_max_replicas{job="kube-state-metrics"}
       for: 15m
       labels:
         severity: warning
@@ -761,7 +787,7 @@ spec:
     rules:
     - alert: KubeNodeNotReady
       annotations:
-        message: '{{ $labels.node }} has been unready for more than an hour.'
+        message: '{{ $labels.node }} has been unready for more than 15 minutes.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodenotready
       expr: |
         kube_node_status_condition{job="kube-state-metrics",condition="Ready",status="true"} == 0
@@ -791,23 +817,13 @@ spec:
       for: 15m
       labels:
         severity: warning
-    - alert: KubeClientErrors
-      annotations:
-        message: Kubernetes API server client '{{ $labels.job }}/{{ $labels.instance
-          }}' is experiencing {{ printf "%0.0f" $value }} errors / second.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeclienterrors
-      expr: |
-        sum(rate(ksm_scrape_error_total{job="kube-state-metrics"}[5m])) by (instance, job) > 0.1
-      for: 15m
-      labels:
-        severity: warning
     - alert: KubeletTooManyPods
       annotations:
-        message: Kubelet {{ $labels.instance }} is running {{ $value }} Pods, close
-          to the limit of 110.
+        message: Kubelet '{{ $labels.node }}' is running at {{ printf "%.4g" $value
+          }}% of its Pod capacity.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
       expr: |
-        kubelet_running_pod_count{job="kubelet"} > 110 * 0.9
+        100 * max(max(kubelet_running_pod_count{job="kubelet"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"}) by(node) > 95
       for: 15m
       labels:
         severity: warning
@@ -991,17 +1007,6 @@ spec:
       for: 4h
       labels:
         severity: warning
-    - alert: PrometheusTSDBWALCorruptions
-      annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected
-          {{$value | humanize}} corruptions of the write-ahead log (WAL) over the
-          last 3h.
-        summary: Prometheus is detecting WAL corruptions.
-      expr: |
-        increase(tsdb_wal_corruptions_total{job="prometheus-k8s",namespace="monitoring"}[3h]) > 0
-      for: 4h
-      labels:
-        severity: warning
     - alert: PrometheusNotIngestingSamples
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not ingesting
@@ -1015,7 +1020,8 @@ spec:
     - alert: PrometheusDuplicateTimestamps
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping
-          {{$value | humanize}} samples/s with different values but duplicated timestamp.
+          {{ printf "%.4g" $value  }} samples/s with different values but duplicated
+          timestamp.
         summary: Prometheus is dropping samples with duplicate timestamps.
       expr: |
         rate(prometheus_target_scrapes_sample_duplicate_timestamp_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
@@ -1025,7 +1031,7 @@ spec:
     - alert: PrometheusOutOfOrderTimestamps
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping
-          {{$value | humanize}} samples/s with timestamps arriving out of order.
+          {{ printf "%.4g" $value  }} samples/s with timestamps arriving out of order.
         summary: Prometheus drops samples with out-of-order timestamps.
       expr: |
         rate(prometheus_target_scrapes_sample_out_of_order_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
@@ -1069,6 +1075,25 @@ spec:
       for: 15m
       labels:
         severity: critical
+    - alert: PrometheusRemoteWriteDesiredShards
+      annotations:
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
+          desired shards calculation wants to run {{ printf $value }} shards, which
+          is more than the max of {{ printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
+          $labels.instance | query | first | value }}.
+        summary: Prometheus remote write desired shards calculation wants to run more
+          than configured max shards.
+      expr: |
+        # Without max_over_time, failed scrapes could create false negatives, see
+        # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
+        (
+          max_over_time(prometheus_remote_storage_shards_desired{job="prometheus-k8s",namespace="monitoring"}[5m])
+        > on(job, instance) group_right
+          max_over_time(prometheus_remote_storage_shards_max{job="prometheus-k8s",namespace="monitoring"}[5m])
+        )
+      for: 15m
+      labels:
+        severity: warning
     - alert: PrometheusRuleFailures
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to
