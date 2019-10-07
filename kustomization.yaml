@@ -1,18 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ./manifests/00namespace-namespace.yaml
-- ./manifests/0prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
-- ./manifests/0prometheus-operator-0podmonitorCustomResourceDefinition.yaml
-- ./manifests/0prometheus-operator-0prometheusCustomResourceDefinition.yaml
-- ./manifests/0prometheus-operator-0prometheusruleCustomResourceDefinition.yaml
-- ./manifests/0prometheus-operator-0servicemonitorCustomResourceDefinition.yaml
-- ./manifests/0prometheus-operator-clusterRole.yaml
-- ./manifests/0prometheus-operator-clusterRoleBinding.yaml
-- ./manifests/0prometheus-operator-deployment.yaml
-- ./manifests/0prometheus-operator-service.yaml
-- ./manifests/0prometheus-operator-serviceAccount.yaml
-- ./manifests/0prometheus-operator-serviceMonitor.yaml
 - ./manifests/alertmanager-alertmanager.yaml
 - ./manifests/alertmanager-secret.yaml
 - ./manifests/alertmanager-service.yaml
@@ -52,6 +40,7 @@ resources:
 - ./manifests/prometheus-adapter-serviceAccount.yaml
 - ./manifests/prometheus-clusterRole.yaml
 - ./manifests/prometheus-clusterRoleBinding.yaml
+- ./manifests/prometheus-operator-serviceMonitor.yaml
 - ./manifests/prometheus-prometheus.yaml
 - ./manifests/prometheus-roleBindingConfig.yaml
 - ./manifests/prometheus-roleBindingSpecificNamespaces.yaml
@@ -66,3 +55,14 @@ resources:
 - ./manifests/prometheus-serviceMonitorKubeControllerManager.yaml
 - ./manifests/prometheus-serviceMonitorKubeScheduler.yaml
 - ./manifests/prometheus-serviceMonitorKubelet.yaml
+- ./manifests/setup/0namespace-namespace.yaml
+- ./manifests/setup/prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
+- ./manifests/setup/prometheus-operator-0podmonitorCustomResourceDefinition.yaml
+- ./manifests/setup/prometheus-operator-0prometheusCustomResourceDefinition.yaml
+- ./manifests/setup/prometheus-operator-0prometheusruleCustomResourceDefinition.yaml
+- ./manifests/setup/prometheus-operator-0servicemonitorCustomResourceDefinition.yaml
+- ./manifests/setup/prometheus-operator-clusterRole.yaml
+- ./manifests/setup/prometheus-operator-clusterRoleBinding.yaml
+- ./manifests/setup/prometheus-operator-deployment.yaml
+- ./manifests/setup/prometheus-operator-service.yaml
+- ./manifests/setup/prometheus-operator-serviceAccount.yaml
