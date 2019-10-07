@@ -26,7 +26,7 @@ data:
             pod:
               resource: pod
         containerLabel: container
-      window: 1m
+      window: 5m
 kind: ConfigMap
 metadata:
   name: adapter-config

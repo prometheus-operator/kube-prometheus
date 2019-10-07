@@ -42,7 +42,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 pod:
                   resource: pod
             containerLabel: container
-          window: 1m
+          window: 5m
       |||,
     },
   },
