@@ -18,60 +18,68 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     },
 
     prometheus+:: {
-      name: 'k8s',
-      replicas: 2,
       rules: {},
-      renderedRules: {},
       namespaces: ['default', 'kube-system', $._config.namespace],
     },
   },
 
   prometheus+:: {
+    local p = self,
+
+    name:: 'k8s',
+    namespace:: $._config.namespace,
+    roleBindingNamespaces:: $._config.prometheus.namespaces,
+    replicas:: 2,
+    prometheusRules:: $._config.prometheus.rules,
+    alertmanagerName:: $.alertmanager.service.metadata.name,
+
     serviceAccount:
       local serviceAccount = k.core.v1.serviceAccount;
 
-      serviceAccount.new('prometheus-' + $._config.prometheus.name) +
-      serviceAccount.mixin.metadata.withNamespace($._config.namespace),
+      serviceAccount.new('prometheus-' + p.name) +
+      serviceAccount.mixin.metadata.withNamespace(p.namespace),
     service:
       local service = k.core.v1.service;
       local servicePort = k.core.v1.service.mixin.spec.portsType;
 
       local prometheusPort = servicePort.newNamed('web', 9090, 'web');
 
-      service.new('prometheus-' + $._config.prometheus.name, { app: 'prometheus', prometheus: $._config.prometheus.name }, prometheusPort) +
+      service.new('prometheus-' + p.name, { app: 'prometheus', prometheus: p.name }, prometheusPort) +
       service.mixin.spec.withSessionAffinity('ClientIP') +
-      service.mixin.metadata.withNamespace($._config.namespace) +
-      service.mixin.metadata.withLabels({ prometheus: $._config.prometheus.name }),
-    [if $._config.prometheus.rules != null && $._config.prometheus.rules != {} then 'rules']:
+      service.mixin.metadata.withNamespace(p.namespace) +
+      service.mixin.metadata.withLabels({ prometheus: p.name }),
+
+    rules:
       {
         apiVersion: 'monitoring.coreos.com/v1',
         kind: 'PrometheusRule',
         metadata: {
           labels: {
-            prometheus: $._config.prometheus.name,
+            prometheus: p.name,
             role: 'alert-rules',
           },
-          name: 'prometheus-' + $._config.prometheus.name + '-rules',
-          namespace: $._config.namespace,
+          name: 'prometheus-' + p.name + '-rules',
+          namespace: p.namespace,
         },
         spec: {
-          groups: $._config.prometheus.rules.groups,
+          groups: p.prometheusRules.groups,
         },
       },
+
     roleBindingSpecificNamespaces:
       local roleBinding = k.rbac.v1.roleBinding;
 
       local newSpecificRoleBinding(namespace) =
         roleBinding.new() +
-        roleBinding.mixin.metadata.withName('prometheus-' + $._config.prometheus.name) +
+        roleBinding.mixin.metadata.withName('prometheus-' + p.name) +
         roleBinding.mixin.metadata.withNamespace(namespace) +
         roleBinding.mixin.roleRef.withApiGroup('rbac.authorization.k8s.io') +
-        roleBinding.mixin.roleRef.withName('prometheus-' + $._config.prometheus.name) +
+        roleBinding.mixin.roleRef.withName('prometheus-' + p.name) +
         roleBinding.mixin.roleRef.mixinInstance({ kind: 'Role' }) +
-        roleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + $._config.prometheus.name, namespace: $._config.namespace }]);
+        roleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + p.name, namespace: p.namespace }]);
 
       local roleBindingList = k3.rbac.v1.roleBindingList;
-      roleBindingList.new([newSpecificRoleBinding(x) for x in $._config.prometheus.namespaces]),
+      roleBindingList.new([newSpecificRoleBinding(x) for x in p.roleBindingNamespaces]),
     clusterRole:
       local clusterRole = k.rbac.v1.clusterRole;
       local policyRule = clusterRole.rulesType;
@@ -88,7 +96,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local rules = [nodeMetricsRule, metricsRule];
 
       clusterRole.new() +
-      clusterRole.mixin.metadata.withName('prometheus-' + $._config.prometheus.name) +
+      clusterRole.mixin.metadata.withName('prometheus-' + p.name) +
       clusterRole.withRules(rules),
     roleConfig:
       local role = k.rbac.v1.role;
@@ -102,28 +110,28 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                             policyRule.withVerbs(['get']);
 
       role.new() +
-      role.mixin.metadata.withName('prometheus-' + $._config.prometheus.name + '-config') +
-      role.mixin.metadata.withNamespace($._config.namespace) +
+      role.mixin.metadata.withName('prometheus-' + p.name + '-config') +
+      role.mixin.metadata.withNamespace(p.namespace) +
       role.withRules(configmapRule),
     roleBindingConfig:
       local roleBinding = k.rbac.v1.roleBinding;
 
       roleBinding.new() +
-      roleBinding.mixin.metadata.withName('prometheus-' + $._config.prometheus.name + '-config') +
-      roleBinding.mixin.metadata.withNamespace($._config.namespace) +
+      roleBinding.mixin.metadata.withName('prometheus-' + p.name + '-config') +
+      roleBinding.mixin.metadata.withNamespace(p.namespace) +
       roleBinding.mixin.roleRef.withApiGroup('rbac.authorization.k8s.io') +
-      roleBinding.mixin.roleRef.withName('prometheus-' + $._config.prometheus.name + '-config') +
+      roleBinding.mixin.roleRef.withName('prometheus-' + p.name + '-config') +
       roleBinding.mixin.roleRef.mixinInstance({ kind: 'Role' }) +
-      roleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + $._config.prometheus.name, namespace: $._config.namespace }]),
+      roleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + p.name, namespace: p.namespace }]),
     clusterRoleBinding:
       local clusterRoleBinding = k.rbac.v1.clusterRoleBinding;
 
       clusterRoleBinding.new() +
-      clusterRoleBinding.mixin.metadata.withName('prometheus-' + $._config.prometheus.name) +
+      clusterRoleBinding.mixin.metadata.withName('prometheus-' + p.name) +
       clusterRoleBinding.mixin.roleRef.withApiGroup('rbac.authorization.k8s.io') +
-      clusterRoleBinding.mixin.roleRef.withName('prometheus-' + $._config.prometheus.name) +
+      clusterRoleBinding.mixin.roleRef.withName('prometheus-' + p.name) +
       clusterRoleBinding.mixin.roleRef.mixinInstance({ kind: 'ClusterRole' }) +
-      clusterRoleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + $._config.prometheus.name, namespace: $._config.namespace }]),
+      clusterRoleBinding.withSubjects([{ kind: 'ServiceAccount', name: 'prometheus-' + p.name, namespace: p.namespace }]),
     roleSpecificNamespaces:
       local role = k.rbac.v1.role;
       local policyRule = role.rulesType;
@@ -138,12 +146,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
       local newSpecificRole(namespace) =
         role.new() +
-        role.mixin.metadata.withName('prometheus-' + $._config.prometheus.name) +
+        role.mixin.metadata.withName('prometheus-' + p.name) +
         role.mixin.metadata.withNamespace(namespace) +
         role.withRules(coreRule);
 
       local roleList = k3.rbac.v1.roleList;
-      roleList.new([newSpecificRole(x) for x in $._config.prometheus.namespaces]),
+      roleList.new([newSpecificRole(x) for x in p.roleBindingNamespaces]),
     prometheus:
       local statefulSet = k.apps.v1.statefulSet;
       local container = statefulSet.mixin.spec.template.spec.containersType;
@@ -158,31 +166,31 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         apiVersion: 'monitoring.coreos.com/v1',
         kind: 'Prometheus',
         metadata: {
-          name: $._config.prometheus.name,
-          namespace: $._config.namespace,
+          name: p.name,
+          namespace: p.namespace,
           labels: {
-            prometheus: $._config.prometheus.name,
+            prometheus: p.name,
           },
         },
         spec: {
-          replicas: $._config.prometheus.replicas,
+          replicas: p.replicas,
           version: $._config.versions.prometheus,
           baseImage: $._config.imageRepos.prometheus,
-          serviceAccountName: 'prometheus-' + $._config.prometheus.name,
+          serviceAccountName: 'prometheus-' + p.name,
           serviceMonitorSelector: {},
           podMonitorSelector: {},
           serviceMonitorNamespaceSelector: {},
           nodeSelector: { 'kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
             role: 'alert-rules',
-            prometheus: $._config.prometheus.name,
+            prometheus: p.name,
           }),
           resources: resources,
           alerting: {
             alertmanagers: [
               {
-                namespace: $._config.namespace,
-                name: 'alertmanager-' + $._config.alertmanager.name,
+                namespace: p.namespace,
+                name: p.alertmanagerName,
                 port: 'web',
               },
             ],
@@ -200,7 +208,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: 'prometheus',
-          namespace: $._config.namespace,
+          namespace: p.namespace,
           labels: {
             'k8s-app': 'prometheus',
           },
@@ -208,7 +216,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         spec: {
           selector: {
             matchLabels: {
-              prometheus: $._config.prometheus.name,
+              prometheus: p.name,
             },
           },
           endpoints: [
@@ -225,7 +233,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: 'kube-scheduler',
-          namespace: $._config.namespace,
+          namespace: p.namespace,
           labels: {
             'k8s-app': 'kube-scheduler',
           },
@@ -256,7 +264,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: 'kubelet',
-          namespace: $._config.namespace,
+          namespace: p.namespace,
           labels: {
             'k8s-app': 'kubelet',
           },
@@ -313,7 +321,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: 'kube-controller-manager',
-          namespace: $._config.namespace,
+          namespace: p.namespace,
           labels: {
             'k8s-app': 'kube-controller-manager',
           },
@@ -351,7 +359,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: 'kube-apiserver',
-          namespace: $._config.namespace,
+          namespace: p.namespace,
           labels: {
             'k8s-app': 'apiserver',
           },
@@ -406,7 +414,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: 'coredns',
-          namespace: $._config.namespace,
+          namespace: p.namespace,
           labels: {
             'k8s-app': 'coredns',
           },

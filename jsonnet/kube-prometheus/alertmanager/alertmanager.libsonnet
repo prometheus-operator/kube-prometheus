@@ -13,7 +13,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     },
 
     alertmanager+:: {
-      name: $._config.alertmanager.name,
+      name: 'main',
       config: {
         global: {
           resolve_timeout: '5m',
