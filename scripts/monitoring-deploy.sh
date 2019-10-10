@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# create namespace, permissions, and CRDs
+# create namespace and CRDs
 kubectl create -f manifests/setup
 
 # wait for CRD creation to complete
