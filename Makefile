@@ -7,8 +7,8 @@ else
 endif
 JSONNET_FMT := $(JSONNET_FMT_CMD) $(JSONNET_FMT_ARGS)
 
-JB_BINARY:=$(GOPATH)/bin/jb
-EMBEDMD_BINARY:=$(GOPATH)/bin/embedmd
+JB_BINARY := jb
+EMBEDMD_BINARY := embedmd
 CONTAINER_CMD:=docker run --rm \
 		-e http_proxy -e https_proxy -e no_proxy \
 		-u="$(shell id -u):$(shell id -g)" \
@@ -31,14 +31,14 @@ clean:
 
 generate: manifests **.md
 
-**.md: $(EMBEDMD_BINARY) $(shell find examples) build.sh example.jsonnet
+**.md: $(shell find examples) build.sh example.jsonnet
 	$(EMBEDMD_BINARY) -w `find . -name "*.md" | grep -v vendor`
 
 manifests: vendor example.jsonnet build.sh
 	rm -rf manifests
 	./build.sh ./examples/kustomize.jsonnet
 
-vendor: $(JB_BINARY) jsonnetfile.json jsonnetfile.lock.json
+vendor: jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor
 	$(JB_BINARY) install
 
@@ -46,7 +46,7 @@ fmt:
 	find . -name 'vendor' -prune -o -name '*.libsonnet' -o -name '*.jsonnet' -print | \
 		xargs -n 1 -- $(JSONNET_FMT) -i
 
-test: $(JB_BINARY)
+test:
 	$(JB_BINARY) install
 	./test.sh
 
@@ -56,11 +56,5 @@ test-e2e:
 test-in-docker:
 	@echo ">> Compiling assets and generating Kubernetes manifests"
 	$(CONTAINER_CMD) make $(MFLAGS) test
-
-$(JB_BINARY):
-	go get -u github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
-
-$(EMBEDMD_BINARY):
-	go get github.com/campoy/embedmd
 
 .PHONY: generate generate-in-docker test test-in-docker fmt
