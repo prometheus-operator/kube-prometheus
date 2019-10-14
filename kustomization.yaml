@@ -22,6 +22,7 @@ resources:
 - ./manifests/grafana-dashboardDefinitions.yaml
 - ./manifests/grafana-dashboardSources.yaml
 - ./manifests/grafana-deployment.yaml
+- ./manifests/grafana-rawDashboardDefinitions.yaml
 - ./manifests/grafana-service.yaml
 - ./manifests/grafana-serviceAccount.yaml
 - ./manifests/grafana-serviceMonitor.yaml

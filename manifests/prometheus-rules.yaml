@@ -242,7 +242,7 @@ spec:
         summary: Filesystem is predicted to run out of space within the next 24 hours.
       expr: |
         (
-          node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} < 0.4
+          node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 40
         and
           predict_linear(node_filesystem_avail_bytes{job="node-exporter",fstype!=""}[6h], 24*60*60) < 0
         and
@@ -260,7 +260,7 @@ spec:
         summary: Filesystem is predicted to run out of space within the next 4 hours.
       expr: |
         (
-          node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} < 0.2
+          node_filesystem_avail_bytes{job="node-exporter",fstype!=""} / node_filesystem_size_bytes{job="node-exporter",fstype!=""} * 100 < 20
         and
           predict_linear(node_filesystem_avail_bytes{job="node-exporter",fstype!=""}[6h], 4*60*60) < 0
         and
@@ -308,7 +308,7 @@ spec:
         summary: Filesystem is predicted to run out of inodes within the next 24 hours.
       expr: |
         (
-          node_filesystem_files_free{job="node-exporter",fstype!=""} / node_filesystem_files{job="node-exporter",fstype!=""} < 0.4
+          node_filesystem_files_free{job="node-exporter",fstype!=""} / node_filesystem_files{job="node-exporter",fstype!=""} * 100 < 40
         and
           predict_linear(node_filesystem_files_free{job="node-exporter",fstype!=""}[6h], 24*60*60) < 0
         and
@@ -326,7 +326,7 @@ spec:
         summary: Filesystem is predicted to run out of inodes within the next 4 hours.
       expr: |
         (
-          node_filesystem_files_free{job="node-exporter",fstype!=""} / node_filesystem_files{job="node-exporter",fstype!=""} < 0.2
+          node_filesystem_files_free{job="node-exporter",fstype!=""} / node_filesystem_files{job="node-exporter",fstype!=""} * 100 < 20
         and
           predict_linear(node_filesystem_files_free{job="node-exporter",fstype!=""}[6h], 4*60*60) < 0
         and
@@ -573,13 +573,13 @@ spec:
         severity: critical
     - alert: KubeDaemonSetRolloutStuck
       annotations:
-        message: Only {{ $value }}% of the desired Pods of DaemonSet {{ $labels.namespace
-          }}/{{ $labels.daemonset }} are scheduled and ready.
+        message: Only {{ $value | humanizePercentage }} of the desired Pods of DaemonSet
+          {{ $labels.namespace }}/{{ $labels.daemonset }} are scheduled and ready.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedaemonsetrolloutstuck
       expr: |
         kube_daemonset_status_number_ready{job="kube-state-metrics"}
           /
-        kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"} * 100 < 100
+        kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"} < 1.00
       for: 15m
       labels:
         severity: critical
@@ -718,25 +718,28 @@ spec:
         severity: warning
     - alert: KubeQuotaExceeded
       annotations:
-        message: Namespace {{ $labels.namespace }} is using {{ printf "%0.0f" $value
-          }}% of its {{ $labels.resource }} quota.
+        message: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage
+          }} of its {{ $labels.resource }} quota.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubequotaexceeded
       expr: |
-        100 * kube_resourcequota{job="kube-state-metrics", type="used"}
+        kube_resourcequota{job="kube-state-metrics", type="used"}
           / ignoring(instance, job, type)
         (kube_resourcequota{job="kube-state-metrics", type="hard"} > 0)
-          > 90
+          > 0.90
       for: 15m
       labels:
         severity: warning
     - alert: CPUThrottlingHigh
       annotations:
-        message: '{{ printf "%0.0f" $value }}% throttling of CPU in namespace {{ $labels.namespace
-          }} for container {{ $labels.container }} in pod {{ $labels.pod }}.'
+        message: '{{ $value | humanizePercentage }} throttling of CPU in namespace
+          {{ $labels.namespace }} for container {{ $labels.container }} in pod {{
+          $labels.pod }}.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh
-      expr: "100 * sum(increase(container_cpu_cfs_throttled_periods_total{container!=\"\",
-        }[5m])) by (container, pod, namespace)\n  /\nsum(increase(container_cpu_cfs_periods_total{}[5m]))
-        by (container, pod, namespace)\n  > 25 \n"
+      expr: |
+        sum(increase(container_cpu_cfs_throttled_periods_total{container!="", }[5m])) by (container, pod, namespace)
+          /
+        sum(increase(container_cpu_cfs_periods_total{}[5m])) by (container, pod, namespace)
+          > ( 25 / 100 )
       for: 15m
       labels:
         severity: warning
@@ -745,14 +748,14 @@ spec:
     - alert: KubePersistentVolumeUsageCritical
       annotations:
         message: The PersistentVolume claimed by {{ $labels.persistentvolumeclaim
-          }} in Namespace {{ $labels.namespace }} is only {{ printf "%0.2f" $value
-          }}% free.
+          }} in Namespace {{ $labels.namespace }} is only {{ $value | humanizePercentage
+          }} free.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumeusagecritical
       expr: |
-        100 * kubelet_volume_stats_available_bytes{job="kubelet"}
+        kubelet_volume_stats_available_bytes{job="kubelet"}
           /
         kubelet_volume_stats_capacity_bytes{job="kubelet"}
-          < 3
+          < 0.03
       for: 1m
       labels:
         severity: critical
@@ -760,14 +763,14 @@ spec:
       annotations:
         message: Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim
           }} in Namespace {{ $labels.namespace }} is expected to fill up within four
-          days. Currently {{ printf "%0.2f" $value }}% is available.
+          days. Currently {{ $value | humanizePercentage }} is available.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumefullinfourdays
       expr: |
-        100 * (
+        (
           kubelet_volume_stats_available_bytes{job="kubelet"}
             /
           kubelet_volume_stats_capacity_bytes{job="kubelet"}
-        ) < 15
+        ) < 0.15
         and
         predict_linear(kubelet_volume_stats_available_bytes{job="kubelet"}[6h], 4 * 24 * 3600) < 0
       for: 5m
@@ -807,23 +810,23 @@ spec:
     - alert: KubeClientErrors
       annotations:
         message: Kubernetes API server client '{{ $labels.job }}/{{ $labels.instance
-          }}' is experiencing {{ printf "%0.0f" $value }}% errors.'
+          }}' is experiencing {{ $value | humanizePercentage }} errors.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeclienterrors
       expr: |
         (sum(rate(rest_client_requests_total{code=~"5.."}[5m])) by (instance, job)
           /
         sum(rate(rest_client_requests_total[5m])) by (instance, job))
-        * 100 > 1
+        > 0.01
       for: 15m
       labels:
         severity: warning
     - alert: KubeletTooManyPods
       annotations:
-        message: Kubelet '{{ $labels.node }}' is running at {{ printf "%.4g" $value
-          }}% of its Pod capacity.
+        message: Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage
+          }} of its Pod capacity.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
       expr: |
-        100 * max(max(kubelet_running_pod_count{job="kubelet"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"}) by(node) > 95
+        max(max(kubelet_running_pod_count{job="kubelet"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"}) by(node) > 0.95
       for: 15m
       labels:
         severity: warning
@@ -849,47 +852,51 @@ spec:
         severity: critical
     - alert: KubeAPIErrorsHigh
       annotations:
-        message: API server is returning errors for {{ $value }}% of requests.
+        message: API server is returning errors for {{ $value | humanizePercentage
+          }} of requests.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
         sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m]))
           /
-        sum(rate(apiserver_request_total{job="apiserver"}[5m])) * 100 > 3
+        sum(rate(apiserver_request_total{job="apiserver"}[5m])) > 0.03
       for: 10m
       labels:
         severity: critical
     - alert: KubeAPIErrorsHigh
       annotations:
-        message: API server is returning errors for {{ $value }}% of requests.
+        message: API server is returning errors for {{ $value | humanizePercentage
+          }} of requests.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
         sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m]))
           /
-        sum(rate(apiserver_request_total{job="apiserver"}[5m])) * 100 > 1
+        sum(rate(apiserver_request_total{job="apiserver"}[5m])) > 0.01
       for: 10m
       labels:
         severity: warning
     - alert: KubeAPIErrorsHigh
       annotations:
-        message: API server is returning errors for {{ $value }}% of requests for
-          {{ $labels.verb }} {{ $labels.resource }} {{ $labels.subresource }}.
+        message: API server is returning errors for {{ $value | humanizePercentage
+          }} of requests for {{ $labels.verb }} {{ $labels.resource }} {{ $labels.subresource
+          }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
         sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m])) by (resource,subresource,verb)
           /
-        sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) * 100 > 10
+        sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) > 0.10
       for: 10m
       labels:
         severity: critical
     - alert: KubeAPIErrorsHigh
       annotations:
-        message: API server is returning errors for {{ $value }}% of requests for
-          {{ $labels.verb }} {{ $labels.resource }} {{ $labels.subresource }}.
+        message: API server is returning errors for {{ $value | humanizePercentage
+          }} of requests for {{ $labels.verb }} {{ $labels.resource }} {{ $labels.subresource
+          }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
         sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m])) by (resource,subresource,verb)
           /
-        sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) * 100 > 5
+        sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) > 0.05
       for: 10m
       labels:
         severity: warning
