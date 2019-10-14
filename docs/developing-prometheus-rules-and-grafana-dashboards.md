@@ -312,6 +312,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 ```
 
 Incase you have lots of json dashboard exported out from grafan UI the above approch is going to take lots of time. to improve performance we can use `rawGrafanaDashboards` field and provide it's value as json string by using importstr
+[embedmd]:# (../examples/grafana-additional-rendered-dashboard-example-2.jsonnet)
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   _config+:: {
