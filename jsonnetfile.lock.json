@@ -27,7 +27,7 @@
                     "subdir": ""
                 }
             },
-            "version": "3da19e5a40fbb9f7a621958040472db918c4de9c"
+            "version": "15ddfa20a6921ffbd43172eb54f6bdc1bcf8d3d3"
         },
         {
             "name": "grafonnet",
@@ -107,7 +107,7 @@
                     "subdir": "lib/promgrafonnet"
                 }
             },
-            "version": "3da19e5a40fbb9f7a621958040472db918c4de9c"
+            "version": "15ddfa20a6921ffbd43172eb54f6bdc1bcf8d3d3"
         }
     ]
 }
