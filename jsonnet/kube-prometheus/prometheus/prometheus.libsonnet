@@ -445,17 +445,17 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         apiVersion: 'monitoring.coreos.com/v1',
         kind: 'ServiceMonitor',
         metadata: {
-          name: 'awscni',
+          name: 'awsekscni',
           namespace: p.namespace,
           labels: {
-            'k8s-app': 'aws-cni',
+            'k8s-app': 'eks-cni',
           },
         },
         spec: {
           jobLabel: 'k8s-app',
           selector: {
             matchLabels: {
-              'k8s-app': 'aws-cni',
+              'k8s-app': 'eks-cni',
             },
           },
           namespaceSelector: {
