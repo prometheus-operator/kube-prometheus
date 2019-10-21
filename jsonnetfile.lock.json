@@ -7,7 +7,7 @@
                     "directory": "jsonnet/kube-prometheus"
                 }
             },
-            "version": "aws_eks_cni"
+            "version": ""
         },
         {
             "name": "ksonnet",
