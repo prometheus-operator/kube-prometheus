@@ -455,7 +455,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           jobLabel: 'k8s-app',
           selector: {
             matchLabels: {
-              'k8s-app': 'eks-cni',
+              'k8s-app': 'aws-node',
             },
           },
           namespaceSelector: {
