@@ -645,6 +645,7 @@ As described in the [Prerequisites](#prerequisites) section, in order to retriev
 
 If you are using Google's GKE product, see [cAdvisor support](docs/GKE-cadvisor-support.md).
 
+If you are using AWS EKS, see [AWS EKS CNI support](docs/EKS-cni-support.md)
 #### Authentication problem
 
 The Prometheus `/targets` page will show the kubelet job with the error `403 Unauthorized`, when token authentication is not enabled. Ensure, that the `--authentication-token-webhook=true` flag is enabled on all kubelet configurations.
