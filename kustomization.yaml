@@ -39,6 +39,7 @@ resources:
 - ./manifests/node-exporter-service.yaml
 - ./manifests/node-exporter-serviceAccount.yaml
 - ./manifests/node-exporter-serviceMonitor.yaml
+- ./manifests/prometheus-AwsEksCniMetricService.yaml
 - ./manifests/prometheus-adapter-apiService.yaml
 - ./manifests/prometheus-adapter-clusterRole.yaml
 - ./manifests/prometheus-adapter-clusterRoleAggregatedMetricsReader.yaml

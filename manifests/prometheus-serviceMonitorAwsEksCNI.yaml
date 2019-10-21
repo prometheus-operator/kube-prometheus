@@ -16,4 +16,4 @@ spec:
     - kube-system
   selector:
     matchLabels:
-      k8s-app: eks-cni
+      k8s-app: aws-node
