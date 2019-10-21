@@ -440,5 +440,37 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           ],
         },
       },
+    serviceMonitorAwsEksCNI:
+      {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ServiceMonitor',
+        metadata: {
+          name: 'awscni',
+          namespace: p.namespace,
+          labels: {
+            'k8s-app': 'aws-cni',
+          },
+        },
+        spec: {
+          jobLabel: 'k8s-app',
+          selector: {
+            matchLabels: {
+              'k8s-app': 'aws-cni',
+            },
+          },
+          namespaceSelector: {
+            matchNames: [
+              'kube-system',
+            ],
+          },
+          endpoints: [
+            {
+              port: 'cni-metrics-port',
+              interval: '30s',
+              path: '/metrics',
+            },
+          ],
+        },
+      },
   },
 }
