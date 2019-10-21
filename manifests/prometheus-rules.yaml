@@ -80,6 +80,22 @@ spec:
         ) * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
       record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
     - expr: |
+        container_memory_working_set_bytes{job="kubelet", image!=""}
+        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+      record: node_namespace_pod_container:container_memory_working_set_bytes
+    - expr: |
+        container_memory_rss{job="kubelet", image!=""}
+        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+      record: node_namespace_pod_container:container_memory_rss
+    - expr: |
+        container_memory_cache{job="kubelet", image!=""}
+        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+      record: node_namespace_pod_container:container_memory_cache
+    - expr: |
+        container_memory_swap{job="kubelet", image!=""}
+        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+      record: node_namespace_pod_container:container_memory_swap
+    - expr: |
         sum(container_memory_usage_bytes{job="kubelet", image!="", container!="POD"}) by (namespace)
       record: namespace:container_memory_usage_bytes:sum
     - expr: |

@@ -62,6 +62,7 @@ resources:
 - ./manifests/prometheus-serviceAccount.yaml
 - ./manifests/prometheus-serviceMonitor.yaml
 - ./manifests/prometheus-serviceMonitorApiserver.yaml
+- ./manifests/prometheus-serviceMonitorAwsEksCNI.yaml
 - ./manifests/prometheus-serviceMonitorCoreDNS.yaml
 - ./manifests/prometheus-serviceMonitorKubeControllerManager.yaml
 - ./manifests/prometheus-serviceMonitorKubeScheduler.yaml
