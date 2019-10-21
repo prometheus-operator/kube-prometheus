@@ -57,7 +57,7 @@
                     "subdir": "grafana"
                 }
             },
-            "version": "567be6b15b7f3b747c48dc7b111c1860cab121c7"
+            "version": "539a90dbf63c812ad0194d8078dd776868a11c81"
         },
         {
             "name": "prometheus-operator",
