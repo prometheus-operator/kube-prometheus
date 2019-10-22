@@ -74,7 +74,7 @@ This adapter is an Extension API Server and Kubernetes needs to be have this fea
 To try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
 
 ```shell
-$ minikube delete && minikube start --kubernetes-version=v1.16.0 --memory=4g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
+$ minikube delete && minikube start --kubernetes-version=v1.16.0 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
 ```
 
 The kube-prometheus stack includes a resource metrics API server, so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:
