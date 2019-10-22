@@ -15,7 +15,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         kind: 'ServiceMonitor',
         metadata: {
           name: 'awsekscni',
-          namespace: p.namespace,
+          namespace: 'monitoring',
           labels: {
             'k8s-app': 'eks-cni',
           },
