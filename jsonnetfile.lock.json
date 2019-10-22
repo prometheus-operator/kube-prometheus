@@ -7,7 +7,7 @@
                     "directory": "jsonnet/kube-prometheus"
                 }
             },
-            "version": ""
+            "version": "aws_eks_cni"
         },
         {
             "name": "ksonnet",
@@ -77,7 +77,7 @@
                     "subdir": "Documentation/etcd-mixin"
                 }
             },
-            "version": "5dc12f27251ad6f5f0744ad33ea7d731480f4b87"
+            "version": "92f313811e7a9e0dbe73f288d27408817cb7865d"
         },
         {
             "name": "prometheus",
@@ -87,7 +87,7 @@
                     "subdir": "documentation/prometheus-mixin"
                 }
             },
-            "version": "b5a16a8f861c29799f9a903f1e0859f513e862ed"
+            "version": "5f1be2cf455409d3577ac9ddb43144ec2d39c90b"
         },
         {
             "name": "node-mixin",
