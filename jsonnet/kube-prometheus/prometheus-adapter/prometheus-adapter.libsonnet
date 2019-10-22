@@ -5,7 +5,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      prometheusAdapter: 'v0.4.1',
+      prometheusAdapter: 'v0.5.0',
     },
 
     imageRepos+:: {
@@ -19,19 +19,19 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       config: |||
         resourceRules:
           cpu:
-            containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>,container_name!="POD",container_name!="",pod_name!=""}[1m])) by (<<.GroupBy>>)
-            nodeQuery: sum(1 - rate(node_cpu_seconds_total{mode="idle"}[1m]) * on(namespace, pod) group_left(node) node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}) by (<<.GroupBy>>)
+            containerQuery: sum(rate(container_cpu_usage_seconds_total{<<.LabelMatchers>>,container!="POD",container!="",pod!=""}[5m])) by (<<.GroupBy>>)
+            nodeQuery: sum(1 - rate(node_cpu_seconds_total{mode="idle"}[5m]) * on(namespace, pod) group_left(node) node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}) by (<<.GroupBy>>)
             resources:
               overrides:
                 node:
                   resource: node
                 namespace:
                   resource: namespace
-                pod_name:
+                pod:
                   resource: pod
-            containerLabel: container_name
+            containerLabel: container
           memory:
-            containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,container_name!="POD",container_name!="",pod_name!=""}) by (<<.GroupBy>>)
+            containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,container!="POD",container!="",pod!=""}) by (<<.GroupBy>>)
             nodeQuery: sum(node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>} - node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}) by (<<.GroupBy>>)
             resources:
               overrides:
@@ -39,10 +39,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                   resource: node
                 namespace:
                   resource: namespace
-                pod_name:
+                pod:
                   resource: pod
-            containerLabel: container_name
-          window: 1m
+            containerLabel: container
+          window: 5m
       |||,
     },
   },

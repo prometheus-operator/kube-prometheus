@@ -16,6 +16,9 @@ services:
 
 jobs:
   include:
-  - script: make --always-make generate-in-docker && git diff --exit-code
-  - script: make --always-make test-in-docker
-  - script: GO111MODULE=on ./tests/e2e/travis-e2e.sh
+  - name: Check generated files
+    script: make --always-make generate-in-docker && git diff --exit-code
+  - name: Run tests
+    script: make --always-make test-in-docker
+  - name: Run e2e tests
+    script: GO111MODULE=on ./tests/e2e/travis-e2e.sh

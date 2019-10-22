@@ -4,13 +4,13 @@ local affinity = statefulSet.mixin.spec.template.spec.affinity.podAntiAffinity.p
 local matchExpression = affinity.mixin.podAffinityTerm.labelSelector.matchExpressionsType;
 
 {
-  local antiaffinity(key, values) = {
+  local antiaffinity(key, values, namespace) = {
     affinity: {
       podAntiAffinity: {
         preferredDuringSchedulingIgnoredDuringExecution: [
           affinity.new() +
           affinity.withWeight(100) +
-          affinity.mixin.podAffinityTerm.withNamespaces($._config.namespace) +
+          affinity.mixin.podAffinityTerm.withNamespaces(namespace) +
           affinity.mixin.podAffinityTerm.withTopologyKey('kubernetes.io/hostname') +
           affinity.mixin.podAffinityTerm.labelSelector.withMatchExpressions([
             matchExpression.new() +
@@ -26,14 +26,16 @@ local matchExpression = affinity.mixin.podAffinityTerm.labelSelector.matchExpres
   alertmanager+:: {
     alertmanager+: {
       spec+:
-        antiaffinity('alertmanager', [$._config.alertmanager.name]),
+        antiaffinity('alertmanager', [$._config.alertmanager.name], $._config.namespace),
     },
   },
 
   prometheus+: {
+    local p = self,
+
     prometheus+: {
       spec+:
-        antiaffinity('prometheus', [$._config.prometheus.name]),
+        antiaffinity('prometheus', [p.name], p.namespace),
     },
   },
 }

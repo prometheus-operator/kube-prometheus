@@ -27,7 +27,7 @@
                     "subdir": ""
                 }
             },
-            "version": "e3d6d8ebb1789af0e17fb1f60171aaf64926a3a1"
+            "version": "15ddfa20a6921ffbd43172eb54f6bdc1bcf8d3d3"
         },
         {
             "name": "grafonnet",
@@ -47,7 +47,7 @@
                     "subdir": "grafana-builder"
                 }
             },
-            "version": "3c44dfa9bfe2b66985733d4b16e0afd29094b4a0"
+            "version": "e59d64a96a73e65ba53ba7fe05c9598974cc4a52"
         },
         {
             "name": "grafana",
@@ -57,7 +57,7 @@
                     "subdir": "grafana"
                 }
             },
-            "version": "c27d2792764867cdaf6484f067cc875cb8aef2f6"
+            "version": "539a90dbf63c812ad0194d8078dd776868a11c81"
         },
         {
             "name": "prometheus-operator",
@@ -77,7 +77,7 @@
                     "subdir": "Documentation/etcd-mixin"
                 }
             },
-            "version": "7948f39790fbbc979729ca6f990740a20d4a2a76"
+            "version": "3ef2ad8e115449a7004b628a873e2629855ed468"
         },
         {
             "name": "prometheus",
@@ -87,7 +87,7 @@
                     "subdir": "documentation/prometheus-mixin"
                 }
             },
-            "version": "3638e4ab18ac320c3ed0b607f07aea309dadee45"
+            "version": "b05b5f9a300b0209689c06d70f676291f23774c4"
         },
         {
             "name": "node-mixin",
@@ -97,7 +97,7 @@
                     "subdir": "docs/node-mixin"
                 }
             },
-            "version": "e7c2dbed4e0278731b59e9870eb9a9d046047aa8"
+            "version": "9f49fff79ef85fcebb69289622150e6d5346528b"
         },
         {
             "name": "promgrafonnet",
@@ -107,7 +107,7 @@
                     "subdir": "lib/promgrafonnet"
                 }
             },
-            "version": "24ea0d6e33a415e07ec7b675d74dea3cf01fde73"
+            "version": "15ddfa20a6921ffbd43172eb54f6bdc1bcf8d3d3"
         }
     ]
 }
