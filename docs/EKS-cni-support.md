@@ -7,7 +7,8 @@ One fatal issue that can occur is that you run out of IP addresses in your eks c
 You can monitor the `awscni` using kube-promethus with : 
 [embedmd]:# (../examples/eks-cni-example.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus-eks.libsonnet') + {
+local kp =  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+            (import 'kube-prometheus/kube-prometheus-eks.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
