@@ -39,7 +39,6 @@ resources:
 - ./manifests/node-exporter-service.yaml
 - ./manifests/node-exporter-serviceAccount.yaml
 - ./manifests/node-exporter-serviceMonitor.yaml
-- ./manifests/prometheus-AwsEksCniMetricService.yaml
 - ./manifests/prometheus-adapter-apiService.yaml
 - ./manifests/prometheus-adapter-clusterRole.yaml
 - ./manifests/prometheus-adapter-clusterRoleAggregatedMetricsReader.yaml
@@ -63,7 +62,6 @@ resources:
 - ./manifests/prometheus-serviceAccount.yaml
 - ./manifests/prometheus-serviceMonitor.yaml
 - ./manifests/prometheus-serviceMonitorApiserver.yaml
-- ./manifests/prometheus-serviceMonitorAwsEksCNI.yaml
 - ./manifests/prometheus-serviceMonitorCoreDNS.yaml
 - ./manifests/prometheus-serviceMonitorKubeControllerManager.yaml
 - ./manifests/prometheus-serviceMonitorKubeScheduler.yaml
