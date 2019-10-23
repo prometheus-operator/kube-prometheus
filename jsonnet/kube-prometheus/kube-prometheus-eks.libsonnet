@@ -42,4 +42,17 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         },
       },
   },
+  prometheusRules+: {
+    groups+: [
+      {
+        name: 'kube-prometheus-eks.rules',
+        rules: [
+          {
+            expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < 10',
+            record: 'eks_available_ip'
+          },
+        ],
+      },
+    ],
+  },
 }
