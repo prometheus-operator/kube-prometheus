@@ -118,8 +118,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         // forgo declaring the host port, however it is important to declare
         // it so that the scheduler can decide if the pod is schedulable.
         container.withPorts(containerPort.new($._config.nodeExporter.port) + containerPort.withHostPort($._config.nodeExporter.port) + containerPort.withName('https')) +
-        container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '20m', memory: '60Mi' }) +
+        container.mixin.resources.withRequests($._config.resources['kube-rbac-proxy'].requests) +
+        container.mixin.resources.withLimits($._config.resources['kube-rbac-proxy'].limits) +
         container.withEnv([ip]);
 
       local c = [nodeExporter, proxy];
