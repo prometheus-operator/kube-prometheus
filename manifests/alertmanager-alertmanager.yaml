@@ -11,7 +11,7 @@ spec:
     kubernetes.io/os: linux
   replicas: 3
   resources:
-    imits:
+    limits:
       cpu: 100m
       memory: 100Mi
     requests:
