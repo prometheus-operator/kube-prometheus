@@ -281,6 +281,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 insecureSkipVerify: true,
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              relabelings: [
+                {
+                  sourceLabels: ['__metrics_path__'],
+                  targetLabel: 'metrics_path'
+                },
+              ],
             },
             {
               port: 'https-metrics',
@@ -292,6 +298,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 insecureSkipVerify: true,
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              relabelings: [
+                {
+                  sourceLabels: ['__metrics_path__'],
+                  targetLabel: 'metrics_path'
+                },
+              ],
               metricRelabelings: [
                 // Drop a bunch of metrics which are disabled but still sent, see
                 // https://github.com/google/cadvisor/issues/1925.
