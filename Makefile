@@ -34,9 +34,9 @@ generate: manifests **.md
 **.md: $(shell find examples) build.sh example.jsonnet
 	$(EMBEDMD_BINARY) -w `find . -name "*.md" | grep -v vendor`
 
-manifests: vendor example.jsonnet build.sh
+manifests: examples/kustomize.jsonnet vendor build.sh
 	rm -rf manifests
-	./build.sh ./examples/kustomize.jsonnet
+	./build.sh $<
 
 vendor: jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor
