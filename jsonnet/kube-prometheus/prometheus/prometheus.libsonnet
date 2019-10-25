@@ -18,6 +18,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     },
 
     prometheus+:: {
+      name: 'k8s',
+      replicas: 2,
       rules: {},
       namespaces: ['default', 'kube-system', $._config.namespace],
     },
@@ -26,10 +28,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
   prometheus+:: {
     local p = self,
 
-    name:: 'k8s',
+    name:: $._config.prometheus.name,
     namespace:: $._config.namespace,
     roleBindingNamespaces:: $._config.prometheus.namespaces,
-    replicas:: 2,
+    replicas:: $._config.prometheus.replicas,
     prometheusRules:: $._config.prometheus.rules,
     alertmanagerName:: $.alertmanager.service.metadata.name,
 
