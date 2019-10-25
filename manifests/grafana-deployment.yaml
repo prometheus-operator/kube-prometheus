@@ -45,6 +45,9 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/apiserver
           name: grafana-dashboard-apiserver
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/cluster-total
+          name: grafana-dashboard-cluster-total
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/controller-manager
           name: grafana-dashboard-controller-manager
           readOnly: false
@@ -69,6 +72,12 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/kubelet
           name: grafana-dashboard-kubelet
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/namespace-by-pod
+          name: grafana-dashboard-namespace-by-pod
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/namespace-by-workload
+          name: grafana-dashboard-namespace-by-workload
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/node-cluster-rsrc-use
           name: grafana-dashboard-node-cluster-rsrc-use
           readOnly: false
@@ -80,6 +89,9 @@ spec:
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/persistentvolumesusage
           name: grafana-dashboard-persistentvolumesusage
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/pod-total
+          name: grafana-dashboard-pod-total
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/pods
           name: grafana-dashboard-pods
@@ -99,6 +111,9 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/statefulset
           name: grafana-dashboard-statefulset
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/workload-total
+          name: grafana-dashboard-workload-total
+          readOnly: false
       nodeSelector:
         beta.kubernetes.io/os: linux
       securityContext:
@@ -117,6 +132,9 @@ spec:
       - configMap:
           name: grafana-dashboard-apiserver
         name: grafana-dashboard-apiserver
+      - configMap:
+          name: grafana-dashboard-cluster-total
+        name: grafana-dashboard-cluster-total
       - configMap:
           name: grafana-dashboard-controller-manager
         name: grafana-dashboard-controller-manager
@@ -142,6 +160,12 @@ spec:
           name: grafana-dashboard-kubelet
         name: grafana-dashboard-kubelet
       - configMap:
+          name: grafana-dashboard-namespace-by-pod
+        name: grafana-dashboard-namespace-by-pod
+      - configMap:
+          name: grafana-dashboard-namespace-by-workload
+        name: grafana-dashboard-namespace-by-workload
+      - configMap:
           name: grafana-dashboard-node-cluster-rsrc-use
         name: grafana-dashboard-node-cluster-rsrc-use
       - configMap:
@@ -153,6 +177,9 @@ spec:
       - configMap:
           name: grafana-dashboard-persistentvolumesusage
         name: grafana-dashboard-persistentvolumesusage
+      - configMap:
+          name: grafana-dashboard-pod-total
+        name: grafana-dashboard-pod-total
       - configMap:
           name: grafana-dashboard-pods
         name: grafana-dashboard-pods
@@ -171,3 +198,6 @@ spec:
       - configMap:
           name: grafana-dashboard-statefulset
         name: grafana-dashboard-statefulset
+      - configMap:
+          name: grafana-dashboard-workload-total
+        name: grafana-dashboard-workload-total
