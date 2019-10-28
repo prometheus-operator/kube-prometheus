@@ -20553,7 +20553,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_memory_swap_io_pages:rate1m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_vmstat_pgmajfault:rate1m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -20566,7 +20566,7 @@ items:
                           ],
                           "timeFrom": null,
                           "timeShift": null,
-                          "title": "Memory Saturation (Swapped Pages)",
+                          "title": "Memory Saturation (Major Page Faults)",
                           "tooltip": {
                               "shared": false,
                               "sort": 0,
@@ -21501,10 +21501,10 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_memory_swap_io_pages:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_vmstat_pgmajfault:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
-                                  "legendFormat": "Swap IO",
+                                  "legendFormat": "Major page faults",
                                   "legendLink": null,
                                   "step": 10
                               }
@@ -21514,7 +21514,7 @@ items:
                           ],
                           "timeFrom": null,
                           "timeShift": null,
-                          "title": "Memory Saturation (pages swapped per second)",
+                          "title": "Memory Saturation (Major Page Faults)",
                           "tooltip": {
                               "shared": false,
                               "sort": 0,
