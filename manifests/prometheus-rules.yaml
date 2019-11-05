@@ -37,12 +37,8 @@ spec:
         )
       record: instance:node_memory_utilisation:ratio
     - expr: |
-        (
-          rate(node_vmstat_pgpgin{job="node-exporter"}[1m])
-        +
-          rate(node_vmstat_pgpgout{job="node-exporter"}[1m])
-        )
-      record: instance:node_memory_swap_io_pages:rate1m
+        rate(node_vmstat_pgmajfault{job="node-exporter"}[1m])
+      record: instance:node_vmstat_pgmajfault:rate1m
     - expr: |
         rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m])
       record: instance_device:node_disk_io_time_seconds:rate1m
@@ -69,6 +65,23 @@ spec:
           rate(node_network_transmit_drop_total{job="node-exporter", device!="lo"}[1m])
         )
       record: instance:node_network_transmit_drop_excluding_lo:rate1m
+  - name: kube-apiserver.rules
+    rules:
+    - expr: |
+        histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
+      labels:
+        quantile: "0.99"
+      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
+    - expr: |
+        histogram_quantile(0.9, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
+      labels:
+        quantile: "0.9"
+      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
+    - expr: |
+        histogram_quantile(0.5, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
+      labels:
+        quantile: "0.5"
+      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
   - name: k8s.rules
     rules:
     - expr: |
@@ -100,14 +113,14 @@ spec:
       record: namespace:container_memory_usage_bytes:sum
     - expr: |
         sum by (namespace, label_name) (
-            sum(kube_pod_container_resource_requests_memory_bytes{job="kube-state-metrics"} * on (endpoint, instance, job, namespace, pod, service) group_left(phase) (kube_pod_status_phase{phase=~"^(Pending|Running)$"} == 1)) by (namespace, pod)
+            sum(kube_pod_container_resource_requests_memory_bytes{job="kube-state-metrics"} * on (endpoint, instance, job, namespace, pod, service) group_left(phase) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)) by (namespace, pod)
           * on (namespace, pod)
             group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
         )
       record: namespace:kube_pod_container_resource_requests_memory_bytes:sum
     - expr: |
         sum by (namespace, label_name) (
-            sum(kube_pod_container_resource_requests_cpu_cores{job="kube-state-metrics"} * on (endpoint, instance, job, namespace, pod, service) group_left(phase) (kube_pod_status_phase{phase=~"^(Pending|Running)$"} == 1)) by (namespace, pod)
+            sum(kube_pod_container_resource_requests_cpu_cores{job="kube-state-metrics"} * on (endpoint, instance, job, namespace, pod, service) group_left(phase) (kube_pod_status_phase{phase=~"Pending|Running"} == 1)) by (namespace, pod)
           * on (namespace, pod)
             group_left(label_name) kube_pod_labels{job="kube-state-metrics"}
         )
@@ -192,23 +205,6 @@ spec:
       labels:
         quantile: "0.5"
       record: cluster_quantile:scheduler_binding_duration_seconds:histogram_quantile
-  - name: kube-apiserver.rules
-    rules:
-    - expr: |
-        histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
-      labels:
-        quantile: "0.99"
-      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
-    - expr: |
-        histogram_quantile(0.9, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
-      labels:
-        quantile: "0.9"
-      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
-    - expr: |
-        histogram_quantile(0.5, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver"}[5m])) without(instance, pod))
-      labels:
-        quantile: "0.5"
-      record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
   - name: node.rules
     rules:
     - expr: sum(min(kube_pod_info) by (node))
@@ -224,8 +220,16 @@ spec:
         ))
       record: node:node_num_cpu:sum
     - expr: |
-        sum(node_memory_MemFree_bytes{job="node-exporter"} + node_memory_Cached_bytes{job="node-exporter"} + node_memory_Buffers_bytes{job="node-exporter"})
-      record: :node_memory_MemFreeCachedBuffers_bytes:sum
+        sum(
+          node_memory_MemAvailable_bytes{job="node-exporter"} or
+          (
+            node_memory_Buffers_bytes{job="node-exporter"} +
+            node_memory_Cached_bytes{job="node-exporter"} +
+            node_memory_MemFree_bytes{job="node-exporter"} +
+            node_memory_Slab_bytes{job="node-exporter"}
+          )
+        )
+      record: :node_memory_MemAvailable_bytes:sum
   - name: kube-prometheus-node-recording.rules
     rules:
     - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[3m])) BY
@@ -403,98 +407,6 @@ spec:
       for: 1h
       labels:
         severity: warning
-  - name: kubernetes-absent
-    rules:
-    - alert: AlertmanagerDown
-      annotations:
-        message: Alertmanager has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-alertmanagerdown
-      expr: |
-        absent(up{job="alertmanager-main",namespace="monitoring"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: CoreDNSDown
-      annotations:
-        message: CoreDNS has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-corednsdown
-      expr: |
-        absent(up{job="kube-dns"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: KubeAPIDown
-      annotations:
-        message: KubeAPI has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapidown
-      expr: |
-        absent(up{job="apiserver"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: KubeControllerManagerDown
-      annotations:
-        message: KubeControllerManager has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecontrollermanagerdown
-      expr: |
-        absent(up{job="kube-controller-manager"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: KubeSchedulerDown
-      annotations:
-        message: KubeScheduler has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeschedulerdown
-      expr: |
-        absent(up{job="kube-scheduler"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: KubeStateMetricsDown
-      annotations:
-        message: KubeStateMetrics has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatemetricsdown
-      expr: |
-        absent(up{job="kube-state-metrics"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: KubeletDown
-      annotations:
-        message: Kubelet has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletdown
-      expr: |
-        absent(up{job="kubelet"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: NodeExporterDown
-      annotations:
-        message: NodeExporter has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodeexporterdown
-      expr: |
-        absent(up{job="node-exporter"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: PrometheusDown
-      annotations:
-        message: Prometheus has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-prometheusdown
-      expr: |
-        absent(up{job="prometheus-k8s",namespace="monitoring"} == 1)
-      for: 15m
-      labels:
-        severity: critical
-    - alert: PrometheusOperatorDown
-      annotations:
-        message: PrometheusOperator has disappeared from Prometheus target discovery.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-prometheusoperatordown
-      expr: |
-        absent(up{job="prometheus-operator",namespace="monitoring"} == 1)
-      for: 15m
-      labels:
-        severity: critical
   - name: kubernetes-apps
     rules:
     - alert: KubePodCrashLooping
@@ -599,6 +511,16 @@ spec:
       for: 15m
       labels:
         severity: critical
+    - alert: KubeContainerWaiting
+      annotations:
+        message: Pod {{ $labels.namespace }}/{{ $labels.pod }} container {{ $labels.container}}
+          has been in waiting state for longer than 1 hour.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecontainerwaiting
+      expr: |
+        sum by (namespace, pod, container) (kube_pod_container_status_waiting_reason{job="kube-state-metrics"}) > 0
+      for: 1h
+      labels:
+        severity: warning
     - alert: KubeDaemonSetNotScheduled
       annotations:
         message: '{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset
@@ -789,7 +711,7 @@ spec:
         ) < 0.15
         and
         predict_linear(kubelet_volume_stats_available_bytes{job="kubelet"}[6h], 4 * 24 * 3600) < 0
-      for: 5m
+      for: 1h
       labels:
         severity: critical
     - alert: KubePersistentVolumeErrors
@@ -804,15 +726,6 @@ spec:
         severity: critical
   - name: kubernetes-system
     rules:
-    - alert: KubeNodeNotReady
-      annotations:
-        message: '{{ $labels.node }} has been unready for more than 15 minutes.'
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodenotready
-      expr: |
-        kube_node_status_condition{job="kube-state-metrics",condition="Ready",status="true"} == 0
-      for: 15m
-      labels:
-        severity: warning
     - alert: KubeVersionMismatch
       annotations:
         message: There are {{ $value }} different semantic versions of Kubernetes
@@ -836,23 +749,15 @@ spec:
       for: 15m
       labels:
         severity: warning
-    - alert: KubeletTooManyPods
-      annotations:
-        message: Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage
-          }} of its Pod capacity.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
-      expr: |
-        max(max(kubelet_running_pod_count{job="kubelet"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"}) by(node) > 0.95
-      for: 15m
-      labels:
-        severity: warning
+  - name: kubernetes-system-apiserver
+    rules:
     - alert: KubeAPILatencyHigh
       annotations:
         message: The API server has a 99th percentile latency of {{ $value }} seconds
           for {{ $labels.verb }} {{ $labels.resource }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh
       expr: |
-        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99",subresource!="log",verb!~"^(?:LIST|WATCH|WATCHLIST|PROXY|CONNECT)$"} > 1
+        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99",subresource!="log",verb!~"LIST|WATCH|WATCHLIST|PROXY|CONNECT"} > 1
       for: 10m
       labels:
         severity: warning
@@ -862,7 +767,7 @@ spec:
           for {{ $labels.verb }} {{ $labels.resource }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh
       expr: |
-        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99",subresource!="log",verb!~"^(?:LIST|WATCH|WATCHLIST|PROXY|CONNECT)$"} > 4
+        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99",subresource!="log",verb!~"LIST|WATCH|WATCHLIST|PROXY|CONNECT"} > 4
       for: 10m
       labels:
         severity: critical
@@ -872,7 +777,7 @@ spec:
           }} of requests.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
-        sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m]))
+        sum(rate(apiserver_request_total{job="apiserver",code=~"5.."}[5m]))
           /
         sum(rate(apiserver_request_total{job="apiserver"}[5m])) > 0.03
       for: 10m
@@ -884,7 +789,7 @@ spec:
           }} of requests.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
-        sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m]))
+        sum(rate(apiserver_request_total{job="apiserver",code=~"5.."}[5m]))
           /
         sum(rate(apiserver_request_total{job="apiserver"}[5m])) > 0.01
       for: 10m
@@ -897,7 +802,7 @@ spec:
           }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
-        sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m])) by (resource,subresource,verb)
+        sum(rate(apiserver_request_total{job="apiserver",code=~"5.."}[5m])) by (resource,subresource,verb)
           /
         sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) > 0.10
       for: 10m
@@ -910,7 +815,7 @@ spec:
           }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
       expr: |
-        sum(rate(apiserver_request_total{job="apiserver",code=~"^(?:5..)$"}[5m])) by (resource,subresource,verb)
+        sum(rate(apiserver_request_total{job="apiserver",code=~"5.."}[5m])) by (resource,subresource,verb)
           /
         sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) > 0.05
       for: 10m
@@ -932,6 +837,75 @@ spec:
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeclientcertificateexpiration
       expr: |
         apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
+      labels:
+        severity: critical
+    - alert: KubeAPIDown
+      annotations:
+        message: KubeAPI has disappeared from Prometheus target discovery.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapidown
+      expr: |
+        absent(up{job="apiserver"} == 1)
+      for: 15m
+      labels:
+        severity: critical
+  - name: kubernetes-system-kubelet
+    rules:
+    - alert: KubeNodeNotReady
+      annotations:
+        message: '{{ $labels.node }} has been unready for more than 15 minutes.'
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodenotready
+      expr: |
+        kube_node_status_condition{job="kube-state-metrics",condition="Ready",status="true"} == 0
+      for: 15m
+      labels:
+        severity: warning
+    - alert: KubeNodeUnreachable
+      annotations:
+        message: '{{ $labels.node }} is unreachable and some workloads may be rescheduled.'
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodeunreachable
+      expr: |
+        kube_node_spec_taint{job="kube-state-metrics",key="node.kubernetes.io/unreachable",effect="NoSchedule"} == 1
+      labels:
+        severity: warning
+    - alert: KubeletTooManyPods
+      annotations:
+        message: Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage
+          }} of its Pod capacity.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
+      expr: |
+        max(max(kubelet_running_pod_count{job="kubelet"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"}) by(node) > 0.95
+      for: 15m
+      labels:
+        severity: warning
+    - alert: KubeletDown
+      annotations:
+        message: Kubelet has disappeared from Prometheus target discovery.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletdown
+      expr: |
+        absent(up{job="kubelet"} == 1)
+      for: 15m
+      labels:
+        severity: critical
+  - name: kubernetes-system-scheduler
+    rules:
+    - alert: KubeSchedulerDown
+      annotations:
+        message: KubeScheduler has disappeared from Prometheus target discovery.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeschedulerdown
+      expr: |
+        absent(up{job="kube-scheduler"} == 1)
+      for: 15m
+      labels:
+        severity: critical
+  - name: kubernetes-system-controller-manager
+    rules:
+    - alert: KubeControllerManagerDown
+      annotations:
+        message: KubeControllerManager has disappeared from Prometheus target discovery.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecontrollermanagerdown
+      expr: |
+        absent(up{job="kube-controller-manager"} == 1)
+      for: 15m
       labels:
         severity: critical
   - name: prometheus
@@ -1101,8 +1075,8 @@ spec:
     - alert: PrometheusRemoteWriteDesiredShards
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
-          desired shards calculation wants to run {{ printf $value }} shards, which
-          is more than the max of {{ printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
+          desired shards calculation wants to run {{ $value }} shards, which is more
+          than the max of {{ printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
           $labels.instance | query | first | value }}.
         summary: Prometheus remote write desired shards calculation wants to run more
           than configured max shards.
@@ -1111,7 +1085,7 @@ spec:
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
         (
           max_over_time(prometheus_remote_storage_shards_desired{job="prometheus-k8s",namespace="monitoring"}[5m])
-        > on(job, instance) group_right
+        >
           max_over_time(prometheus_remote_storage_shards_max{job="prometheus-k8s",namespace="monitoring"}[5m])
         )
       for: 15m
@@ -1171,8 +1145,8 @@ spec:
     rules:
     - alert: TargetDown
       annotations:
-        message: '{{ printf "%.4g" $value }}% of the {{ $labels.job }} targets are
-          down.'
+        message: '{{ printf "%.4g" $value }}% of the {{ $labels.job }} targets in
+          {{ $labels.namespace }} namespace are down.'
       expr: 100 * (count(up == 0) BY (job, namespace, service) / count(up) BY (job,
         namespace, service)) > 10
       for: 10m

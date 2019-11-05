@@ -71,13 +71,13 @@ This adapter is an Extension API Server and Kubernetes needs to be have this fea
 
 ### minikube
 
-In order to just try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
+To try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
 
 ```shell
-$ minikube delete && minikube start --kubernetes-version=v1.14.4 --memory=4096 --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
+$ minikube delete && minikube start --kubernetes-version=v1.16.0 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
 ```
 
-The kube-prometheus stack includes a resource metrics API server, like the metrics-server does. So ensure the metrics-server plugin is disabled on minikube:
+The kube-prometheus stack includes a resource metrics API server, so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:
 
 ```shell
 $ minikube addons disable metrics-server
@@ -90,20 +90,23 @@ $ minikube addons disable metrics-server
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 
 Though for a quickstart a compiled version of the Kubernetes [manifests](manifests) generated with this library (specifically with `example.jsonnet`) is checked into this repository in order to try the content out quickly. To try out the stack un-customized run:
- * Simply create the stack:
+ * Create the monitoring stack using the config in the `manifests` directory:
+
 ```shell
-$ kubectl create -f manifests/
-
-# It can take a few seconds for the above 'create manifests' command to fully create the following resources, so verify the resources are ready before proceeding.
-$ until kubectl get customresourcedefinitions servicemonitors.monitoring.coreos.com ; do date; sleep 1; echo ""; done
-$ until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
-
-$ kubectl apply -f manifests/ # This command sometimes may need to be done twice (to workaround a race condition).
+# Create the namespace and CRDs, and then wait for them to be availble before creating the remaining resources
+kubectl create -f manifests/setup
+until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
+kubectl create -f manifests/
 ```
+
+We create the namespace and CustomResourceDefinitions first to avoid race conditions when deploying the monitoring components.
+Alternatively, the resources in both folders can be applied with a single command 
+`kubectl create -f manifests/setup -f manifests`, but it may be necessary to run the command multiple times for all components to
+be created successfullly.
 
  * And to teardown the stack:
 ```shell
-$ kubectl delete -f manifests/
+kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
 ```
 
 ### Access the dashboards
@@ -187,8 +190,13 @@ local kp =
     },
   };
 
-{ ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
-{ ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
+{ ['setup/0namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{
+  ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
+  for name in std.filter((function(name) name != 'serviceMonitor'), std.objectFields(kp.prometheusOperator))
+} +
+// serviceMonitor is separated so that it can be created after the CRDs are ready
+{ 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
@@ -212,7 +220,7 @@ set -o pipefail
 
 # Make sure to start with a clean 'manifests' dir
 rm -rf manifests
-mkdir manifests
+mkdir -p manifests/setup
 
                                                # optional, but we would like to generate yaml, not json
 jsonnet -J vendor -m manifests "${1-example.jsonnet}" | xargs -I{} sh -c 'cat {} | gojsontoyaml > {}.yaml; rm -f {}' -- {}
@@ -565,34 +573,34 @@ You can define ServiceMonitor resources in your `jsonnet` spec. See the snippet 
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   _config+:: {
-      namespace: 'monitoring',
-      prometheus+:: {
-        namespaces+: ['my-namespace', 'my-second-namespace'],
-      }
-    },
+    namespace: 'monitoring',
     prometheus+:: {
-      serviceMonitorMyNamespace: {
-          apiVersion: 'monitoring.coreos.com/v1',
-          kind: 'ServiceMonitor',
-          metadata: {
-              name: 'my-servicemonitor',
-              namespace: 'my-namespace',
+      namespaces+: ['my-namespace', 'my-second-namespace'],
+    },
+  },
+  prometheus+:: {
+    serviceMonitorMyNamespace: {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'ServiceMonitor',
+      metadata: {
+        name: 'my-servicemonitor',
+        namespace: 'my-namespace',
+      },
+      spec: {
+        jobLabel: 'app',
+        endpoints: [
+          {
+            port: 'http-metrics',
           },
-          spec: {
-              jobLabel: 'app',
-              endpoints: [
-              {
-                  port: 'http-metrics',
-              },
-              ],
-              selector: {
-                  matchLabels: {
-                      'app': 'myapp',
-                  },
-              },
+        ],
+        selector: {
+          matchLabels: {
+            app: 'myapp',
           },
         },
-      },      
+      },
+    },
+  },
 
 };
 

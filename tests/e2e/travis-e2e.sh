@@ -16,13 +16,13 @@ chmod +x kind
 ./kind create cluster
 export KUBECONFIG="$(./kind get kubeconfig-path)"
 
-./kubectl apply -f manifests/0prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
-./kubectl apply -f manifests/0prometheus-operator-0prometheusCustomResourceDefinition.yaml
-./kubectl apply -f manifests/0prometheus-operator-0prometheusruleCustomResourceDefinition.yaml
-./kubectl apply -f manifests/0prometheus-operator-0servicemonitorCustomResourceDefinition.yaml
+# create namespace, permissions, and CRDs
+./kubectl create -f manifests/setup
 
-# Wait for CRDs to be successfully registered
-sleep 10
+# wait for CRD creation to complete
+until ./kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
 
-./kubectl apply -f manifests
+# create monitoring components
+./kubectl create -f manifests/
+
 make test-e2e

@@ -18,6 +18,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     },
 
     prometheus+:: {
+      name: 'k8s',
+      replicas: 2,
       rules: {},
       namespaces: ['default', 'kube-system', $._config.namespace],
     },
@@ -26,10 +28,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
   prometheus+:: {
     local p = self,
 
-    name:: 'k8s',
+    name:: $._config.prometheus.name,
     namespace:: $._config.namespace,
     roleBindingNamespaces:: $._config.prometheus.namespaces,
-    replicas:: 2,
+    replicas:: $._config.prometheus.replicas,
     prometheusRules:: $._config.prometheus.rules,
     alertmanagerName:: $.alertmanager.service.metadata.name,
 
@@ -281,6 +283,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 insecureSkipVerify: true,
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              relabelings: [
+                {
+                  sourceLabels: ['__metrics_path__'],
+                  targetLabel: 'metrics_path'
+                },
+              ],
             },
             {
               port: 'https-metrics',
@@ -292,6 +300,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 insecureSkipVerify: true,
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              relabelings: [
+                {
+                  sourceLabels: ['__metrics_path__'],
+                  targetLabel: 'metrics_path'
+                },
+              ],
               metricRelabelings: [
                 // Drop a bunch of metrics which are disabled but still sent, see
                 // https://github.com/google/cadvisor/issues/1925.

@@ -1,34 +1,10 @@
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
-    prometheus+:: {
-      namespaces+: ['my-namespace', 'my-second-namespace'],
-    },
   },
-  prometheus+:: {
-    serviceMonitorMyNamespace: {
-      apiVersion: 'monitoring.coreos.com/v1',
-      kind: 'ServiceMonitor',
-      metadata: {
-        name: 'my-servicemonitor',
-        namespace: 'my-namespace',
-      },
-      spec: {
-        jobLabel: 'app',
-        endpoints: [
-          {
-            port: 'http-metrics',
-          },
-        ],
-        selector: {
-          matchLabels: {
-            app: 'myapp',
-          },
-        },
-      },
-    },
+  rawGrafanaDashboards+:: {
+    'my-dashboard.json': (importstr 'example-grafana-dashboard.json'),
   },
-
 };
 
 { ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +

@@ -24,8 +24,13 @@ local kp =
     },
   };
 
-{ ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
-{ ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
+{ ['setup/0namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{
+  ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
+  for name in std.filter((function(name) name != 'serviceMonitor'), std.objectFields(kp.prometheusOperator))
+} +
+// serviceMonitor is separated so that it can be created after the CRDs are ready
+{ 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
@@ -294,6 +299,27 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   },
   grafanaDashboards+:: {
     'my-dashboard.json': (import 'example-grafana-dashboard.json'),
+  },
+};
+
+{ ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{ ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
+{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
+{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
+```
+
+Incase you have lots of json dashboard exported out from grafan UI the above approch is going to take lots of time. to improve performance we can use `rawGrafanaDashboards` field and provide it's value as json string by using importstr
+[embedmd]:# (../examples/grafana-additional-rendered-dashboard-example-2.jsonnet)
+```jsonnet
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+  _config+:: {
+    namespace: 'monitoring',
+  },
+  rawGrafanaDashboards+:: {
+    'my-dashboard.json': (importstr 'example-grafana-dashboard.json'),
   },
 };
 
