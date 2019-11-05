@@ -49,7 +49,14 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         rules: [
           {
             expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < 10',
-            record: 'eks_available_ip'
+            labels: {
+              severity: 'critical',
+            },
+            annotations: {
+              message: 'Instance {{ $labels.instance }} has less than 10 IPs available.'
+            },
+            'for': '10m',
+            alert: 'EksAvailableIPs'
           },
         ],
       },
