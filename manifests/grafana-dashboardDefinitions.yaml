@@ -17833,9 +17833,28 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
+                          "pattern": "Value #C",
+                          "thresholds": [
+
+                          ],
+                          "type": "number",
+                          "unit": "pps"
+                      },
+                      {
+                          "alias": "Rate of Transmitted Packets",
+                          "colorMode": null,
+                          "colors": [
+
+                          ],
+                          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                          "decimals": 2,
+                          "link": false,
+                          "linkTooltip": "Drill down",
+                          "linkUrl": "",
                           "pattern": "Value #D",
                           "thresholds": [
 
+                          ],
                           "type": "number",
                           "unit": "pps"
                       },
@@ -20261,7 +20280,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  instance:node_cpu_utilisation:rate1m{job=\"node-exporter\"}\n*\n  instance:node_num_cpu:sum{job=\"node-exporter\"}\n/ ignoring (instance) group_left\n  sum without (instance) (instance:node_num_cpu:sum{job=\"node-exporter\"})\n)\n",
+                                  "expr": "(\n  instance:node_cpu_utilisation:rate1m{job=\"node-exporter\"}\n*\n  instance:node_num_cpu:sum{job=\"node-exporter\"}\n)\n/ scalar(sum(instance:node_num_cpu:sum{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -20347,7 +20366,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  instance:node_load1_per_cpu:ratio{job=\"node-exporter\"}\n/ ignoring (instance) group_left\n  count without (instance) (instance:node_load1_per_cpu:ratio{job=\"node-exporter\"})\n)\n",
+                                  "expr": "instance:node_load1_per_cpu:ratio{job=\"node-exporter\"}\n/ scalar(count(instance:node_load1_per_cpu:ratio{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -20445,7 +20464,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  instance:node_memory_utilisation:ratio{job=\"node-exporter\"}\n/ ignoring (instance) group_left\n  count without (instance) (instance:node_memory_utilisation:ratio{job=\"node-exporter\"})\n)\n",
+                                  "expr": "instance:node_memory_utilisation:ratio{job=\"node-exporter\"}\n/ scalar(count(instance:node_memory_utilisation:ratio{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -20845,7 +20864,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\"}\n/ ignoring (instance, device) group_left\n  count without (instance, device) (instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\"})\n)\n",
+                                  "expr": "instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{device}}",
@@ -20931,7 +20950,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\"}\n/ ignoring (instance, device) group_left\n  count without (instance, device) (instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\"})\n)\n",
+                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{device}}",
@@ -21029,7 +21048,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  sum without (device) (\n    max without (fstype, mountpoint) (\n      node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\"} - node_filesystem_avail_bytes{job=\"node-exporter\", fstype!=\"\"}\n    )\n  ) \n/ ignoring (instance) group_left\n  sum without (instance, device) (\n    max without (fstype, mountpoint) (\n      node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\"}\n    )\n  )\n)  \n",
+                                  "expr": "sum without (device) (\n  max without (fstype, mountpoint) (\n    node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\"} - node_filesystem_avail_bytes{job=\"node-exporter\", fstype!=\"\"}\n  )\n) \n/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\"})))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -26162,13 +26181,10 @@ items:
                           "renderer": "flot",
                           "repeat": null,
                           "seriesOverrides": [
-                              {
-                                  "alias": "/max_shards/",
-                                  "yaxis": 2
-                              }
+
                           ],
                           "spaceLength": 10,
-                          "span": 12,
+                          "span": 6,
                           "stack": false,
                           "steppedLine": false,
                           "targets": [
@@ -26219,20 +26235,7 @@ items:
                                   "show": true
                               }
                           ]
-                      }
-                  ],
-                  "repeat": null,
-                  "repeatIteration": null,
-                  "repeatRowId": null,
-                  "showTitle": true,
-                  "title": "Shards",
-                  "titleSize": "h6",
-                  "type": "row"
-              },
-              {
-                  "collapse": false,
-                  "collapsed": false,
-                  "panels": [
+                      },
                       {
                           "aliasColors": {
 
@@ -26376,12 +26379,12 @@ items:
 
                           ],
                           "spaceLength": 10,
-                          "span": 6,
+                          "span": 3,
                           "stack": false,
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "prometheus_remote_storage_pending_samples{cluster=~\"$cluster\", instance=~\"$instance\"}",
+                                  "expr": "rate(prometheus_remote_storage_dropped_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{cluster}}:{{instance}}-{{queue}}",
@@ -26393,7 +26396,7 @@ items:
                           ],
                           "timeFrom": null,
                           "timeShift": null,
-                          "title": "Pending Samples: $queue",
+                          "title": "Dropped Samples",
                           "tooltip": {
                               "shared": true,
                               "sort": 0,
@@ -26427,20 +26430,7 @@ items:
                                   "show": true
                               }
                           ]
-                      }
-                  ],
-                  "repeat": null,
-                  "repeatIteration": null,
-                  "repeatRowId": null,
-                  "showTitle": true,
-                  "title": "Shard Details",
-                  "titleSize": "h6",
-                  "type": "row"
-              },
-              {
-                  "collapse": false,
-                  "collapsed": false,
-                  "panels": [
+                      },
                       {
                           "aliasColors": {
 
@@ -26480,12 +26470,12 @@ items:
 
                           ],
                           "spaceLength": 10,
-                          "span": 6,
+                          "span": 3,
                           "stack": false,
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "prometheus_tsdb_wal_segment_current{cluster=~\"$cluster\", instance=~\"$instance\"}",
+                                  "expr": "rate(prometheus_remote_storage_failed_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{cluster}}:{{instance}}-{{queue}}",
@@ -26497,7 +26487,7 @@ items:
                           ],
                           "timeFrom": null,
                           "timeShift": null,
-                          "title": "TSDB Current Segment",
+                          "title": "Failed Samples",
                           "tooltip": {
                               "shared": true,
                               "sort": 0,
@@ -26515,7 +26505,7 @@ items:
                           },
                           "yaxes": [
                               {
-                                  "format": "none",
+                                  "format": "short",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -26571,12 +26561,12 @@ items:
 
                           ],
                           "spaceLength": 10,
-                          "span": 6,
+                          "span": 3,
                           "stack": false,
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "prometheus_wal_watcher_current_segment{cluster=~\"$cluster\", instance=~\"$instance\"}",
+                                  "expr": "rate(prometheus_remote_storage_retried_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{cluster}}:{{instance}}-{{queue}}",
