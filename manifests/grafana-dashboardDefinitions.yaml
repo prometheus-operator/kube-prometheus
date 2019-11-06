@@ -1508,7 +1508,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Time",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1526,7 +1526,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #A",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1544,7 +1544,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #B",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1562,7 +1562,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #C",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1580,7 +1580,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #D",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1598,7 +1598,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #E",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1616,7 +1616,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #F",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1634,7 +1634,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #G",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1652,7 +1652,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #H",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -1670,7 +1670,7 @@ items:
                           "link": true,
                           "linkTooltip": "Drill down",
                           "linkUrl": "d/8b7a8b326d7a6f1f04244066368c67af/kubernetes-networking-namespace-pods?orgId=1&refresh=30s&var-namespace=$__cell",
-                          "pattern": "namespace",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -17779,7 +17779,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Time",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -17797,7 +17797,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #A",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -17815,7 +17815,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #B",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -17833,7 +17833,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #C",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -17851,7 +17851,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #D",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -17869,7 +17869,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #E",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -17887,7 +17887,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #F",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -17905,7 +17905,7 @@ items:
                           "link": true,
                           "linkTooltip": "Drill down",
                           "linkUrl": "d/7a18067ce943a40ae25454675c19ff5c/kubernetes-networking-pod?orgId=1&refresh=30s&var-namespace=$namespace&var-pod=$__cell",
-                          "pattern": "pod",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19012,7 +19012,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Time",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19030,7 +19030,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #A",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19048,7 +19048,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #B",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19066,7 +19066,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #C",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19084,7 +19084,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #D",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19102,7 +19102,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #E",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19120,7 +19120,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #F",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19138,7 +19138,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #G",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19156,7 +19156,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "Value #H",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
@@ -19174,7 +19174,7 @@ items:
                           "link": true,
                           "linkTooltip": "Drill down",
                           "linkUrl": "d/728bf77cc1166d2f3133bf25846876cc/kubernetes-networking-workload?orgId=1&refresh=30s&var-namespace=$namespace&var-type=$type&var-workload=$__cell",
-                          "pattern": "workload",
+                          "pattern": "",
                           "thresholds": [
 
                           ],
