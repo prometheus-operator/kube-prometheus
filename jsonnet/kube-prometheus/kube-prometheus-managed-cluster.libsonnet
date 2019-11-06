@@ -1,6 +1,5 @@
 // On managed Kubernetes clusters some of the control plane components are not exposed to customers.
-// Disable scrape jobs and service monitors for these components by overwriting 'kube-prometheus.libsonnet' defaults
-// Note this doesn't disable generation of associated alerting rules but the rules don't trigger
+// Disable scrape jobs, service monitors, and alert groups for these components by overwriting 'kube-prometheus.libsonnet' defaults
 
 {
   _config+:: {
@@ -12,6 +11,18 @@
       for k in std.objectFields(j)
       if !std.setMember(k, ['KubeControllerManager', 'KubeScheduler'])
     },
+
+    // Skip alerting rules too
+    prometheus+:: {
+      rules+:: {
+        local g = super.groups,
+        groups: [
+          h
+          for h in g
+          if !std.setMember(h.name, ['kubernetes-system-controller-manager', 'kubernetes-system-scheduler'])
+        ],
+      },
+    },
   },
 
   // Same as above but for ServiceMonitor's
@@ -21,8 +32,4 @@
     for q in std.objectFields(p)
     if !std.setMember(q, ['serviceMonitorKubeControllerManager', 'serviceMonitorKubeScheduler'])
   },
-
-  // TODO: disable generationg of alerting rules
-  // manifests/prometheus-rules.yaml:52:  - name: kube-scheduler.rules
-
 }
