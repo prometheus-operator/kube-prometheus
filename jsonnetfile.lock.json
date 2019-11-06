@@ -41,8 +41,8 @@
           "subdir": "grafonnet"
         }
       },
-      "version": "47db72da03fc4a7a0658a87791e13c3315a3a252",
-      "sum": "ssLOSIiYWYBvEYJHwRtwMY4kPQoP+MuIUkT0bp2Mb6A="
+      "version": "b82411476842f583817e67feff5becf1228fd540",
+      "sum": "mEosZ6hZCTCw8AaASEtRFjY8PSmpvqI3xj6IWpwcroU="
     },
     {
       "name": "ksonnet",
@@ -94,7 +94,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "e94503ff5c412590ce7616accdd3c62a2189bcd3",
+      "version": "431844f0a7c289e4255a68f09a18fcca09637fb2",
       "sum": "wSDLAXS5Xzla9RFRE2IW5mRToeRFULHb7dSYYBDfEsM="
     },
     {

@@ -8,16 +8,6 @@
         }
       },
       "version": ""
-    },
-    {
-      "name": "node-mixin",
-      "source": {
-        "git": {
-          "remote": "https://github.com/prometheus/node_exporter",
-          "subdir": "docs/node-mixin"
-        }
-      },
-      "version": "5a7b85876d6108a91f0d8673c0d7eca38687671b"
     }
   ]
 }
