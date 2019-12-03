@@ -168,7 +168,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
             {
               port: 'https',
               scheme: 'https',
-              interval: '30s',
+              interval: '15s',
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               relabelings: [
                 {
