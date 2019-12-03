@@ -19,7 +19,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           resolve_timeout: '5m',
         },
         route: {
-          group_by: ['job'],
+          group_by: ['namespace'],
           group_wait: '30s',
           group_interval: '5m',
           repeat_interval: '12h',
