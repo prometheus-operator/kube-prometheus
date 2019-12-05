@@ -182,6 +182,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           serviceMonitorSelector: {},
           podMonitorSelector: {},
           serviceMonitorNamespaceSelector: {},
+          podMonitorNamespaceSelector: {},
           nodeSelector: { 'kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
             role: 'alert-rules',
