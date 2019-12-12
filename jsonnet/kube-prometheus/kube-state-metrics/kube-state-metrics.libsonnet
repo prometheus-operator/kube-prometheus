@@ -8,9 +8,6 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       collectors: '',  // empty string gets a default set
       scrapeInterval: '30s',
       scrapeTimeout: '30s',
-
-      baseCPU: '100m',
-      baseMemory: '150Mi',
     },
 
     versions+:: {
@@ -174,8 +171,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           '--telemetry-host=127.0.0.1',
           '--telemetry-port=8082',
         ] + if $._config.kubeStateMetrics.collectors != '' then ['--collectors=' + $._config.kubeStateMetrics.collectors] else []) +
-        container.mixin.resources.withRequests({ cpu: $._config.kubeStateMetrics.baseCPU, memory: $._config.kubeStateMetrics.baseMemory }) +
-        container.mixin.resources.withLimits({ cpu: $._config.kubeStateMetrics.baseCPU, memory: $._config.kubeStateMetrics.baseMemory });
+        container.mixin.resources.withRequests($._config.resources['kube-state-metrics'].requests) +
+        container.mixin.resources.withLimits($._config.resources['kube-state-metrics'].limits);
 
       local c = [proxyClusterMetrics, proxySelfMetrics, kubeStateMetrics];
 

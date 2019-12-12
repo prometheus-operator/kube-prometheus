@@ -9,6 +9,9 @@
       'kube-rbac-proxy'+: {
         limits: {},
       },
+      'kube-state-metrics'+: {
+        limits: {},
+      },
       'node-exporter'+: {
         limits: {},
       },
