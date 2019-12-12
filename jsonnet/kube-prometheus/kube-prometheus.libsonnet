@@ -116,6 +116,10 @@ local configMapList = k3.core.v1.configMapList;
         requests: { cpu: '10m', memory: '20Mi' },
         limits: { cpu: '20m', memory: '40Mi' },
       },
+      'kube-state-metrics': {
+        requests: { cpu: '100m', memory: '150Mi' },
+        limits: { cpu: '100m', memory: '150Mi' },
+      },
       'node-exporter': {
         requests: { cpu: '102m', memory: '180Mi' },
         limits: { cpu: '250m', memory: '180Mi' },
