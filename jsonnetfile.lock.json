@@ -8,8 +8,8 @@
           "subdir": "Documentation/etcd-mixin"
         }
       },
-      "version": "cbc1340af53f50728181f97f6bce442ac33d8993",
-      "sum": "bkp18AxkOUYnVC15Gh9EoIi+mMAn0IT3hMzb8mlzpSw="
+      "version": "fb7703ab430ca2f23cd2f70bad8d1d38f9b165fb",
+      "sum": "Ko3qhNfC2vN/houLh6C0Ryacjv70gl0DVPGU/PQ4OD0="
     },
     {
       "name": "grafana",
@@ -30,7 +30,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "67ab3dc52f3cdbc3b29d30afd3261375b5ad13fd",
+      "version": "8813f9108550cd510b17ce5a8bac9261dd140e13",
       "sum": "ELsYwK+kGdzX1mee2Yy+/b2mdO4Y503BOCDkFzwmGbE="
     },
     {
@@ -41,8 +41,8 @@
           "subdir": "grafonnet"
         }
       },
-      "version": "b82411476842f583817e67feff5becf1228fd540",
-      "sum": "mEosZ6hZCTCw8AaASEtRFjY8PSmpvqI3xj6IWpwcroU="
+      "version": "22420e64b58913754871a1c7d6c7b3cfd3651460",
+      "sum": "z/+CW6854tMTaI4+iRbx0nwP/m/vzf5LezBfZVXZKqU="
     },
     {
       "name": "ksonnet",
@@ -72,8 +72,8 @@
           "subdir": ""
         }
       },
-      "version": "252be5f3d16950aed725601ce1020dd5917aac67",
-      "sum": "PmOBMPbWn9/P8zVY4er20VKZCcuDW1NQXkjrX100lnE="
+      "version": "a7ee9d1abe1b1a3670a02ede1135cadb660b9d0c",
+      "sum": "bFGN7aEnh4Hs+tkuRkmlWboht0RWt38qy+Y4gGS+pa0="
     },
     {
       "name": "node-mixin",
@@ -83,7 +83,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "20fe5bfb5be4caf3c8c11533b7fb35cb97d810f5",
+      "version": "2cae917bb7e0b6379221e8a24da012b16e63d661",
       "sum": "7vEamDTP9AApeiF4Zu9ZyXzDIs3rYHzwf9k7g8X+wsg="
     },
     {
@@ -94,8 +94,8 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "431844f0a7c289e4255a68f09a18fcca09637fb2",
-      "sum": "wSDLAXS5Xzla9RFRE2IW5mRToeRFULHb7dSYYBDfEsM="
+      "version": "fce2e131dba3d4150e1b44b7b2d1a5e62f655dc7",
+      "sum": "/cohvDTaIiLElG66tKeQsi4v1M9mlGDKjOBSWivL9TU="
     },
     {
       "name": "prometheus-operator",
@@ -116,8 +116,19 @@
           "subdir": "lib/promgrafonnet"
         }
       },
-      "version": "325f8a46fac9605f1de8bc20ca811cb92d1ef7e5",
+      "version": "a7ee9d1abe1b1a3670a02ede1135cadb660b9d0c",
       "sum": "VhgBM39yv0f4bKv8VfGg4FXkg573evGDRalip9ypKbc="
+    },
+    {
+      "name": "slo-libsonnet",
+      "source": {
+        "git": {
+          "remote": "https://github.com/metalmatze/slo-libsonnet",
+          "subdir": "slo-libsonnet"
+        }
+      },
+      "version": "437c402c5f3ad86c3c16db8471f1649284fef0ee",
+      "sum": "2Zcyku1f558VrUpMaJnI78fahDksPLcS1idmxxwcQ7Q="
     }
   ]
 }
