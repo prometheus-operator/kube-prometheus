@@ -160,6 +160,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local resourceRequirements = container.mixin.resourcesType;
       local selector = statefulSet.mixin.spec.selectorType;
 
+
       local resources =
         resourceRequirements.new() +
         resourceRequirements.withRequests({ memory: '400Mi' });
@@ -287,7 +288,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
               relabelings: [
                 {
                   sourceLabels: ['__metrics_path__'],
-                  targetLabel: 'metrics_path'
+                  targetLabel: 'metrics_path',
                 },
               ],
             },
@@ -304,10 +305,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
               relabelings: [
                 {
                   sourceLabels: ['__metrics_path__'],
-                  targetLabel: 'metrics_path'
+                  targetLabel: 'metrics_path',
                 },
               ],
-              metricRelabelings: [
+              metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
                 // Drop a bunch of metrics which are disabled but still sent, see
                 // https://github.com/google/cadvisor/issues/1925.
                 {
@@ -347,7 +348,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
             {
               port: 'http-metrics',
               interval: '30s',
-              metricRelabelings: [
+              metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
                 {
                   sourceLabels: ['__name__'],
                   regex: 'etcd_(debugging|disk|request|server).*',
@@ -402,7 +403,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 serverName: 'kubernetes',
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-              metricRelabelings: [
+              metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
                 {
                   sourceLabels: ['__name__'],
                   regex: 'etcd_(debugging|disk|request|server).*',
