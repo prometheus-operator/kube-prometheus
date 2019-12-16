@@ -63,17 +63,17 @@ func TestQueryPrometheus(t *testing.T) {
 		expectN int
 	}{
 		{
-			// 	query:   `up{job="node-exporter"} == 1`,
-			// 	expectN: 1,
-			// }, {
+			query:   `up{job="node-exporter"} == 1`,
+			expectN: 1,
+		}, {
 			// 	query:   `up{job="kubelet"} == 1`,
 			// 	expectN: 1,
 			// }, {
 			query:   `up{job="apiserver"} == 1`,
 			expectN: 1,
-			// }, {
-			// 	query:   `up{job="kube-state-metrics"} == 1`,
-			// 	expectN: 1,
+		}, {
+		 	query:   `up{job="kube-state-metrics"} == 1`,
+		 	expectN: 1,
 		}, {
 			query:   `up{job="prometheus-k8s"} == 1`,
 			expectN: 1,
