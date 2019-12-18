@@ -1351,6 +1351,7 @@ items:
                       "threshold": 0
                   },
                   "datasource": "$datasource",
+                  "description": "",
                   "fontSize": "80%",
                   "format": "Bps",
                   "gridPos": {
@@ -1396,6 +1397,7 @@ items:
                       "threshold": 0
                   },
                   "datasource": "$datasource",
+                  "description": "",
                   "fontSize": "80%",
                   "format": "Bps",
                   "gridPos": {
@@ -1779,6 +1781,7 @@ items:
                               "threshold": 0
                           },
                           "datasource": "$datasource",
+                          "description": "",
                           "fontSize": "80%",
                           "format": "Bps",
                           "gridPos": {
@@ -1824,6 +1827,7 @@ items:
                               "threshold": 0
                           },
                           "datasource": "$datasource",
+                          "description": "",
                           "fontSize": "80%",
                           "format": "Bps",
                           "gridPos": {
@@ -18891,6 +18895,7 @@ items:
                       "threshold": 0
                   },
                   "datasource": "$datasource",
+                  "description": "",
                   "fontSize": "80%",
                   "format": "Bps",
                   "gridPos": {
@@ -18936,6 +18941,7 @@ items:
                       "threshold": 0
                   },
                   "datasource": "$datasource",
+                  "description": "",
                   "fontSize": "80%",
                   "format": "Bps",
                   "gridPos": {
@@ -19319,6 +19325,7 @@ items:
                               "threshold": 0
                           },
                           "datasource": "$datasource",
+                          "description": "",
                           "fontSize": "80%",
                           "format": "Bps",
                           "gridPos": {
@@ -19364,6 +19371,7 @@ items:
                               "threshold": 0
                           },
                           "datasource": "$datasource",
+                          "description": "",
                           "fontSize": "80%",
                           "format": "Bps",
                           "gridPos": {
@@ -31604,6 +31612,7 @@ items:
                       "threshold": 0
                   },
                   "datasource": "$datasource",
+                  "description": "",
                   "fontSize": "80%",
                   "format": "Bps",
                   "gridPos": {
@@ -31649,6 +31658,7 @@ items:
                       "threshold": 0
                   },
                   "datasource": "$datasource",
+                  "description": "",
                   "fontSize": "80%",
                   "format": "Bps",
                   "gridPos": {
@@ -31705,6 +31715,7 @@ items:
                               "threshold": 0
                           },
                           "datasource": "$datasource",
+                          "description": "",
                           "fontSize": "80%",
                           "format": "Bps",
                           "gridPos": {
@@ -31750,6 +31761,7 @@ items:
                               "threshold": 0
                           },
                           "datasource": "$datasource",
+                          "description": "",
                           "fontSize": "80%",
                           "format": "Bps",
                           "gridPos": {
