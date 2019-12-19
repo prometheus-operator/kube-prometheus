@@ -2,7 +2,7 @@
   // Drop all kubelet metrics which are deprecated in kubernetes.
   {
     sourceLabels: ['__name__'],
-    regex: 'kubelet_(pod_worker_latency_microseconds|pod_start_latency_microseconds|cgroup_manager_latency_microseconds|pod_worker_start_latency_microseconds|pleg_relist_latency_microseconds|pleg_relist_interval_microseconds|runtime_operations|runtime_operations_latency_microseconds|runtime_operations_errors|eviction_stats_age_microseconds|device_plugin_registration_count|device_plugin_alloc_latency_microseconds)',
+    regex: 'kubelet_(pod_worker_latency_microseconds|pod_start_latency_microseconds|cgroup_manager_latency_microseconds|pod_worker_start_latency_microseconds|pleg_relist_latency_microseconds|pleg_relist_interval_microseconds|runtime_operations|runtime_operations_latency_microseconds|runtime_operations_errors|eviction_stats_age_microseconds|device_plugin_registration_count|device_plugin_alloc_latency_microseconds|network_plugin_operations_latency_microseconds)',
     action: 'drop',
   },
   // Drop all scheduler metrics which are deprecated in kubernetes.
@@ -44,7 +44,7 @@
   // Drop all other metrics which are deprecated in kubernetes.
   {
     sourceLabels: ['__name__'],
-    regex: 'network_plugin_operations_latency_microseconds|data_key_generation_latencies_microse|sync_proxy_rules_latency_microseconds|rest_client_request_latency_seconds',
+    regex: 'kubeproxy_sync_proxy_rules_latency_microseconds|rest_client_request_latency_secons',
     action: 'drop',
   },
 ]
