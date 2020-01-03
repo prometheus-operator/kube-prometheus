@@ -11,7 +11,9 @@ local manifests =
   { ['setup/0namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
   {
     ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
-    for name in std.filter((function(name) name != 'serviceMonitor'), std.objectFields(kp.prometheusOperator))
+    for name in std.filter(
+      (function(name) (name != 'serviceMonitor' && !std.endsWith(name, 'CustomResourceDefinition') ) ),
+      std.objectFields(kp.prometheusOperator))
   } +
   // serviceMonitor is separated so that it can be created after the CRDs are ready
   { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
