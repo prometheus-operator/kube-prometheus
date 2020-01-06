@@ -78,8 +78,8 @@ local configMapList = k3.core.v1.configMapList;
       // 'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305',  // TODO: Might not work with h2
     ],
 
-    cadvisorSelector: 'job="kubelet"',
-    kubeletSelector: 'job="kubelet"',
+    cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
+    kubeletSelector: 'job="kubelet", metrics_path="/metrics"',
     kubeStateMetricsSelector: 'job="kube-state-metrics"',
     nodeExporterSelector: 'job="node-exporter"',
     notKubeDnsSelector: 'job!="kube-dns"',
