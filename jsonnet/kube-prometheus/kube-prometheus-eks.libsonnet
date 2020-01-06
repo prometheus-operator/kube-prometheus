@@ -4,6 +4,17 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
 
 {
   prometheus+: {
+    serviceMonitorCoreDNS+: {
+        spec+: {
+          endpoints: [
+            {
+              bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token",
+              interval: "15s",
+              targetPort: 9153
+            }
+          ]
+        },
+      },
     AwsEksCniMetricService:
         service.new('aws-node', { 'k8s-app' : 'aws-node' } , servicePort.newNamed('cni-metrics-port', 61678, 61678)) +
         service.mixin.metadata.withNamespace('kube-system') +
