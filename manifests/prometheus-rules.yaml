@@ -90,31 +90,31 @@ spec:
   - name: k8s.rules
     rules:
     - expr: |
-        sum(rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container!="POD"}[5m])) by (namespace)
+        sum(rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}[5m])) by (namespace)
       record: namespace:container_cpu_usage_seconds_total:sum_rate
     - expr: |
         sum by (namespace, pod, container) (
-          rate(container_cpu_usage_seconds_total{job="kubelet", image!="", container!="POD"}[5m])
+          rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}[5m])
         ) * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
       record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
     - expr: |
-        container_memory_working_set_bytes{job="kubelet", image!=""}
+        container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
         * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
       record: node_namespace_pod_container:container_memory_working_set_bytes
     - expr: |
-        container_memory_rss{job="kubelet", image!=""}
+        container_memory_rss{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
         * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
       record: node_namespace_pod_container:container_memory_rss
     - expr: |
-        container_memory_cache{job="kubelet", image!=""}
+        container_memory_cache{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
         * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
       record: node_namespace_pod_container:container_memory_cache
     - expr: |
-        container_memory_swap{job="kubelet", image!=""}
+        container_memory_swap{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
         * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
       record: node_namespace_pod_container:container_memory_swap
     - expr: |
-        sum(container_memory_usage_bytes{job="kubelet", image!="", container!="POD"}) by (namespace)
+        sum(container_memory_usage_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}) by (namespace)
       record: namespace:container_memory_usage_bytes:sum
     - expr: |
         sum by (namespace) (
@@ -703,9 +703,9 @@ spec:
           }} free.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumeusagecritical
       expr: |
-        kubelet_volume_stats_available_bytes{job="kubelet"}
+        kubelet_volume_stats_available_bytes{job="kubelet", metrics_path="/metrics"}
           /
-        kubelet_volume_stats_capacity_bytes{job="kubelet"}
+        kubelet_volume_stats_capacity_bytes{job="kubelet", metrics_path="/metrics"}
           < 0.03
       for: 1m
       labels:
@@ -718,12 +718,12 @@ spec:
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumefullinfourdays
       expr: |
         (
-          kubelet_volume_stats_available_bytes{job="kubelet"}
+          kubelet_volume_stats_available_bytes{job="kubelet", metrics_path="/metrics"}
             /
-          kubelet_volume_stats_capacity_bytes{job="kubelet"}
+          kubelet_volume_stats_capacity_bytes{job="kubelet", metrics_path="/metrics"}
         ) < 0.15
         and
-        predict_linear(kubelet_volume_stats_available_bytes{job="kubelet"}[6h], 4 * 24 * 3600) < 0
+        predict_linear(kubelet_volume_stats_available_bytes{job="kubelet", metrics_path="/metrics"}[6h], 4 * 24 * 3600) < 0
       for: 1h
       labels:
         severity: critical
@@ -1050,7 +1050,7 @@ spec:
           }} of its Pod capacity.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
       expr: |
-        max(max(kubelet_running_pod_count{job="kubelet"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"}) by(node) > 0.95
+        max(max(kubelet_running_pod_count{job="kubelet", metrics_path="/metrics"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"}) by(node) > 0.95
       for: 15m
       labels:
         severity: warning
@@ -1059,7 +1059,7 @@ spec:
         message: Kubelet has disappeared from Prometheus target discovery.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletdown
       expr: |
-        absent(up{job="kubelet"} == 1)
+        absent(up{job="kubelet", metrics_path="/metrics"} == 1)
       for: 15m
       labels:
         severity: critical
