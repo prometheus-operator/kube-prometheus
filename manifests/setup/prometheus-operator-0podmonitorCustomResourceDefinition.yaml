@@ -1,22 +1,16 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  annotations:
-    controller-gen.kubebuilder.io/version: v0.2.4
   creationTimestamp: null
   name: podmonitors.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
   names:
     kind: PodMonitor
-    listKind: PodMonitorList
     plural: podmonitors
-    singular: podmonitor
-  preserveUnknownFields: false
   scope: Namespaced
   validation:
     openAPIV3Schema:
-      description: PodMonitor defines monitoring for a set of pods.
       properties:
         apiVersion:
           description: 'APIVersion defines the versioned schema of this representation
@@ -28,18 +22,15 @@ spec:
             object represents. Servers may infer this from the endpoint the client
             submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
           type: string
-        metadata:
-          type: object
         spec:
-          description: Specification of desired Pod selection for target discovery
-            by Prometheus.
+          description: PodMonitorSpec contains specification parameters for a PodMonitor.
           properties:
             jobLabel:
               description: The label to use to retrieve the job name from.
               type: string
             namespaceSelector:
-              description: Selector to select which namespaces the Endpoints objects
-                are discovered from.
+              description: NamespaceSelector is a selector for selecting either all
+                namespaces or a list of namespaces.
               properties:
                 any:
                   description: Boolean describing whether all namespaces are selected
@@ -87,7 +78,7 @@ spec:
                           type: integer
                         regex:
                           description: Regular expression against which the extracted
-                            value is matched. Default is '(.*)'
+                            value is matched. defailt is '(.*)'
                           type: string
                         replacement:
                           description: Replacement value against which a regex replace
@@ -114,10 +105,6 @@ spec:
                       type: object
                     type: array
                   params:
-                    additionalProperties:
-                      items:
-                        type: string
-                      type: array
                     description: Optional HTTP URL parameters
                     type: object
                   path:
@@ -151,7 +138,7 @@ spec:
                           type: integer
                         regex:
                           description: Regular expression against which the extracted
-                            value is matched. Default is '(.*)'
+                            value is matched. defailt is '(.*)'
                           type: string
                         replacement:
                           description: Replacement value against which a regex replace
@@ -185,11 +172,8 @@ spec:
                     type: string
                   targetPort:
                     anyOf:
-                    - type: integer
                     - type: string
-                    description: Name or number of the target port of the endpoint.
-                      Mutually exclusive with port.
-                    x-kubernetes-int-or-string: true
+                    - type: integer
                 type: object
               type: array
             podTargetLabels:
@@ -204,7 +188,10 @@ spec:
               format: int64
               type: integer
             selector:
-              description: Selector to select Pod objects.
+              description: A label selector is a label query over a set of resources.
+                The result of matchLabels and matchExpressions are ANDed. An empty
+                label selector matches all objects. A null label selector matches
+                no objects.
               properties:
                 matchExpressions:
                   description: matchExpressions is a list of label selector requirements.
@@ -237,8 +224,6 @@ spec:
                     type: object
                   type: array
                 matchLabels:
-                  additionalProperties:
-                    type: string
                   description: matchLabels is a map of {key,value} pairs. A single
                     {key,value} in the matchLabels map is equivalent to an element
                     of matchExpressions, whose key field is "key", the operator is
@@ -250,17 +235,5 @@ spec:
           - podMetricsEndpoints
           - selector
           type: object
-      required:
-      - spec
       type: object
   version: v1
-  versions:
-  - name: v1
-    served: true
-    storage: true
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
