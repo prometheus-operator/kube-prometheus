@@ -285,6 +285,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 insecureSkipVerify: true,
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet'),
               relabelings: [
                 {
                   sourceLabels: ['__metrics_path__'],
@@ -308,7 +309,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                   targetLabel: 'metrics_path',
                 },
               ],
-              metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
+              metricRelabelings: [
                 // Drop a bunch of metrics which are disabled but still sent, see
                 // https://github.com/google/cadvisor/issues/1925.
                 {

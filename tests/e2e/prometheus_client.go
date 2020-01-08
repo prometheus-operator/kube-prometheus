@@ -15,6 +15,10 @@
 package e2e
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+
 	"k8s.io/client-go/kubernetes"
 
 	"github.com/Jeffail/gabs"
@@ -49,4 +53,42 @@ func (c *prometheusClient) query(query string) (int, error) {
 
 	n, err := res.ArrayCountP("data.result")
 	return n, err
+}
+
+type Metadata struct {
+	Status string `json:"status,omitempty"`
+	Data   []Data `json:"data,omitempty"`
+}
+
+type Data struct {
+	Metric string `json:"metric,omitempty"`
+	Help   string `json:"help,omitempty"`
+}
+
+// metadata makes a request against the Prometheus /api/v1/targets/metadata endpoint.
+// It returns all the metrics and its metadata.
+func (c *prometheusClient) metadata(query string) (Metadata, error) {
+	req := c.kubeClient.CoreV1().RESTClient().Get().
+		Namespace("monitoring").
+		Resource("pods").
+		SubResource("proxy").
+		Name("prometheus-k8s-0:9090").
+		Suffix("/api/v1/targets/metadata").Param("match_target", query)
+
+	var data Metadata
+	b, err := req.DoRaw()
+	if err != nil {
+		return data, err
+	}
+
+	r := bytes.NewReader(b)
+	decoder := json.NewDecoder(r)
+	err = decoder.Decode(&data)
+	if err != nil {
+		return data, err
+	}
+	if data.Status != "success" {
+		return data, fmt.Errorf("status of returned response was not successful; status: %s", data.Status)
+	}
+	return data, err
 }
