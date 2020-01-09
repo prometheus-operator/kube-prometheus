@@ -122,6 +122,22 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         rulesType.withApiGroups(['storage.k8s.io']) +
         rulesType.withResources([
           'storageclasses',
+          'volumeattachments',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
+
+        rulesType.new() +
+        rulesType.withApiGroups(['admissionregistration.k8s.io']) +
+        rulesType.withResources([
+          'validatingwebhookconfigurations',
+          'mutatingwebhookconfigurations',
+        ]) +
+        rulesType.withVerbs(['list', 'watch']),
+
+        rulesType.new() +
+        rulesType.withApiGroups(['networking.k8s.io']) +
+        rulesType.withResources([
+          'networkpolicies',
         ]) +
         rulesType.withVerbs(['list', 'watch']),
       ];
