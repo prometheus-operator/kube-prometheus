@@ -191,7 +191,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local rules =
         policyRule.new() +
         policyRule.withApiGroups(['metrics.k8s.io']) +
-        policyRule.withResources(['pods']) +
+        policyRule.withResources(['pods', 'nodes']) +
         policyRule.withVerbs(['get','list','watch']);
 
       clusterRole.new() +
