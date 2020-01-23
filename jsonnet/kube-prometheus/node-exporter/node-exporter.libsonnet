@@ -91,17 +91,6 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           '--path.rootfs=/host/root',
           '--no-collector.wifi',
           '--no-collector.hwmon',
-          '--no-collector.netstat',
-          '--no-collector.sockstat',
-          '--no-collector.entropy',
-          '--no-collector.filefd',
-          '--no-collector.time',
-          '--no-collector.conntrack',
-          '--no-collector.bcache',
-          '--no-collector.stat',
-          '--no-collector.xfs',
-          '--no-collector.pressure',
-          '--no-collector.arp',
           // The following settings have been taken from
           // https://github.com/prometheus/node_exporter/blob/0662673/collector/filesystem_linux.go#L30-L31
           // Once node exporter is being released with those settings, this can be removed.
