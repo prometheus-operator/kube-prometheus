@@ -93,9 +93,9 @@ spec:
         sum(rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}[5m])) by (namespace)
       record: namespace:container_cpu_usage_seconds_total:sum_rate
     - expr: |
-        sum by (namespace, pod, container) (
+        sum by (cluster, namespace, pod, container) (
           rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}[5m])
-        ) * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        ) * on (cluster, namespace, pod) group_left(node) max by(cluster, namespace, pod, node) (kube_pod_info)
       record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
     - expr: |
         container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
@@ -147,7 +147,7 @@ spec:
             ) * on(replicaset, namespace) group_left(owner_name) kube_replicaset_owner{job="kube-state-metrics"},
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (namespace, workload, pod)
+        ) by (cluster, namespace, workload, pod)
       labels:
         workload_type: deployment
       record: mixin_pod_workload
@@ -157,7 +157,7 @@ spec:
             kube_pod_owner{job="kube-state-metrics", owner_kind="DaemonSet"},
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (namespace, workload, pod)
+        ) by (cluster, namespace, workload, pod)
       labels:
         workload_type: daemonset
       record: mixin_pod_workload
@@ -167,7 +167,7 @@ spec:
             kube_pod_owner{job="kube-state-metrics", owner_kind="StatefulSet"},
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (namespace, workload, pod)
+        ) by (cluster, namespace, workload, pod)
       labels:
         workload_type: statefulset
       record: mixin_pod_workload
@@ -220,13 +220,14 @@ spec:
       record: cluster_quantile:scheduler_binding_duration_seconds:histogram_quantile
   - name: node.rules
     rules:
-    - expr: sum(min(kube_pod_info) by (node))
+    - expr: |
+        sum(min(kube_pod_info) by (cluster, node))
       record: ':kube_pod_info_node_count:'
     - expr: |
         max(label_replace(kube_pod_info{job="kube-state-metrics"}, "pod", "$1", "pod", "(.*)")) by (node, namespace, pod)
       record: 'node_namespace_pod:kube_pod_info:'
     - expr: |
-        count by (node) (sum by (node, cpu) (
+        count by (cluster, node) (sum by (node, cpu) (
           node_cpu_seconds_total{job="node-exporter"}
         * on (namespace, pod) group_left(node)
           node_namespace_pod:kube_pod_info:
@@ -241,7 +242,7 @@ spec:
             node_memory_MemFree_bytes{job="node-exporter"} +
             node_memory_Slab_bytes{job="node-exporter"}
           )
-        )
+        ) by (cluster)
       record: :node_memory_MemAvailable_bytes:sum
   - name: kube-prometheus-node-recording.rules
     rules:

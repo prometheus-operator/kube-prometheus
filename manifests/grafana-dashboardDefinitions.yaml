@@ -90,7 +90,7 @@ items:
                           "tableColumn": "",
                           "targets": [
                               {
-                                  "expr": "sum(up{job=\"apiserver\"})",
+                                  "expr": "sum(up{job=\"apiserver\", cluster=\"$cluster\"})",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "",
@@ -157,28 +157,28 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"2..\"}[5m]))",
+                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"2..\", cluster=\"$cluster\"}[5m]))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "2xx",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"3..\"}[5m]))",
+                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"3..\", cluster=\"$cluster\"}[5m]))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "3xx",
                                   "refId": "B"
                               },
                               {
-                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"4..\"}[5m]))",
+                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"4..\", cluster=\"$cluster\"}[5m]))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "4xx",
                                   "refId": "C"
                               },
                               {
-                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"5..\"}[5m]))",
+                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"5..\", cluster=\"$cluster\"}[5m]))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "5xx",
@@ -239,15 +239,15 @@ items:
                           },
                           "id": 4,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -269,7 +269,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", verb!=\"WATCH\"}[5m])) by (verb, le))",
+                                  "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", verb!=\"WATCH\", cluster=\"$cluster\"}[5m])) by (verb, le))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{verb}}",
@@ -373,7 +373,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(rate(workqueue_adds_total{job=\"apiserver\", instance=~\"$instance\"}[5m])) by (instance, name)",
+                                  "expr": "sum(rate(workqueue_adds_total{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[5m])) by (instance, name)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{name}}",
@@ -464,7 +464,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(rate(workqueue_depth{job=\"apiserver\", instance=~\"$instance\"}[5m])) by (instance, name)",
+                                  "expr": "sum(rate(workqueue_depth{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[5m])) by (instance, name)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{name}}",
@@ -525,15 +525,15 @@ items:
                           },
                           "id": 7,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -555,7 +555,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\"}[5m])) by (instance, name, le))",
+                                  "expr": "histogram_quantile(0.99, sum(rate(workqueue_queue_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}[5m])) by (instance, name, le))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{name}}",
@@ -659,7 +659,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "etcd_helper_cache_entry_total{job=\"apiserver\", instance=~\"$instance\"}",
+                                  "expr": "etcd_helper_cache_entry_total{job=\"apiserver\", instance=~\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -750,14 +750,14 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(rate(etcd_helper_cache_hit_total{job=\"apiserver\",instance=~\"$instance\"}[5m])) by (intance)",
+                                  "expr": "sum(rate(etcd_helper_cache_hit_total{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}[5m])) by (intance)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} hit",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "sum(rate(etcd_helper_cache_miss_total{job=\"apiserver\",instance=~\"$instance\"}[5m])) by (instance)",
+                                  "expr": "sum(rate(etcd_helper_cache_miss_total{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}[5m])) by (instance)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} miss",
@@ -848,14 +848,14 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "histogram_quantile(0.99,sum(rate(etcd_request_cache_get_duration_seconds_bucket{job=\"apiserver\",instance=~\"$instance\"}[5m])) by (instance, le))",
+                                  "expr": "histogram_quantile(0.99,sum(rate(etcd_request_cache_get_duration_seconds_bucket{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}[5m])) by (instance, le))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} get",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "histogram_quantile(0.99,sum(rate(etcd_request_cache_add_duration_seconds_bucket{job=\"apiserver\",instance=~\"$instance\"}[5m])) by (instance, le))",
+                                  "expr": "histogram_quantile(0.99,sum(rate(etcd_request_cache_add_duration_seconds_bucket{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}[5m])) by (instance, le))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} miss",
@@ -959,7 +959,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "process_resident_memory_bytes{job=\"apiserver\",instance=~\"$instance\"}",
+                                  "expr": "process_resident_memory_bytes{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -1050,7 +1050,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(process_cpu_seconds_total{job=\"apiserver\",instance=~\"$instance\"}[5m])",
+                                  "expr": "rate(process_cpu_seconds_total{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}[5m])",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -1141,7 +1141,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "go_goroutines{job=\"apiserver\",instance=~\"$instance\"}",
+                                  "expr": "go_goroutines{job=\"apiserver\",instance=~\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -1207,8 +1207,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -1224,6 +1224,33 @@ items:
                   {
                       "allValue": null,
                       "current": {
+                          "text": "prod",
+                          "value": "prod"
+                      },
+                      "datasource": "$datasource",
+                      "hide": 2,
+                      "includeAll": false,
+                      "label": null,
+                      "multi": false,
+                      "name": "cluster",
+                      "options": [
+
+                      ],
+                      "query": "label_values(apiserver_request_total, cluster)",
+                      "refresh": 1,
+                      "regex": "",
+                      "sort": 1,
+                      "tagValuesQuery": "",
+                      "tags": [
+
+                      ],
+                      "tagsQuery": "",
+                      "type": "query",
+                      "useTags": false
+                  },
+                  {
+                      "allValue": null,
+                      "current": {
 
                       },
                       "datasource": "$datasource",
@@ -1235,7 +1262,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(apiserver_request_total{job=\"apiserver\"}, instance)",
+                      "query": "label_values(apiserver_request_total{job=\"apiserver\", cluster=\"$cluster\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -1435,44 +1462,44 @@ items:
               {
                   "columns": [
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Time",
+                          "value": "Time"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #A",
+                          "value": "Value #A"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #B",
+                          "value": "Value #B"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #C",
+                          "value": "Value #C"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #D",
+                          "value": "Value #D"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #E",
+                          "value": "Value #E"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #F",
+                          "value": "Value #F"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #G",
+                          "value": "Value #G"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #H",
+                          "value": "Value #H"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "namespace",
+                          "value": "namespace"
                       }
                   ],
                   "datasource": "$datasource",
@@ -1510,7 +1537,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Time",
                           "thresholds": [
 
                           ],
@@ -1528,7 +1555,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #A",
                           "thresholds": [
 
                           ],
@@ -1546,7 +1573,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #B",
                           "thresholds": [
 
                           ],
@@ -1564,7 +1591,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #C",
                           "thresholds": [
 
                           ],
@@ -1582,7 +1609,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #D",
                           "thresholds": [
 
                           ],
@@ -1600,7 +1627,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #E",
                           "thresholds": [
 
                           ],
@@ -1618,7 +1645,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #F",
                           "thresholds": [
 
                           ],
@@ -1636,7 +1663,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #G",
                           "thresholds": [
 
                           ],
@@ -1654,7 +1681,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #H",
                           "thresholds": [
 
                           ],
@@ -1672,7 +1699,7 @@ items:
                           "link": true,
                           "linkTooltip": "Drill down",
                           "linkUrl": "d/8b7a8b326d7a6f1f04244066368c67af/kubernetes-networking-namespace-pods?orgId=1&refresh=30s&var-namespace=$__cell",
-                          "pattern": "",
+                          "pattern": "namespace",
                           "thresholds": [
 
                           ],
@@ -2516,6 +2543,212 @@ items:
                                   "show": true
                               }
                           ]
+                      },
+                      {
+                          "aliasColors": {
+
+                          },
+                          "bars": false,
+                          "dashLength": 10,
+                          "dashes": false,
+                          "datasource": "$datasource",
+                          "fill": 2,
+                          "gridPos": {
+                              "h": 9,
+                              "w": 24,
+                              "x": 0,
+                              "y": 59
+                          },
+                          "id": 18,
+                          "legend": {
+                              "alignAsTable": true,
+                              "avg": true,
+                              "current": true,
+                              "hideEmpty": true,
+                              "hideZero": true,
+                              "max": true,
+                              "min": true,
+                              "rightSide": true,
+                              "show": true,
+                              "total": false,
+                              "values": true
+                          },
+                          "lines": true,
+                          "linewidth": 2,
+                          "links": [
+                              {
+                                  "targetBlank": true,
+                                  "title": "What is TCP Retransmit?",
+                                  "url": "https://accedian.com/enterprises/blog/network-packet-loss-retransmissions-and-duplicate-acknowledgements/"
+                              }
+                          ],
+                          "minSpan": 24,
+                          "nullPointMode": "connected",
+                          "paceLength": 10,
+                          "percentage": false,
+                          "pointradius": 5,
+                          "points": false,
+                          "renderer": "flot",
+                          "repeat": null,
+                          "seriesOverrides": [
+
+                          ],
+                          "spaceLength": 10,
+                          "span": 24,
+                          "stack": true,
+                          "steppedLine": false,
+                          "targets": [
+                              {
+                                  "expr": "sort_desc(sum(rate(node_netstat_Tcp_RetransSegs[$interval:$resolution]) / rate(node_netstat_Tcp_OutSegs[$interval:$resolution])) by (instance))",
+                                  "format": "time_series",
+                                  "intervalFactor": 1,
+                                  "legendFormat": "{{instance}}",
+                                  "refId": "A",
+                                  "step": 10
+                              }
+                          ],
+                          "thresholds": [
+
+                          ],
+                          "timeFrom": null,
+                          "timeShift": null,
+                          "title": "Rate of TCP Retransimts out of all sent segments",
+                          "tooltip": {
+                              "shared": true,
+                              "sort": 2,
+                              "value_type": "individual"
+                          },
+                          "type": "graph",
+                          "xaxis": {
+                              "buckets": null,
+                              "mode": "time",
+                              "name": null,
+                              "show": true,
+                              "values": [
+
+                              ]
+                          },
+                          "yaxes": [
+                              {
+                                  "format": "percentunit",
+                                  "label": null,
+                                  "logBase": 1,
+                                  "max": null,
+                                  "min": 0,
+                                  "show": true
+                              },
+                              {
+                                  "format": "percentunit",
+                                  "label": null,
+                                  "logBase": 1,
+                                  "max": null,
+                                  "min": 0,
+                                  "show": true
+                              }
+                          ]
+                      },
+                      {
+                          "aliasColors": {
+
+                          },
+                          "bars": false,
+                          "dashLength": 10,
+                          "dashes": false,
+                          "datasource": "$datasource",
+                          "fill": 2,
+                          "gridPos": {
+                              "h": 9,
+                              "w": 24,
+                              "x": 0,
+                              "y": 59
+                          },
+                          "id": 19,
+                          "legend": {
+                              "alignAsTable": true,
+                              "avg": true,
+                              "current": true,
+                              "hideEmpty": true,
+                              "hideZero": true,
+                              "max": true,
+                              "min": true,
+                              "rightSide": true,
+                              "show": true,
+                              "total": false,
+                              "values": true
+                          },
+                          "lines": true,
+                          "linewidth": 2,
+                          "links": [
+                              {
+                                  "targetBlank": true,
+                                  "title": "Why monitor SYN retransmits?",
+                                  "url": "https://github.com/prometheus/node_exporter/issues/1023#issuecomment-408128365"
+                              }
+                          ],
+                          "minSpan": 24,
+                          "nullPointMode": "connected",
+                          "paceLength": 10,
+                          "percentage": false,
+                          "pointradius": 5,
+                          "points": false,
+                          "renderer": "flot",
+                          "repeat": null,
+                          "seriesOverrides": [
+
+                          ],
+                          "spaceLength": 10,
+                          "span": 24,
+                          "stack": true,
+                          "steppedLine": false,
+                          "targets": [
+                              {
+                                  "expr": "sort_desc(sum(rate(node_netstat_TcpExt_TCPSynRetrans[$interval:$resolution]) / rate(node_netstat_Tcp_RetransSegs[$interval:$resolution])) by (instance))",
+                                  "format": "time_series",
+                                  "intervalFactor": 1,
+                                  "legendFormat": "{{instance}}",
+                                  "refId": "A",
+                                  "step": 10
+                              }
+                          ],
+                          "thresholds": [
+
+                          ],
+                          "timeFrom": null,
+                          "timeShift": null,
+                          "title": "Rate of TCP SYN Retransimts out of all retransmits",
+                          "tooltip": {
+                              "shared": true,
+                              "sort": 2,
+                              "value_type": "individual"
+                          },
+                          "type": "graph",
+                          "xaxis": {
+                              "buckets": null,
+                              "mode": "time",
+                              "name": null,
+                              "show": true,
+                              "values": [
+
+                              ]
+                          },
+                          "yaxes": [
+                              {
+                                  "format": "percentunit",
+                                  "label": null,
+                                  "logBase": 1,
+                                  "max": null,
+                                  "min": 0,
+                                  "show": true
+                              },
+                              {
+                                  "format": "percentunit",
+                                  "label": null,
+                                  "logBase": 1,
+                                  "max": null,
+                                  "min": 0,
+                                  "show": true
+                              }
+                          ]
                       }
                   ],
                   "repeat": null,
@@ -2620,8 +2853,8 @@ items:
                   },
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -2801,15 +3034,15 @@ items:
                           },
                           "id": 3,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -2905,15 +3138,15 @@ items:
                           },
                           "id": 4,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -3009,15 +3242,15 @@ items:
                           },
                           "id": 5,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -3329,15 +3562,15 @@ items:
                           },
                           "id": 8,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -3711,8 +3944,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -15503,15 +15736,15 @@ items:
                           },
                           "id": 8,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -15594,15 +15827,15 @@ items:
                           },
                           "id": 9,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -15698,15 +15931,15 @@ items:
                           },
                           "id": 10,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -15802,15 +16035,15 @@ items:
                           },
                           "id": 11,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -15900,15 +16133,15 @@ items:
                           },
                           "id": 12,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16011,17 +16244,17 @@ items:
                           },
                           "id": 13,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
-                              "hideEmpty": "true",
-                              "hideZero": "true",
+                              "current": true,
+                              "hideEmpty": true,
+                              "hideZero": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16104,17 +16337,17 @@ items:
                           },
                           "id": 14,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
-                              "hideEmpty": "true",
-                              "hideZero": "true",
+                              "current": true,
+                              "hideEmpty": true,
+                              "hideZero": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16210,17 +16443,17 @@ items:
                           },
                           "id": 15,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
-                              "hideEmpty": "true",
-                              "hideZero": "true",
+                              "current": true,
+                              "hideEmpty": true,
+                              "hideZero": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
+                              "rightSide": true,
                               "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16316,15 +16549,15 @@ items:
                           },
                           "id": 16,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16407,15 +16640,15 @@ items:
                           },
                           "id": 17,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16512,15 +16745,15 @@ items:
                           },
                           "id": 18,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16603,15 +16836,15 @@ items:
                           },
                           "id": 19,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16707,15 +16940,15 @@ items:
                           },
                           "id": 20,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -16936,15 +17169,15 @@ items:
                           },
                           "id": 22,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -17318,8 +17551,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -17372,7 +17605,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kubelet_runtime_operations{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\"}, instance)",
+                      "query": "label_values(kubelet_runtime_operations_total{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -17734,36 +17967,36 @@ items:
               {
                   "columns": [
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Time",
+                          "value": "Time"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #A",
+                          "value": "Value #A"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #B",
+                          "value": "Value #B"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #C",
+                          "value": "Value #C"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #D",
+                          "value": "Value #D"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #E",
+                          "value": "Value #E"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #F",
+                          "value": "Value #F"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "pod",
+                          "value": "pod"
                       }
                   ],
                   "datasource": "$datasource",
@@ -17801,7 +18034,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Time",
                           "thresholds": [
 
                           ],
@@ -17819,7 +18052,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #A",
                           "thresholds": [
 
                           ],
@@ -17837,7 +18070,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #B",
                           "thresholds": [
 
                           ],
@@ -17855,7 +18088,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #C",
                           "thresholds": [
 
                           ],
@@ -17873,7 +18106,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #D",
                           "thresholds": [
 
                           ],
@@ -17891,7 +18124,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #E",
                           "thresholds": [
 
                           ],
@@ -17909,7 +18142,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #F",
                           "thresholds": [
 
                           ],
@@ -17927,7 +18160,7 @@ items:
                           "link": true,
                           "linkTooltip": "Drill down",
                           "linkUrl": "d/7a18067ce943a40ae25454675c19ff5c/kubernetes-networking-pod?orgId=1&refresh=30s&var-namespace=$namespace&var-pod=$__cell",
-                          "pattern": "",
+                          "pattern": "pod",
                           "thresholds": [
 
                           ],
@@ -18665,8 +18898,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -18979,44 +19212,44 @@ items:
               {
                   "columns": [
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Time",
+                          "value": "Time"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #A",
+                          "value": "Value #A"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #B",
+                          "value": "Value #B"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #C",
+                          "value": "Value #C"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #D",
+                          "value": "Value #D"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #E",
+                          "value": "Value #E"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #F",
+                          "value": "Value #F"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #G",
+                          "value": "Value #G"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "Value #H",
+                          "value": "Value #H"
                       },
                       {
-                          "text": "",
-                          "value": ""
+                          "text": "workload",
+                          "value": "workload"
                       }
                   ],
                   "datasource": "$datasource",
@@ -19054,7 +19287,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Time",
                           "thresholds": [
 
                           ],
@@ -19072,7 +19305,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #A",
                           "thresholds": [
 
                           ],
@@ -19090,7 +19323,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #B",
                           "thresholds": [
 
                           ],
@@ -19108,7 +19341,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #C",
                           "thresholds": [
 
                           ],
@@ -19126,7 +19359,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #D",
                           "thresholds": [
 
                           ],
@@ -19144,7 +19377,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #E",
                           "thresholds": [
 
                           ],
@@ -19162,7 +19395,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #F",
                           "thresholds": [
 
                           ],
@@ -19180,7 +19413,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #G",
                           "thresholds": [
 
                           ],
@@ -19198,7 +19431,7 @@ items:
                           "link": false,
                           "linkTooltip": "Drill down",
                           "linkUrl": "",
-                          "pattern": "",
+                          "pattern": "Value #H",
                           "thresholds": [
 
                           ],
@@ -19216,7 +19449,7 @@ items:
                           "link": true,
                           "linkTooltip": "Drill down",
                           "linkUrl": "d/728bf77cc1166d2f3133bf25846876cc/kubernetes-networking-workload?orgId=1&refresh=30s&var-namespace=$namespace&var-type=$type&var-workload=$__cell",
-                          "pattern": "",
+                          "pattern": "workload",
                           "thresholds": [
 
                           ],
@@ -20084,8 +20317,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -23601,8 +23834,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -24709,8 +24942,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -25413,8 +25646,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -28619,15 +28852,15 @@ items:
                           },
                           "id": 4,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -28814,15 +29047,15 @@ items:
                           },
                           "id": 6,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -29134,15 +29367,15 @@ items:
                           },
                           "id": 9,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -29516,8 +29749,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -29723,15 +29956,15 @@ items:
                           },
                           "id": 3,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -29835,15 +30068,15 @@ items:
                           },
                           "id": 4,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -30176,15 +30409,15 @@ items:
                           },
                           "id": 7,
                           "legend": {
-                              "alignAsTable": "true",
+                              "alignAsTable": true,
                               "avg": false,
-                              "current": "true",
+                              "current": true,
                               "max": false,
                               "min": false,
-                              "rightSide": "true",
-                              "show": "true",
+                              "rightSide": true,
+                              "show": true,
                               "total": false,
-                              "values": "true"
+                              "values": true
                           },
                           "lines": true,
                           "linewidth": 1,
@@ -30558,8 +30791,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -31416,8 +31649,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
@@ -32474,8 +32707,8 @@ items:
               "list": [
                   {
                       "current": {
-                          "text": "Prometheus",
-                          "value": "Prometheus"
+                          "text": "default",
+                          "value": "default"
                       },
                       "hide": 0,
                       "label": null,
