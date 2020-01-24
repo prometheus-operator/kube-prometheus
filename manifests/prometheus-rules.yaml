@@ -1043,6 +1043,7 @@ spec:
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodeunreachable
       expr: |
         kube_node_spec_taint{job="kube-state-metrics",key="node.kubernetes.io/unreachable",effect="NoSchedule"} == 1
+      for: 2m
       labels:
         severity: warning
     - alert: KubeletTooManyPods
