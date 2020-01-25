@@ -18,6 +18,23 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         global: {
           resolve_timeout: '5m',
         },
+        inhibit_rules: [{
+          source_match: {
+            severity: 'critical',
+          },
+          target_match_re: {
+            severity: 'warning|info',
+          },
+          equal: ['alertname'],
+        }, {
+          source_match: {
+            severity: 'warning',
+          },
+          target_match_re: {
+            severity: 'info',
+          },
+          equal: ['alertname'],
+        }],
         route: {
           group_by: ['namespace'],
           group_wait: '30s',
@@ -48,7 +65,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local secret = k.core.v1.secret;
 
       if std.type($._config.alertmanager.config) == 'object' then
-        secret.new('alertmanager-' + $._config.alertmanager.name, { 'alertmanager.yaml': std.base64(std.manifestYamlDoc($._config.alertmanager.config)) }) +
+        secret.new('alertmanager-' + $._config.alertmanager.name, {})
+        .withStringData({ 'alertmanager.yaml': std.manifestYamlDoc($._config.alertmanager.config) }) +
         secret.mixin.metadata.withNamespace($._config.namespace)
       else
         secret.new('alertmanager-' + $._config.alertmanager.name, { 'alertmanager.yaml': std.base64($._config.alertmanager.config) }) +
