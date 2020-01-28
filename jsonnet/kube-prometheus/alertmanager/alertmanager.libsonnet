@@ -5,7 +5,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      alertmanager: 'v0.18.0',
+      alertmanager: 'v0.20.0',
     },
 
     imageRepos+:: {
