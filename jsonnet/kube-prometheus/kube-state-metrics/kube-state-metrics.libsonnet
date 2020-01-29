@@ -11,7 +11,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     },
 
     versions+:: {
-      kubeStateMetrics: 'v1.9.2',
+      kubeStateMetrics: 'v1.9.3',
       kubeRbacProxy: 'v0.4.1',
     },
 
