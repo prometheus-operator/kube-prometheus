@@ -40,19 +40,31 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           group_wait: '30s',
           group_interval: '5m',
           repeat_interval: '12h',
-          receiver: 'null',
+          receiver: 'Default',
           routes: [
             {
-              receiver: 'null',
+              receiver: 'Watchdog',
               match: {
                 alertname: 'Watchdog',
+              },
+            },
+            {
+              receiver: 'Critical',
+              match: {
+                severity: 'critical',
               },
             },
           ],
         },
         receivers: [
           {
-            name: 'null',
+            name: 'Default',
+          },
+          {
+            name: 'Watchdog',
+          },
+          {
+            name: 'Critical',
           },
         ],
       },
