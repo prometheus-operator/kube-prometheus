@@ -16,8 +16,6 @@ resources:
 - ./manifests/kube-state-metrics-clusterRole.yaml
 - ./manifests/kube-state-metrics-clusterRoleBinding.yaml
 - ./manifests/kube-state-metrics-deployment.yaml
-- ./manifests/kube-state-metrics-role.yaml
-- ./manifests/kube-state-metrics-roleBinding.yaml
 - ./manifests/kube-state-metrics-service.yaml
 - ./manifests/kube-state-metrics-serviceAccount.yaml
 - ./manifests/kube-state-metrics-serviceMonitor.yaml
