@@ -1,3 +1,5 @@
+SHELL=/bin/bash -o pipefail
+
 JSONNET_ARGS := -n 2 --max-blank-lines 2 --string-style s --comment-style s
 ifneq (,$(shell which jsonnetfmt))
 	JSONNET_FMT_CMD := jsonnetfmt
