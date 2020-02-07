@@ -1,3 +1,5 @@
+SHELL=/bin/bash -o pipefail
+
 JSONNET_ARGS := -n 2 --max-blank-lines 2 --string-style s --comment-style s
 ifneq (,$(shell which jsonnetfmt))
 	JSONNET_FMT_CMD := jsonnetfmt
@@ -7,7 +9,8 @@ else
 endif
 JSONNET_FMT := $(JSONNET_FMT_CMD) $(JSONNET_FMT_ARGS)
 
-JB_BINARY := jb
+FIRST_GOPATH:=$(firstword $(subst :, ,$(shell go env GOPATH)))
+JB_BINARY:=$(FIRST_GOPATH)/bin/jb
 EMBEDMD_BINARY := embedmd
 CONTAINER_CMD:=docker run --rm \
 		-e http_proxy -e https_proxy -e no_proxy \
@@ -38,7 +41,7 @@ manifests: examples/kustomize.jsonnet vendor build.sh
 	rm -rf manifests
 	./build.sh $<
 
-vendor: jsonnetfile.json jsonnetfile.lock.json
+vendor: $(JB_BINARY) jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor
 	$(JB_BINARY) install
 
@@ -46,7 +49,7 @@ fmt:
 	find . -name 'vendor' -prune -o -name '*.libsonnet' -o -name '*.jsonnet' -print | \
 		xargs -n 1 -- $(JSONNET_FMT) -i
 
-test:
+test: $(JB_BINARY)
 	$(JB_BINARY) install
 	./test.sh
 
@@ -58,3 +61,6 @@ test-in-docker:
 	$(CONTAINER_CMD) make $(MFLAGS) test
 
 .PHONY: generate generate-in-docker test test-in-docker fmt
+
+$(JB_BINARY):
+	go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
