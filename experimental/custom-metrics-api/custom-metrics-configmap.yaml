@@ -6,44 +6,44 @@ metadata:
 data:
   config.yaml: |
     rules:
-    - seriesQuery: '{__name__=~"^container_.*",container_name!="POD",namespace!="",pod_name!=""}'
+    - seriesQuery: '{__name__=~"^container_.*",container!="POD",namespace!="",pod!=""}'
       seriesFilters: []
       resources:
         overrides:
           namespace:
             resource: namespace
-          pod_name:
+          pod:
             resource: pod
       name:
         matches: ^container_(.*)_seconds_total$
         as: ""
-      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>,container_name!="POD"}[1m])) by (<<.GroupBy>>)
-    - seriesQuery: '{__name__=~"^container_.*",container_name!="POD",namespace!="",pod_name!=""}'
+      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>,container!="POD"}[1m])) by (<<.GroupBy>>)
+    - seriesQuery: '{__name__=~"^container_.*",container!="POD",namespace!="",pod!=""}'
       seriesFilters:
       - isNot: ^container_.*_seconds_total$
       resources:
         overrides:
           namespace:
             resource: namespace
-          pod_name:
+          pod:
             resource: pod
       name:
         matches: ^container_(.*)_total$
         as: ""
-      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>,container_name!="POD"}[1m])) by (<<.GroupBy>>)
-    - seriesQuery: '{__name__=~"^container_.*",container_name!="POD",namespace!="",pod_name!=""}'
+      metricsQuery: sum(rate(<<.Series>>{<<.LabelMatchers>>,container!="POD"}[1m])) by (<<.GroupBy>>)
+    - seriesQuery: '{__name__=~"^container_.*",container!="POD",namespace!="",pod!=""}'
       seriesFilters:
       - isNot: ^container_.*_total$
       resources:
         overrides:
           namespace:
             resource: namespace
-          pod_name:
+          pod:
             resource: pod
       name:
         matches: ^container_(.*)$
         as: ""
-      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,container_name!="POD"}) by (<<.GroupBy>>)
+      metricsQuery: sum(<<.Series>>{<<.LabelMatchers>>,container!="POD"}) by (<<.GroupBy>>)
     - seriesQuery: '{namespace!="",__name__!~"^container_.*"}'
       seriesFilters:
       - isNot: .*_total$
@@ -80,9 +80,9 @@ data:
               resource: node
             namespace:
               resource: namespace
-            pod_name:
+            pod:
               resource: pod
-        containerLabel: container_name
+        containerLabel: container
       memory:
         containerQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>}) by (<<.GroupBy>>)
         nodeQuery: sum(container_memory_working_set_bytes{<<.LabelMatchers>>,id='/'}) by (<<.GroupBy>>)
@@ -92,7 +92,7 @@ data:
               resource: node
             namespace:
               resource: namespace
-            pod_name:
+            pod:
               resource: pod
-        containerLabel: container_name
+        containerLabel: container
       window: 1m
