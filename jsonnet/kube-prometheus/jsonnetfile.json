@@ -38,7 +38,7 @@
                     "subdir": "jsonnet/prometheus-operator"
                 }
             },
-            "version": "release-0.35"
+            "version": "release-0.36"
         },
         {
             "name": "etcd-mixin",

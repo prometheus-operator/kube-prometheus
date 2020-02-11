@@ -59,6 +59,7 @@ resources:
 - ./manifests/setup/prometheus-operator-0prometheusCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0prometheusruleCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0servicemonitorCustomResourceDefinition.yaml
+- ./manifests/setup/prometheus-operator-0thanosrulerCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-clusterRole.yaml
 - ./manifests/setup/prometheus-operator-clusterRoleBinding.yaml
 - ./manifests/setup/prometheus-operator-deployment.yaml
