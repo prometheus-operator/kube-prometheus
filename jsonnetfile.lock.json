@@ -8,7 +8,7 @@
           "subdir": "Documentation/etcd-mixin"
         }
       },
-      "version": "f6c7d5c46a2a4470545d73f7833e57821b124714",
+      "version": "e5c90ebf90cb3692c26240d19406de47414a2b38",
       "sum": "Ko3qhNfC2vN/houLh6C0Ryacjv70gl0DVPGU/PQ4OD0="
     },
     {
@@ -94,8 +94,8 @@
           "subdir": ""
         }
       },
-      "version": "92309e9c7a7637c38a12c0964e62a7aeccaf49ae",
-      "sum": "g0ESmFe+O83pc45hgvQMHJFZV4ZoUSnRrYKKPkqaC7g="
+      "version": "b2d7f762bd22be3ba5e7d54a1fcecfe1092f214b",
+      "sum": "NqrJQnQnRDzkCbrHg7L1zX8XPAzfoE4DS2XBEj6WC8g="
     },
     {
       "name": "node-mixin",
@@ -105,7 +105,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "eac3e30f7f7f564c2bd110c7bb97390711e45e32",
+      "version": "92ea3c6a3f0ea2d1d55de168e65037e2313f9940",
       "sum": "7vEamDTP9AApeiF4Zu9ZyXzDIs3rYHzwf9k7g8X+wsg="
     },
     {
@@ -116,7 +116,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "1a1859417696170f2ceaff34222942bd95bbda78",
+      "version": "1c321ed047ac57e34688e40a55349c9dfe2b72c8",
       "sum": "u1YS9CVuBTcw2vks0PZbLb1gtlI/7bVGDVBZsjWFLTw="
     },
     {
@@ -138,7 +138,7 @@
           "subdir": "lib/promgrafonnet"
         }
       },
-      "version": "92309e9c7a7637c38a12c0964e62a7aeccaf49ae",
+      "version": "b2d7f762bd22be3ba5e7d54a1fcecfe1092f214b",
       "sum": "VhgBM39yv0f4bKv8VfGg4FXkg573evGDRalip9ypKbc="
     },
     {
