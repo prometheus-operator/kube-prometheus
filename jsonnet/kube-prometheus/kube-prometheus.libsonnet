@@ -17,6 +17,34 @@ local configMapList = k3.core.v1.configMapList;
   kubePrometheus+:: {
     namespace: k.core.v1.namespace.new($._config.namespace),
   },
+  prometheusOperator+::
+  {
+    '0alertmanagerCustomResourceDefinition'+: {
+      spec: std.mergePatch(super.spec, {
+        preserveUnknownFields: null,
+      }),
+    },
+    '0prometheusCustomResourceDefinition'+: {
+      spec: std.mergePatch(super.spec, {
+        preserveUnknownFields: null,
+      }),
+    },
+    '0servicemonitorCustomResourceDefinition'+: {
+      spec: std.mergePatch(super.spec, {
+        preserveUnknownFields: null,
+      }),
+    },
+    '0podmonitorCustomResourceDefinition'+: {
+      spec: std.mergePatch(super.spec, {
+        preserveUnknownFields: null,
+      }),
+    },
+    '0prometheusruleCustomResourceDefinition'+: {
+      spec: std.mergePatch(super.spec, {
+        preserveUnknownFields: null,
+      }),
+    },
+  },
   grafana+:: {
     dashboardDefinitions: configMapList.new(super.dashboardDefinitions),
     serviceMonitor: {
