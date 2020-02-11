@@ -45,6 +45,11 @@ local configMapList = k3.core.v1.configMapList;
         preserveUnknownFields: null,
       }),
     },
+    '0thanosrulerCustomResourceDefinition'+: {
+      spec: std.mergePatch(super.spec, {
+        preserveUnknownFields: null,
+      }),
+    },
   },
   grafana+:: {
     dashboardDefinitions: configMapList.new(super.dashboardDefinitions),
