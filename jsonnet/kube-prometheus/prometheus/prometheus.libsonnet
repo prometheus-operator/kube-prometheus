@@ -178,7 +178,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         spec: {
           replicas: p.replicas,
           version: $._config.versions.prometheus,
-          baseImage: $._config.imageRepos.prometheus,
+          image: $._config.imageRepos.prometheus + ':' + $._config.versions.prometheus,
           serviceAccountName: 'prometheus-' + p.name,
           serviceMonitorSelector: {},
           podMonitorSelector: {},

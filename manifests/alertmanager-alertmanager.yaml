@@ -6,7 +6,7 @@ metadata:
   name: main
   namespace: monitoring
 spec:
-  baseImage: quay.io/prometheus/alertmanager
+  image: quay.io/prometheus/alertmanager:v0.20.0
   nodeSelector:
     kubernetes.io/os: linux
   replicas: 3
