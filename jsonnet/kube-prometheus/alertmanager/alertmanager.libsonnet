@@ -25,7 +25,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           target_match_re: {
             severity: 'warning|info',
           },
-          equal: ['alertname'],
+          equal: ['namespace', 'alertname'],
         }, {
           source_match: {
             severity: 'warning',
@@ -33,7 +33,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           target_match_re: {
             severity: 'info',
           },
-          equal: ['alertname'],
+          equal: ['namespace', 'alertname'],
         }],
         route: {
           group_by: ['namespace'],
