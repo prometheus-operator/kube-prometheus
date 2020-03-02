@@ -719,7 +719,7 @@ spec:
                               description: 'Selects a field of the pod: supports metadata.name,
                                 metadata.namespace, metadata.labels, metadata.annotations,
                                 spec.nodeName, spec.serviceAccountName, status.hostIP,
-                                status.podIP.'
+                                status.podIP, status.podIPs.'
                               properties:
                                 apiVersion:
                                   description: Version of the schema the FieldPath
@@ -1440,9 +1440,8 @@ spec:
                               in image metadata if unspecified. May also be set in
                               PodSecurityContext. If set in both SecurityContext and
                               PodSecurityContext, the value specified in SecurityContext
-                              takes precedence. This field is alpha-level and it is
-                              only honored by servers that enable the WindowsRunAsUserName
-                              feature flag.
+                              takes precedence. This field is beta-level and may be
+                              disabled with the WindowsRunAsUserName feature flag.
                             type: string
                         type: object
                     type: object
@@ -1661,7 +1660,7 @@ spec:
                             to SubPath but environment variable references $(VAR_NAME)
                             are expanded using the container's environment. Defaults
                             to "" (volume's root). SubPathExpr and SubPath are mutually
-                            exclusive. This field is beta in 1.15.
+                            exclusive.
                           type: string
                       required:
                       - mountPath
@@ -1787,7 +1786,7 @@ spec:
                               description: 'Selects a field of the pod: supports metadata.name,
                                 metadata.namespace, metadata.labels, metadata.annotations,
                                 spec.nodeName, spec.serviceAccountName, status.hostIP,
-                                status.podIP.'
+                                status.podIP, status.podIPs.'
                               properties:
                                 apiVersion:
                                   description: Version of the schema the FieldPath
@@ -2508,9 +2507,8 @@ spec:
                               in image metadata if unspecified. May also be set in
                               PodSecurityContext. If set in both SecurityContext and
                               PodSecurityContext, the value specified in SecurityContext
-                              takes precedence. This field is alpha-level and it is
-                              only honored by servers that enable the WindowsRunAsUserName
-                              feature flag.
+                              takes precedence. This field is beta-level and may be
+                              disabled with the WindowsRunAsUserName feature flag.
                             type: string
                         type: object
                     type: object
@@ -2729,7 +2727,7 @@ spec:
                             to SubPath but environment variable references $(VAR_NAME)
                             are expanded using the container's environment. Defaults
                             to "" (volume's root). SubPathExpr and SubPath are mutually
-                            exclusive. This field is beta in 1.15.
+                            exclusive.
                           type: string
                       required:
                       - mountPath
@@ -2766,9 +2764,25 @@ spec:
                 are not goint to be performed, except for delete actions.
               type: boolean
             podMetadata:
-              description: 'Standard object’s metadata. More info: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#metadata
-                Metadata Labels and Annotations gets propagated to the prometheus
-                pods.'
+              description: PodMetadata configures Labels and Annotations which are
+                propagated to the alertmanager pods.
+              properties:
+                annotations:
+                  additionalProperties:
+                    type: string
+                  description: 'Annotations is an unstructured key value map stored
+                    with a resource that may be set by external tools to store and
+                    retrieve arbitrary metadata. They are not queryable and should
+                    be preserved when modifying objects. More info: http://kubernetes.io/docs/user-guide/annotations'
+                  type: object
+                labels:
+                  additionalProperties:
+                    type: string
+                  description: 'Map of string keys and values that can be used to
+                    organize and categorize (scope and select) objects. May match
+                    selectors of replication controllers and services. More info:
+                    http://kubernetes.io/docs/user-guide/labels'
+                  type: object
               type: object
             portName:
               description: Port name used for the pods and governing service. This
@@ -2933,8 +2947,8 @@ spec:
                         metadata if unspecified. May also be set in PodSecurityContext.
                         If set in both SecurityContext and PodSecurityContext, the
                         value specified in SecurityContext takes precedence. This
-                        field is alpha-level and it is only honored by servers that
-                        enable the WindowsRunAsUserName feature flag.
+                        field is beta-level and may be disabled with the WindowsRunAsUserName
+                        feature flag.
                       type: string
                   type: object
               type: object
@@ -3250,7 +3264,7 @@ spec:
                       volume should be mounted. Behaves similarly to SubPath but environment
                       variable references $(VAR_NAME) are expanded using the container's
                       environment. Defaults to "" (volume's root). SubPathExpr and
-                      SubPath are mutually exclusive. This field is beta in 1.15.
+                      SubPath are mutually exclusive.
                     type: string
                 required:
                 - mountPath
