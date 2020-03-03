@@ -72,8 +72,8 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "2148cb9bd5ba51d3911a93c4d61ddf084999f8c7",
-      "sum": "a+rigolTUlmpxlwu2hxnPvZ50Cg5WYuuC7irTma5Xbo="
+      "version": "89ede10b19d7ef0145777717351cabe14b113c01",
+      "sum": "cJjGZaLBjcIGrLHZLjRPU9c3KL+ep9rZTb9dbALSKqA="
     },
     {
       "name": "kube-state-metrics-mixin",
@@ -83,7 +83,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "2148cb9bd5ba51d3911a93c4d61ddf084999f8c7",
+      "version": "89ede10b19d7ef0145777717351cabe14b113c01",
       "sum": "E1GGavnf9PCWBm4WVrxWnc0FIj72UcbcweqGioWrOdU="
     },
     {
