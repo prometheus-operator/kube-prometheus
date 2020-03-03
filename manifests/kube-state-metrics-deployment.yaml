@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/name: kube-state-metrics
-    app.kubernetes.io/version: v1.9.4
+    app.kubernetes.io/version: 1.9.5
   name: kube-state-metrics
   namespace: monitoring
 spec:
@@ -15,7 +15,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: kube-state-metrics
-        app.kubernetes.io/version: v1.9.4
+        app.kubernetes.io/version: 1.9.5
     spec:
       containers:
       - args:
@@ -23,7 +23,7 @@ spec:
         - --port=8081
         - --telemetry-host=127.0.0.1
         - --telemetry-port=8082
-        image: quay.io/coreos/kube-state-metrics:v1.9.4
+        image: quay.io/coreos/kube-state-metrics:v1.9.5
         livenessProbe:
           httpGet:
             path: /healthz
