@@ -116,6 +116,7 @@ local configMapList = k3.core.v1.configMapList;
     kubeletSelector: 'job="kubelet", metrics_path="/metrics"',
     kubeStateMetricsSelector: 'job="kube-state-metrics"',
     nodeExporterSelector: 'job="node-exporter"',
+    fsSpaceFillingUpCriticalThreshold: 15,
     notKubeDnsSelector: 'job!="kube-dns"',
     kubeSchedulerSelector: 'job="kube-scheduler"',
     kubeControllerManagerSelector: 'job="kube-controller-manager"',

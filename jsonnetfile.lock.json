@@ -105,8 +105,8 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "92ea3c6a3f0ea2d1d55de168e65037e2313f9940",
-      "sum": "7vEamDTP9AApeiF4Zu9ZyXzDIs3rYHzwf9k7g8X+wsg="
+      "version": "0107bc794204f50d887898da60032da890637471",
+      "sum": "VKdF0zPMSCiuIuXWblSz2VOeBaXzQ7fp40vz9sxj+Bo="
     },
     {
       "name": "prometheus",
