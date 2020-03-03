@@ -127,8 +127,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "89f35ef22db0dc24c523bf8be473bcbcf9ac81f6",
-      "sum": "KCO153lAOWmWfoj3rQGhLB+8UmyvQ2Bghu/ewDqVum4="
+      "version": "59bdf55453ba08b4ed7c271cb3c6627058945ed5",
+      "sum": "qwMbUQkdPhAn9Sl4OVLgzmNOuOTnRLUmvv14I0unsa8="
     },
     {
       "name": "promgrafonnet",
