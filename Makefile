@@ -63,4 +63,4 @@ test-in-docker:
 .PHONY: generate generate-in-docker test test-in-docker fmt
 
 $(JB_BINARY):
-	go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+	go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@v0.2.0
