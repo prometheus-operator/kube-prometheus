@@ -10,7 +10,7 @@
                         local ksm = self,
                         name:: 'kube-state-metrics',
                         namespace:: 'monitoring',
-                        version:: '1.9.4',  //$._config.versions.kubeStateMetrics,
+                        version:: '1.9.5',  //$._config.versions.kubeStateMetrics,
                         image:: 'quay.io/coreos/kube-state-metrics:v' + ksm.version,
                         service+: {
                           spec+: {
