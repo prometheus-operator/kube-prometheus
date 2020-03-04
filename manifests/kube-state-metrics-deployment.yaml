@@ -24,20 +24,7 @@ spec:
         - --telemetry-host=127.0.0.1
         - --telemetry-port=8082
         image: quay.io/coreos/kube-state-metrics:v1.9.5
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
-          initialDelaySeconds: 5
-          timeoutSeconds: 5
         name: kube-state-metrics
-        ports: null
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 8081
-          initialDelaySeconds: 5
-          timeoutSeconds: 5
         securityContext:
           runAsUser: 65534
       - args:
