@@ -33,7 +33,9 @@
                             template+: {
                               spec+: {
                                 containers: std.map(function(c) c {
-                                  ports: null,
+                                  ports:: null,
+                                  livenessProbe:: null,
+                                  readinessProbe:: null,
                                   args: ['--host=127.0.0.1', '--port=8081', '--telemetry-host=127.0.0.1', '--telemetry-port=8082'],
                                 }, super.containers),
                               },
