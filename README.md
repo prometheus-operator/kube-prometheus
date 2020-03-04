@@ -658,7 +658,7 @@ As described in the [Prerequisites](#prerequisites) section, in order to retriev
 
 - If you are using Google's GKE product, see [cAdvisor support](docs/GKE-cadvisor-support.md).
 - If you are using AWS EKS, see [AWS EKS CNI support](docs/EKS-cni-support.md).
-- If you are using WeaveNet as the CNI, see [weave-net support](docs/weave-net-support.md).
+- If you are using Weave Net, see [Weave Net support](docs/weave-net-support.md).
 
 #### Authentication problem
 

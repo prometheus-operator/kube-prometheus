@@ -54,8 +54,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'WeaveNetIPAM has a split brain. Go to the below prometheus link for details.',
-              description: 'Actionable: Every node should see same unreachability percentage. Please check and fix why it is not so.',
+              summary: 'Percentage of all IP addresses owned by unreachable peers is not same for every node.',
+              description: 'actionable: Weave Net network has a split brain problem. Please find the problem and fix it.',
             },
           },
           {
@@ -66,8 +66,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'WeaveNetIPAM unreachability percentage is above threshold. Go to the below prometheus link for details.',
-              description: 'Actionable: Find why the unreachability threshold have increased from threshold and fix it. WeaveNet is responsible to keep it under control. Weave rm peer deployment can help clean things.',
+              summary: 'Percentage of all IP addresses owned by unreachable peers is above threshold.',
+              description: 'actionable: Please find the problem and fix it.',
             },
           },
           {
@@ -78,8 +78,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'WeaveNet IPAM has pending allocates. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason for IPAM allocates to be in pending state and fix it.',
+              summary: 'Number of pending allocates is above the threshold.',
+              description: 'actionable: Please find the problem and fix it.',
             },
           },
           {
@@ -90,8 +90,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'WeaveNet IPAM has pending claims. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason for IPAM claims to be in pending state and fix it.',
+              summary: 'Number of pending claims is above the threshold.',
+              description: 'actionable: Please find the problem and fix it.',
             },
           },
           {
@@ -102,8 +102,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'WeaveNet total FastDP flows is below threshold. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason for fast dp flows dropping below the threshold.',
+              summary: 'Number of FastDP flows is below the threshold.',
+              description: 'actionable: Please find the reason for FastDP flows to go below the threshold and fix it.',
             },
           },
           {
@@ -114,8 +114,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'WeaveNet FastDP flows is not happening in some or all nodes. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason for fast dp being off.',
+              summary: 'FastDP flows is zero.',
+              description: 'actionable: Please find the reason for FastDP flows to be off and fix it.',
             },
           },
           {
@@ -126,8 +126,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'A lot of connections are getting terminated. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason for high connection termination rate and fix it.',
+              summary: 'A lot of connections are getting terminated.',
+              description: 'actionable: Please find the reason for the high connection termination rate and fix it.',
             },
           },
           {
@@ -138,8 +138,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'A lot of connections are in connecting state. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason and fix it.',
+              summary: 'A lot of connections are in connecting state.',
+              description: 'actionable: Please find the reason for this and fix it.',
             },
           },
           {
@@ -150,8 +150,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'A lot of connections are in retrying state. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason and fix it.',
+              summary: 'A lot of connections are in retrying state.',
+              description: 'actionable: Please find the reason for this and fix it.',
             },
           },
           {
@@ -162,8 +162,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'A lot of connections are in pending state. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason and fix it.',
+              summary: 'A lot of connections are in pending state.',
+              description: 'actionable: Please find the reason for this and fix it.',
             },
           },
           {
@@ -174,8 +174,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              summary: 'A lot of connections are in failed state. Go to the below prometheus link for details.',
-              description: 'Actionable: Find the reason and fix it.',
+              summary: 'A lot of connections are in failed state.',
+              description: 'actionable: Please find the reason and fix it.',
             },
           },
         ],
@@ -183,7 +183,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
     ],
   },
   grafanaDashboards+:: {
-    'weavenet.json': (import 'grafana-weavenet.json'),
-    'weavenet-cluster.json': (import 'grafana-weavenet-cluster.json'),
+    'weave-net.json': (import 'grafana-weave-net.json'),
+    'weave-net-cluster.json': (import 'grafana-weave-net-cluster.json'),
   },
 }

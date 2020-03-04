@@ -1,5 +1,5 @@
 local kp =  (import 'kube-prometheus/kube-prometheus.libsonnet') +
-            (import 'kube-prometheus/kube-prometheus-weavenet.libsonnet') + {
+            (import 'kube-prometheus/kube-prometheus-weave-net.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
@@ -11,7 +11,7 @@ local kp =  (import 'kube-prometheus/kube-prometheus.libsonnet') +
             rules: std.map(function(rule)
               if rule.alert == "WeaveNetFastDPFlowsLow" then
                 rule {
-                  expr: "sum(weave_flows) < 2000"
+                  expr: "sum(weave_flows) < 20000"
                 }
               else if rule.alert == "WeaveNetIPAMUnreachable" then
                 rule {

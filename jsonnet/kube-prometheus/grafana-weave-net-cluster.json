@@ -24,6 +24,12 @@
       "id": "singlestat",
       "name": "Singlestat",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
     }
   ],
   "annotations": {
@@ -39,12 +45,12 @@
       }
     ]
   },
-  "description": "WeaveNet metrics. It was made on top of the weavenet prometheus metrics. Please check this for more details https://www.weave.works/docs/net/latest/tasks/manage/metrics",
+  "description": "WeaveNet metrics at the cluster level.  It was made on top of the weave-net prometheus metrics. Please check this for more details https://www.weave.works/docs/net/latest/tasks/manage/metrics",
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1582990295515,
+  "iteration": 1582990339310,
   "links": [],
   "panels": [
     {
@@ -67,6 +73,8 @@
       "bars": false,
       "cacheTimeout": null,
       "colorBackground": false,
+      "colorPostfix": false,
+      "colorPrefix": false,
       "colorValue": false,
       "colors": [
         "#d44a3a",
@@ -91,7 +99,7 @@
         "x": 0,
         "y": 1
       },
-      "id": 48,
+      "id": 56,
       "interval": null,
       "legend": {
         "avg": false,
@@ -150,7 +158,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_flows{instance=\"$instance\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_flows)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -158,10 +166,151 @@
           "refId": "A"
         }
       ],
-      "thresholds": "1,50",
+      "thresholds": "1",
       "timeFrom": null,
       "timeShift": null,
-      "title": "Fast DP Flows",
+      "title": "Fast DP flows",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "#FADE2A",
+        "#d44a3a"
+      ],
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "fill": 1,
+      "format": "short",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "id": 5,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "null as zero",
+      "nullText": null,
+      "options": {},
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "stack": false,
+      "steppedLine": false,
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(weave_flows == bool 0)",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 2,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "1,2",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Fast DP off",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -229,7 +378,7 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 4,
+        "x": 8,
         "y": 1
       },
       "id": 3,
@@ -291,7 +440,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(weave_ipam_pending_allocates{instance=\"$instance\"})",
+          "expr": "sum(weave_ipam_pending_allocates)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -370,7 +519,7 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 8,
+        "x": 12,
         "y": 1
       },
       "id": 4,
@@ -432,7 +581,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(weave_ipam_pending_claims{instance=\"$instance\"})",
+          "expr": "sum(weave_ipam_pending_claims)",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -490,6 +639,147 @@
       "bars": false,
       "cacheTimeout": null,
       "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "fill": 1,
+      "format": "cpm",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 61,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "null as zero",
+      "nullText": null,
+      "options": {},
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "stack": false,
+      "steppedLine": false,
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(increase(weave_connection_terminations_total[1m]))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 2,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "1",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Terminations",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "colorBackground": false,
       "colorValue": false,
       "colors": [
         "#299c46",
@@ -499,7 +789,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "description": "",
       "fill": 1,
       "format": "short",
       "gauge": {
@@ -512,8 +801,291 @@
       "gridPos": {
         "h": 3,
         "w": 4,
-        "x": 12,
+        "x": 20,
         "y": 1
+      },
+      "id": 1,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "null as zero",
+      "nullText": null,
+      "options": {},
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "stack": false,
+      "steppedLine": false,
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "count(central_nodeagent:node_route_unhealthy_count)",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 2,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "70,80",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Weave Pods",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorPostfix": false,
+      "colorValue": false,
+      "colors": [
+        "#d44a3a",
+        "rgba(237, 129, 40, 0.89)",
+        "#5794F2"
+      ],
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "fill": 1,
+      "format": "short",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 4
+      },
+      "id": 57,
+      "interval": null,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "null as zero",
+      "nullText": null,
+      "options": {},
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "stack": false,
+      "steppedLine": false,
+      "tableColumn": "",
+      "targets": [
+        {
+          "expr": "sum(weave_connections{state=\"established\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "intervalFactor": 2,
+          "refId": "A"
+        }
+      ],
+      "thresholds": "1,",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "P2P Established",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$datasource",
+      "fill": 1,
+      "format": "short",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 4
       },
       "id": 62,
       "interval": null,
@@ -574,433 +1146,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sort(label_replace(weave_max_ips{instance=\"$instance\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
-          "format": "time_series",
-          "hide": false,
-          "instant": true,
-          "intervalFactor": 2,
-          "refId": "A"
-        }
-      ],
-      "thresholds": "",
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Max IPs",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": true,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$datasource",
-      "description": "",
-      "fill": 1,
-      "format": "cpm",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 16,
-        "y": 1
-      },
-      "id": 54,
-      "interval": null,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "null as zero",
-      "nullText": null,
-      "options": {},
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false,
-        "ymax": null,
-        "ymin": null
-      },
-      "stack": false,
-      "steppedLine": false,
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "increase(weave_connection_terminations_total{instance=\"$instance\"}[1m])",
-          "format": "time_series",
-          "hide": false,
-          "instant": true,
-          "intervalFactor": 2,
-          "refId": "A"
-        }
-      ],
-      "thresholds": "1,2",
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Terminations",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "#d44a3a",
-        "rgba(237, 129, 40, 0.89)",
-        "#299c46"
-      ],
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$datasource",
-      "description": "",
-      "fill": 1,
-      "format": "short",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 0,
-        "y": 4
-      },
-      "id": 50,
-      "interval": null,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "null as zero",
-      "nullText": null,
-      "options": {},
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false,
-        "ymax": null,
-        "ymin": null
-      },
-      "stack": false,
-      "steppedLine": false,
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"established\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
-          "format": "time_series",
-          "hide": false,
-          "instant": true,
-          "intervalFactor": 2,
-          "refId": "A"
-        }
-      ],
-      "thresholds": "1,10",
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "P2P Established",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": 0,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ]
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": true,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$datasource",
-      "description": "",
-      "fill": 1,
-      "format": "short",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 4,
-        "y": 4
-      },
-      "id": 53,
-      "interval": null,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "null as zero",
-      "nullText": null,
-      "options": {},
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false,
-        "ymax": null,
-        "ymin": null
-      },
-      "stack": false,
-      "steppedLine": false,
-      "tableColumn": "",
-      "targets": [
-        {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"connecting\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"connecting\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -1067,7 +1213,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "description": "",
       "fill": 1,
       "format": "short",
       "gauge": {
@@ -1083,7 +1228,7 @@
         "x": 8,
         "y": 4
       },
-      "id": 52,
+      "id": 59,
       "interval": null,
       "legend": {
         "avg": false,
@@ -1142,7 +1287,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"pending\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"pending\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -1209,7 +1354,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "description": "",
       "fill": 1,
       "format": "short",
       "gauge": {
@@ -1225,7 +1369,7 @@
         "x": 12,
         "y": 4
       },
-      "id": 51,
+      "id": 58,
       "interval": null,
       "legend": {
         "avg": false,
@@ -1284,7 +1428,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"failed\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"failed\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -1292,7 +1436,7 @@
           "refId": "A"
         }
       ],
-      "thresholds": "1, 5",
+      "thresholds": "1,10",
       "timeFrom": null,
       "timeShift": null,
       "title": "P2P Failed",
@@ -1342,6 +1486,7 @@
       "bars": false,
       "cacheTimeout": null,
       "colorBackground": false,
+      "colorPrefix": false,
       "colorValue": true,
       "colors": [
         "#299c46",
@@ -1351,7 +1496,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "description": "",
       "fill": 1,
       "format": "short",
       "gauge": {
@@ -1367,7 +1511,7 @@
         "x": 16,
         "y": 4
       },
-      "id": 49,
+      "id": 60,
       "interval": null,
       "legend": {
         "avg": false,
@@ -1426,7 +1570,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"retrying\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"retrying\"})",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -1434,7 +1578,7 @@
           "refId": "A"
         }
       ],
-      "thresholds": "1, 5",
+      "thresholds": "1,10",
       "timeFrom": null,
       "timeShift": null,
       "title": "P2P Retrying",
@@ -1501,7 +1645,7 @@
       "dashes": false,
       "datasource": "$datasource",
       "description": "Percentage of all IP addresses owned by unreachable peers.",
-      "fill": 1,
+      "fill": 0,
       "fillGradient": 9,
       "gridPos": {
         "h": 5,
@@ -1537,11 +1681,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "label_replace(weave_ipam_unreachable_percentage{instance=\"$instance\"}, \"node\", \"$1\", \"instance\", \"(.*):.*\")",
+          "expr": "label_replace(weave_ipam_unreachable_percentage, \"node\", \"$1\", \"instance\", \"(.*):.*\")",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "IPAM unreachable percentage",
+          "legendFormat": "{{node}}",
           "legendLink": null,
           "refId": "A",
           "step": 10
@@ -1595,8 +1739,8 @@
       "dashes": false,
       "datasource": "$datasource",
       "description": "Number of unreachable peers that own IPAM addresses.",
-      "fill": 1,
-      "fillGradient": 4,
+      "fill": 0,
+      "fillGradient": 0,
       "gridPos": {
         "h": 5,
         "w": 8,
@@ -1631,11 +1775,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "label_replace(weave_ipam_unreachable_count{instance=\"$instance\"}, \"node\", \"$1\", \"instance\", \"(.*):.*\")",
+          "expr": "label_replace(weave_ipam_unreachable_count, \"node\", \"$1\", \"instance\", \"(.*):.*\")",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "IPAM unreachable count",
+          "legendFormat": "{{node}}",
           "legendLink": null,
           "refId": "A",
           "step": 10
@@ -1665,7 +1809,7 @@
           "label": "",
           "logBase": 1,
           "max": null,
-          "min": "0",
+          "min": null,
           "show": true
         },
         {
@@ -1688,8 +1832,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "description": " Number of pending allocates and claims.",
-      "fill": 5,
+      "description": " Number of pending claims.",
+      "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 5,
@@ -1698,7 +1842,7 @@
         "y": 8
       },
       "hiddenSeries": false,
-      "id": 34,
+      "id": 36,
       "legend": {
         "avg": false,
         "current": false,
@@ -1719,34 +1863,30 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "pending allocates",
-          "color": "#FF9830"
-        },
-        {
-          "alias": "pending claims",
-          "color": "#F2495C"
-        }
-      ],
+      "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "label_replace(weave_ipam_pending_allocates{instance=\"$instance\"}, \"node\", \"$1\", \"instance\", \"(.*):.*\")",
+          "expr": "sum(weave_ipam_pending_allocates)",
           "format": "time_series",
           "hide": false,
-          "intervalFactor": 1,
+          "intervalFactor": 2,
           "legendFormat": "pending allocates",
           "legendLink": null,
           "refId": "A",
           "step": 10
         },
         {
-          "expr": "label_replace(weave_ipam_pending_claims{instance=\"$instance\"}, \"node\", \"$1\", \"instance\", \"(.*):.*\")",
+          "expr": "sum(weave_ipam_pending_claims)",
+          "format": "time_series",
+          "hide": false,
+          "intervalFactor": 2,
           "legendFormat": "pending claims",
-          "refId": "B"
+          "legendLink": null,
+          "refId": "B",
+          "step": 10
         }
       ],
       "thresholds": [],
@@ -1769,6 +1909,7 @@
       },
       "yaxes": [
         {
+          "decimals": null,
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -1810,7 +1951,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "description": "https://github.com/weaveworks/weave/blob/master/site/concepts/fastdp-how-it-works.md",
+      "description": "",
       "fill": 1,
       "fillGradient": 4,
       "gridPos": {
@@ -1820,7 +1961,7 @@
         "y": 14
       },
       "hiddenSeries": false,
-      "id": 55,
+      "id": 50,
       "legend": {
         "avg": false,
         "current": false,
@@ -1833,7 +1974,7 @@
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
+      "nullPointMode": "null as zero",
       "options": {
         "dataLinks": []
       },
@@ -1843,15 +1984,15 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": false,
+      "stack": true,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "label_replace(weave_flows{instance=\"$instance\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\")",
+          "expr": "label_replace(weave_flows, \"node\", \"$1\", \"instance\", \"(.*):.*\")",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "weave fast dp flows",
+          "legendFormat": "{{node}}",
           "legendLink": null,
           "refId": "A",
           "step": 10
@@ -1904,7 +2045,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "$datasource",
-      "description": "https://weave-community.slack.com/archives/C2ND76PAA/p1582641797016700?thread_ts=1582613239.010900&cid=C2ND76PAA",
+      "description": "",
       "fill": 1,
       "fillGradient": 4,
       "gridPos": {
@@ -1914,13 +2055,13 @@
         "y": 14
       },
       "hiddenSeries": false,
-      "id": 56,
+      "id": 51,
       "legend": {
         "avg": false,
         "current": false,
         "max": false,
         "min": false,
-        "show": true,
+        "show": false,
         "total": false,
         "values": false
       },
@@ -1941,11 +2082,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "label_replace(increase(weave_connection_terminations_total{instance=\"$instance\"}[1m]), \"node\", \"$1\", \"instance\", \"(.*):.*\")",
+          "expr": "label_replace(rate(weave_connection_terminations_total[5m]), \"node\", \"$1\", \"instance\", \"(.*):.*\") > 0",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "rate of terminated connections",
+          "legendFormat": "{{node}}",
           "legendLink": null,
           "refId": "A",
           "step": 10
@@ -1971,7 +2112,7 @@
       },
       "yaxes": [
         {
-          "format": "cpm",
+          "format": "short",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -2008,7 +2149,7 @@
         "y": 21
       },
       "hiddenSeries": false,
-      "id": 59,
+      "id": 55,
       "legend": {
         "avg": false,
         "current": false,
@@ -2035,7 +2176,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"established\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"established\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -2102,7 +2243,7 @@
         "y": 21
       },
       "hiddenSeries": false,
-      "id": 57,
+      "id": 52,
       "legend": {
         "avg": false,
         "current": false,
@@ -2129,7 +2270,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"connecting\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"connecting\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -2196,7 +2337,7 @@
         "y": 21
       },
       "hiddenSeries": false,
-      "id": 58,
+      "id": 54,
       "legend": {
         "avg": false,
         "current": false,
@@ -2223,11 +2364,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"pending\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"pending\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
-          "legendFormat": "connections pending",
+          "legendFormat": "pending connections",
           "legendLink": null,
           "refId": "A",
           "step": 10
@@ -2290,13 +2431,13 @@
         "y": 28
       },
       "hiddenSeries": false,
-      "id": 61,
+      "id": 67,
       "legend": {
         "avg": false,
         "current": false,
         "max": false,
         "min": false,
-        "show": false,
+        "show": true,
         "total": false,
         "values": false
       },
@@ -2317,7 +2458,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"retrying\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"retrying\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -2384,14 +2525,13 @@
         "y": 28
       },
       "hiddenSeries": false,
-      "id": 60,
+      "id": 53,
       "legend": {
-        "alignAsTable": false,
         "avg": false,
         "current": false,
         "max": false,
         "min": false,
-        "show": false,
+        "show": true,
         "total": false,
         "values": false
       },
@@ -2412,7 +2552,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(label_replace(weave_connections{instance=\"$instance\", state=\"failed\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "expr": "sum(weave_connections{state=\"failed\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -2462,6 +2602,630 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "columns": [],
+      "datasource": "$datasource",
+      "description": "",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 0,
+        "y": 35
+      },
+      "id": 46,
+      "interval": "",
+      "options": {},
+      "pageSize": null,
+      "pluginVersion": "6.6.0",
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Node",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Established",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "Value",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort(label_replace(weave_connections{state=\"established\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{node_ip}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "P2P / Established",
+      "transform": "timeseries_to_rows",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$datasource",
+      "description": "",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 6,
+        "y": 35
+      },
+      "id": 63,
+      "interval": "",
+      "options": {},
+      "pageSize": null,
+      "pluginVersion": "6.6.0",
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Node",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Connecting",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "Value",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort(label_replace(weave_connections{state=\"connecting\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{node_ip}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "P2P / Connecting",
+      "transform": "timeseries_to_rows",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$datasource",
+      "description": "",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 12,
+        "y": 35
+      },
+      "id": 64,
+      "interval": "",
+      "options": {},
+      "pageSize": null,
+      "pluginVersion": "6.6.0",
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Node",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Pending",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "Value",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort(label_replace(weave_connections{state=\"pending\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{node_ip}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "P2P / Pending",
+      "transform": "timeseries_to_rows",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$datasource",
+      "description": "",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 18,
+        "y": 35
+      },
+      "id": 65,
+      "interval": "",
+      "options": {},
+      "pageSize": null,
+      "pluginVersion": "6.6.0",
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Node",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Failed",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "Value",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort(label_replace(weave_connections{state=\"failed\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{node_ip}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "P2P / Failed",
+      "transform": "timeseries_to_rows",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$datasource",
+      "description": "",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 0,
+        "y": 45
+      },
+      "id": 66,
+      "interval": "",
+      "options": {},
+      "pageSize": null,
+      "pluginVersion": "6.6.0",
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Node",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Retrying",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "Value",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort_desc(label_replace(weave_connections{state=\"retrying\"}, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{node_ip}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "P2P / Retrying",
+      "transform": "timeseries_to_rows",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$datasource",
+      "description": "",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 6,
+        "y": 45
+      },
+      "id": 44,
+      "interval": "",
+      "options": {},
+      "pageSize": null,
+      "pluginVersion": "6.6.0",
+      "showHeader": true,
+      "sort": {
+        "col": 2,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Node",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Fast DP Flows",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "Value",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort_desc(label_replace(weave_flows, \"node_ip\", \"$1\", \"instance\", \"(.*):.*\"))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{node_ip}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Fast DP Flows (Current)",
+      "transform": "timeseries_to_rows",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$datasource",
+      "description": "",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 12,
+        "y": 45
+      },
+      "id": 45,
+      "interval": "",
+      "options": {},
+      "pageSize": null,
+      "pluginVersion": "6.6.0",
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Node",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "No. of Pods",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "Value",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort_desc(floor(label_replace(max by(node) (max by(instance) (kubelet_running_pod_count{job=\"kubelet\",metrics_path=\"/metrics\"}) * on(instance) group_left(node) kubelet_node_name{job=\"kubelet\",metrics_path=\"/metrics\"}) / max by(node) (kube_node_status_capacity_pods{job=\"kube-state-metrics\"}) , \"node_ip\", \"$1.$2.$3.$4\", \"node\", \"^ip-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+).*$\") * 100))",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{node_ip}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Pods Per Node (Current)",
+      "transform": "timeseries_to_rows",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$datasource",
+      "description": "",
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 18,
+        "y": 45
+      },
+      "id": 47,
+      "interval": "",
+      "options": {},
+      "pageSize": null,
+      "pluginVersion": "6.6.0",
+      "showHeader": true,
+      "sort": {
+        "col": 2,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "hidden"
+        },
+        {
+          "alias": "Node",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "Terminated",
+          "align": "left",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 0,
+          "pattern": "Value",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "expr": "sort(label_replace(increase(weave_connection_terminations_total[1m]), \"node_ip\", \"$1\", \"instance\", \"(.*):.*\")) != 0",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "{{node_ip}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Peer To Peer Connections Terminated",
+      "transform": "timeseries_to_rows",
+      "type": "table"
     }
   ],
   "refresh": "10s",
@@ -2544,33 +3308,11 @@
         "tagsQuery": "",
         "type": "interval",
         "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "$datasource",
-        "definition": "label_values(weave_ipam_unreachable_percentage, instance)",
-        "hide": 0,
-        "includeAll": false,
-        "label": "instance",
-        "multi": false,
-        "name": "instance",
-        "options": [],
-        "query": "label_values(weave_ipam_unreachable_percentage, instance)",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
       }
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
@@ -2599,7 +3341,7 @@
     ]
   },
   "timezone": "",
-  "title": "WeaveNet",
-  "uid": "GzIXGqwZz",
-  "version": 5
+  "title": "WeaveNet (Cluster)",
+  "uid": "voS3tW_Zk",
+  "version": 9
 }
