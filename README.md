@@ -174,6 +174,8 @@ e.g. of how to compile the manifests: `./build.sh example.jsonnet`
 
 Here's [example.jsonnet](example.jsonnet):
 
+> Note: some of the following components must be configured beforehand. See [configuration](#configuration) and [customization-examples](#customization-examples).
+
 [embedmd]:# (example.jsonnet)
 ```jsonnet
 local kp =
