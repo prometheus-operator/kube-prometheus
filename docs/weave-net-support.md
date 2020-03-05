@@ -10,7 +10,7 @@ Using kube-prometheus and kubectl you will be able install the following for mon
 2. [ServiceMonitor for Weave Net](https://gist.github.com/alok87/e46a7f9a79ef6d1da6964a035be2cfb9) Service monitor to scrape the Weave Net metrics and bring it to Prometheus.
 3. [Prometheus Alerts for Weave Net](https://stackoverflow.com/a/60447864) This will setup all the important Weave Net metrics you should be alerted on.
 4. [Grafana Dashboard for Weave Net](https://grafana.com/grafana/dashboards/11789) This will setup the per Weave Net pod level monitoring for Weave Net.
-5. [Grafana Dashboard for Weave Net(Cluster)](https://grafana.com/grafana/dashboards/11789) This will setup the cluster level monitoring for Weave Net.
+5. [Grafana Dashboard for Weave Net(Cluster)](https://grafana.com/grafana/dashboards/11804) This will setup the cluster level monitoring for Weave Net.
 
 ## Instructions
 - You can monitor Weave Net using an example like below. **Please note that some alert configurations are environment specific and may require modifications of alert thresholds**. For example: The FastDP flows have never gone below 15000 for us. But if this value is say 20000 for you then you can use an example like below to update the alert. The alerts which may require threshold modifications are `WeaveNetFastDPFlowsLow` and `WeaveNetIPAMUnreachable`.
