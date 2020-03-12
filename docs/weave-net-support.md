@@ -64,4 +64,5 @@ kubectl create -f prometheus-serviceWeaveNet.yaml
 kubectl create -f prometheus-serviceMonitorWeaveNet.yaml
 kubectl apply -f  prometheus-rules.yaml
 kubectl apply -f grafana-dashboardDefinitions.yaml
+kubectl apply -f grafana-deployment.yaml
 ```
