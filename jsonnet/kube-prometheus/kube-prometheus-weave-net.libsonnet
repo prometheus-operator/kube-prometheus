@@ -23,7 +23,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         jobLabel: 'k8s-app',
         endpoints: [
           {
-            port: 'weave-metrics',
+            port: 'weave-net-metrics',
             path: '/metrics',
             interval: '15s',
           },
