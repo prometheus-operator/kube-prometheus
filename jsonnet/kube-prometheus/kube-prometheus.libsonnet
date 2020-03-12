@@ -113,7 +113,7 @@ local configMapList = k3.core.v1.configMapList;
     ],
 
     cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
-    kubeletSelector: 'job="kubelet", metrics_path="/metrics"',
+    kubeletSelector: 'job="kubelet", metrics_path="/metrics, node!~"^fargate-.*""',
     kubeStateMetricsSelector: 'job="kube-state-metrics"',
     nodeExporterSelector: 'job="node-exporter"',
     fsSpaceFillingUpCriticalThreshold: 15,
