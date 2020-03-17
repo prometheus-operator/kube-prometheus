@@ -7,8 +7,8 @@ One fatal issue that can occur is that you run out of IP addresses in your eks c
 You can monitor the `awscni` using kube-promethus with : 
 [embedmd]:# (../examples/eks-cni-example.jsonnet)
 ```jsonnet
-local kp =  (import 'kube-prometheus/kube-prometheus.libsonnet') +
-            (import 'kube-prometheus/kube-prometheus-eks.libsonnet') + {
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
+           (import 'kube-prometheus/kube-prometheus-eks.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
@@ -32,7 +32,7 @@ local kp =  (import 'kube-prometheus/kube-prometheus.libsonnet') +
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } 
+{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) }
 ```
 
 After you have the required yaml file please run

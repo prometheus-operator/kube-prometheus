@@ -1,5 +1,5 @@
-local kp =  (import 'kube-prometheus/kube-prometheus.libsonnet') +
-            (import 'kube-prometheus/kube-prometheus-weave-net.libsonnet') + {
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
+           (import 'kube-prometheus/kube-prometheus-weave-net.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
@@ -8,25 +8,26 @@ local kp =  (import 'kube-prometheus/kube-prometheus.libsonnet') +
       function(group)
         if group.name == 'weave-net' then
           group {
-            rules: std.map(function(rule)
-              if rule.alert == "WeaveNetFastDPFlowsLow" then
-                rule {
-                  expr: "sum(weave_flows) < 20000"
-                }
-              else if rule.alert == "WeaveNetIPAMUnreachable" then
-                rule {
-                  expr: "weave_ipam_unreachable_percentage > 25"
-                }
-              else
-                rule
+            rules: std.map(
+              function(rule)
+                if rule.alert == 'WeaveNetFastDPFlowsLow' then
+                  rule {
+                    expr: 'sum(weave_flows) < 20000',
+                  }
+                else if rule.alert == 'WeaveNetIPAMUnreachable' then
+                  rule {
+                    expr: 'weave_ipam_unreachable_percentage > 25',
+                  }
+                else
+                  rule
               ,
               group.rules
-            )
+            ),
           }
         else
           group,
-        super.groups
-      ),
+      super.groups
+    ),
   },
 };
 

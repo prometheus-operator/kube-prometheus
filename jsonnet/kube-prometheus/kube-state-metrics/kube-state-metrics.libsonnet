@@ -1,5 +1,11 @@
 {
   _config+:: {
+    versions+:: {
+      kubeStateMetrics: '1.9.5',
+    },
+    imageRepos+:: {
+      kubeStateMetrics: 'quay.io/coreos/kube-state-metrics',
+    },
     kubeStateMetrics+:: {
       scrapeInterval: '30s',
       scrapeTimeout: '30s',
@@ -10,8 +16,8 @@
                         local ksm = self,
                         name:: 'kube-state-metrics',
                         namespace:: 'monitoring',
-                        version:: '1.9.5',  //$._config.versions.kubeStateMetrics,
-                        image:: 'quay.io/coreos/kube-state-metrics:v' + ksm.version,
+                        version:: $._config.versions.kubeStateMetrics,
+                        image:: $._config.imageRepos.kubeStateMetrics + ':v' + $._config.versions.kubeStateMetrics,
                         service+: {
                           spec+: {
                             ports: [
