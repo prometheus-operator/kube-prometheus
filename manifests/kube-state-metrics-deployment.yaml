@@ -37,8 +37,6 @@ spec:
         ports:
         - containerPort: 8443
           name: https-main
-        securityContext:
-          runAsUser: 65534
       - args:
         - --logtostderr
         - --secure-listen-address=:9443
@@ -49,8 +47,6 @@ spec:
         ports:
         - containerPort: 9443
           name: https-self
-        securityContext:
-          runAsUser: 65534
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: kube-state-metrics
