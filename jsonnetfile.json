@@ -1,7 +1,7 @@
 {
+  "version": 1,
   "dependencies": [
     {
-      "name": "kube-prometheus",
       "source": {
         "local": {
           "directory": "jsonnet/kube-prometheus"
@@ -9,5 +9,6 @@
       },
       "version": ""
     }
-  ]
+  ],
+  "legacyImports": true
 }
