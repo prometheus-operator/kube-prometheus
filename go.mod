@@ -12,7 +12,7 @@ require (
 	github.com/googleapis/gnostic v0.0.0-20170729233727-0c5108395e2d // indirect
 	github.com/imdario/mergo v0.3.7 // indirect
 	github.com/json-iterator/go v0.0.0-20180701071628-ab8a2e0c74be // indirect
-	github.com/jsonnet-bundler/jsonnet-bundler v0.2.0
+	github.com/jsonnet-bundler/jsonnet-bundler v0.3.1
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-isatty v0.0.10 // indirect
