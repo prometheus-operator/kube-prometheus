@@ -3,6 +3,8 @@ kind: Alertmanager
 metadata:
   labels:
     alertmanager: main
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/version: v0.20.0
   name: main
   namespace: monitoring
 spec:

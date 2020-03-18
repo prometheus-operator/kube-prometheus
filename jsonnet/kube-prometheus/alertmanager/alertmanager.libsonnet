@@ -14,6 +14,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
     alertmanager+:: {
       name: 'main',
+      labels: {
+        'app.kubernetes.io/name': 'alertmanager',
+        'app.kubernetes.io/version': $._config.versions.alertmanager,
+      },
       config: {
         global: {
           resolve_timeout: '5m',
@@ -99,7 +103,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       service.new('alertmanager-' + $._config.alertmanager.name, { app: 'alertmanager', alertmanager: $._config.alertmanager.name }, alertmanagerPort) +
       service.mixin.spec.withSessionAffinity('ClientIP') +
       service.mixin.metadata.withNamespace($._config.namespace) +
-      service.mixin.metadata.withLabels({ alertmanager: $._config.alertmanager.name }),
+      service.mixin.metadata.withLabels($._config.alertmanager.labels + { alertmanager: $._config.alertmanager.name }),
 
     serviceMonitor:
       {
@@ -108,9 +112,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         metadata: {
           name: 'alertmanager',
           namespace: $._config.namespace,
-          labels: {
-            'k8s-app': 'alertmanager',
-          },
+          labels: $._config.alertmanager.labels,
         },
         spec: {
           selector: {
@@ -134,7 +136,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         metadata: {
           name: $._config.alertmanager.name,
           namespace: $._config.namespace,
-          labels: {
+          labels: $._config.alertmanager.labels + {
             alertmanager: $._config.alertmanager.name,
           },
         },
