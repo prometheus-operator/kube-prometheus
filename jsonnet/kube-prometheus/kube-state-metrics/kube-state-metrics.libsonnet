@@ -15,7 +15,7 @@
                       {
                         local ksm = self,
                         name:: 'kube-state-metrics',
-                        namespace:: 'monitoring',
+                        namespace:: $._config.namespace,
                         version:: $._config.versions.kubeStateMetrics,
                         image:: $._config.imageRepos.kubeStateMetrics + ':v' + $._config.versions.kubeStateMetrics,
                         service+: {
