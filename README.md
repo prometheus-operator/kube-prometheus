@@ -662,6 +662,14 @@ As described in the [Prerequisites](#prerequisites) section, in order to retriev
 - If you are using AWS EKS, see [AWS EKS CNI support](docs/EKS-cni-support.md).
 - If you are using Weave Net, see [Weave Net support](docs/weave-net-support.md).
 
+### Error retrieving kube-proxy metrics
+
+By default, kubeadm will configure kube-proxy to listen on 127.0.0.1 for metrics. Because of this prometheus would not be able to scrape these metrics. This would have to be changed to 0.0.0.0 in one of the following two places:
+
+1. Before cluster initialization, the config file passed to kubeadm init should have KubeProxyConfiguration manifest with the field metricsBindAddress set to 0.0.0.0:10249
+2. If the k8s cluster is already up and running, we'll have to modify the configmap kube-proxy in the namespace kube-system and set the metricsBindAddress field. After this kube-proxy daemonset would have to be restarted with
+`kubectl -n kube-system rollout restart daemonset kube-proxy`
+
 #### Authentication problem
 
 The Prometheus `/targets` page will show the kubelet job with the error `403 Unauthorized`, when token authentication is not enabled. Ensure, that the `--authentication-token-webhook=true` flag is enabled on all kubelet configurations.
