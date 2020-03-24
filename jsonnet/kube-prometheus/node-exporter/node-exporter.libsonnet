@@ -68,7 +68,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local toleration = daemonset.mixin.spec.template.spec.tolerationsType;
       local containerEnv = container.envType;
 
-      local podLabels = { app: 'node-exporter' };
+      local podLabels = $._config.nodeExporter.labels;
 
       local existsToleration = toleration.new() +
                                toleration.withOperator('Exists');
@@ -132,7 +132,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       daemonset.new() +
       daemonset.mixin.metadata.withName('node-exporter') +
       daemonset.mixin.metadata.withNamespace($._config.namespace) +
-      daemonset.mixin.metadata.withLabels(podLabels + $._config.nodeExporter.labels) +
+      daemonset.mixin.metadata.withLabels(podLabels) +
       daemonset.mixin.spec.selector.withMatchLabels(podLabels) +
       daemonset.mixin.spec.template.metadata.withLabels(podLabels) +
       daemonset.mixin.spec.template.spec.withTolerations([existsToleration]) +

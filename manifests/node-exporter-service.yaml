@@ -13,4 +13,5 @@ spec:
     port: 9100
     targetPort: https
   selector:
-    app: node-exporter
+    app.kubernetes.io/name: node-exporter
+    app.kubernetes.io/version: v0.18.1
