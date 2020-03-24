@@ -65,25 +65,139 @@ spec:
           rate(node_network_transmit_drop_total{job="node-exporter", device!="lo"}[1m])
         )
       record: instance:node_network_transmit_drop_excluding_lo:rate1m
+  - name: kube-apiserver-error
+    rules:
+    - expr: |
+        sum by (status_class) (
+          label_replace(
+            rate(apiserver_request_total{job="apiserver"}[5m]
+          ), "status_class", "${1}xx", "code", "([0-9])..")
+        )
+      labels:
+        job: apiserver
+      record: status_class:apiserver_request_total:rate5m
+    - expr: |
+        sum by (status_class) (
+          label_replace(
+            rate(apiserver_request_total{job="apiserver"}[30m]
+          ), "status_class", "${1}xx", "code", "([0-9])..")
+        )
+      labels:
+        job: apiserver
+      record: status_class:apiserver_request_total:rate30m
+    - expr: |
+        sum by (status_class) (
+          label_replace(
+            rate(apiserver_request_total{job="apiserver"}[1h]
+          ), "status_class", "${1}xx", "code", "([0-9])..")
+        )
+      labels:
+        job: apiserver
+      record: status_class:apiserver_request_total:rate1h
+    - expr: |
+        sum by (status_class) (
+          label_replace(
+            rate(apiserver_request_total{job="apiserver"}[2h]
+          ), "status_class", "${1}xx", "code", "([0-9])..")
+        )
+      labels:
+        job: apiserver
+      record: status_class:apiserver_request_total:rate2h
+    - expr: |
+        sum by (status_class) (
+          label_replace(
+            rate(apiserver_request_total{job="apiserver"}[6h]
+          ), "status_class", "${1}xx", "code", "([0-9])..")
+        )
+      labels:
+        job: apiserver
+      record: status_class:apiserver_request_total:rate6h
+    - expr: |
+        sum by (status_class) (
+          label_replace(
+            rate(apiserver_request_total{job="apiserver"}[1d]
+          ), "status_class", "${1}xx", "code", "([0-9])..")
+        )
+      labels:
+        job: apiserver
+      record: status_class:apiserver_request_total:rate1d
+    - expr: |
+        sum by (status_class) (
+          label_replace(
+            rate(apiserver_request_total{job="apiserver"}[3d]
+          ), "status_class", "${1}xx", "code", "([0-9])..")
+        )
+      labels:
+        job: apiserver
+      record: status_class:apiserver_request_total:rate3d
+    - expr: |
+        sum(status_class:apiserver_request_total:rate5m{job="apiserver",status_class="5xx"})
+        /
+        sum(status_class:apiserver_request_total:rate5m{job="apiserver"})
+      labels:
+        job: apiserver
+      record: status_class_5xx:apiserver_request_total:ratio_rate5m
+    - expr: |
+        sum(status_class:apiserver_request_total:rate30m{job="apiserver",status_class="5xx"})
+        /
+        sum(status_class:apiserver_request_total:rate30m{job="apiserver"})
+      labels:
+        job: apiserver
+      record: status_class_5xx:apiserver_request_total:ratio_rate30m
+    - expr: |
+        sum(status_class:apiserver_request_total:rate1h{job="apiserver",status_class="5xx"})
+        /
+        sum(status_class:apiserver_request_total:rate1h{job="apiserver"})
+      labels:
+        job: apiserver
+      record: status_class_5xx:apiserver_request_total:ratio_rate1h
+    - expr: |
+        sum(status_class:apiserver_request_total:rate2h{job="apiserver",status_class="5xx"})
+        /
+        sum(status_class:apiserver_request_total:rate2h{job="apiserver"})
+      labels:
+        job: apiserver
+      record: status_class_5xx:apiserver_request_total:ratio_rate2h
+    - expr: |
+        sum(status_class:apiserver_request_total:rate6h{job="apiserver",status_class="5xx"})
+        /
+        sum(status_class:apiserver_request_total:rate6h{job="apiserver"})
+      labels:
+        job: apiserver
+      record: status_class_5xx:apiserver_request_total:ratio_rate6h
+    - expr: |
+        sum(status_class:apiserver_request_total:rate1d{job="apiserver",status_class="5xx"})
+        /
+        sum(status_class:apiserver_request_total:rate1d{job="apiserver"})
+      labels:
+        job: apiserver
+      record: status_class_5xx:apiserver_request_total:ratio_rate1d
+    - expr: |
+        sum(status_class:apiserver_request_total:rate3d{job="apiserver",status_class="5xx"})
+        /
+        sum(status_class:apiserver_request_total:rate3d{job="apiserver"})
+      labels:
+        job: apiserver
+      record: status_class_5xx:apiserver_request_total:ratio_rate3d
   - name: kube-apiserver.rules
     rules:
     - expr: |
-        sum(rate(apiserver_request_duration_seconds_sum{subresource!="log",verb!~"LIST|WATCH|WATCHLIST|PROXY|CONNECT"}[5m])) without(instance, pod)
+        sum(rate(apiserver_request_duration_seconds_sum{subresource!="log",verb!~"LIST|WATCH|WATCHLIST|DELETECOLLECTION|PROXY|CONNECT"}[5m])) without(instance, pod)
         /
-        sum(rate(apiserver_request_duration_seconds_count{subresource!="log",verb!~"LIST|WATCH|WATCHLIST|PROXY|CONNECT"}[5m])) without(instance, pod)
+        sum(rate(apiserver_request_duration_seconds_count{subresource!="log",verb!~"LIST|WATCH|WATCHLIST|DELETECOLLECTION|PROXY|CONNECT"}[5m])) without(instance, pod)
       record: cluster:apiserver_request_duration_seconds:mean5m
     - expr: |
-        histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",subresource!="log",verb!~"LIST|WATCH|WATCHLIST|PROXY|CONNECT"}[5m])) without(instance, pod))
+        histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",subresource!="log",verb!~"LIST|WATCH|WATCHLIST|DELETECOLLECTION|PROXY|CONNECT"}[5m])) without(instance, pod))
       labels:
         quantile: "0.99"
       record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.9, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",subresource!="log",verb!~"LIST|WATCH|WATCHLIST|PROXY|CONNECT"}[5m])) without(instance, pod))
+        histogram_quantile(0.9, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",subresource!="log",verb!~"LIST|WATCH|WATCHLIST|DELETECOLLECTION|PROXY|CONNECT"}[5m])) without(instance, pod))
       labels:
         quantile: "0.9"
       record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.5, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",subresource!="log",verb!~"LIST|WATCH|WATCHLIST|PROXY|CONNECT"}[5m])) without(instance, pod))
+        histogram_quantile(0.5, sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",subresource!="log",verb!~"LIST|WATCH|WATCHLIST|DELETECOLLECTION|PROXY|CONNECT"}[5m])) without(instance, pod))
       labels:
         quantile: "0.5"
       record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
@@ -95,23 +209,33 @@ spec:
     - expr: |
         sum by (cluster, namespace, pod, container) (
           rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}[5m])
-        ) * on (cluster, namespace, pod) group_left(node) max by(cluster, namespace, pod, node) (kube_pod_info)
+        ) * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (
+          1, max by(cluster, namespace, pod, node) (kube_pod_info)
+        )
       record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
     - expr: |
         container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
+          max by(namespace, pod, node) (kube_pod_info)
+        )
       record: node_namespace_pod_container:container_memory_working_set_bytes
     - expr: |
         container_memory_rss{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
+          max by(namespace, pod, node) (kube_pod_info)
+        )
       record: node_namespace_pod_container:container_memory_rss
     - expr: |
         container_memory_cache{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
+          max by(namespace, pod, node) (kube_pod_info)
+        )
       record: node_namespace_pod_container:container_memory_cache
     - expr: |
         container_memory_swap{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
+          max by(namespace, pod, node) (kube_pod_info)
+        )
       record: node_namespace_pod_container:container_memory_swap
     - expr: |
         sum(container_memory_usage_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}) by (namespace)
@@ -139,35 +263,39 @@ spec:
         )
       record: namespace:kube_pod_container_resource_requests_cpu_cores:sum
     - expr: |
-        sum(
+        max by (cluster, namespace, workload, pod) (
           label_replace(
             label_replace(
               kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"},
               "replicaset", "$1", "owner_name", "(.*)"
-            ) * on(replicaset, namespace) group_left(owner_name) kube_replicaset_owner{job="kube-state-metrics"},
+            ) * on(replicaset, namespace) group_left(owner_name) topk by(replicaset, namespace) (
+              1, max by (replicaset, namespace, owner_name) (
+                kube_replicaset_owner{job="kube-state-metrics"}
+              )
+            ),
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (cluster, namespace, workload, pod)
+        )
       labels:
         workload_type: deployment
       record: mixin_pod_workload
     - expr: |
-        sum(
+        max by (cluster, namespace, workload, pod) (
           label_replace(
             kube_pod_owner{job="kube-state-metrics", owner_kind="DaemonSet"},
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (cluster, namespace, workload, pod)
+        )
       labels:
         workload_type: daemonset
       record: mixin_pod_workload
     - expr: |
-        sum(
+        max by (cluster, namespace, workload, pod) (
           label_replace(
             kube_pod_owner{job="kube-state-metrics", owner_kind="StatefulSet"},
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (cluster, namespace, workload, pod)
+        )
       labels:
         workload_type: statefulset
       record: mixin_pod_workload
@@ -224,7 +352,10 @@ spec:
         sum(min(kube_pod_info) by (cluster, node))
       record: ':kube_pod_info_node_count:'
     - expr: |
-        max(label_replace(kube_pod_info{job="kube-state-metrics"}, "pod", "$1", "pod", "(.*)")) by (node, namespace, pod)
+        topk by(namespace, pod) (1,
+          max by (node, namespace, pod) (
+            label_replace(kube_pod_info{job="kube-state-metrics"}, "pod", "$1", "pod", "(.*)")
+        ))
       record: 'node_namespace_pod:kube_pod_info:'
     - expr: |
         count by (cluster, node) (sum by (node, cpu) (
@@ -244,6 +375,23 @@ spec:
           )
         ) by (cluster)
       record: :node_memory_MemAvailable_bytes:sum
+  - name: kubelet.rules
+    rules:
+    - expr: |
+        histogram_quantile(0.99, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (instance, le) * on(instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+      labels:
+        quantile: "0.99"
+      record: node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile
+    - expr: |
+        histogram_quantile(0.9, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (instance, le) * on(instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+      labels:
+        quantile: "0.9"
+      record: node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile
+    - expr: |
+        histogram_quantile(0.5, sum(rate(kubelet_pleg_relist_duration_seconds_bucket[5m])) by (instance, le) * on(instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+      labels:
+        quantile: "0.5"
+      record: node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile
   - name: kube-prometheus-node-recording.rules
     rules:
     - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[3m])) BY
@@ -457,6 +605,47 @@ spec:
       for: 1h
       labels:
         severity: warning
+    - alert: NodeHighNumberConntrackEntriesUsed
+      annotations:
+        description: '{{ $value | humanizePercentage }} of conntrack entries are used'
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodehighnumberconntrackentriesused
+        summary: Number of conntrack are getting close to the limit
+      expr: |
+        (node_nf_conntrack_entries / node_nf_conntrack_entries_limit) > 0.75
+      labels:
+        severity: warning
+    - alert: NodeClockSkewDetected
+      annotations:
+        message: Clock on {{ $labels.instance }} is out of sync by more than 300s.
+          Ensure NTP is configured correctly on this host.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodeclockskewdetected
+        summary: Clock skew detected.
+      expr: |
+        (
+          node_timex_offset_seconds > 0.05
+        and
+          deriv(node_timex_offset_seconds[5m]) >= 0
+        )
+        or
+        (
+          node_timex_offset_seconds < 0.05
+        and
+          deriv(node_timex_offset_seconds[5m]) <= 0
+        )
+      for: 10m
+      labels:
+        severity: warning
+    - alert: NodeClockNotSynchronising
+      annotations:
+        message: Clock on {{ $labels.instance }} is not synchronising. Ensure NTP
+          is configured on this host.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodeclocknotsynchronising
+        summary: Clock not synchronising.
+      expr: |
+        min_over_time(node_timex_sync_status[5m]) == 0
+      for: 10m
+      labels:
+        severity: warning
   - name: kubernetes-apps
     rules:
     - alert: KubePodCrashLooping
@@ -498,9 +687,15 @@ spec:
           matched the expected number of replicas for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedeploymentreplicasmismatch
       expr: |
-        kube_deployment_spec_replicas{job="kube-state-metrics"}
-          !=
-        kube_deployment_status_replicas_available{job="kube-state-metrics"}
+        (
+          kube_deployment_spec_replicas{job="kube-state-metrics"}
+            !=
+          kube_deployment_status_replicas_available{job="kube-state-metrics"}
+        ) and (
+          changes(kube_deployment_status_replicas_updated{job="kube-state-metrics"}[5m])
+            ==
+          0
+        )
       for: 15m
       labels:
         severity: critical
@@ -510,9 +705,15 @@ spec:
           not matched the expected number of replicas for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatefulsetreplicasmismatch
       expr: |
-        kube_statefulset_status_replicas_ready{job="kube-state-metrics"}
-          !=
-        kube_statefulset_status_replicas{job="kube-state-metrics"}
+        (
+          kube_statefulset_status_replicas_ready{job="kube-state-metrics"}
+            !=
+          kube_statefulset_status_replicas{job="kube-state-metrics"}
+        ) and (
+          changes(kube_statefulset_status_replicas_updated{job="kube-state-metrics"}[5m])
+            ==
+          0
+        )
       for: 15m
       labels:
         severity: critical
@@ -656,7 +857,7 @@ spec:
           tolerate node failure.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecpuovercommit
       expr: |
-        sum(namespace:kube_pod_container_resource_requests_cpu_cores:sum)
+        sum(namespace:kube_pod_container_resource_requests_cpu_cores:sum{})
           /
         sum(kube_node_status_allocatable_cpu_cores)
           >
@@ -670,7 +871,7 @@ spec:
           tolerate node failure.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubememovercommit
       expr: |
-        sum(namespace:kube_pod_container_resource_requests_memory_bytes:sum)
+        sum(namespace:kube_pod_container_resource_requests_memory_bytes:sum{})
           /
         sum(kube_node_status_allocatable_memory_bytes)
           >
@@ -799,10 +1000,12 @@ spec:
       for: 15m
       labels:
         severity: warning
-  - name: kube-apiserver-error
+  - name: kube-apiserver-error-alerts
     rules:
     - alert: ErrorBudgetBurn
       annotations:
+        message: 'High requests error budget burn for job=apiserver (current value:
+          {{ $value }})'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-errorbudgetburn
       expr: |
         (
@@ -821,6 +1024,8 @@ spec:
         severity: critical
     - alert: ErrorBudgetBurn
       annotations:
+        message: 'High requests error budget burn for job=apiserver (current value:
+          {{ $value }})'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-errorbudgetburn
       expr: |
         (
@@ -837,118 +1042,6 @@ spec:
       labels:
         job: apiserver
         severity: warning
-    - expr: |
-        sum by (status_class) (
-          label_replace(
-            rate(apiserver_request_total{job="apiserver"}[5m]
-          ), "status_class", "${1}xx", "code", "([0-9])..")
-        )
-      labels:
-        job: apiserver
-      record: status_class:apiserver_request_total:rate5m
-    - expr: |
-        sum by (status_class) (
-          label_replace(
-            rate(apiserver_request_total{job="apiserver"}[30m]
-          ), "status_class", "${1}xx", "code", "([0-9])..")
-        )
-      labels:
-        job: apiserver
-      record: status_class:apiserver_request_total:rate30m
-    - expr: |
-        sum by (status_class) (
-          label_replace(
-            rate(apiserver_request_total{job="apiserver"}[1h]
-          ), "status_class", "${1}xx", "code", "([0-9])..")
-        )
-      labels:
-        job: apiserver
-      record: status_class:apiserver_request_total:rate1h
-    - expr: |
-        sum by (status_class) (
-          label_replace(
-            rate(apiserver_request_total{job="apiserver"}[2h]
-          ), "status_class", "${1}xx", "code", "([0-9])..")
-        )
-      labels:
-        job: apiserver
-      record: status_class:apiserver_request_total:rate2h
-    - expr: |
-        sum by (status_class) (
-          label_replace(
-            rate(apiserver_request_total{job="apiserver"}[6h]
-          ), "status_class", "${1}xx", "code", "([0-9])..")
-        )
-      labels:
-        job: apiserver
-      record: status_class:apiserver_request_total:rate6h
-    - expr: |
-        sum by (status_class) (
-          label_replace(
-            rate(apiserver_request_total{job="apiserver"}[1d]
-          ), "status_class", "${1}xx", "code", "([0-9])..")
-        )
-      labels:
-        job: apiserver
-      record: status_class:apiserver_request_total:rate1d
-    - expr: |
-        sum by (status_class) (
-          label_replace(
-            rate(apiserver_request_total{job="apiserver"}[3d]
-          ), "status_class", "${1}xx", "code", "([0-9])..")
-        )
-      labels:
-        job: apiserver
-      record: status_class:apiserver_request_total:rate3d
-    - expr: |
-        sum(status_class:apiserver_request_total:rate5m{job="apiserver",status_class="5xx"})
-        /
-        sum(status_class:apiserver_request_total:rate5m{job="apiserver"})
-      labels:
-        job: apiserver
-      record: status_class_5xx:apiserver_request_total:ratio_rate5m
-    - expr: |
-        sum(status_class:apiserver_request_total:rate30m{job="apiserver",status_class="5xx"})
-        /
-        sum(status_class:apiserver_request_total:rate30m{job="apiserver"})
-      labels:
-        job: apiserver
-      record: status_class_5xx:apiserver_request_total:ratio_rate30m
-    - expr: |
-        sum(status_class:apiserver_request_total:rate1h{job="apiserver",status_class="5xx"})
-        /
-        sum(status_class:apiserver_request_total:rate1h{job="apiserver"})
-      labels:
-        job: apiserver
-      record: status_class_5xx:apiserver_request_total:ratio_rate1h
-    - expr: |
-        sum(status_class:apiserver_request_total:rate2h{job="apiserver",status_class="5xx"})
-        /
-        sum(status_class:apiserver_request_total:rate2h{job="apiserver"})
-      labels:
-        job: apiserver
-      record: status_class_5xx:apiserver_request_total:ratio_rate2h
-    - expr: |
-        sum(status_class:apiserver_request_total:rate6h{job="apiserver",status_class="5xx"})
-        /
-        sum(status_class:apiserver_request_total:rate6h{job="apiserver"})
-      labels:
-        job: apiserver
-      record: status_class_5xx:apiserver_request_total:ratio_rate6h
-    - expr: |
-        sum(status_class:apiserver_request_total:rate1d{job="apiserver",status_class="5xx"})
-        /
-        sum(status_class:apiserver_request_total:rate1d{job="apiserver"})
-      labels:
-        job: apiserver
-      record: status_class_5xx:apiserver_request_total:ratio_rate1d
-    - expr: |
-        sum(status_class:apiserver_request_total:rate3d{job="apiserver",status_class="5xx"})
-        /
-        sum(status_class:apiserver_request_total:rate3d{job="apiserver"})
-      labels:
-        job: apiserver
-      record: status_class_5xx:apiserver_request_total:ratio_rate3d
   - name: kubernetes-system-apiserver
     rules:
     - alert: KubeAPILatencyHigh
@@ -985,30 +1078,6 @@ spec:
       for: 10m
       labels:
         severity: critical
-    - alert: KubeAPIErrorsHigh
-      annotations:
-        message: API server is returning errors for {{ $value | humanizePercentage
-          }} of requests.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
-      expr: |
-        sum(rate(apiserver_request_total{job="apiserver",code=~"5.."}[5m]))
-          /
-        sum(rate(apiserver_request_total{job="apiserver"}[5m])) > 0.03
-      for: 10m
-      labels:
-        severity: critical
-    - alert: KubeAPIErrorsHigh
-      annotations:
-        message: API server is returning errors for {{ $value | humanizePercentage
-          }} of requests.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
-      expr: |
-        sum(rate(apiserver_request_total{job="apiserver",code=~"5.."}[5m]))
-          /
-        sum(rate(apiserver_request_total{job="apiserver"}[5m])) > 0.01
-      for: 10m
-      labels:
-        severity: warning
     - alert: KubeAPIErrorsHigh
       annotations:
         message: API server is returning errors for {{ $value | humanizePercentage
@@ -1053,6 +1122,27 @@ spec:
         apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(job) histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
       labels:
         severity: critical
+    - alert: AggregatedAPIErrors
+      annotations:
+        message: An aggregated API {{ $labels.name }}/{{ $labels.namespace }} has
+          reported errors. The number of errors have increased for it in the past
+          five minutes. High values indicate that the availability of the service
+          changes too often.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-aggregatedapierrors
+      expr: |
+        sum by(name, namespace)(increase(aggregator_unavailable_apiservice_count[5m])) > 2
+      labels:
+        severity: warning
+    - alert: AggregatedAPIDown
+      annotations:
+        message: An aggregated API {{ $labels.name }}/{{ $labels.namespace }} is down.
+          It has not been available at least for the past five minutes.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-aggregatedapidown
+      expr: |
+        sum by(name, namespace)(sum_over_time(aggregator_unavailable_apiservice[5m])) > 0
+      for: 5m
+      labels:
+        severity: warning
     - alert: KubeAPIDown
       annotations:
         message: KubeAPI has disappeared from Prometheus target discovery.
@@ -1088,7 +1178,37 @@ spec:
           }} of its Pod capacity.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
       expr: |
-        max(max(kubelet_running_pod_count{job="kubelet", metrics_path="/metrics"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"}) by(node) > 0.95
+        max(max(kubelet_running_pod_count{job="kubelet", metrics_path="/metrics"}) by(instance) * on(instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"}) by(node) / max(kube_node_status_capacity_pods{job="kube-state-metrics"} != 1) by(node) > 0.95
+      for: 15m
+      labels:
+        severity: warning
+    - alert: KubeNodeReadinessFlapping
+      annotations:
+        message: The readiness status of node {{ $labels.node }} has changed {{ $value
+          }} times in the last 15 minutes.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodereadinessflapping
+      expr: |
+        sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (node) > 2
+      for: 15m
+      labels:
+        severity: warning
+    - alert: KubeletPlegDurationHigh
+      annotations:
+        message: The Kubelet Pod Lifecycle Event Generator has a 99th percentile duration
+          of {{ $value }} seconds on node {{ $labels.node }}.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletplegdurationhigh
+      expr: |
+        node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile{quantile="0.99"} >= 10
+      for: 5m
+      labels:
+        severity: warning
+    - alert: KubeletPodStartUpLatencyHigh
+      annotations:
+        message: Kubelet Pod startup 99th percentile latency is {{ $value }} seconds
+          on node {{ $labels.node }}.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletpodstartuplatencyhigh
+      expr: |
+        histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (instance, le)) * on(instance) group_left(node) kubelet_node_name  > 60
       for: 15m
       labels:
         severity: warning
@@ -1253,7 +1373,8 @@ spec:
     - alert: PrometheusRemoteStorageFailures
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} failed to send
-          {{ printf "%.1f" $value }}% of the samples to queue {{$labels.queue}}.
+          {{ printf "%.1f" $value }}% of the samples to {{ if $labels.queue }}{{ $labels.queue
+          }}{{ else }}{{ $labels.url }}{{ end }}.
         summary: Prometheus fails to send samples to remote storage.
       expr: |
         (
@@ -1273,7 +1394,8 @@ spec:
     - alert: PrometheusRemoteWriteBehind
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
-          is {{ printf "%.1f" $value }}s behind for queue {{$labels.queue}}.
+          is {{ printf "%.1f" $value }}s behind for {{ if $labels.queue }}{{ $labels.queue
+          }}{{ else }}{{ $labels.url }}{{ end }}.
         summary: Prometheus remote write is behind.
       expr: |
         # Without max_over_time, failed scrapes could create false negatives, see
