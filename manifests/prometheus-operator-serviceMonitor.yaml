@@ -9,8 +9,12 @@ metadata:
   namespace: monitoring
 spec:
   endpoints:
-  - honorLabels: true
-    port: http
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    honorLabels: true
+    port: https
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
   selector:
     matchLabels:
       app.kubernetes.io/component: controller

@@ -40,6 +40,18 @@ spec:
             memory: 100Mi
         securityContext:
           allowPrivilegeEscalation: false
+      - args:
+        - --logtostderr
+        - --secure-listen-address=:8443
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+        - --upstream=http://127.0.0.1:8080/
+        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
+        name: kube-rbac-proxy
+        ports:
+        - containerPort: 8443
+          name: https
+        securityContext:
+          runAsUser: 65534
       nodeSelector:
         beta.kubernetes.io/os: linux
       securityContext:
