@@ -123,7 +123,7 @@ func TestDroppedMetrics(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, k := range md.Data {
+	for _, k := range md {
 		// check if the metric' help text contains Deprecated
 		if strings.Contains(k.Help, "Deprecated") {
 			// query prometheus for the Deprecated metric
@@ -136,5 +136,29 @@ func TestDroppedMetrics(t *testing.T) {
 			}
 		}
 
+	}
+}
+
+func TestTargetsScheme(t *testing.T) {
+	// query targets for all endpoints
+	tgs, err := promClient.targets()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// exclude jobs from checking for http endpoints
+	// TODO(paulfantom): This should be reduced as we secure connections for those components
+	exclude := map[string]bool{
+		"alertmanager-main": true,
+		"prometheus-k8s":    true,
+		"kube-dns":          true,
+		"grafana":           true,
+	}
+
+	for _, k := range tgs.Active {
+		job := k.Labels["job"]
+		if k.DiscoveredLabels["__scheme__"] == "http" && !exclude[string(job)] {
+			log.Fatalf("target exposing metrics over HTTP instead of HTTPS: %+v", k)
+		}
 	}
 }

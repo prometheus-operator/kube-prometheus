@@ -22,6 +22,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 
 	"github.com/Jeffail/gabs"
+	promv1 "github.com/prometheus/client_golang/api/prometheus/v1"
 )
 
 type prometheusClient struct {
@@ -30,6 +31,42 @@ type prometheusClient struct {
 
 func newPrometheusClient(kubeClient kubernetes.Interface) *prometheusClient {
 	return &prometheusClient{kubeClient}
+}
+
+// Response hold API response in a form similar to apiResponse struct from prometheus/client_golang
+// https://github.com/prometheus/client_golang/blob/master/api/prometheus/v1/api.go
+type Response struct {
+	Status string          `json:"status"`
+	Data   json.RawMessage `json:"data"`
+}
+
+// apiRequest makes a request against specified Prometheus API endpoint
+func (c *prometheusClient) apiRequest(endpoint string, selector string, query string) (Response, error) {
+	req := c.kubeClient.CoreV1().RESTClient().Get().
+		Namespace("monitoring").
+		Resource("pods").
+		SubResource("proxy").
+		Name("prometheus-k8s-0:9090").
+		Suffix(endpoint).Param(selector, query)
+
+	var data Response
+	b, err := req.DoRaw()
+	if err != nil {
+		return data, err
+	}
+
+	r := bytes.NewReader(b)
+	decoder := json.NewDecoder(r)
+	err = decoder.Decode(&data)
+	if err != nil {
+		return data, err
+	}
+
+	if data.Status != "success" {
+		return data, fmt.Errorf("status of returned response was not successful; status: %s", data.Status)
+	}
+
+	return data, err
 }
 
 // Query makes a request against the Prometheus /api/v1/query endpoint.
@@ -55,40 +92,36 @@ func (c *prometheusClient) query(query string) (int, error) {
 	return n, err
 }
 
-type Metadata struct {
-	Status string `json:"status,omitempty"`
-	Data   []Data `json:"data,omitempty"`
-}
-
-type Data struct {
-	Metric string `json:"metric,omitempty"`
-	Help   string `json:"help,omitempty"`
-}
-
 // metadata makes a request against the Prometheus /api/v1/targets/metadata endpoint.
 // It returns all the metrics and its metadata.
-func (c *prometheusClient) metadata(query string) (Metadata, error) {
-	req := c.kubeClient.CoreV1().RESTClient().Get().
-		Namespace("monitoring").
-		Resource("pods").
-		SubResource("proxy").
-		Name("prometheus-k8s-0:9090").
-		Suffix("/api/v1/targets/metadata").Param("match_target", query)
+func (c *prometheusClient) metadata(query string) ([]promv1.MetricMetadata, error) {
+	var metadata []promv1.MetricMetadata
+	rsp, err := c.apiRequest("/api/v1/targets/metadata", "match_target", query)
 
-	var data Metadata
-	b, err := req.DoRaw()
-	if err != nil {
-		return data, err
-	}
-
-	r := bytes.NewReader(b)
+	r := bytes.NewReader(rsp.Data)
 	decoder := json.NewDecoder(r)
-	err = decoder.Decode(&data)
+	err = decoder.Decode(&metadata)
 	if err != nil {
-		return data, err
+		return metadata, err
 	}
-	if data.Status != "success" {
-		return data, fmt.Errorf("status of returned response was not successful; status: %s", data.Status)
+	return metadata, err
+}
+
+// targets makes a request against the Prometheus /api/v1/targets endpoint.
+// It returns all targets registered in prometheus.
+func (c *prometheusClient) targets() (promv1.TargetsResult, error) {
+	var targets promv1.TargetsResult
+	rsp, err := c.apiRequest("/api/v1/targets", "state", "any")
+	if err != nil {
+		return targets, err
 	}
-	return data, err
+
+	r := bytes.NewReader(rsp.Data)
+	decoder := json.NewDecoder(r)
+	err = decoder.Decode(&targets)
+	if err != nil {
+		return targets, err
+	}
+
+	return targets, err
 }
