@@ -2,17 +2,20 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   labels:
-    app: node-exporter
+    app.kubernetes.io/name: node-exporter
+    app.kubernetes.io/version: v0.18.1
   name: node-exporter
   namespace: monitoring
 spec:
   selector:
     matchLabels:
-      app: node-exporter
+      app.kubernetes.io/name: node-exporter
+      app.kubernetes.io/version: v0.18.1
   template:
     metadata:
       labels:
-        app: node-exporter
+        app.kubernetes.io/name: node-exporter
+        app.kubernetes.io/version: v0.18.1
     spec:
       containers:
       - args:

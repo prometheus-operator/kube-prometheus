@@ -16,6 +16,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
     nodeExporter+:: {
       port: 9100,
+      labels: {
+        'app.kubernetes.io/name': 'node-exporter',
+        'app.kubernetes.io/version': $._config.versions.nodeExporter,
+      },
     },
   },
 
@@ -64,7 +68,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local toleration = daemonset.mixin.spec.template.spec.tolerationsType;
       local containerEnv = container.envType;
 
-      local podLabels = { app: 'node-exporter' };
+      local podLabels = $._config.nodeExporter.labels;
 
       local existsToleration = toleration.new() +
                                toleration.withOperator('Exists');
@@ -154,16 +158,12 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         metadata: {
           name: 'node-exporter',
           namespace: $._config.namespace,
-          labels: {
-            'k8s-app': 'node-exporter',
-          },
+          labels: $._config.nodeExporter.labels,
         },
         spec: {
-          jobLabel: 'k8s-app',
+          jobLabel: 'app.kubernetes.io/name',
           selector: {
-            matchLabels: {
-              'k8s-app': 'node-exporter',
-            },
+            matchLabels: $._config.nodeExporter.labels,
           },
           endpoints: [
             {
@@ -196,7 +196,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
       service.new('node-exporter', $.nodeExporter.daemonset.spec.selector.matchLabels, nodeExporterPort) +
       service.mixin.metadata.withNamespace($._config.namespace) +
-      service.mixin.metadata.withLabels({ 'k8s-app': 'node-exporter' }) +
+      service.mixin.metadata.withLabels($._config.nodeExporter.labels) +
       service.mixin.spec.withClusterIp('None'),
   },
 }
