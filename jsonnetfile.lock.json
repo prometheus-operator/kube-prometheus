@@ -18,7 +18,7 @@
           "subdir": "Documentation/etcd-mixin"
         }
       },
-      "version": "0eee733220fc766ff0d193d61d9124aa06493986",
+      "version": "71a241e8768947b9553410e2c095628e14659d1d",
       "sum": "Ko3qhNfC2vN/houLh6C0Ryacjv70gl0DVPGU/PQ4OD0="
     },
     {
@@ -89,7 +89,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "ab094dffe1e5c6d59663c8a2de056cba62f6cd2c",
+      "version": "bfe24a05b3c3e0b3f2a94af0f6271299c13b86c8",
       "sum": "cJjGZaLBjcIGrLHZLjRPU9c3KL+ep9rZTb9dbALSKqA="
     },
     {
@@ -99,7 +99,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "ab094dffe1e5c6d59663c8a2de056cba62f6cd2c",
+      "version": "bfe24a05b3c3e0b3f2a94af0f6271299c13b86c8",
       "sum": "E1GGavnf9PCWBm4WVrxWnc0FIj72UcbcweqGioWrOdU="
     },
     {
@@ -129,7 +129,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "fac7a4a0504404fa5d4c5abb8fcc9750bd5cbda7",
+      "version": "12d53dde558e26f930b0b76fb1735e99f436e9b8",
       "sum": "5EUgr6Spr1zNR8Y2/NevjvEkGV9WMvKo6nEScNER1Lc=",
       "name": "prometheus"
     },
