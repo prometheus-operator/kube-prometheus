@@ -63,7 +63,7 @@ local configMapList = k3.core.v1.configMapList;
     },
     serviceMonitor+: {
       spec+: {
-        endpoints+: [
+        endpoints: [
           {
             port: 'https',
             scheme: 'https',
