@@ -5,6 +5,7 @@ local configMapList = k3.core.v1.configMapList;
 (import 'grafana/grafana.libsonnet') +
 (import 'kube-state-metrics/kube-state-metrics.libsonnet') +
 (import 'kube-state-metrics-mixin/mixin.libsonnet') +
+(import 'kube-rbac-proxy/container.libsonnet') +
 (import 'node-exporter/node-exporter.libsonnet') +
 (import 'node-mixin/mixin.libsonnet') +
 (import 'alertmanager/alertmanager.libsonnet') +
