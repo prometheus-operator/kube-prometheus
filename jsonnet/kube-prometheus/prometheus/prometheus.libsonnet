@@ -44,7 +44,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local service = k.core.v1.service;
       local servicePort = k.core.v1.service.mixin.spec.portsType;
 
-      local prometheusPort = servicePort.newNamed('web', 9090, 'web');
+      local prometheusPort = servicePort.newNamed('tenancy', 9092, 'tenancy');
 
       service.new('prometheus-' + p.name, { app: 'prometheus', prometheus: p.name }, prometheusPort) +
       service.mixin.spec.withSessionAffinity('ClientIP') +
@@ -86,6 +86,16 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local clusterRole = k.rbac.v1.clusterRole;
       local policyRule = clusterRole.rulesType;
 
+      local authenticationRule = policyRule.new() +
+                                 policyRule.withApiGroups(['authentication.k8s.io']) +
+                                 policyRule.withResources(['tokenreviews']) +
+                                 policyRule.withVerbs(['create']);
+
+      local authorizationRule = policyRule.new() +
+                                policyRule.withApiGroups(['authorization.k8s.io']) +
+                                policyRule.withResources(['subjectaccessreviews']) +
+                                policyRule.withVerbs(['create']);
+
       local nodeMetricsRule = policyRule.new() +
                               policyRule.withApiGroups(['']) +
                               policyRule.withResources(['nodes/metrics']) +
@@ -95,7 +105,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                           policyRule.withNonResourceUrls('/metrics') +
                           policyRule.withVerbs(['get']);
 
-      local rules = [nodeMetricsRule, metricsRule];
+      local rules = [authenticationRule, authorizationRule, nodeMetricsRule, metricsRule];
 
       clusterRole.new() +
       clusterRole.mixin.metadata.withName('prometheus-' + p.name) +
@@ -205,7 +215,31 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
             fsGroup: 2000,
           },
         },
-      },
+      } +
+      ((import 'kube-prometheus/kube-rbac-proxy/container.libsonnet') {
+        config+:: {
+          kubeRbacProxy: {
+            image: $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy,
+            name: 'kube-rbac-proxy',
+            securePortName: 'tenancy',
+            securePort: 9092,
+            secureListenAddress: ':%d' % self.securePort,
+            upstream: 'http://127.0.0.1:9095/',
+            tlsCipherSuites: $._config.tlsCipherSuites,
+          },
+        },
+      }).specMixin +
+      ((import 'kube-prometheus/prom-label-proxy/container.libsonnet') {
+        config+:: {
+          promLabelProxy: {
+            image: $._config.imageRepos.promLabelProxy + ':' + $._config.versions.promLabelProxy,
+            name: 'prom-label-proxy',
+            insecureListenAddress: '127.0.0.1:9095',
+            upstream: 'http://127.0.0.1:9090/',
+            label: 'namespace',
+          },
+        },
+      }).specMixin,
     serviceMonitor:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -225,8 +259,13 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           },
           endpoints: [
             {
-              port: 'web',
+              port: 'tenancy',
               interval: '30s',
+              scheme: 'https',
+              tlsConfig: {
+                insecureSkipVerify: true,
+              },
+              bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
             },
           ],
         },
