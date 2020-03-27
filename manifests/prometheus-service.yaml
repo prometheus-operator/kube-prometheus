@@ -7,9 +7,9 @@ metadata:
   namespace: monitoring
 spec:
   ports:
-  - name: web
-    port: 9090
-    targetPort: web
+  - name: tenancy
+    port: 9092
+    targetPort: tenancy
   selector:
     app: prometheus
     prometheus: k8s

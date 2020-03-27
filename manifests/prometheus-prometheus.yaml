@@ -11,6 +11,25 @@ spec:
     - name: alertmanager-main
       namespace: monitoring
       port: web
+  containers:
+  - args:
+    - --logtostderr
+    - --secure-listen-address=:9092
+    - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+    - --upstream=http://127.0.0.1:9095/
+    image: quay.io/coreos/kube-rbac-proxy:v0.4.1
+    name: kube-rbac-proxy
+    ports:
+    - containerPort: 9092
+      name: tenancy
+    securityContext:
+      runAsUser: 65534
+  - args:
+    - --insecure-listen-address=127.0.0.1:9095
+    - --upstream=http://127.0.0.1:9090/
+    - --label=namespace
+    image: quay.io/coreos/prom-label-proxy:v0.1.0
+    name: prom-label-proxy
   image: quay.io/prometheus/prometheus:v2.15.2
   nodeSelector:
     kubernetes.io/os: linux

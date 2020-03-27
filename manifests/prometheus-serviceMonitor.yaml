@@ -7,8 +7,12 @@ metadata:
   namespace: monitoring
 spec:
   endpoints:
-  - interval: 30s
-    port: web
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 30s
+    port: tenancy
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
   selector:
     matchLabels:
       prometheus: k8s
