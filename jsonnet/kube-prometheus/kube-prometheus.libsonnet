@@ -11,6 +11,7 @@ local configMapList = k3.core.v1.configMapList;
 (import 'alertmanager/alertmanager.libsonnet') +
 (import 'prometheus-operator/prometheus-operator.libsonnet') +
 (import 'prometheus/prometheus.libsonnet') +
+(import 'prom-label-proxy/container.libsonnet') +
 (import 'prometheus-adapter/prometheus-adapter.libsonnet') +
 (import 'kubernetes-mixin/mixin.libsonnet') +
 (import 'prometheus/mixin.libsonnet') +
