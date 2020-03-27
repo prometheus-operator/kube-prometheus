@@ -150,7 +150,6 @@ func TestTargetsScheme(t *testing.T) {
 	// TODO(paulfantom): This should be reduced as we secure connections for those components
 	exclude := map[string]bool{
 		"alertmanager-main": true,
-		"prometheus-k8s":    true,
 		"kube-dns":          true,
 		"grafana":           true,
 	}
