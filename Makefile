@@ -15,7 +15,7 @@ CONTAINER_CMD:=docker run --rm \
 		-v "$(shell go env GOCACHE):/.cache/go-build" \
 		-v "$(PWD):/go/src/github.com/coreos/kube-prometheus:Z" \
 		-w "/go/src/github.com/coreos/kube-prometheus" \
-		quay.io/coreos/jsonnet-ci
+		quay.io/coreos/jsonnet-ci:release-0.36
 
 all: generate fmt test
 
