@@ -10,19 +10,33 @@ set -x
 
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 chmod +x kubectl
-curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.4.0/kind-linux-amd64
+curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.6.1/kind-linux-amd64
 chmod +x kind
 
-./kind create cluster
-export KUBECONFIG="$(./kind get kubeconfig-path)"
+run_e2e_tests() {
+    cluster_version=$1
 
-# create namespace, permissions, and CRDs
-./kubectl create -f manifests/setup
+    ./kind create cluster --image=kindest/node:$cluster_version
+    export KUBECONFIG="$(./kind get kubeconfig-path)"
 
-# wait for CRD creation to complete
-until ./kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
+    # create namespace, permissions, and CRDs
+    ./kubectl create -f manifests/setup
 
-# create monitoring components
-./kubectl create -f manifests/
+    # wait for CRD creation to complete
+    until ./kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
 
-make test-e2e
+    # create monitoring components
+    ./kubectl create -f manifests/
+
+    make test-e2e
+
+    ./kind delete cluster
+}
+
+cluster_compatible_versions=("v1.14.1" "v1.15.0" "v1.16.1" "v1.17.0")
+
+for cluster_version in "${cluster_compatible_versions[@]}"
+do
+    run_e2e_tests $cluster_version
+done
+
