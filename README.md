@@ -24,6 +24,8 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
   - [Table of contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
     - [minikube](#minikube)
+  - [Compatibility](#compatibility)
+    - [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix)
   - [Quickstart](#quickstart)
     - [Access the dashboards](#access-the-dashboards)
   - [Customizing Kube-Prometheus](#customizing-kube-prometheus)
@@ -83,9 +85,19 @@ The kube-prometheus stack includes a resource metrics API server, so the metrics
 $ minikube addons disable metrics-server
 ```
 
+## Compatibility
+
+### Kubernetes compatibility matrix
+
+| kube-prometheus stack | Kubernetes 1.14 | Kubernetes 1.15 | Kubernetes 1.16 | Kubernetes 1.17 |
+|-----------------------|-----------------|-----------------|-----------------|-----------------|
+| `release-0.3`         | ✔              | ✔              | ✔              | ✔              |
+| `release-0.4`         | ✗              | ✗              | ✔              | ✔              |
+| `HEAD`                | ✗              | ✗              | ✗              | ✔              |
+
 ## Quickstart
 
->Note: For versions before Kubernetes v1.14.0 use the release-0.1 branch instead of master.
+>Note: For versions before Kubernetes v1.17.0 refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
 
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 
