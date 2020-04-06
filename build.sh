@@ -7,6 +7,9 @@ set -x
 # only exit with zero if all commands of the pipeline exit successfully
 set -o pipefail
 
+# Make sure to use project tooling
+PATH="$(pwd)/tmp/bin:${PATH}"
+
 # Make sure to start with a clean 'manifests' dir
 rm -rf manifests
 mkdir -p manifests/setup
