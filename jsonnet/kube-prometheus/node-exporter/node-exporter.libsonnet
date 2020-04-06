@@ -20,6 +20,11 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         'app.kubernetes.io/name': 'node-exporter',
         'app.kubernetes.io/version': $._config.versions.nodeExporter,
       },
+      selectorLabels: {
+        [labelName]: $._config.nodeExporter.labels[labelName]
+        for labelName in std.objectFields($._config.nodeExporter.labels)
+        if !std.setMember(labelName, ['app.kubernetes.io/version'])
+      },
     },
   },
 
@@ -69,11 +74,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local containerEnv = container.envType;
 
       local podLabels = $._config.nodeExporter.labels;
-      local selectorLabels = {
-        [labelName]: $._config.nodeExporter.labels[labelName]
-        for labelName in std.objectFields($._config.nodeExporter.labels)
-        if !std.setMember(labelName, ['app.kubernetes.io/version'])
-      };
+      local selectorLabels = $._config.nodeExporter.selectorLabels;
 
       local existsToleration = toleration.new() +
                                toleration.withOperator('Exists');
@@ -168,7 +169,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         spec: {
           jobLabel: 'app.kubernetes.io/name',
           selector: {
-            matchLabels: $._config.nodeExporter.labels,
+            matchLabels: $._config.nodeExporter.selectorLabels,
           },
           endpoints: [
             {
@@ -199,7 +200,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
       local nodeExporterPort = servicePort.newNamed('https', $._config.nodeExporter.port, 'https');
 
-      service.new('node-exporter', $.nodeExporter.daemonset.spec.selector.matchLabels, nodeExporterPort) +
+      service.new('node-exporter', $._config.nodeExporter.selectorLabels, nodeExporterPort) +
       service.mixin.metadata.withNamespace($._config.namespace) +
       service.mixin.metadata.withLabels($._config.nodeExporter.labels) +
       service.mixin.spec.withClusterIp('None'),
