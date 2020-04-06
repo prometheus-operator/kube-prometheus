@@ -3,6 +3,12 @@ local service = k.core.v1.service;
 local servicePort = k.core.v1.service.mixin.spec.portsType;
 
 {
+  _config+:: {
+    eks: {
+      minimumAvailableIPs: 10,
+      minimumAvailableIPsTime: '10m'
+    }
+  },
   prometheus+: {
     AwsEksCniMetricService:
         service.new('aws-node', { 'k8s-app' : 'aws-node' } , servicePort.newNamed('cni-metrics-port', 61678, 61678)) +
@@ -48,14 +54,14 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         name: 'kube-prometheus-eks.rules',
         rules: [
           {
-            expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < 10',
+            expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % $._config.eks.minimumAvailableIPs,
             labels: {
               severity: 'critical',
             },
             annotations: {
               message: 'Instance {{ $labels.instance }} has less than 10 IPs available.'
             },
-            'for': '10m',
+            'for': $._config.eks.minimumAvailableIPsTime,
             alert: 'EksAvailableIPs'
           },
         ],
