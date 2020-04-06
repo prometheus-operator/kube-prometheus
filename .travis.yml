@@ -11,14 +11,11 @@ cache:
   - $GOCACHE
   - $GOPATH/pkg/mod
 
-services:
-- docker
-
 jobs:
   include:
   - name: Check generated files
-    script: make --always-make generate-in-docker && git diff --exit-code
+    script: make --always-make generate && git diff --exit-code
   - name: Run tests
-    script: make --always-make test-in-docker
+    script: make --always-make test
   - name: Run e2e tests
     script: GO111MODULE=on ./tests/e2e/travis-e2e.sh
