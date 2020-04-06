@@ -715,5 +715,5 @@ the following process:
 2. Commit your changes (This is currently necessary due to our vendoring
    process. This is likely to change in the future).
 3. Update the pinned kube-prometheus dependency in `jsonnetfile.lock.json`: `jb update`
-3. Generate dependent `*.yaml` files: `make generate-in-docker`
+3. Generate dependent `*.yaml` files: `make generate`
 4. Commit the generated changes.
