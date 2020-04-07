@@ -10,7 +10,6 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: node-exporter
-      app.kubernetes.io/version: v0.18.1
   template:
     metadata:
       labels:
