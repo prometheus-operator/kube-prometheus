@@ -134,6 +134,24 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         versionPriority: 100,
       },
     },
+    customMetricsApiServiceV1Beta2: {
+      apiVersion: 'apiregistration.k8s.io/v1',
+      kind: 'APIService',
+      metadata: {
+        name: 'v1beta2.custom.metrics.k8s.io',
+      },
+      spec: {
+        service: {
+          name: $.prometheusAdapter.service.metadata.name,
+          namespace: $._config.namespace,
+        },
+        group: 'custom.metrics.k8s.io',
+        version: 'v1beta2',
+        insecureSkipTLSVerify: true,
+        groupPriorityMinimum: 100,
+        versionPriority: 200,
+      },
+    },
     customMetricsClusterRoleServerResources:
       local clusterRole = k.rbac.v1.clusterRole;
       local policyRule = clusterRole.rulesType;
