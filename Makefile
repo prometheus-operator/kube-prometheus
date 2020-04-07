@@ -1,5 +1,7 @@
 SHELL=/bin/bash -o pipefail
 
+export GO111MODULE=on
+
 BIN_DIR?=$(shell pwd)/tmp/bin
 
 EMBEDMD_BIN=$(BIN_DIR)/embedmd

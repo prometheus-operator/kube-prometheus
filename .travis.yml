@@ -18,4 +18,4 @@ jobs:
   - name: Run tests
     script: make --always-make test
   - name: Run e2e tests
-    script: GO111MODULE=on ./tests/e2e/travis-e2e.sh
+    script: ./tests/e2e/travis-e2e.sh
