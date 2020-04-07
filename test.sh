@@ -3,6 +3,8 @@ set -e
 # only exit with zero if all commands of the pipeline exit successfully
 set -o pipefail
 
+# Make sure to use project tooling
+PATH="$(pwd)/tmp/bin:${PATH}"
 
 for i in examples/jsonnet-snippets/*.jsonnet; do
     [ -f "$i" ] || break
