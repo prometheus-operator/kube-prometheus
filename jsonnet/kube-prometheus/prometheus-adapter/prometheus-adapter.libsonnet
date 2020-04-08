@@ -54,7 +54,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
             },
             containerLabel: 'container'
           },
-          window: 5,
+          window: '5m',
         },
       }
     },
