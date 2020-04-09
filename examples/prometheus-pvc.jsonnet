@@ -7,7 +7,12 @@ local pvc = k.core.v1.persistentVolumeClaim;  // https://kubernetes.io/docs/refe
 
 local kp =
   (import 'kube-prometheus/kube-prometheus.libsonnet') +
-  (import 'kube-prometheus/kube-prometheus-bootkube.libsonnet') +
+  // Uncomment the following imports to enable its patches
+  // (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-managed-cluster.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-node-ports.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') +
+  // (import 'kube-prometheus/kube-prometheus-thanos-sidecar.libsonnet') +
   {
     _config+:: {
       namespace: 'monitoring',
@@ -20,7 +25,7 @@ local kp =
           // The possible values for a prometheus <duration> are:
           //  * https://github.com/prometheus/common/blob/c7de230/model/time.go#L178 specifies "^([0-9]+)(y|w|d|h|m|s|ms)$" (years weeks days hours minutes seconds milliseconds)
           retention: '30d',
-
+  
           // Reference info: https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md
           // By default (if the following 'storage.volumeClaimTemplate' isn't created), prometheus will be created with an EmptyDir for the 'prometheus-k8s-db' volume (for the prom tsdb).
           // This 'storage.volumeClaimTemplate' causes the following to be automatically created (via dynamic provisioning) for each prometheus pod:
@@ -50,9 +55,16 @@ local kp =
 
   };
 
-{ ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
+{ ['setup/0namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{
+  ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
+  for name in std.filter((function(name) name != 'serviceMonitor'), std.objectFields(kp.prometheusOperator))
+} +
+// serviceMonitor is separated so that it can be created after the CRDs are ready
+{ 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
