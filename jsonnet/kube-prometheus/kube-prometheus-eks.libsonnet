@@ -8,7 +8,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       minimumAvailableIPs: 10,
       minimumAvailableIPsTime: '10m'
     }
-  }
+  },
   prometheus+: {
     serviceMonitorCoreDNS+: {
         spec+: {
