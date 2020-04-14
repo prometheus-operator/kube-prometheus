@@ -232,6 +232,9 @@ set -x
 # only exit with zero if all commands of the pipeline exit successfully
 set -o pipefail
 
+# Make sure to use project tooling
+PATH="$(pwd)/tmp/bin:${PATH}"
+
 # Make sure to start with a clean 'manifests' dir
 rm -rf manifests
 mkdir -p manifests/setup
@@ -712,5 +715,5 @@ the following process:
 2. Commit your changes (This is currently necessary due to our vendoring
    process. This is likely to change in the future).
 3. Update the pinned kube-prometheus dependency in `jsonnetfile.lock.json`: `jb update`
-3. Generate dependent `*.yaml` files: `make generate-in-docker`
+3. Generate dependent `*.yaml` files: `make generate`
 4. Commit the generated changes.
