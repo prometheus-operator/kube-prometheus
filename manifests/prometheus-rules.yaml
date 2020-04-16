@@ -389,12 +389,15 @@ spec:
         verb: write
       record: apiserver_request:availability30d
     - expr: |
-        sum by (code) (increase(apiserver_request_total{job="apiserver",verb=~"LIST|GET"}[30d]))
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver"}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code) (code_verb:apiserver_request_total:increase30d{verb=~"LIST|GET"})
       labels:
         verb: read
       record: code:apiserver_request_total:increase30d
     - expr: |
-        sum by (code) (increase(apiserver_request_total{job="apiserver",verb=~"POST|PUT|PATCH|DELETE"}[30d]))
+        sum by (code) (code_verb:apiserver_request_total:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
       labels:
         verb: write
       record: code:apiserver_request_total:increase30d
@@ -1311,29 +1314,6 @@ spec:
       for: 5m
       labels:
         severity: warning
-    - alert: KubeAPILatencyHigh
-      annotations:
-        message: The API server has a 99th percentile latency of {{ $value }} seconds
-          for {{ $labels.verb }} {{ $labels.resource }}.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh
-      expr: |
-        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99"} > 4
-      for: 10m
-      labels:
-        severity: critical
-    - alert: KubeAPIErrorsHigh
-      annotations:
-        message: API server is returning errors for {{ $value | humanizePercentage
-          }} of requests for {{ $labels.verb }} {{ $labels.resource }} {{ $labels.subresource
-          }}.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
-      expr: |
-        sum(rate(apiserver_request_total{job="apiserver",code=~"5.."}[5m])) by (resource,subresource,verb)
-          /
-        sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) > 0.10
-      for: 10m
-      labels:
-        severity: critical
     - alert: KubeAPIErrorsHigh
       annotations:
         message: API server is returning errors for {{ $value | humanizePercentage
@@ -1451,7 +1431,7 @@ spec:
           on node {{ $labels.node }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletpodstartuplatencyhigh
       expr: |
-        histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (instance, le)) * on(instance) group_left(node) kubelet_node_name  > 60
+        histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (instance, le)) * on(instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"} > 60
       for: 15m
       labels:
         severity: warning
@@ -1616,8 +1596,8 @@ spec:
     - alert: PrometheusRemoteStorageFailures
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} failed to send
-          {{ printf "%.1f" $value }}% of the samples to {{ if $labels.queue }}{{ $labels.queue
-          }}{{ else }}{{ $labels.url }}{{ end }}.
+          {{ printf "%.1f" $value }}% of the samples to {{ $labels.remote_name}}:{{
+          $labels.url }}
         summary: Prometheus fails to send samples to remote storage.
       expr: |
         (
@@ -1637,8 +1617,8 @@ spec:
     - alert: PrometheusRemoteWriteBehind
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
-          is {{ printf "%.1f" $value }}s behind for {{ if $labels.queue }}{{ $labels.queue
-          }}{{ else }}{{ $labels.url }}{{ end }}.
+          is {{ printf "%.1f" $value }}s behind for {{ $labels.remote_name}}:{{ $labels.url
+          }}.
         summary: Prometheus remote write is behind.
       expr: |
         # Without max_over_time, failed scrapes could create false negatives, see
@@ -1655,8 +1635,9 @@ spec:
     - alert: PrometheusRemoteWriteDesiredShards
       annotations:
         description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
-          desired shards calculation wants to run {{ $value }} shards, which is more
-          than the max of {{ printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
+          desired shards calculation wants to run {{ $value }} shards for queue {{
+          $labels.remote_name}}:{{ $labels.url }}, which is more than the max of {{
+          printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
           $labels.instance | query | first | value }}.
         summary: Prometheus remote write desired shards calculation wants to run more
           than configured max shards.
