@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "master"
+      "version": "release-0.1"
     },
     {
       "source": {
@@ -17,7 +17,7 @@
           "subdir": "Documentation/etcd-mixin"
         }
       },
-      "version": "master"
+      "version": "release-3.4"
     },
     {
       "source": {
@@ -45,7 +45,7 @@
           "subdir": ""
         }
       },
-      "version": "master"
+      "version": "release-0.4"
     },
     {
       "source": {
@@ -54,7 +54,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "master"
+      "version": "release-1.9"
     },
     {
       "source": {
@@ -63,7 +63,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "master"
+      "version": "release-1.9"
     },
     {
       "source": {
@@ -72,7 +72,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "master"
+      "version": "v0.18.1"
     },
     {
       "source": {
