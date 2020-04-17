@@ -1,6 +1,6 @@
 module github.com/coreos/kube-prometheus
 
-go 1.12
+go 1.13
 
 require (
 	github.com/Jeffail/gabs v1.2.0
