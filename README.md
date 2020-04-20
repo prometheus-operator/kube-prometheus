@@ -76,7 +76,7 @@ This adapter is an Extension API Server and Kubernetes needs to be have this fea
 To try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
 
 ```shell
-$ minikube delete && minikube start --kubernetes-version=v1.17.3 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
+$ minikube delete && minikube start --kubernetes-version=v1.18.1 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
 ```
 
 The kube-prometheus stack includes a resource metrics API server, so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:
@@ -89,15 +89,18 @@ $ minikube addons disable metrics-server
 
 ### Kubernetes compatibility matrix
 
-| kube-prometheus stack | Kubernetes 1.14 | Kubernetes 1.15 | Kubernetes 1.16 | Kubernetes 1.17 |
-|-----------------------|-----------------|-----------------|-----------------|-----------------|
-| `release-0.3`         | ✔              | ✔              | ✔              | ✔              |
-| `release-0.4`         | ✗              | ✗              | ✔              | ✔              |
-| `HEAD`                | ✗              | ✗              | ✗              | ✔              |
+The following versions are supported and work as we test against these versions in their respective branches. But note that other versions might work!
+
+| kube-prometheus stack | Kubernetes 1.14 | Kubernetes 1.15 | Kubernetes 1.16 | Kubernetes 1.17 | Kubernetes 1.18 |
+|-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
+| `release-0.3`         | ✔              | ✔              | ✔              | ✔              | ✗
+| `release-0.4`         | ✗              | ✗              | ✔              | ✔              | ✗
+| `release-0.5`         | ✗              | ✗              | ✗              | ✔              | ✔
+| `HEAD`                | ✗              | ✗              | ✗              | ✗              | ✔
 
 ## Quickstart
 
->Note: For versions before Kubernetes v1.17.0 refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
+>Note: For versions before Kubernetes v1.18.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
 
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 

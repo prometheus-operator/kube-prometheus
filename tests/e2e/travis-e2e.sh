@@ -13,7 +13,7 @@ chmod +x kubectl
 curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.6.1/kind-linux-amd64
 chmod +x kind
 
-./kind create cluster --image=kindest/node:v1.17.0
+./kind create cluster --image=kindest/node:v1.18.0
 export KUBECONFIG="$(./kind get kubeconfig-path)"
 
 # create namespace, permissions, and CRDs
