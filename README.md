@@ -46,7 +46,7 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
     - [node-exporter DaemonSet namespace](#node-exporter-daemonset-namespace)
     - [Alertmanager configuration](#alertmanager-configuration)
     - [Adding additional namespaces to monitor](#adding-additional-namespaces-to-monitor)
-      - [Defining the ServiceMonitor for each addional Namespace](#defining-the-servicemonitor-for-each-addional-namespace)
+      - [Defining the ServiceMonitor for each additional Namespace](#defining-the-servicemonitor-for-each-additional-namespace)
     - [Static etcd configuration](#static-etcd-configuration)
     - [Pod Anti-Affinity](#pod-anti-affinity)
     - [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
@@ -587,7 +587,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
-#### Defining the ServiceMonitor for each addional Namespace
+#### Defining the ServiceMonitor for each additional Namespace
 
 In order to Prometheus be able to discovery and scrape services inside the additional namespaces specified in previous step you need to define a ServiceMonitor resource.
 
