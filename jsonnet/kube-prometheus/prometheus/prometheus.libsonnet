@@ -462,5 +462,36 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           ],
         },
       },
+    podMonitorKubeProxy:
+      {
+        apiVersion: "monitoring.coreos.com/v1",
+        kind: "PodMonitor",
+        metadata: {
+          labels: {
+            "k8s-app": "kube-proxy"
+          },
+          name: "kube-proxy",
+          namespace: "monitoring"
+        },
+        spec: {
+          jobLabel: "k8s-app",
+          namespaceSelector: {
+            matchNames: [
+              "kube-system"
+            ]
+          },
+          selector: {
+            matchLabels: {
+              "k8s-app": "kube-proxy"
+            }
+          },
+          podMetricsEndpoints: [
+            {
+              honorLabels: true,
+              port: "metrics"
+            }
+          ]
+        }
+      },
   },
 }
