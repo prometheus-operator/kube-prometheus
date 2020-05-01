@@ -488,7 +488,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           podMetricsEndpoints: [
             {
               honorLabels: true,
-              port: "metrics"
+              targetPort: 10249
             }
           ]
         }
