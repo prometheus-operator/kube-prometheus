@@ -39,6 +39,7 @@ resources:
 - ./manifests/prometheus-clusterRole.yaml
 - ./manifests/prometheus-clusterRoleBinding.yaml
 - ./manifests/prometheus-operator-serviceMonitor.yaml
+- ./manifests/prometheus-podMonitorKubeProxy.yaml
 - ./manifests/prometheus-prometheus.yaml
 - ./manifests/prometheus-roleBindingConfig.yaml
 - ./manifests/prometheus-roleBindingSpecificNamespaces.yaml
