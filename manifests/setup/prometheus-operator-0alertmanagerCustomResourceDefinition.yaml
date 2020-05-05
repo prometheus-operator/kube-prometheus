@@ -24,6 +24,7 @@ spec:
     listKind: AlertmanagerList
     plural: alertmanagers
     singular: alertmanager
+  preserveUnknownFields: false
   scope: Namespaced
   subresources: {}
   validation:
