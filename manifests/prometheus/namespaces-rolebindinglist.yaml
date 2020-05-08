@@ -1,4 +1,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBindingList
+
 items:
 - apiVersion: rbac.authorization.k8s.io/v1
   kind: RoleBinding
@@ -13,6 +15,7 @@ items:
   - kind: ServiceAccount
     name: prometheus-k8s
     namespace: monitoring
+
 - apiVersion: rbac.authorization.k8s.io/v1
   kind: RoleBinding
   metadata:
@@ -26,6 +29,7 @@ items:
   - kind: ServiceAccount
     name: prometheus-k8s
     namespace: monitoring
+
 - apiVersion: rbac.authorization.k8s.io/v1
   kind: RoleBinding
   metadata:
@@ -39,4 +43,3 @@ items:
   - kind: ServiceAccount
     name: prometheus-k8s
     namespace: monitoring
-kind: RoleBindingList

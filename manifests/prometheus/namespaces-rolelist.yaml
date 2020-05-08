@@ -1,4 +1,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleList
+
 items:
 - apiVersion: rbac.authorization.k8s.io/v1
   kind: Role
@@ -48,4 +50,3 @@ items:
     - get
     - list
     - watch
-kind: RoleList

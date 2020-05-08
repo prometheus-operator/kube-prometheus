@@ -2,6 +2,7 @@ apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
   name: v1beta1.metrics.k8s.io
+
 spec:
   group: metrics.k8s.io
   groupPriorityMinimum: 100
