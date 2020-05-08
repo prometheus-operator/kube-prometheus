@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-operator
+  namespace: monitoring
+
+  labels:
+    app.kubernetes.io/version: v0.38.1
+
+spec:
+  clusterIP: None # we let kube-rbac-proxy handle the proxying from inside the pod
+
+  ports:
+  - name: https
+    port: 8443
+    targetPort: https

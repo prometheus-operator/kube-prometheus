@@ -1,16 +1,18 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
+  name:  prometheus-operator-tls-create
   labels:
-    app.kubernetes.io/component: controller
+    app.kubernetes.io/component: tls-create-job
     app.kubernetes.io/name: prometheus-operator
     app.kubernetes.io/version: v0.38.1
-  name: prometheus-operator
+
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: prometheus-operator
+  kind: Role
+  name: prometheus-operator-tls-create
+
 subjects:
 - kind: ServiceAccount
-  name: prometheus-operator
+  name: prometheus-operator-tls-create
   namespace: monitoring

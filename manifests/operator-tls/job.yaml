@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name:  prometheus-operator-tls-create
+
+  labels:
+    app.kubernetes.io/component: tls-create-job
+    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/version: v0.38.1
+
+spec:
+  template:
+    metadata:
+      name:  prometheus-operator-tls-create
+      labels:
+        app.kubernetes.io/component: tls-create-job
+        app.kubernetes.io/name: prometheus-operator
+        app.kubernetes.io/version: v0.38.1
+
+    spec:
+      serviceAccountName: prometheus-operator-tls-create
+
+      containers:
+      - name: certgen
+        image: jettech/kube-webhook-certgen:v1.2.0
+        args:
+        - create
+        - --host=prometheus-operator,prometheus-operator.monitoring.svc
+        - --namespace=monitoring
+        - --secret-name=prometheus-operator-tls
+
+      restartPolicy: OnFailure
+
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000

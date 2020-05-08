@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name:  prometheus-operator-tls-create
+  labels:
+    app.kubernetes.io/component: tls-create-job
+    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/version: v0.38.1
+
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - create
