@@ -1,16 +1,17 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-resources:
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+- name: prometheus-annotations-exporter
+  files:
+  - annotations-exporter.yaml
 
 commonLabels:
-  component: annotation-based-scraping
+  component: annotations-exporter
   name: prometheus
-
-configMapGenerator:
-- name: prometheus-annotation-based-scaping
-  files:
-  - config.yaml
 
 # If you change; remember the [cluster|]rolebinding files
 # If you change; remember the apiservice file
