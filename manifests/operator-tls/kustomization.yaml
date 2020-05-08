@@ -6,7 +6,6 @@ bases:
 
 resources:
 - job.yaml
-- deployment.yaml
 - role.yaml
 - rolebinding.yaml
 - serviceaccount.yaml
