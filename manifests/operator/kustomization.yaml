@@ -9,7 +9,7 @@ resources:
 - serviceaccount.yaml
 
 commonLabels:
-  app.kubernetes.io/component: controller
-  app.kubernetes.io/name: prometheus-operator
+  component: controller
+  name: prometheus-operator
 
 # namespace elided intentionally

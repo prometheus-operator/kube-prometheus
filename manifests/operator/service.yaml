@@ -5,7 +5,7 @@ metadata:
   namespace: monitoring
 
   labels:
-    app.kubernetes.io/version: v0.38.1
+    version: v0.38.1
 
 spec:
   clusterIP: None # we let kube-rbac-proxy handle the proxying from inside the pod

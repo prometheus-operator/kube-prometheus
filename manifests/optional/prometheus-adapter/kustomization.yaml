@@ -15,8 +15,8 @@ resources:
 - system-aggregated-metrics-reader-clusterrole.yaml
 
 commonLabels:
-  app.kubernetes.io/component: adapter
-  app.kubernetes.io/name: prometheus-operator
+  component: adapter
+  name: prometheus-operator
 
 configMapGenerator:
 - name: prometheus-adapter-config

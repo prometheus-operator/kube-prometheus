@@ -4,7 +4,7 @@ metadata:
   name: prometheus-adapter
 
   labels:
-    app.kubernetes.io/version: v0.7.0
+    version: v0.7.0
 
 spec:
   replicas: 1
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/version: v0.7.0
+        version: v0.7.0
 
     spec:
       serviceAccountName: prometheus-adapter

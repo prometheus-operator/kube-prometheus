@@ -5,7 +5,7 @@ metadata:
   namespace: monitoring
 
   labels:
-    app.kubernetes.io/version: v0.38.1
+    version: v0.38.1
 
 spec:
   replicas: 1
@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/version: v0.38.1
+        version: v0.38.1
 
     spec:
       serviceAccountName: prometheus-operator

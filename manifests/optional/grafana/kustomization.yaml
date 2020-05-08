@@ -1,0 +1,40 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# if we poll for dashboards from within grafana, allow this
+- clusterrole.yaml
+- clusterrolebinding.yaml
+
+# remainder:
+- dashboard-sources-configmap.yaml
+- datasources-configmap.yaml
+- deployment.yaml
+- service.yaml
+- serviceaccount.yaml
+
+# we want to monitor grafana:
+- servicemonitor.yaml
+
+# for scalability and upgrades:
+- hpa.yaml
+- pdb.yaml
+
+# for pod security policy:
+- podsecuritypolicy.yaml
+- role.yaml
+- rolebinding.yaml
+
+commonLabels:
+  app: grafana
+  component: grafana
+
+configMapGenerator:
+- name: grafana
+  files:
+  - grafana.ini
+  - sc-dashboards-provider.yaml
+  # Using Zalando Postgres Operator? Here you go:
+  #- grafana.ini=grafana-zalando-postgres.ini
+
+namespace: monitoring

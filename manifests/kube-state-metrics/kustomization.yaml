@@ -10,7 +10,7 @@ resources:
 - servicemonitor.yaml
 
 commonLabels:
-  app.kubernetes.io/component: kube-state-metrics
-  app.kubernetes.io/name: kube-state-metrics
+  component: kube-state-metrics
+  name: kube-state-metrics
 
 namespace: monitoring

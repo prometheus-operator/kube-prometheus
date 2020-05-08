@@ -4,7 +4,7 @@ metadata:
   name: kube-state-metrics
 
   labels:
-    app.kubernetes.io/version: v1.9.5
+    version: v1.9.5
 
 spec:
   clusterIP: None

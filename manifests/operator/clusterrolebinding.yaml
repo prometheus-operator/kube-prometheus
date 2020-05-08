@@ -4,7 +4,7 @@ metadata:
   name: prometheus-operator
 
   labels:
-    app.kubernetes.io/version: v0.38.1
+    version: v0.38.1
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io

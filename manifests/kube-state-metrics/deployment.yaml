@@ -4,7 +4,7 @@ metadata:
   name: kube-state-metrics
 
   labels:
-    app.kubernetes.io/version: v1.9.5
+    version: v1.9.5
 
 spec:
   replicas: 1
@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/version: v1.9.5
+        version: v1.9.5
 
     spec:
       serviceAccountName: kube-state-metrics

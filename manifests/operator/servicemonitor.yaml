@@ -5,7 +5,7 @@ metadata:
   namespace: monitoring
 
   labels:
-    app.kubernetes.io/version: v0.38.1
+    version: v0.38.1
 
 spec:
   endpoints:
@@ -18,5 +18,5 @@ spec:
 
   selector:
     matchLabels:
-      app.kubernetes.io/component: controller
-      app.kubernetes.io/name: prometheus-operator
+      component: controller
+      name: prometheus-operator

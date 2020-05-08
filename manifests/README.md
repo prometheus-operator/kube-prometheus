@@ -1,0 +1,1 @@
+You can either point your kustomization.yaml to this folder, or to each of the subfolders, you wish to use, in turn.

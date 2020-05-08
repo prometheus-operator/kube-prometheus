@@ -4,6 +4,8 @@ metadata:
   name: prometheus-operator
   namespace: monitoring
 
+  # labels are set by the base, this is a kustomize patch file
+
 spec:
   template:
     spec:

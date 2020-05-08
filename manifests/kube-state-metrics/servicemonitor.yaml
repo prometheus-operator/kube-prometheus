@@ -2,8 +2,8 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    app.kubernetes.io/name: kube-state-metrics
-    app.kubernetes.io/version: 1.9.5
+    name: kube-state-metrics
+    version: 1.9.5
   name: kube-state-metrics
   namespace: monitoring
 spec:
@@ -25,7 +25,7 @@ spec:
     scheme: https
     tlsConfig:
       insecureSkipVerify: true
-  jobLabel: app.kubernetes.io/name
+  jobLabel: name
   selector:
     matchLabels:
-      app.kubernetes.io/name: kube-state-metrics
+      name: kube-state-metrics

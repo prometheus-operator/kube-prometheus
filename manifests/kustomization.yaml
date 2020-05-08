@@ -9,3 +9,7 @@ bases:
 - operator-tls
 - optional/prometheus-adapter
 - prometheus
+
+# Grafana:
+- optional/grafana
+- optional/grafana-dashboards

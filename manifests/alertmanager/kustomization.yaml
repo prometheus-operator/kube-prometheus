@@ -5,8 +5,8 @@ resources:
 - serviceaccount.yaml
 
 commonLabels:
-  app.kubernetes.io/component: alertmanager
-  app.kubernetes.io/name: prometheus-operator
+  component: alertmanager
+  name: prometheus-operator
 
 configMapGenerator:
   - # TODO
