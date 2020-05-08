@@ -1,16 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    name: node-exporter
-    version: v0.18.1
   name: node-exporter
-  namespace: monitoring
+  labels:
+    version: v0.18.1
+
 spec:
   clusterIP: None
+
   ports:
   - name: https
     port: 9100
     targetPort: https
-  selector:
-    name: node-exporter

@@ -1,23 +1,24 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  labels:
-    name: node-exporter
-    version: v0.18.1
   name: node-exporter
-  namespace: monitoring
+
+  labels:
+    version: v0.18.1
+
 spec:
-  selector:
-    matchLabels:
-      name: node-exporter
   template:
     metadata:
       labels:
-        name: node-exporter
         version: v0.18.1
+
     spec:
+      serviceAccountName: node-exporter
+
       containers:
-      - args:
+      - name: node-exporter
+        image: quay.io/prometheus/node-exporter:v0.18.1
+        args:
         - --web.listen-address=127.0.0.1:9100
         - --path.procfs=/host/proc
         - --path.sysfs=/host/sys
@@ -26,8 +27,7 @@ spec:
         - --no-collector.hwmon
         - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+)($|/)
         - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$
-        image: quay.io/prometheus/node-exporter:v0.18.1
-        name: node-exporter
+
         resources:
           limits:
             cpu: 250m
@@ -35,6 +35,7 @@ spec:
           requests:
             cpu: 102m
             memory: 180Mi
+
         volumeMounts:
         - mountPath: /host/proc
           name: proc
@@ -46,22 +47,26 @@ spec:
           mountPropagation: HostToContainer
           name: root
           readOnly: true
-      - args:
+
+      - name: kube-rbac-proxy
+        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
+        args:
         - --logtostderr
         - --secure-listen-address=[$(IP)]:9100
         - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
         - --upstream=http://127.0.0.1:9100/
+
         env:
         - name: IP
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
-        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
-        name: kube-rbac-proxy
+
         ports:
         - containerPort: 9100
           hostPort: 9100
           name: https
+
         resources:
           limits:
             cpu: 20m
@@ -69,16 +74,20 @@ spec:
           requests:
             cpu: 10m
             memory: 20Mi
+
       hostNetwork: true
       hostPID: true
+
       nodeSelector:
         kubernetes.io/os: linux
+
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
-      serviceAccountName: node-exporter
+
       tolerations:
       - operator: Exists
+
       volumes:
       - hostPath:
           path: /proc

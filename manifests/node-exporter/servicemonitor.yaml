@@ -1,11 +1,10 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  labels:
-    name: node-exporter
-    version: v0.18.1
   name: node-exporter
-  namespace: monitoring
+  labels:
+    version: v0.18.1
+
 spec:
   endpoints:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
@@ -18,10 +17,14 @@ spec:
       sourceLabels:
       - __meta_kubernetes_pod_node_name
       targetLabel: instance
+
     scheme: https
     tlsConfig:
       insecureSkipVerify: true
-  jobLabel: name
+
+  jobLabel: component
+
   selector:
     matchLabels:
-      name: node-exporter
+      name: prometheus
+      component: node-exporter
