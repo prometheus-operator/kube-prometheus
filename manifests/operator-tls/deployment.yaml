@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus-operator
+  namespace: monitoring
 
 spec:
   template:
