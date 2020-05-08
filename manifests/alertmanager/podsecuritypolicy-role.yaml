@@ -2,9 +2,6 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: prometheus-alertmanager
-  labels:
-    app: prometheus-alertmanager
-    component: alertmanager
 
 rules:
 - apiGroups: ['policy']
