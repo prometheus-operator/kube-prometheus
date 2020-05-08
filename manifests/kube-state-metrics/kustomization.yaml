@@ -11,6 +11,6 @@ resources:
 
 commonLabels:
   component: kube-state-metrics
-  name: kube-state-metrics
+  name: prometheus-operator
 
 namespace: monitoring

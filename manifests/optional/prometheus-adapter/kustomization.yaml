@@ -13,6 +13,7 @@ resources:
 - service.yaml
 - serviceaccount.yaml
 - system-aggregated-metrics-reader-clusterrole.yaml
+# TO CONSIDER: a service-monitor
 
 commonLabels:
   component: adapter

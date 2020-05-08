@@ -17,6 +17,6 @@ spec:
       insecureSkipVerify: true
 
   selector:
-    matchLabels:
+    matchLabels: # must match up to commonLabels in kustomization.yaml
       component: controller
       name: prometheus-operator

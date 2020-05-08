@@ -7,6 +7,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: kube-state-metrics
+
 subjects:
 - kind: ServiceAccount
   name: kube-state-metrics

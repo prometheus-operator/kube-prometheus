@@ -17,4 +17,7 @@ bases:
 - optional/grafana
 - optional/grafana-dashboards
 
+# TO CONSIDER:
+# - optional/annotation-based-scraping
+
 # Namespace deliberately elided
