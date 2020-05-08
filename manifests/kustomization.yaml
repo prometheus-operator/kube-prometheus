@@ -12,12 +12,17 @@ bases:
 - operator-tls
 - optional/prometheus-adapter
 - prometheus
+- validating-webhook
+- mutating-webhook
 
 # Grafana:
 - optional/grafana
 - optional/grafana-dashboards
 
+# Optionals:
+- optional/annotation-based-scraping
+
 # TO CONSIDER:
-# - optional/annotation-based-scraping
+# - optional/istio-scraping
 
 # Namespace deliberately elided

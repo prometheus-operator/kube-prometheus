@@ -1,0 +1,27 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingWebhookConfiguration
+metadata:
+  name:  prometheus-operator-admission
+  labels:
+    app: prometheus-operator
+    component: admission
+
+webhooks:
+- name: prometheusrulemutate.monitoring.coreos.com
+  failurePolicy: Ignore
+  rules:
+  - apiGroups:
+    - monitoring.coreos.com
+    apiVersions:
+    - "*"
+    resources:
+    - prometheusrules
+    operations:
+    - CREATE
+    - UPDATE
+
+  clientConfig:
+    service:
+      namespace: monitoring
+      name: prometheus-operator
+      path: /admission-prometheusrules/mutate
