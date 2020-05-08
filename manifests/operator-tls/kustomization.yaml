@@ -13,5 +13,5 @@ resources:
 patchesStrategicMerge:
 - deployment.yaml
 
-# commonLabels elided intentionally
+# commonLabels elided intentionally, because we merge deployment.yaml with other labels
 # namespace elided intentionally
