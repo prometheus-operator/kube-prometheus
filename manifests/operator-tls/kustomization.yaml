@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../operator
+
+resources:
+- job.yaml
+- role.yaml
+- rolebinding.yaml
+- serviceaccount.yaml
+
+patchesStrategicMerge:
+- deployment.yaml
+
+# commonLabels elided intentionally, because we merge deployment.yaml with other labels
+# namespace elided intentionally

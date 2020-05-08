@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- clusterrole.yaml
+- clusterrolebinding.yaml
+- daemonset.yaml
+- service.yaml
+- serviceaccount.yaml
+- servicemonitor.yaml
+
+commonLabels:
+  component: node-exporter
+  name: prometheus
+
+namespace: monitoring

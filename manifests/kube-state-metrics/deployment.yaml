@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-state-metrics
+
+  labels:
+    version: v1.9.5
+
+spec:
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        version: v1.9.5
+
+    spec:
+      serviceAccountName: kube-state-metrics
+
+      containers:
+      - name: kube-state-metrics
+        image: quay.io/coreos/kube-state-metrics:v1.9.5
+        args:
+        - --host=127.0.0.1
+        - --port=8081
+        - --telemetry-host=127.0.0.1
+        - --telemetry-port=8082
+
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+
+        securityContext:
+          runAsUser: 65534
+
+      - name: kube-rbac-proxy-main
+        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
+        args:
+        - --logtostderr
+        - --secure-listen-address=:8443
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+        - --upstream=http://127.0.0.1:8081/
+
+        ports:
+        - containerPort: 8443
+          name: https-main
+
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+
+        securityContext:
+          runAsUser: 65534
+
+      - name: kube-rbac-proxy-self
+        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
+        args:
+        - --logtostderr
+        - --secure-listen-address=:9443
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+        - --upstream=http://127.0.0.1:8082/
+
+        ports:
+        - containerPort: 9443
+          name: https-self
+
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+
+        securityContext:
+          runAsUser: 65534
+
+      nodeSelector:
+        kubernetes.io/os: linux

@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-adapter
+
+  labels:
+    version: v0.7.0
+
+spec:
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        version: v0.7.0
+
+    spec:
+      serviceAccountName: prometheus-adapter
+
+      containers:
+      - name: prometheus-adapter
+
+        image: quay.io/coreos/k8s-prometheus-adapter-amd64:v0.7.0
+        args:
+        - --cert-dir=/var/run/serving-cert
+        - --config=/etc/adapter/config.yaml
+        - --logtostderr=true
+        - --metrics-relist-interval=1m
+        - --prometheus-url=http://prometheus-k8s.monitoring.svc:9090/
+        - --secure-port=6443
+        
+        ports:
+        - containerPort: 6443
+
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmpfs
+          readOnly: false
+        - mountPath: /var/run/serving-cert
+          name: volume-serving-cert
+          readOnly: false
+        - mountPath: /etc/adapter
+          name: config
+          readOnly: false
+
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+          requests:
+            cpu: 60m
+            memory: 34Mi
+
+      nodeSelector:
+        kubernetes.io/os: linux
+
+      volumes:
+      - emptyDir: {}
+        name: tmpfs
+      - emptyDir: {}
+        name: volume-serving-cert
+
+      - name: config
+        configMap:
+          name: prometheus-adapter-config
+
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0

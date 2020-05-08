@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prometheus-operator-tls-create
+  namespace: monitoring
+
+  labels:
+    component: tls-create-job
+    name: prometheus-operator
+    version: v0.38.1
+
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus-operator-tls-create
+
+subjects:
+- kind: ServiceAccount
+  name: prometheus-operator-tls-create
+  namespace: monitoring

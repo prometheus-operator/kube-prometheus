@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- apiservice.yaml
+- clusterrole.yaml
+- clusterrolebinding.yaml
+# config.yaml is built into prometheus-adapter-config
+- deployment.yaml
+- resource-metrics-auth-reader-rolebinding.yaml
+- resource-metrics-server-resources-clusterrole.yaml
+- resource-metrics-system-authdelegator-clusterrolebinding.yaml
+- service.yaml
+- serviceaccount.yaml
+- system-aggregated-metrics-reader-clusterrole.yaml
+# TO CONSIDER: a service-monitor
+
+commonLabels:
+  component: adapter
+  name: prometheus-operator
+
+configMapGenerator:
+- name: prometheus-adapter-config
+  files:
+  - config.yaml
+
+# If you change; remember the [cluster|]rolebinding files
+# If you change; remember the apiservice file
+namespace: monitoring 

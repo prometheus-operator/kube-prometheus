@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-operator
+  namespace: monitoring
+
+  # labels are set by the base, this is a kustomize patch file
+
+spec:
+  template:
+    spec:
+      containers:
+      - name: kube-rbac-proxy
+
+        args:
+        # sync these to the main deployment
+        - --logtostderr
+        - --secure-listen-address=:8443
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+        - --upstream=http://127.0.0.1:8080/
+
+        # extras https://github.com/brancz/kube-rbac-proxy/blob/master/main.go#L119:
+        - --tls-cert-file=/cert/cert
+        - --tls-private-key-file=/cert/key
+        #- --tls-ca-cert=/cert/ca
+
+        volumeMounts:
+        - name: kube-rbac-proxy-secret
+          mountPath: /cert
+          readOnly: true
+
+      volumes:
+      - name: kube-rbac-proxy-secret
+        secret:
+          defaultMode: 420
+          secretName: prometheus-operator-tls

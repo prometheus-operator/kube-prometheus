@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name:  prometheus-operator-tls-create
+  namespace: monitoring
+
+  labels:
+    component: tls-create-job
+    name: prometheus-operator
+    version: v0.38.1
+
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - create

@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+- name: prometheus-annotations-exporter
+  files:
+  - annotations-exporter.yaml
+
+commonLabels:
+  component: annotations-exporter
+  name: prometheus
+
+# If you change; remember the [cluster|]rolebinding files
+# If you change; remember the apiservice file
+namespace: monitoring 

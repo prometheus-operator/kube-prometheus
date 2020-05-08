@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: alertmanager
+
+spec:
+  endpoints:
+  - interval: 30s
+    port: http-web
+
+  selector:
+    matchLabels:
+      component: alertmanager
+      name: prometheus-operator

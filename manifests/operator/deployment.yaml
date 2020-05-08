@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-operator
+  namespace: monitoring
+
+  labels:
+    version: v0.38.1
+
+spec:
+  replicas: 1
+
+  template:
+    metadata:
+      labels:
+        version: v0.38.1
+
+    spec:
+      serviceAccountName: prometheus-operator
+
+      containers:
+      - name: prometheus-operator
+
+        image: quay.io/coreos/prometheus-operator:v0.38.1
+        args:
+        - --kubelet-service=kube-system/kubelet
+        - --logtostderr=true
+        - --config-reloader-image=jimmidyson/configmap-reload:v0.3.0
+        - --prometheus-config-reloader=quay.io/coreos/prometheus-config-reloader:v0.38.1
+        
+        ports:
+        - containerPort: 8080
+          name: http
+
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+
+      - name: kube-rbac-proxy
+        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
+        args:
+        - --logtostderr
+        - --secure-listen-address=:8443
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+        - --upstream=http://127.0.0.1:8080/
+
+        ports:
+        - containerPort: 8443
+          name: https
+        
+        securityContext:
+          runAsUser: 65534
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+          requests:
+            cpu: 60m
+            memory: 34Mi
+
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager-main
+
+spec:
+  ports:
+  - name: http-web
+    port: 9093
+    targetPort: http-web
+
+  selector:
+    alertmanager: main
+    component: alertmanager
+
+  sessionAffinity: ClientIP

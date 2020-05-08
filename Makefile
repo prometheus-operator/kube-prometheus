@@ -21,12 +21,12 @@ clean:
 	git clean -Xfd .
 
 .PHONY: generate
-generate: manifests **.md
+generate: jsonnet-manifests **.md
 
 **.md: $(EMBEDMD_BIN) $(shell find examples) build.sh example.jsonnet
 	$(EMBEDMD_BIN) -w `find . -name "*.md" | grep -v vendor`
 
-manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor build.sh
+jsonnet-manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor build.sh
 	./build.sh $<
 
 vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json

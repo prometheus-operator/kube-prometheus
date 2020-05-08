@@ -1,0 +1,10 @@
+apiVersion: 1
+
+providers:
+- name: sc-dashboards
+  orgId: 1
+  folder: ''
+  type: file
+  disableDeletion: false
+  options:
+    path: /var/lib/grafana/sc-dashboards

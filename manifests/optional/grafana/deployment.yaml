@@ -1,0 +1,218 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+
+spec:
+  replicas: 1
+
+  strategy:
+    type: RollingUpdate
+
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: "3000"
+        prometheus.io/path: "/metrics"
+        prometheus.io/scrape: "true"
+
+    spec:
+      serviceAccountName: grafana
+
+      securityContext:
+        fsGroup: 472
+        runAsUser: 472
+
+      # We call the kiwigrid sidecar "sc"; the initContainer handles "data sources";
+      # labels the ConfigMaps with:
+      # labels:
+      #   grafana_datasource: "1"
+      #
+      # The sidecar container handles "dashboards"; label ConfigMaps with:
+      #
+      # labels:
+      #   grafana_dashboard: "1"
+      #
+
+      # If you want to use pgsql or the ilk, comment this out: ----------
+      initContainers:
+      - name: init-chown-data
+        image: "busybox:1.31.1"
+        securityContext:
+          runAsUser: 0
+        command: ["chown", "-R", "472:472", "/var/lib/grafana"]
+        volumeMounts:
+        - name: grafana-data
+          mountPath: "/var/lib/grafana"
+        resources:
+          requests:
+            cpu: 5m
+            memory: 10Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+      # ------------
+
+      containers:
+      # Note: according to this, datasources are not polled:
+      # https://grafana.com/docs/grafana/latest/administration/provisioning/#datasources
+      # so there exists a race between the grafana container and this container in writing/reading
+      # the datasources
+      #
+      # In the worst case, manually add the prometheus datasource to Grafana.
+      #
+      # We can't make the istio-proxy container start before this one, if we put them both in `initContainers`
+      # since https://github.com/kubernetes/enhancements/issues/753 isn't done. Also see
+      # https://github.com/kubernetes/enhancements/blob/a1a17e85a6d18ed622c27dbacd4757a383f5ab8a/keps/sig-apps/sidecarcontainers.md
+      # and https://discuss.istio.io/t/k8s-istio-sidecar-injection-with-other-init-containers/845/2
+      - name: datasources
+        image: "kiwigrid/k8s-sidecar:0.1.116"
+
+        env:
+        # description: If METHOD is set with LIST, the sidecar will just list config-maps and exit. With SLEEP it will list all config-maps, then sleep for 60 seconds. Default is watch.description: If METHOD is set with LIST, the sidecar will just list config-maps and exit. With SLEEP it will list all config-maps, then sleep for 60 seconds. Default is watch.
+        # - name: METHOD
+        #   value: WATCH # LIST for initContainer
+        - name: LABEL
+          value: "grafana_datasource"
+        - name: FOLDER
+          value: /etc/grafana/provisioning/datasources
+        - name: RESOURCE
+          value: "both"
+        - name: NAMESPACE
+          value: ALL
+        - name: REQ_TIMEOUT
+          value: "30"
+        - name: REQ_RETRY_BACKOFF_FACTOR
+          value: "0.4"
+        - name: REQ_RETRY_TOTAL
+          value: "45"
+
+        volumeMounts:
+        - name: sc-datasources-volume
+          mountPath: /etc/grafana/provisioning/datasources
+
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+
+      - name: dashboards
+        image: "kiwigrid/k8s-sidecar:0.1.116"
+
+        env:
+        - name: LABEL
+          value: "grafana_dashboard"
+        - name: FOLDER
+          value: /var/lib/grafana/sc-dashboards
+        - name: RESOURCE
+          value: "configmap"
+        - name: NAMESPACE
+          value: ALL
+        - name: REQ_TIMEOUT
+          value: "30"
+        - name: REQ_RETRY_BACKOFF_FACTOR
+          value: "0.4"
+        - name: REQ_RETRY_TOTAL
+          value: "45"
+
+        volumeMounts:
+        - name: sc-dashboards-volume
+          mountPath: /var/lib/grafana/sc-dashboards
+
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+
+      - name: grafana
+        image: grafana/grafana
+
+        volumeMounts:
+        - name: config
+          mountPath: "/etc/grafana/grafana.ini"
+          subPath: grafana.ini
+        - name: config
+          mountPath: "/etc/grafana/provisioning/dashboards/sc-dashboards-provider.yaml"
+          subPath: sc-dashboards-provider.yaml
+        # If you want to use Grafana local storage instead of postgres or the ilk: ------
+        - name: grafana-data
+          mountPath: /var/lib/grafana
+        # --------
+        - name: sc-datasources-volume
+          mountPath: /etc/grafana/provisioning/datasources
+        - name: sc-dashboards-volume
+          mountPath: /var/lib/grafana/sc-dashboards
+
+        ports:
+        - name: http-svc
+          containerPort: 80
+
+        - name: http-ui
+          containerPort: 3000
+
+        env:
+        - name: GF_SECURITY_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: grafana
+              key: admin-user
+
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: grafana
+              key: admin-password
+
+        #- name: GF_DATABASE_USER
+        #  valueFrom:
+        #    secretKeyRef:
+        #      name: grafana.grafana-pg.credentials
+        #      key: username
+
+        #- name: GF_DATABASE_PASSWORD
+        #  valueFrom:
+        #    secretKeyRef:
+        #      name: grafana.grafana-pg.credentials
+        #      key: password
+
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /api/health
+            port: 3000
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 3000
+
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+
+      volumes:
+      - name: config
+        configMap:
+          name: grafana
+
+      # Using pgsql instead
+      # - name: grafana-data
+      #   persistentVolumeClaim:
+      #     claimName: grafana
+
+      - name: sc-datasources-volume
+        emptyDir: {}
+      - name: sc-dashboards-volume
+        emptyDir: {}

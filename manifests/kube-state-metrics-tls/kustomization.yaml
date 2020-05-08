@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# uses the secret from ../operator-tls
+
+bases:
+- ../kube-state-metrics
+
+patchesStrategicMerge:
+- deployment.yaml
+
+namespace: monitoring
