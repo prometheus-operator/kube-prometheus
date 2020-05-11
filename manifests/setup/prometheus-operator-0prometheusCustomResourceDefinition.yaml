@@ -12,6 +12,7 @@ spec:
     listKind: PrometheusList
     plural: prometheuses
     singular: prometheus
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - additionalPrinterColumns:

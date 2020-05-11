@@ -12,6 +12,7 @@ spec:
     listKind: PrometheusRuleList
     plural: prometheusrules
     singular: prometheusrule
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1

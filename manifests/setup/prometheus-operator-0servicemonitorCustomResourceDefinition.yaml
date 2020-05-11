@@ -12,6 +12,7 @@ spec:
     listKind: ServiceMonitorList
     plural: servicemonitors
     singular: servicemonitor
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1
