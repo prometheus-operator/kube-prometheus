@@ -12,7 +12,6 @@ spec:
     listKind: PodMonitorList
     plural: podmonitors
     singular: podmonitor
-  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1
