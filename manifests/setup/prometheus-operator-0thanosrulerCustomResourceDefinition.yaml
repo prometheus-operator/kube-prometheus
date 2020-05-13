@@ -12,7 +12,6 @@ spec:
     listKind: ThanosRulerList
     plural: thanosrulers
     singular: thanosruler
-  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1
