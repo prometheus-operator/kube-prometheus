@@ -101,11 +101,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           '--path.rootfs=/host/root',
           '--no-collector.wifi',
           '--no-collector.hwmon',
-          // The following settings have been taken from
-          // https://github.com/prometheus/node_exporter/blob/0662673/collector/filesystem_linux.go#L30-L31
-          // Once node exporter is being released with those settings, this can be removed.
-          '--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+)($|/)',
-          '--collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$',
+          '--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
         ]) +
         container.withVolumeMounts([procVolumeMount, sysVolumeMount, rootVolumeMount]) +
         container.mixin.resources.withRequests($._config.resources['node-exporter'].requests) +
