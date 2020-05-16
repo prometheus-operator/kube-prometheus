@@ -14,6 +14,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
     prometheusAdapter+:: {
       name: 'prometheus-adapter',
+      nodeSelector: { 'kubernetes.io/os': 'linux' },
       labels: { name: $._config.prometheusAdapter.name },
       prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc:9090/',
       config: {
@@ -126,7 +127,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       deployment.mixin.metadata.withNamespace($._config.namespace) +
       deployment.mixin.spec.selector.withMatchLabels($._config.prometheusAdapter.labels) +
       deployment.mixin.spec.template.spec.withServiceAccountName($.prometheusAdapter.serviceAccount.metadata.name) +
-      deployment.mixin.spec.template.spec.withNodeSelector({ 'kubernetes.io/os': 'linux' }) +
+      deployment.mixin.spec.template.spec.withNodeSelector($._config.prometheusAdapter.nodeSelector) +
       deployment.mixin.spec.strategy.rollingUpdate.withMaxSurge(1) +
       deployment.mixin.spec.strategy.rollingUpdate.withMaxUnavailable(0) +
       deployment.mixin.spec.template.spec.withVolumes([
