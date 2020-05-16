@@ -21,6 +21,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       name: 'k8s',
       replicas: 2,
       rules: {},
+      nodeSelector: { 'kubernetes.io/os': 'linux' },
       namespaces: ['default', 'kube-system', $._config.namespace],
     },
   },
@@ -184,7 +185,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           podMonitorSelector: {},
           serviceMonitorNamespaceSelector: {},
           podMonitorNamespaceSelector: {},
-          nodeSelector: { 'kubernetes.io/os': 'linux' },
+          nodeSelector: $._config.prometheus.nodeSelector,
           ruleSelector: selector.withMatchLabels({
             role: 'alert-rules',
             prometheus: p.name,
