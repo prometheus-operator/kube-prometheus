@@ -14,6 +14,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
     alertmanager+:: {
       name: 'main',
+      nodeSelector: { 'kubernetes.io/os': 'linux' },
       config: {
         global: {
           resolve_timeout: '5m',
@@ -142,7 +143,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           replicas: $._config.alertmanager.replicas,
           version: $._config.versions.alertmanager,
           image: $._config.imageRepos.alertmanager + ':' + $._config.versions.alertmanager,
-          nodeSelector: { 'kubernetes.io/os': 'linux' },
+          nodeSelector: $._config.alertmanager.nodeSelector,
           serviceAccountName: 'alertmanager-' + $._config.alertmanager.name,
           securityContext: {
             runAsUser: 1000,
