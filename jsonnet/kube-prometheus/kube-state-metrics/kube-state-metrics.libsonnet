@@ -9,6 +9,7 @@
     kubeStateMetrics+:: {
       scrapeInterval: '30s',
       scrapeTimeout: '30s',
+      nodeSelector: { 'kubernetes.io/os': 'linux' },
     },
   },
   kubeStateMetrics+:: (import 'kube-state-metrics/kube-state-metrics.libsonnet') +
@@ -18,6 +19,7 @@
                         namespace:: $._config.namespace,
                         version:: $._config.versions.kubeStateMetrics,
                         image:: $._config.imageRepos.kubeStateMetrics + ':v' + $._config.versions.kubeStateMetrics,
+                        nodeSelector:: $._config.kubeStateMetrics.nodeSelector,
                         service+: {
                           spec+: {
                             ports: [
@@ -44,6 +46,7 @@
                                   readinessProbe:: null,
                                   args: ['--host=127.0.0.1', '--port=8081', '--telemetry-host=127.0.0.1', '--telemetry-port=8082'],
                                 }, super.containers),
+                                nodeSelector: ksm.nodeSelector
                               },
                             },
                           },
