@@ -94,9 +94,12 @@ The following versions are supported and work as we test against these versions 
 | kube-prometheus stack | Kubernetes 1.14 | Kubernetes 1.15 | Kubernetes 1.16 | Kubernetes 1.17 | Kubernetes 1.18 |
 |-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
 | `release-0.3`         | ✔              | ✔              | ✔              | ✔              | ✗
-| `release-0.4`         | ✗              | ✗              | ✔              | ✔              | ✗
+| `release-0.4`         | ✗              | ✗              | ✔ (v1.16.2+)   | ✔              | ✗
 | `release-0.5`         | ✗              | ✗              | ✗              | ✔              | ✔
 | `HEAD`                | ✗              | ✗              | ✗              | ✗              | ✔
+
+Note: Due to a [bug](https://github.com/kubernetes/kubernetes/issues/83778) in Kubernetes v1.16.1, the kube-prometheus release-0.4 branch
+only supports v1.16.2 and higher.
 
 ## Quickstart
 
