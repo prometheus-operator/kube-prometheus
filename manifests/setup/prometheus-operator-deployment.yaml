@@ -53,6 +53,7 @@ spec:
         securityContext:
           runAsUser: 65534
       nodeSelector:
+        role: prometheus
         beta.kubernetes.io/os: linux
       securityContext:
         runAsNonRoot: true

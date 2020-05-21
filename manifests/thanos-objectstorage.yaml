@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  thanos.yaml: dHlwZTogczMKY29uZmlnOgogIGJ1Y2tldDogc2Vjb3BzLWRldi1zdGFzaC1tZXRyaWNzCiAgZW5kcG9pbnQ6IHMzLmFtYXpvbmF3cy5jb20KICBlbmNyeXB0c3NlOiB0cnVlCiAgYWNjZXNzX2tleTogQUtJQVY3MllMRU9BNkdMWTVBUzQKICBzZWNyZXRfa2V5OiBNd1JWZy9KSXgvN3dTQVVpMTkyR2laMExodDdzQnBxYkRZaGZ5M3E0Cg==
+kind: Secret
+metadata:
+  name: thanos-objectstorage
+  namespace: monitoring
+type: Opaque

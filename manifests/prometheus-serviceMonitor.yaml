@@ -8,7 +8,7 @@ metadata:
 spec:
   endpoints:
   - interval: 30s
-    port: web
+    port: http
   selector:
     matchLabels:
       prometheus: k8s

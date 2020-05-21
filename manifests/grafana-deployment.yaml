@@ -113,6 +113,7 @@ spec:
           name: grafana-dashboard-workload-total
           readOnly: false
       nodeSelector:
+        role: prometheus
         beta.kubernetes.io/os: linux
       securityContext:
         runAsNonRoot: true

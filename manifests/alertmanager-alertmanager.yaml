@@ -8,6 +8,7 @@ metadata:
 spec:
   image: quay.io/prometheus/alertmanager:v0.20.0
   nodeSelector:
+    role: prometheus
     kubernetes.io/os: linux
   replicas: 3
   securityContext:
