@@ -40,6 +40,7 @@ spec:
           name: config
           readOnly: false
       nodeSelector:
+        role: prometheus
         kubernetes.io/os: linux
       serviceAccountName: prometheus-adapter
       volumes:
