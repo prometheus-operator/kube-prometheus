@@ -65,8 +65,8 @@ You will need a Kubernetes cluster, that's it! By default it is assumed, that th
 
 This means the kubelet configuration must contain these flags:
 
-* `--authentication-token-webhook=true` This flag enables, that a `ServiceAccount` token can be used to authenticate against the kubelet(s).
-* `--authorization-mode=Webhook` This flag enables, that the kubelet will perform an RBAC request with the API to determine, whether the requesting entity (Prometheus in this case) is allow to access a resource, in specific for this project the `/metrics` endpoint.
+* `--authentication-token-webhook=true` This flag enables, that a `ServiceAccount` token can be used to authenticate against the kubelet(s).  This can also be enabled by setting the kubelet configuration value `authentication.webhook.enabled` to `true`.
+* `--authorization-mode=Webhook` This flag enables, that the kubelet will perform an RBAC request with the API to determine, whether the requesting entity (Prometheus in this case) is allow to access a resource, in specific for this project the `/metrics` endpoint.  This can also be enabled by setting the kubelet configuration value `authorization.mode` to `Webhook`.
 
 This stack provides [resource metrics](https://github.com/kubernetes/metrics#resource-metrics-api) by deploying the [Prometheus Adapter](https://github.com/DirectXMan12/k8s-prometheus-adapter/).
 This adapter is an Extension API Server and Kubernetes needs to be have this feature enabled, otherwise the adapter has no effect, but is still deployed.
@@ -94,12 +94,11 @@ The following versions are supported and work as we test against these versions 
 | kube-prometheus stack | Kubernetes 1.14 | Kubernetes 1.15 | Kubernetes 1.16 | Kubernetes 1.17 | Kubernetes 1.18 |
 |-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
 | `release-0.3`         | ✔              | ✔              | ✔              | ✔              | ✗
-| `release-0.4`         | ✗              | ✗              | ✔ (v1.16.2+)   | ✔              | ✗
+| `release-0.4`         | ✗              | ✗              | ✔ (v1.16.5+)   | ✔              | ✗
 | `release-0.5`         | ✗              | ✗              | ✗              | ✔              | ✔
 | `HEAD`                | ✗              | ✗              | ✗              | ✗              | ✔
 
-Note: Due to a [bug](https://github.com/kubernetes/kubernetes/issues/83778) in Kubernetes v1.16.1, the kube-prometheus release-0.4 branch
-only supports v1.16.2 and higher.
+Note: Due to [two](https://github.com/kubernetes/kubernetes/issues/83778) [bugs](https://github.com/kubernetes/kubernetes/issues/86359) in Kubernetes v1.16.1, and prior to Kubernetes v1.16.5 the kube-prometheus release-0.4 branch only supports v1.16.5 and higher.  The `extension-apiserver-authentication-reader` role in the kube-system namespace can be manually edited to include list and watch permissions in order to workaround the second issue with Kubernetes v1.16.2 through v1.16.4.
 
 ## Quickstart
 
