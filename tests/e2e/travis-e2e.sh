@@ -31,7 +31,7 @@ run_e2e_tests() {
     make test-e2e
     ./kind delete cluster
 }
-cluster_compatible_versions=("v1.17.0" "v1.18.0")
+cluster_compatible_versions=("v1.18.0")
 
 for cluster_version in "${cluster_compatible_versions[@]}"
 do
