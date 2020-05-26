@@ -95,7 +95,7 @@ The following versions are supported and work as we test against these versions 
 |-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
 | `release-0.3`         | ✔              | ✔              | ✔              | ✔              | ✗
 | `release-0.4`         | ✗              | ✗              | ✔              | ✔              | ✗
-| `release-0.5`         | ✗              | ✗              | ✗              | ✔              | ✔
+| `release-0.5`         | ✗              | ✗              | ✗              | ✗              | ✔
 | `HEAD`                | ✗              | ✗              | ✗              | ✗              | ✔
 
 ## Quickstart
