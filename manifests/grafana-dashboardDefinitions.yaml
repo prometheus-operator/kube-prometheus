@@ -269,7 +269,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\"}[5m])) by (verb, le))",
+                                  "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", verb!=\"WATCH\"}[5m])) by (verb, le))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{verb}}",
@@ -22649,7 +22649,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+\"}[$__interval])",
+                                  "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
                                   "interval": "1m",
                                   "intervalFactor": 2,
@@ -22657,7 +22657,7 @@ items:
                                   "refId": "A"
                               },
                               {
-                                  "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+\"}[$__interval])",
+                                  "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
                                   "interval": "1m",
                                   "intervalFactor": 2,
@@ -22665,7 +22665,7 @@ items:
                                   "refId": "B"
                               },
                               {
-                                  "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+\"}[$__interval])",
+                                  "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
                                   "interval": "1m",
                                   "intervalFactor": 2,
@@ -24915,7 +24915,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum by(container) (container_memory_usage_bytes{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\", container!=\"POD\"})",
+                                  "expr": "sum by(container) (container_memory_working_set_bytes{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\", container!=\"POD\"})",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Current: {{ container }}",
