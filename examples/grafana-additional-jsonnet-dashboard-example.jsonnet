@@ -9,30 +9,32 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
-  grafanaDashboards+:: {
-    'my-dashboard.json':
-      dashboard.new('My Dashboard')
-      .addTemplate(
-        {
-          current: {
-            text: 'Prometheus',
-            value: 'Prometheus',
+  grafana+:: {
+    dashboards+:: {
+      'my-dashboard.json':
+        dashboard.new('My Dashboard')
+        .addTemplate(
+          {
+            current: {
+              text: 'Prometheus',
+              value: 'Prometheus',
+            },
+            hide: 0,
+            label: null,
+            name: 'datasource',
+            options: [],
+            query: 'prometheus',
+            refresh: 1,
+            regex: '',
+            type: 'datasource',
           },
-          hide: 0,
-          label: null,
-          name: 'datasource',
-          options: [],
-          query: 'prometheus',
-          refresh: 1,
-          regex: '',
-          type: 'datasource',
-        },
-      )
-      .addRow(
-        row.new()
-        .addPanel(graphPanel.new('My Panel', span=6, datasource='$datasource')
-                  .addTarget(prometheus.target('vector(1)')))
-      ),
+        )
+        .addRow(
+          row.new()
+          .addPanel(graphPanel.new('My Panel', span=6, datasource='$datasource')
+                    .addTarget(prometheus.target('vector(1)')))
+        ),
+    },
   },
 };
 
