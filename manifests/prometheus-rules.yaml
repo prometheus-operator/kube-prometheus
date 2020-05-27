@@ -40,10 +40,10 @@ spec:
         rate(node_vmstat_pgmajfault{job="node-exporter"}[1m])
       record: instance:node_vmstat_pgmajfault:rate1m
     - expr: |
-        rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m])
+        rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
       record: instance_device:node_disk_io_time_seconds:rate1m
     - expr: |
-        rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+"}[1m])
+        rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
       record: instance_device:node_disk_io_time_weighted_seconds:rate1m
     - expr: |
         sum without (device) (
@@ -95,23 +95,33 @@ spec:
     - expr: |
         sum by (cluster, namespace, pod, container) (
           rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}[5m])
-        ) * on (cluster, namespace, pod) group_left(node) max by(cluster, namespace, pod, node) (kube_pod_info)
+        ) * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (
+          1, max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
+        )
       record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
     - expr: |
         container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
+          max by(namespace, pod, node) (kube_pod_info{node!=""})
+        )
       record: node_namespace_pod_container:container_memory_working_set_bytes
     - expr: |
         container_memory_rss{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
+          max by(namespace, pod, node) (kube_pod_info{node!=""})
+        )
       record: node_namespace_pod_container:container_memory_rss
     - expr: |
         container_memory_cache{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
+          max by(namespace, pod, node) (kube_pod_info{node!=""})
+        )
       record: node_namespace_pod_container:container_memory_cache
     - expr: |
         container_memory_swap{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
-        * on (namespace, pod) group_left(node) max by(namespace, pod, node) (kube_pod_info)
+        * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
+          max by(namespace, pod, node) (kube_pod_info{node!=""})
+        )
       record: node_namespace_pod_container:container_memory_swap
     - expr: |
         sum(container_memory_usage_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}) by (namespace)
@@ -139,35 +149,39 @@ spec:
         )
       record: namespace:kube_pod_container_resource_requests_cpu_cores:sum
     - expr: |
-        sum(
+        max by (cluster, namespace, workload, pod) (
           label_replace(
             label_replace(
               kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"},
               "replicaset", "$1", "owner_name", "(.*)"
-            ) * on(replicaset, namespace) group_left(owner_name) kube_replicaset_owner{job="kube-state-metrics"},
+            ) * on(replicaset, namespace) group_left(owner_name) topk by(replicaset, namespace) (
+              1, max by (replicaset, namespace, owner_name) (
+                kube_replicaset_owner{job="kube-state-metrics"}
+              )
+            ),
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (cluster, namespace, workload, pod)
+        )
       labels:
         workload_type: deployment
       record: mixin_pod_workload
     - expr: |
-        sum(
+        max by (cluster, namespace, workload, pod) (
           label_replace(
             kube_pod_owner{job="kube-state-metrics", owner_kind="DaemonSet"},
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (cluster, namespace, workload, pod)
+        )
       labels:
         workload_type: daemonset
       record: mixin_pod_workload
     - expr: |
-        sum(
+        max by (cluster, namespace, workload, pod) (
           label_replace(
             kube_pod_owner{job="kube-state-metrics", owner_kind="StatefulSet"},
             "workload", "$1", "owner_name", "(.*)"
           )
-        ) by (cluster, namespace, workload, pod)
+        )
       labels:
         workload_type: statefulset
       record: mixin_pod_workload
@@ -221,10 +235,13 @@ spec:
   - name: node.rules
     rules:
     - expr: |
-        sum(min(kube_pod_info) by (cluster, node))
+        sum(min(kube_pod_info{node!=""}) by (cluster, node))
       record: ':kube_pod_info_node_count:'
     - expr: |
-        max(label_replace(kube_pod_info{job="kube-state-metrics"}, "pod", "$1", "pod", "(.*)")) by (node, namespace, pod)
+        topk by(namespace, pod) (1,
+          max by (node, namespace, pod) (
+            label_replace(kube_pod_info{job="kube-state-metrics",node!=""}, "pod", "$1", "pod", "(.*)")
+        ))
       record: 'node_namespace_pod:kube_pod_info:'
     - expr: |
         count by (cluster, node) (sum by (node, cpu) (
@@ -445,7 +462,13 @@ spec:
           state for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodnotready
       expr: |
-        sum by (namespace, pod) (max by(namespace, pod) (kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown"}) * on(namespace, pod) group_left(owner_kind) max by(namespace, pod, owner_kind) (kube_pod_owner{owner_kind!="Job"})) > 0
+        sum by (namespace, pod) (
+          max by(namespace, pod) (
+            kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown"}
+          ) * on(namespace, pod) group_left(owner_kind) topk by(namespace, pod) (
+            1, max by(namespace, pod, owner_kind) (kube_pod_owner{owner_kind!="Job"})
+          )
+        ) > 0
       for: 15m
       labels:
         severity: critical
@@ -1023,6 +1046,17 @@ spec:
         apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
       labels:
         severity: critical
+    - alert: AggregatedAPIErrors
+      annotations:
+        message: An aggregated API {{ $labels.name }}/{{ $labels.namespace }} has
+          reported errors. The number of errors have increased for it in the past
+          five minutes. High values indicate that the availability of the service
+          changes too often.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-aggregatedapierrors
+      expr: |
+        sum by(name, namespace)(increase(aggregator_unavailable_apiservice_count[5m])) > 2
+      labels:
+        severity: warning
     - alert: KubeAPIDown
       annotations:
         message: KubeAPI has disappeared from Prometheus target discovery.
