@@ -443,6 +443,66 @@ spec:
       labels:
         quantile: "0.5"
       record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
+  - name: blackbox-exporter
+    rules:
+    - alert: ProbeFailed
+      expr: probe_success == 0
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Probe failed (instance {{ $labels.instance }})"
+        description: "Probe failed\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+    - alert: SlowProbe
+      expr: avg_over_time(probe_duration_seconds[1m]) > 1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Slow probe (instance {{ $labels.instance }})"
+        description: "Blackbox probe took more than 1s to complete\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+    - alert: HttpStatusCode
+      expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        summary: "HTTP Status Code (instance {{ $labels.instance }})"
+        description: "HTTP status code is not 200-399\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+    - alert: SSLExpirationChecker
+      expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 30
+      for: 5h
+      labels:
+        severity: warning
+      annotations:
+        summary: "SSL certificate will expire soon (instance {{ $labels.instance }})"
+        description: "SSL certificate expires in 30 days\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+    - alert: CheckExpiredSSL
+      expr: probe_ssl_earliest_cert_expiry - time()  <= 0
+      for: 5h
+      labels:
+        severity: critical
+      annotations:
+        summary: "SSL certificate has expired (instance {{ $labels.instance }})"
+        description: "SSL certificate has expired already\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+    - alert: HttpSlowRequests
+      expr: avg_over_time(probe_http_duration_seconds[1m]) > 1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "HTTP slow requests (instance {{ $labels.instance }})"
+        description: "HTTP request took more than 1s\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+    - alert: SlowPing
+      expr: avg_over_time(probe_icmp_duration_seconds[1m]) > 1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Slow ping (instance {{ $labels.instance }})"
+        description: "Blackbox ping took more than 1s\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+    - alert: Alerted
+      expr: vector(1)
   - name: k8s.rules
     rules:
     - expr: |
