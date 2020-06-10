@@ -15,7 +15,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     prometheusAdapter+:: {
       name: 'prometheus-adapter',
       labels: { name: $._config.prometheusAdapter.name },
-      prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc:9090/',
+      prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc.cluster.local:9090/',
       config: {
         resourceRules: {
           cpu: {
