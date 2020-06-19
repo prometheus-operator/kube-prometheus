@@ -7,10 +7,15 @@
           {
             alert: 'AlertmanagerConfigInconsistent',
             annotations: {
-              message: 'The configuration of the instances of the Alertmanager cluster `{{$labels.service}}` are out of sync.',
+              message: |||
+                The configuration of the instances of the Alertmanager cluster `{{ $labels.namespace }}/{{ $labels.service }}` are out of sync.
+                {{ range printf "alertmanager_config_hash{namespace=\"%s\",service=\"%s\"}" $labels.namespace $labels.service | query }}
+                Configuration hash for pod {{ .Labels.pod }} is "{{ printf "%.f" .Value }}"
+                {{ end }}
+              |||,
             },
             expr: |||
-              count_values("config_hash", alertmanager_config_hash{%(alertmanagerSelector)s}) BY (service) / ON(service) GROUP_LEFT() label_replace(max(prometheus_operator_spec_replicas{%(prometheusOperatorSelector)s,controller="alertmanager"}) by (name, job, namespace, controller), "service", "alertmanager-$1", "name", "(.*)") != 1
+              count by(namespace,service) (count_values by(namespace,service) ("config_hash", alertmanager_config_hash{%(alertmanagerSelector)s})) != 1
             ||| % $._config,
             'for': '5m',
             labels: {
