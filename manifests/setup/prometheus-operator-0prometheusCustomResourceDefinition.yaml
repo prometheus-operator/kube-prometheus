@@ -2177,6 +2177,15 @@ spec:
                   of origin for each alert and metric that is user created. The label
                   value will always be the namespace of the object that is being created.
                 type: string
+              enforcedSampleLimit:
+                description: EnforcedSampleLimit defines global limit on number of
+                  scraped samples that will be accepted. This overrides any SampleLimit
+                  set per ServiceMonitor or/and PodMonitor. It is meant to be used
+                  by admins to enforce the SampleLimit to keep overall number of samples/series
+                  under the desired limit. Note that if SampleLimit is lower that
+                  value will be taken instead.
+                format: int64
+                type: integer
               evaluationInterval:
                 description: Interval between consecutive evaluations.
                 type: string
@@ -3428,6 +3437,27 @@ spec:
                   instance name. Defaults to the value of `prometheus`. External label
                   will _not_ be added when value is set to empty string (`""`).
                 type: string
+              prometheusRulesExcludedFromEnforce:
+                description: PrometheusRulesExcludedFromEnforce - list of prometheus
+                  rules to be excluded from enforcing of adding namespace labels.
+                  Works only if enforcedNamespaceLabel set to true. Make sure both
+                  ruleNamespace and ruleName are set for each pair
+                items:
+                  description: PrometheusRuleExcludeConfig enables users to configure
+                    excluded PrometheusRule names and their namespaces to be ignored
+                    while enforcing namespace label for alerts and metrics.
+                  properties:
+                    ruleName:
+                      description: RuleNamespace - name of excluded rule
+                      type: string
+                    ruleNamespace:
+                      description: RuleNamespace - namespace of excluded rule
+                      type: string
+                  required:
+                  - ruleName
+                  - ruleNamespace
+                  type: object
+                type: array
               query:
                 description: QuerySpec defines the query command line flags when starting
                   Prometheus.
@@ -4114,6 +4144,10 @@ spec:
               scrapeInterval:
                 description: Interval between consecutive scrapes.
                 type: string
+              scrapeTimeout:
+                description: Number of seconds to wait for target to respond before
+                  erroring.
+                type: string
               secrets:
                 description: Secrets is a list of Secrets in the same namespace as
                   the Prometheus object, which shall be mounted into the Prometheus
@@ -4761,6 +4795,12 @@ spec:
                     type: string
                   logLevel:
                     description: LogLevel for Thanos sidecar to be configured with.
+                    type: string
+                  minTime:
+                    description: MinTime for Thanos sidecar to be configured with.
+                      Option can be a constant time in RFC3339 format or time duration
+                      relative to current time, such as -1d or 2h45m. Valid duration
+                      units are ms, s, m, h, d, w, y.
                     type: string
                   objectStorageConfig:
                     description: ObjectStorageConfig configures object storage in
