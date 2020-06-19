@@ -74,7 +74,7 @@ spec:
             sum(rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[1d]))
             -
             (
-              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="resource",le="0.1"}[1d])) +
+              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope=~"resource|",le="0.1"}[1d])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[1d])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[1d]))
             )
@@ -95,7 +95,7 @@ spec:
             sum(rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[1h]))
             -
             (
-              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="resource",le="0.1"}[1h])) +
+              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope=~"resource|",le="0.1"}[1h])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[1h])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[1h]))
             )
@@ -116,7 +116,7 @@ spec:
             sum(rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[2h]))
             -
             (
-              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="resource",le="0.1"}[2h])) +
+              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope=~"resource|",le="0.1"}[2h])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[2h])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[2h]))
             )
@@ -137,7 +137,7 @@ spec:
             sum(rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[30m]))
             -
             (
-              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="resource",le="0.1"}[30m])) +
+              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope=~"resource|",le="0.1"}[30m])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[30m])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[30m]))
             )
@@ -158,7 +158,7 @@ spec:
             sum(rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[3d]))
             -
             (
-              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="resource",le="0.1"}[3d])) +
+              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope=~"resource|",le="0.1"}[3d])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[3d])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[3d]))
             )
@@ -179,7 +179,7 @@ spec:
             sum(rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[5m]))
             -
             (
-              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="resource",le="0.1"}[5m])) +
+              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope=~"resource|",le="0.1"}[5m])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[5m])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[5m]))
             )
@@ -200,7 +200,7 @@ spec:
             sum(rate(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[6h]))
             -
             (
-              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="resource",le="0.1"}[6h])) +
+              sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope=~"resource|",le="0.1"}[6h])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[6h])) +
               sum(rate(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[6h]))
             )
@@ -327,81 +327,6 @@ spec:
         verb: write
       record: apiserver_request:burnrate6h
     - expr: |
-        1 - (
-          (
-            # write too slow
-            sum(increase(apiserver_request_duration_seconds_count{verb=~"POST|PUT|PATCH|DELETE"}[30d]))
-            -
-            sum(increase(apiserver_request_duration_seconds_bucket{verb=~"POST|PUT|PATCH|DELETE",le="1"}[30d]))
-          ) +
-          (
-            # read too slow
-            sum(increase(apiserver_request_duration_seconds_count{verb=~"LIST|GET"}[30d]))
-            -
-            (
-              sum(increase(apiserver_request_duration_seconds_bucket{verb=~"LIST|GET",scope="resource",le="0.1"}[30d])) +
-              sum(increase(apiserver_request_duration_seconds_bucket{verb=~"LIST|GET",scope="namespace",le="0.5"}[30d])) +
-              sum(increase(apiserver_request_duration_seconds_bucket{verb=~"LIST|GET",scope="cluster",le="5"}[30d]))
-            )
-          ) +
-          # errors
-          sum(code:apiserver_request_total:increase30d{code=~"5.."})
-        )
-        /
-        sum(code:apiserver_request_total:increase30d)
-      labels:
-        verb: all
-      record: apiserver_request:availability30d
-    - expr: |
-        1 - (
-          sum(increase(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[30d]))
-          -
-          (
-            # too slow
-            sum(increase(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="resource",le="0.1"}[30d])) +
-            sum(increase(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[30d])) +
-            sum(increase(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[30d]))
-          )
-          +
-          # errors
-          sum(code:apiserver_request_total:increase30d{verb="read",code=~"5.."})
-        )
-        /
-        sum(code:apiserver_request_total:increase30d{verb="read"})
-      labels:
-        verb: read
-      record: apiserver_request:availability30d
-    - expr: |
-        1 - (
-          (
-            # too slow
-            sum(increase(apiserver_request_duration_seconds_count{verb=~"POST|PUT|PATCH|DELETE"}[30d]))
-            -
-            sum(increase(apiserver_request_duration_seconds_bucket{verb=~"POST|PUT|PATCH|DELETE",le="1"}[30d]))
-          )
-          +
-          # errors
-          sum(code:apiserver_request_total:increase30d{verb="write",code=~"5.."})
-        )
-        /
-        sum(code:apiserver_request_total:increase30d{verb="write"})
-      labels:
-        verb: write
-      record: apiserver_request:availability30d
-    - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver"}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
-    - expr: |
-        sum by (code) (code_verb:apiserver_request_total:increase30d{verb=~"LIST|GET"})
-      labels:
-        verb: read
-      record: code:apiserver_request_total:increase30d
-    - expr: |
-        sum by (code) (code_verb:apiserver_request_total:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
-      labels:
-        verb: write
-      record: code:apiserver_request_total:increase30d
-    - expr: |
         sum by (code,resource) (rate(apiserver_request_total{job="apiserver",verb=~"LIST|GET"}[5m]))
       labels:
         verb: read
@@ -443,6 +368,153 @@ spec:
       labels:
         quantile: "0.5"
       record: cluster_quantile:apiserver_request_duration_seconds:histogram_quantile
+  - interval: 3m
+    name: kube-apiserver-availability.rules
+    rules:
+    - expr: |
+        1 - (
+          (
+            # write too slow
+            sum(increase(apiserver_request_duration_seconds_count{verb=~"POST|PUT|PATCH|DELETE"}[30d]))
+            -
+            sum(increase(apiserver_request_duration_seconds_bucket{verb=~"POST|PUT|PATCH|DELETE",le="1"}[30d]))
+          ) +
+          (
+            # read too slow
+            sum(increase(apiserver_request_duration_seconds_count{verb=~"LIST|GET"}[30d]))
+            -
+            (
+              sum(increase(apiserver_request_duration_seconds_bucket{verb=~"LIST|GET",scope=~"resource|",le="0.1"}[30d])) +
+              sum(increase(apiserver_request_duration_seconds_bucket{verb=~"LIST|GET",scope="namespace",le="0.5"}[30d])) +
+              sum(increase(apiserver_request_duration_seconds_bucket{verb=~"LIST|GET",scope="cluster",le="5"}[30d]))
+            )
+          ) +
+          # errors
+          sum(code:apiserver_request_total:increase30d{code=~"5.."} or vector(0))
+        )
+        /
+        sum(code:apiserver_request_total:increase30d)
+      labels:
+        verb: all
+      record: apiserver_request:availability30d
+    - expr: |
+        1 - (
+          sum(increase(apiserver_request_duration_seconds_count{job="apiserver",verb=~"LIST|GET"}[30d]))
+          -
+          (
+            # too slow
+            sum(increase(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope=~"resource|",le="0.1"}[30d])) +
+            sum(increase(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="namespace",le="0.5"}[30d])) +
+            sum(increase(apiserver_request_duration_seconds_bucket{job="apiserver",verb=~"LIST|GET",scope="cluster",le="5"}[30d]))
+          )
+          +
+          # errors
+          sum(code:apiserver_request_total:increase30d{verb="read",code=~"5.."} or vector(0))
+        )
+        /
+        sum(code:apiserver_request_total:increase30d{verb="read"})
+      labels:
+        verb: read
+      record: apiserver_request:availability30d
+    - expr: |
+        1 - (
+          (
+            # too slow
+            sum(increase(apiserver_request_duration_seconds_count{verb=~"POST|PUT|PATCH|DELETE"}[30d]))
+            -
+            sum(increase(apiserver_request_duration_seconds_bucket{verb=~"POST|PUT|PATCH|DELETE",le="1"}[30d]))
+          )
+          +
+          # errors
+          sum(code:apiserver_request_total:increase30d{verb="write",code=~"5.."} or vector(0))
+        )
+        /
+        sum(code:apiserver_request_total:increase30d{verb="write"})
+      labels:
+        verb: write
+      record: apiserver_request:availability30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"2.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"2.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"2.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"2.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"2.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"2.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"3.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"3.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"3.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"3.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"3.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"3.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"4.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"4.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"4.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"4.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"4.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"4.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"5.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"5.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"5.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"5.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"5.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"5.."}[30d]))
+      record: code_verb:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code) (code_verb:apiserver_request_total:increase30d{verb=~"LIST|GET"})
+      labels:
+        verb: read
+      record: code:apiserver_request_total:increase30d
+    - expr: |
+        sum by (code) (code_verb:apiserver_request_total:increase30d{verb=~"POST|PUT|PATCH|DELETE"})
+      labels:
+        verb: write
+      record: code:apiserver_request_total:increase30d
   - name: k8s.rules
     rules:
     - expr: |
@@ -452,31 +524,31 @@ spec:
         sum by (cluster, namespace, pod, container) (
           rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}[5m])
         ) * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (
-          1, max by(cluster, namespace, pod, node) (kube_pod_info)
+          1, max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
     - expr: |
         container_memory_working_set_bytes{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
         * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
-          max by(namespace, pod, node) (kube_pod_info)
+          max by(namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_working_set_bytes
     - expr: |
         container_memory_rss{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
         * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
-          max by(namespace, pod, node) (kube_pod_info)
+          max by(namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_rss
     - expr: |
         container_memory_cache{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
         * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
-          max by(namespace, pod, node) (kube_pod_info)
+          max by(namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_cache
     - expr: |
         container_memory_swap{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}
         * on (namespace, pod) group_left(node) topk by(namespace, pod) (1,
-          max by(namespace, pod, node) (kube_pod_info)
+          max by(namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_swap
     - expr: |
@@ -591,12 +663,12 @@ spec:
   - name: node.rules
     rules:
     - expr: |
-        sum(min(kube_pod_info) by (cluster, node))
+        sum(min(kube_pod_info{node!=""}) by (cluster, node))
       record: ':kube_pod_info_node_count:'
     - expr: |
         topk by(namespace, pod) (1,
           max by (node, namespace, pod) (
-            label_replace(kube_pod_info{job="kube-state-metrics"}, "pod", "$1", "pod", "(.*)")
+            label_replace(kube_pod_info{job="kube-state-metrics",node!=""}, "pod", "$1", "pod", "(.*)")
         ))
       record: 'node_namespace_pod:kube_pod_info:'
     - expr: |
@@ -849,11 +921,20 @@ spec:
         severity: warning
     - alert: NodeHighNumberConntrackEntriesUsed
       annotations:
-        description: '{{ $value | humanizePercentage }} of conntrack entries are used'
+        description: '{{ $value | humanizePercentage }} of conntrack entries are used.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodehighnumberconntrackentriesused
-        summary: Number of conntrack are getting close to the limit
+        summary: Number of conntrack are getting close to the limit.
       expr: |
         (node_nf_conntrack_entries / node_nf_conntrack_entries_limit) > 0.75
+      labels:
+        severity: warning
+    - alert: NodeTextFileCollectorScrapeError
+      annotations:
+        description: Node Exporter text file collector failed to scrape.
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodetextfilecollectorscrapeerror
+        summary: Node Exporter text file collector failed to scrape.
+      expr: |
+        node_textfile_scrape_error{job="node-exporter"} == 1
       labels:
         severity: warning
     - alert: NodeClockSkewDetected
@@ -896,20 +977,26 @@ spec:
           }}) is restarting {{ printf "%.2f" $value }} times / 5 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodcrashlooping
       expr: |
-        rate(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[15m]) * 60 * 5 > 0
+        rate(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[5m]) * 60 * 5 > 0
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: KubePodNotReady
       annotations:
         message: Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready
           state for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodnotready
       expr: |
-        sum by (namespace, pod) (max by(namespace, pod) (kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown"}) * on(namespace, pod) group_left(owner_kind) max by(namespace, pod, owner_kind) (kube_pod_owner{owner_kind!="Job"})) > 0
+        sum by (namespace, pod) (
+          max by(namespace, pod) (
+            kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown"}
+          ) * on(namespace, pod) group_left(owner_kind) topk by(namespace, pod) (
+            1, max by(namespace, pod, owner_kind) (kube_pod_owner{owner_kind!="Job"})
+          )
+        ) > 0
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: KubeDeploymentGenerationMismatch
       annotations:
         message: Deployment generation for {{ $labels.namespace }}/{{ $labels.deployment
@@ -922,7 +1009,7 @@ spec:
         kube_deployment_metadata_generation{job="kube-state-metrics"}
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: KubeDeploymentReplicasMismatch
       annotations:
         message: Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not
@@ -940,7 +1027,7 @@ spec:
         )
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: KubeStatefulSetReplicasMismatch
       annotations:
         message: StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has
@@ -958,7 +1045,7 @@ spec:
         )
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: KubeStatefulSetGenerationMismatch
       annotations:
         message: StatefulSet generation for {{ $labels.namespace }}/{{ $labels.statefulset
@@ -971,27 +1058,33 @@ spec:
         kube_statefulset_metadata_generation{job="kube-state-metrics"}
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: KubeStatefulSetUpdateNotRolledOut
       annotations:
         message: StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} update
           has not been rolled out.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatefulsetupdatenotrolledout
       expr: |
-        max without (revision) (
-          kube_statefulset_status_current_revision{job="kube-state-metrics"}
-            unless
-          kube_statefulset_status_update_revision{job="kube-state-metrics"}
-        )
-          *
         (
-          kube_statefulset_replicas{job="kube-state-metrics"}
-            !=
-          kube_statefulset_status_replicas_updated{job="kube-state-metrics"}
+          max without (revision) (
+            kube_statefulset_status_current_revision{job="kube-state-metrics"}
+              unless
+            kube_statefulset_status_update_revision{job="kube-state-metrics"}
+          )
+            *
+          (
+            kube_statefulset_replicas{job="kube-state-metrics"}
+              !=
+            kube_statefulset_status_replicas_updated{job="kube-state-metrics"}
+          )
+        )  and (
+          changes(kube_statefulset_status_replicas_updated{job="kube-state-metrics"}[5m])
+            ==
+          0
         )
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: KubeDaemonSetRolloutStuck
       annotations:
         message: Only {{ $value | humanizePercentage }} of the desired Pods of DaemonSet
@@ -1003,7 +1096,7 @@ spec:
         kube_daemonset_status_desired_number_scheduled{job="kube-state-metrics"} < 1.00
       for: 15m
       labels:
-        severity: critical
+        severity: warning
     - alert: KubeContainerWaiting
       annotations:
         message: Pod {{ $labels.namespace }}/{{ $labels.pod }} container {{ $labels.container}}
@@ -1254,7 +1347,9 @@ spec:
         sum(apiserver_request:burnrate5m) > (14.40 * 0.01000)
       for: 2m
       labels:
+        long: 1h
         severity: critical
+        short: 5m
     - alert: KubeAPIErrorBudgetBurn
       annotations:
         message: The API server is burning too much error budget
@@ -1265,7 +1360,9 @@ spec:
         sum(apiserver_request:burnrate30m) > (6.00 * 0.01000)
       for: 15m
       labels:
+        long: 6h
         severity: critical
+        short: 30m
     - alert: KubeAPIErrorBudgetBurn
       annotations:
         message: The API server is burning too much error budget
@@ -1276,7 +1373,9 @@ spec:
         sum(apiserver_request:burnrate2h) > (3.00 * 0.01000)
       for: 1h
       labels:
+        long: 1d
         severity: warning
+        short: 2h
     - alert: KubeAPIErrorBudgetBurn
       annotations:
         message: The API server is burning too much error budget
@@ -1287,7 +1386,9 @@ spec:
         sum(apiserver_request:burnrate6h) > (1.00 * 0.01000)
       for: 3h
       labels:
+        long: 3d
         severity: warning
+        short: 6h
   - name: kubernetes-system-apiserver
     rules:
     - alert: KubeAPILatencyHigh
@@ -1296,6 +1397,10 @@ spec:
           {{ $labels.verb }} {{ $labels.resource }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh
       expr: |
+        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99"}
+        >
+        1
+        and on (verb,resource)
         (
           cluster:apiserver_request_duration_seconds:mean5m{job="apiserver"}
           >
@@ -1307,10 +1412,6 @@ spec:
           )
         ) > on (verb) group_left()
         1.2 * avg by (verb) (cluster:apiserver_request_duration_seconds:mean5m{job="apiserver"} >= 0)
-        and on (verb,resource)
-        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99"}
-        >
-        1
       for: 5m
       labels:
         severity: warning
@@ -1391,8 +1492,7 @@ spec:
         message: '{{ $labels.node }} is unreachable and some workloads may be rescheduled.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodeunreachable
       expr: |
-        kube_node_spec_taint{job="kube-state-metrics",key="node.kubernetes.io/unreachable",effect="NoSchedule"} == 1
-      for: 2m
+        (kube_node_spec_taint{job="kube-state-metrics",key="node.kubernetes.io/unreachable",effect="NoSchedule"} unless ignoring(key,value) kube_node_spec_taint{job="kube-state-metrics",key="ToBeDeletedByClusterAutoscaler"}) == 1
       labels:
         severity: warning
     - alert: KubeletTooManyPods
