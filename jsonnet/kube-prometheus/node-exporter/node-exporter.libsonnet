@@ -15,6 +15,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     },
 
     nodeExporter+:: {
+      listenAddress: '127.0.0.1',
       port: 9100,
       labels: {
         'app.kubernetes.io/name': 'node-exporter',
@@ -95,7 +96,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local nodeExporter =
         container.new('node-exporter', $._config.imageRepos.nodeExporter + ':' + $._config.versions.nodeExporter) +
         container.withArgs([
-          '--web.listen-address=127.0.0.1:' + $._config.nodeExporter.port,
+          '--web.listen-address=' + std.join(':', [$._config.nodeExporter.listenAddress, std.toString($._config.nodeExporter.port)]),
           '--path.procfs=/host/proc',
           '--path.sysfs=/host/sys',
           '--path.rootfs=/host/root',
