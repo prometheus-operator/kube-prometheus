@@ -214,7 +214,7 @@ local update = {
   },
 };
 ```
-Using the example from above about adding in pre-rendered rules, the new local vaiables can be added in as follows:
+Using the example from above about adding in pre-rendered rules, the new local variables can be added in as follows:
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + filter + update + {
     prometheusAlerts+:: (import 'existingrule.json'),
