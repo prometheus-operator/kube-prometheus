@@ -17,6 +17,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     nodeExporter+:: {
       listenAddress: '127.0.0.1',
       port: 9100,
+      kubeRbacProxyEnabled: true,
       labels: {
         'app.kubernetes.io/name': 'node-exporter',
         'app.kubernetes.io/version': $._config.versions.nodeExporter,
@@ -30,6 +31,11 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
   },
 
   nodeExporter+:: {
+    local protocolScheme = if $._config.nodeExporter.kubeRbacProxyEnabled then
+      'https'
+    else
+      'http',
+
     clusterRoleBinding:
       local clusterRoleBinding = k.rbac.v1.clusterRoleBinding;
 
@@ -106,7 +112,15 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         ]) +
         container.withVolumeMounts([procVolumeMount, sysVolumeMount, rootVolumeMount]) +
         container.mixin.resources.withRequests($._config.resources['node-exporter'].requests) +
-        container.mixin.resources.withLimits($._config.resources['node-exporter'].limits);
+        container.mixin.resources.withLimits($._config.resources['node-exporter'].limits)
+        +
+        // Add container port to node-exporter when kube-rbac-proxy is
+        // disabled to allow the Service (and ServiceMonitor) to pick up
+        // the node-exporter pod.
+        if !$._config.nodeExporter.kubeRbacProxyEnabled then
+          container.withPorts(containerPort.new($._config.nodeExporter.port) +
+                              containerPort.withHostPort($._config.nodeExporter.port) +
+                              containerPort.withName(protocolScheme));
 
       local ip = containerEnv.fromFieldPath('IP', 'status.podIP');
       local proxy =
@@ -125,12 +139,16 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         // used by the service is tied to the proxy container. We *could*
         // forgo declaring the host port, however it is important to declare
         // it so that the scheduler can decide if the pod is schedulable.
-        container.withPorts(containerPort.new($._config.nodeExporter.port) + containerPort.withHostPort($._config.nodeExporter.port) + containerPort.withName('https')) +
+        container.withPorts(containerPort.new($._config.nodeExporter.port) + containerPort.withHostPort($._config.nodeExporter.port) + containerPort.withName(protocolScheme)) +
         container.mixin.resources.withRequests($._config.resources['kube-rbac-proxy'].requests) +
         container.mixin.resources.withLimits($._config.resources['kube-rbac-proxy'].limits) +
         container.withEnv([ip]);
 
-      local c = [nodeExporter, proxy];
+      local c =
+        if $._config.nodeExporter.kubeRbacProxyEnabled then
+          [nodeExporter, proxy]
+        else
+          [nodeExporter];
 
       daemonset.new() +
       daemonset.mixin.metadata.withName('node-exporter') +
@@ -170,8 +188,8 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           },
           endpoints: [
             {
-              port: 'https',
-              scheme: 'https',
+              port: protocolScheme,
+              scheme: protocolScheme,
               interval: '15s',
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               relabelings: [
@@ -195,7 +213,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       local service = k.core.v1.service;
       local servicePort = k.core.v1.service.mixin.spec.portsType;
 
-      local nodeExporterPort = servicePort.newNamed('https', $._config.nodeExporter.port, 'https');
+      local nodeExporterPort = servicePort.newNamed(protocolScheme, $._config.nodeExporter.port, protocolScheme);
 
       service.new('node-exporter', $._config.nodeExporter.selectorLabels, nodeExporterPort) +
       service.mixin.metadata.withNamespace($._config.namespace) +
