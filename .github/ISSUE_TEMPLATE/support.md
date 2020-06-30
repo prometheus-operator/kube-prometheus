@@ -4,48 +4,14 @@ about: If you have questions about kube-prometheus
 labels: kind/support
 ---
 
-<!--
+This repository now has the new GitHub Discussions enabled: 
+https://github.com/coreos/kube-prometheus/discussions
 
-Feel free to ask questions in #prometheus-operator on Kubernetes Slack!
+Please create a new discussion to ask for any kind of support, which is not a Bug or Feature Request.
 
--->
+Thank you for being part of this community!
 
-**What did you do?**
+---
 
-**Did you expect to see some different?**
+We are still happy to chat with you in the #prometheus-operator channel on Kubernetes Slack!
 
-**Environment**
-
-* Prometheus Operator version:
-
-    `Insert image tag or Git SHA here`
-    <!-- Try kubectl -n monitoring describe deployment prometheus-operator -->
-
-* Kubernetes version information:
-
-    `kubectl version`
-    <!-- Replace the command with its output above -->
-
-* Kubernetes cluster kind:
-
-    insert how you created your cluster: kops, bootkube, tectonic-installer, etc.
-
-* Manifests:
-
-```
-insert manifests relevant to the issue
-```
-
-* Prometheus Operator Logs:
-
-```
-Insert Prometheus Operator logs relevant to the issue here
-```
-
-* Prometheus Logs:
-
-```
-Insert Prometheus logs relevant to the issue here
-```
-
-**Anything else we need to know?**:
