@@ -50,7 +50,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: 'etcd',
-          namespace: 'kube-system',
+          namespace: $._config.namespace,
           labels: {
             'k8s-app': 'etcd',
           },
