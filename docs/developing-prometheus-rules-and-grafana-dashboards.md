@@ -300,11 +300,11 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
-  grafanaDashboards+:: { //  monitoring-mixin compatibility
+  grafanaDashboards+:: {  //  monitoring-mixin compatibility
     'my-dashboard.json': (import 'example-grafana-dashboard.json'),
   },
   grafana+:: {
-    dashboards+:: { // use this method to import your dashboards to Grafana
+    dashboards+:: {  // use this method to import your dashboards to Grafana
       'my-dashboard.json': (import 'example-grafana-dashboard.json'),
     },
   },

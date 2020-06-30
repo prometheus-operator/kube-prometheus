@@ -1129,16 +1129,6 @@ spec:
       for: 15m
       labels:
         severity: warning
-    - alert: KubeCronJobRunning
-      annotations:
-        message: CronJob {{ $labels.namespace }}/{{ $labels.cronjob }} is taking more
-          than 1h to complete.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecronjobrunning
-      expr: |
-        time() - kube_cronjob_next_schedule_time{job="kube-state-metrics"} > 3600
-      for: 1h
-      labels:
-        severity: warning
     - alert: KubeJobCompletion
       annotations:
         message: Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more
@@ -1240,19 +1230,19 @@ spec:
       for: 5m
       labels:
         severity: warning
-    - alert: KubeQuotaExceeded
+    - alert: KubeQuotaFullyUsed
       annotations:
         message: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage
           }} of its {{ $labels.resource }} quota.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubequotaexceeded
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubequotafullyused
       expr: |
         kube_resourcequota{job="kube-state-metrics", type="used"}
           / ignoring(instance, job, type)
         (kube_resourcequota{job="kube-state-metrics", type="hard"} > 0)
-          > 0.90
+          >= 1
       for: 15m
       labels:
-        severity: warning
+        severity: info
     - alert: CPUThrottlingHigh
       annotations:
         message: '{{ $value | humanizePercentage }} throttling of CPU in namespace
@@ -1391,43 +1381,6 @@ spec:
         short: 6h
   - name: kubernetes-system-apiserver
     rules:
-    - alert: KubeAPILatencyHigh
-      annotations:
-        message: The API server has an abnormal latency of {{ $value }} seconds for
-          {{ $labels.verb }} {{ $labels.resource }}.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapilatencyhigh
-      expr: |
-        cluster_quantile:apiserver_request_duration_seconds:histogram_quantile{job="apiserver",quantile="0.99"}
-        >
-        1
-        and on (verb,resource)
-        (
-          cluster:apiserver_request_duration_seconds:mean5m{job="apiserver"}
-          >
-          on (verb) group_left()
-          (
-            avg by (verb) (cluster:apiserver_request_duration_seconds:mean5m{job="apiserver"} >= 0)
-            +
-            2*stddev by (verb) (cluster:apiserver_request_duration_seconds:mean5m{job="apiserver"} >= 0)
-          )
-        ) > on (verb) group_left()
-        1.2 * avg by (verb) (cluster:apiserver_request_duration_seconds:mean5m{job="apiserver"} >= 0)
-      for: 5m
-      labels:
-        severity: warning
-    - alert: KubeAPIErrorsHigh
-      annotations:
-        message: API server is returning errors for {{ $value | humanizePercentage
-          }} of requests for {{ $labels.verb }} {{ $labels.resource }} {{ $labels.subresource
-          }}.
-        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeapierrorshigh
-      expr: |
-        sum(rate(apiserver_request_total{job="apiserver",code=~"5.."}[5m])) by (resource,subresource,verb)
-          /
-        sum(rate(apiserver_request_total{job="apiserver"}[5m])) by (resource,subresource,verb) > 0.05
-      for: 10m
-      labels:
-        severity: warning
     - alert: KubeClientCertificateExpiration
       annotations:
         message: A client certificate used to authenticate to the apiserver is expiring
