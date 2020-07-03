@@ -407,7 +407,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
               metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
                 {
                   sourceLabels: ['__name__'],
-                  regex: 'etcd_(debugging|disk|request|server).*',
+                  regex: 'etcd_(debugging|disk|server).*',
                   action: 'drop',
                 },
                 {
