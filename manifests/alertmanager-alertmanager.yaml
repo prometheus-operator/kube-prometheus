@@ -6,7 +6,7 @@ metadata:
   name: main
   namespace: monitoring
 spec:
-  image: quay.io/prometheus/alertmanager:v0.20.0
+  image: quay.io/prometheus/alertmanager:v0.21.0
   nodeSelector:
     kubernetes.io/os: linux
   replicas: 3
@@ -15,4 +15,4 @@ spec:
     runAsNonRoot: true
     runAsUser: 1000
   serviceAccountName: alertmanager-main
-  version: v0.20.0
+  version: v0.21.0

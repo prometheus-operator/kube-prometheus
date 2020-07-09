@@ -6,7 +6,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      prometheus: 'v2.17.2',
+      prometheus: 'v2.19.2',
     },
 
     imageRepos+:: {
