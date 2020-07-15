@@ -5,15 +5,28 @@
         name: 'prometheus-operator',
         rules: [
           {
-            alert: 'PrometheusOperatorWatchErrors',
+            alert: 'PrometheusOperatorListErrors',
             expr: |||
-              (sum by (controller,namespace) (rate(prometheus_operator_watch_operations_failed_total{%(prometheusOperatorSelector)s}[1h])) / sum by (controller,namespace) (rate(prometheus_operator_watch_operations_total{%(prometheusOperatorSelector)s}[1h]))) > 0.1
+              (sum by (controller,namespace) (rate(prometheus_operator_list_operations_failed_total{%(prometheusOperatorSelector)s}[1h])) / sum by (controller,namespace) (rate(prometheus_operator_list_operations_total{%(prometheusOperatorSelector)s}[1h]))) > 0.4
             ||| % $._config,
             labels: {
               severity: 'warning',
             },
             annotations: {
-              message: 'Errors while performing watch operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.',
+              message: 'Errors while performing List operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.',
+            },
+            'for': '15m',
+          },
+          {
+            alert: 'PrometheusOperatorWatchErrors',
+            expr: |||
+              (sum by (controller,namespace) (rate(prometheus_operator_watch_operations_failed_total{%(prometheusOperatorSelector)s}[1h])) / sum by (controller,namespace) (rate(prometheus_operator_watch_operations_total{%(prometheusOperatorSelector)s}[1h]))) > 0.4
+            ||| % $._config,
+            labels: {
+              severity: 'warning',
+            },
+            annotations: {
+              message: 'Errors while performing Watch operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.',
             },
             'for': '15m',
           },
