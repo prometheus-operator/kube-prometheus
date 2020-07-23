@@ -9,10 +9,6 @@
             record: 'instance:node_cpu:rate:sum',
           },
           {
-            expr: 'sum((node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"})) BY (instance)',
-            record: 'instance:node_filesystem_usage:sum',
-          },
-          {
             expr: 'sum(rate(node_network_receive_bytes_total[3m])) BY (instance)',
             record: 'instance:node_network_receive_bytes:rate:sum',
           },
