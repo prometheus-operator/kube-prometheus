@@ -87,6 +87,33 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
 
       configmap.mixin.metadata.withNamespace($._config.namespace),
 
+    serviceMonitor:
+      {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ServiceMonitor',
+        metadata: {
+          name: $._config.prometheusAdapter.name,
+          namespace: $._config.namespace,
+          labels: $._config.prometheusAdapter.labels,
+        },
+        spec: {
+          selector: {
+            matchLabels: $._config.prometheusAdapter.labels,
+          },
+          endpoints: [
+            {
+              port: 'https',
+              interval: '30s',
+              scheme: 'https',
+              tlsConfig: {
+                insecureSkipVerify: true,
+              },
+              bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+            },
+          ],
+        },
+      },
+
     service:
       local service = k.core.v1.service;
       local servicePort = k.core.v1.service.mixin.spec.portsType;
