@@ -248,6 +248,11 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
             {
               port: 'http-metrics',
               interval: '30s',
+              scheme: "https",
+              bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token",
+              tlsConfig: {
+                insecureSkipVerify: true
+              }
             },
           ],
           selector: {
@@ -349,6 +354,11 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
             {
               port: 'http-metrics',
               interval: '30s',
+              scheme: "https",
+              bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token",
+              tlsConfig: {
+                insecureSkipVerify: true
+              },
               metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
                 {
                   sourceLabels: ['__name__'],
