@@ -246,8 +246,13 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           jobLabel: 'k8s-app',
           endpoints: [
             {
-              port: 'http-metrics',
+              port: 'https-metrics',
               interval: '30s',
+              scheme: "https",
+              bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token",
+              tlsConfig: {
+                insecureSkipVerify: true
+              }
             },
           ],
           selector: {
@@ -347,8 +352,13 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           jobLabel: 'k8s-app',
           endpoints: [
             {
-              port: 'http-metrics',
+              port: 'https-metrics',
               interval: '30s',
+              scheme: "https",
+              bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token",
+              tlsConfig: {
+                insecureSkipVerify: true
+              },
               metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
                 {
                   sourceLabels: ['__name__'],

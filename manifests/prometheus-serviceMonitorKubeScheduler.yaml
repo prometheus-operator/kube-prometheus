@@ -7,8 +7,12 @@ metadata:
   namespace: monitoring
 spec:
   endpoints:
-  - interval: 30s
-    port: http-metrics
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 30s
+    port: https-metrics
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
   jobLabel: k8s-app
   namespaceSelector:
     matchNames:
