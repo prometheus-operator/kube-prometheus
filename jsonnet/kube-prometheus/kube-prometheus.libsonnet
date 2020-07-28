@@ -111,29 +111,29 @@ local configMapList = k3.core.v1.configMapList;
       'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256',  // required by h2: http://golang.org/cl/30721
       'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256',  // required by h2: http://golang.org/cl/30721
 
-      // 'TLS_RSA_WITH_RC4_128_SHA',            // insecure: https://access.redhat.com/security/cve/cve-2013-2566
-      // 'TLS_RSA_WITH_3DES_EDE_CBC_SHA',       // insecure: https://access.redhat.com/articles/2548661
-      // 'TLS_RSA_WITH_AES_128_CBC_SHA',        // disabled by h2
-      // 'TLS_RSA_WITH_AES_256_CBC_SHA',        // disabled by h2
-      'TLS_RSA_WITH_AES_128_CBC_SHA256',
-      // 'TLS_RSA_WITH_AES_128_GCM_SHA256',     // disabled by h2
-      // 'TLS_RSA_WITH_AES_256_GCM_SHA384',     // disabled by h2
-      // 'TLS_ECDHE_ECDSA_WITH_RC4_128_SHA',    // insecure: https://access.redhat.com/security/cve/cve-2013-2566
-      // 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA',// disabled by h2
-      // 'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA',// disabled by h2
-      // 'TLS_ECDHE_RSA_WITH_RC4_128_SHA',      // insecure: https://access.redhat.com/security/cve/cve-2013-2566
-      // 'TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA', // insecure: https://access.redhat.com/articles/2548661
-      // 'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA',  // disabled by h2
-      // 'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA',  // disabled by h2
-      'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256',
-      'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256',
+      // 'TLS_RSA_WITH_RC4_128_SHA',                // insecure: https://access.redhat.com/security/cve/cve-2013-2566
+      // 'TLS_RSA_WITH_3DES_EDE_CBC_SHA',           // insecure: https://access.redhat.com/articles/2548661
+      // 'TLS_RSA_WITH_AES_128_CBC_SHA',            // disabled by h2
+      // 'TLS_RSA_WITH_AES_256_CBC_SHA',            // disabled by h2
+      // 'TLS_RSA_WITH_AES_128_CBC_SHA256',         // insecure: https://access.redhat.com/security/cve/cve-2013-0169
+      // 'TLS_RSA_WITH_AES_128_GCM_SHA256',         // disabled by h2
+      // 'TLS_RSA_WITH_AES_256_GCM_SHA384',         // disabled by h2
+      // 'TLS_ECDHE_ECDSA_WITH_RC4_128_SHA',        // insecure: https://access.redhat.com/security/cve/cve-2013-2566
+      // 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA',    // disabled by h2
+      // 'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA',    // disabled by h2
+      // 'TLS_ECDHE_RSA_WITH_RC4_128_SHA',          // insecure: https://access.redhat.com/security/cve/cve-2013-2566
+      // 'TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA',     // insecure: https://access.redhat.com/articles/2548661
+      // 'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA',      // disabled by h2
+      // 'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA',      // disabled by h2
+      // 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256', // insecure: https://access.redhat.com/security/cve/cve-2013-0169
+      // 'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256',   // insecure: https://access.redhat.com/security/cve/cve-2013-0169
 
       // disabled by h2 means: https://github.com/golang/net/blob/e514e69ffb8bc3c76a71ae40de0118d794855992/http2/ciphers.go
 
-      // 'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384',   // TODO: Might not work with h2
-      // 'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384', // TODO: Might not work with h2
-      // 'TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305',    // TODO: Might not work with h2
-      // 'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305',  // TODO: Might not work with h2
+      'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384',
+      'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384',
+      'TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305',
+      'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305',
     ],
 
     cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
