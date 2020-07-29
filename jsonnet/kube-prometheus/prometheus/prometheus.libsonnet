@@ -324,6 +324,23 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                 },
               ],
             },
+            {
+              port: 'https-metrics',
+              scheme: 'https',
+              path: '/metrics/probes',
+              interval: '30s',
+              honorLabels: true,
+              tlsConfig: {
+                insecureSkipVerify: true,
+              },
+              bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              relabelings: [
+                {
+                  sourceLabels: ['__metrics_path__'],
+                  targetLabel: 'metrics_path',
+                },
+              ],
+            },
           ],
           selector: {
             matchLabels: {
