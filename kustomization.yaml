@@ -36,6 +36,7 @@ resources:
 - ./manifests/prometheus-adapter-roleBindingAuthReader.yaml
 - ./manifests/prometheus-adapter-service.yaml
 - ./manifests/prometheus-adapter-serviceAccount.yaml
+- ./manifests/prometheus-adapter-serviceMonitor.yaml
 - ./manifests/prometheus-clusterRole.yaml
 - ./manifests/prometheus-clusterRoleBinding.yaml
 - ./manifests/prometheus-operator-serviceMonitor.yaml
