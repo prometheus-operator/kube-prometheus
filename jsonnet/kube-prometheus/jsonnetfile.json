@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "master"
+      "version": "release-0.1"
     },
     {
       "source": {
@@ -54,7 +54,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "master"
+      "version": "release-1.9"
     },
     {
       "source": {
@@ -63,7 +63,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "master"
+      "version": "release-1.9"
     },
     {
       "source": {
@@ -81,7 +81,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "master",
+      "version": "release-2.20",
       "name": "prometheus"
     }
   ],
