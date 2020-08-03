@@ -12,6 +12,8 @@ spec:
       app: grafana
   template:
     metadata:
+      annotations:
+        checksum/grafana-datasources: 48faab41f579fc8efde6034391496f6a
       labels:
         app: grafana
     spec:

@@ -900,6 +900,11 @@ spec:
                 required:
                 - alertmanagers
                 type: object
+              allowOverlappingBlocks:
+                description: AllowOverlappingBlocks enables vertical compaction and
+                  vertical query merge in Prometheus. This is still experimental in
+                  Prometheus so it may change in any upcoming release.
+                type: boolean
               apiserverConfig:
                 description: APIServerConfig allows specifying a host and auth methods
                   to access apiserver. If left empty, Prometheus is assumed to run
@@ -1097,7 +1102,8 @@ spec:
                     type: boolean
                 type: object
               baseImage:
-                description: Base image to use for a Prometheus deployment.
+                description: 'Base image to use for a Prometheus deployment. Deprecated:
+                  use ''image'' instead'
                 type: string
               configMaps:
                 description: ConfigMaps is a list of ConfigMaps in the same namespace
@@ -3432,6 +3438,95 @@ spec:
               priorityClassName:
                 description: Priority class assigned to the Pods
                 type: string
+              probeNamespaceSelector:
+                description: '*Experimental* Namespaces to be selected for Probe discovery.
+                  If nil, only check own namespace.'
+                properties:
+                  matchExpressions:
+                    description: matchExpressions is a list of label selector requirements.
+                      The requirements are ANDed.
+                    items:
+                      description: A label selector requirement is a selector that
+                        contains values, a key, and an operator that relates the key
+                        and values.
+                      properties:
+                        key:
+                          description: key is the label key that the selector applies
+                            to.
+                          type: string
+                        operator:
+                          description: operator represents a key's relationship to
+                            a set of values. Valid operators are In, NotIn, Exists
+                            and DoesNotExist.
+                          type: string
+                        values:
+                          description: values is an array of string values. If the
+                            operator is In or NotIn, the values array must be non-empty.
+                            If the operator is Exists or DoesNotExist, the values
+                            array must be empty. This array is replaced during a strategic
+                            merge patch.
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - key
+                      - operator
+                      type: object
+                    type: array
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    description: matchLabels is a map of {key,value} pairs. A single
+                      {key,value} in the matchLabels map is equivalent to an element
+                      of matchExpressions, whose key field is "key", the operator
+                      is "In", and the values array contains only "value". The requirements
+                      are ANDed.
+                    type: object
+                type: object
+              probeSelector:
+                description: '*Experimental* Probes to be selected for target discovery.'
+                properties:
+                  matchExpressions:
+                    description: matchExpressions is a list of label selector requirements.
+                      The requirements are ANDed.
+                    items:
+                      description: A label selector requirement is a selector that
+                        contains values, a key, and an operator that relates the key
+                        and values.
+                      properties:
+                        key:
+                          description: key is the label key that the selector applies
+                            to.
+                          type: string
+                        operator:
+                          description: operator represents a key's relationship to
+                            a set of values. Valid operators are In, NotIn, Exists
+                            and DoesNotExist.
+                          type: string
+                        values:
+                          description: values is an array of string values. If the
+                            operator is In or NotIn, the values array must be non-empty.
+                            If the operator is Exists or DoesNotExist, the values
+                            array must be empty. This array is replaced during a strategic
+                            merge patch.
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - key
+                      - operator
+                      type: object
+                    type: array
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    description: matchLabels is a map of {key,value} pairs. A single
+                      {key,value} in the matchLabels map is equivalent to an element
+                      of matchExpressions, whose key field is "key", the operator
+                      is "In", and the values array contains only "value". The requirements
+                      are ANDed.
+                    type: object
+                type: object
               prometheusExternalLabelName:
                 description: Name of Prometheus external label used to denote Prometheus
                   instance name. Defaults to the value of `prometheus`. External label
@@ -4374,10 +4469,11 @@ spec:
                     type: object
                 type: object
               sha:
-                description: SHA of Prometheus container image to be deployed. Defaults
+                description: 'SHA of Prometheus container image to be deployed. Defaults
                   to the value of `version`. Similar to a tag, but the SHA explicitly
                   deploys an immutable container image. Version and Tag are ignored
-                  if SHA is set.
+                  if SHA is set. Deprecated: use ''image'' instead.  The image digest
+                  can be specified as part of the image URL.'
                 type: string
               storage:
                 description: Storage spec to specify how storage shall be used.
@@ -4638,8 +4734,10 @@ spec:
                     type: object
                 type: object
               tag:
-                description: Tag of Prometheus container image to be deployed. Defaults
-                  to the value of `version`. Version is ignored if Tag is set.
+                description: 'Tag of Prometheus container image to be deployed. Defaults
+                  to the value of `version`. Version is ignored if Tag is set. Deprecated:
+                  use ''image'' instead.  The image tag can be specified as part of
+                  the image URL.'
                 type: string
               thanos:
                 description: "Thanos configuration allows configuring various aspects
@@ -4649,7 +4747,8 @@ spec:
                   without backward compatibility in any release."
                 properties:
                   baseImage:
-                    description: Thanos base image if other than default.
+                    description: 'Thanos base image if other than default. Deprecated:
+                      use ''image'' instead'
                     type: string
                   grpcServerTlsConfig:
                     description: 'GRPCServerTLSConfig configures the gRPC server from
@@ -4842,15 +4941,17 @@ spec:
                         type: object
                     type: object
                   sha:
-                    description: SHA of Thanos container image to be deployed. Defaults
+                    description: 'SHA of Thanos container image to be deployed. Defaults
                       to the value of `version`. Similar to a tag, but the SHA explicitly
                       deploys an immutable container image. Version and Tag are ignored
-                      if SHA is set.
+                      if SHA is set. Deprecated: use ''image'' instead.  The image
+                      digest can be specified as part of the image URL.'
                     type: string
                   tag:
-                    description: Tag of Thanos sidecar container image to be deployed.
+                    description: 'Tag of Thanos sidecar container image to be deployed.
                       Defaults to the value of `version`. Version is ignored if Tag
-                      is set.
+                      is set. Deprecated: use ''image'' instead.  The image tag can
+                      be specified as part of the image URL.'
                     type: string
                   tracingConfig:
                     description: TracingConfig configures tracing in Thanos. This
