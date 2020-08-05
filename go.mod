@@ -1,4 +1,4 @@
-module github.com/coreos/kube-prometheus
+module github.com/prometheus-operator/kube-prometheus
 
 go 1.13
 
