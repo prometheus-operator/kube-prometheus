@@ -8,7 +8,7 @@ The content of this project is written in [jsonnet](http://jsonnet.org/). This p
 
 Components included in this package:
 
-* The [Prometheus Operator](https://github.com/coreos/prometheus-operator)
+* The [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator)
 * Highly available [Prometheus](https://prometheus.io/)
 * Highly available [Alertmanager](https://github.com/prometheus/alertmanager)
 * [Prometheus node-exporter](https://github.com/prometheus/node_exporter)
@@ -172,12 +172,12 @@ Install this library in your own project with [jsonnet-bundler](https://github.c
 $ mkdir my-kube-prometheus; cd my-kube-prometheus
 $ jb init  # Creates the initial/empty `jsonnetfile.json`
 # Install the kube-prometheus dependency
-$ jb install github.com/coreos/kube-prometheus/jsonnet/kube-prometheus@release-0.4 # Creates `vendor/` & `jsonnetfile.lock.json`, and fills in `jsonnetfile.json`
+$ jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.4 # Creates `vendor/` & `jsonnetfile.lock.json`, and fills in `jsonnetfile.json`
 ```
 
 > `jb` can be installed with `go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb`
 
-> An e.g. of how to install a given version of this library: `jb install github.com/coreos/kube-prometheus/jsonnet/kube-prometheus@release-0.4`
+> An e.g. of how to install a given version of this library: `jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.4`
 
 In order to update the kube-prometheus dependency, simply use the jsonnet-bundler update functionality:
 ```shell
@@ -327,7 +327,7 @@ These are the available fields with their respective default values:
         kubeStateMetrics: "quay.io/coreos/kube-state-metrics",
         kubeRbacProxy: "quay.io/coreos/kube-rbac-proxy",
         nodeExporter: "quay.io/prometheus/node-exporter",
-        prometheusOperator: "quay.io/coreos/prometheus-operator",
+        prometheusOperator: "quay.io/prometheus-operator/prometheus-operator",
     },
 
     prometheus+:: {

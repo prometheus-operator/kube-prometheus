@@ -1,5 +1,5 @@
 // Strips spec.containers[].limits for certain containers
-// https://github.com/coreos/kube-prometheus/issues/72
+// https://github.com/prometheus-operator/kube-prometheus/issues/72
 {
   _config+:: {
     resources+:: {
