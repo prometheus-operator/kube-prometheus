@@ -7,7 +7,7 @@
           {
             alert: 'PrometheusOperatorListErrors',
             expr: |||
-              (sum by (controller,namespace) (rate(prometheus_operator_list_operations_failed_total{%(prometheusOperatorSelector)s}[1h])) / sum by (controller,namespace) (rate(prometheus_operator_list_operations_total{%(prometheusOperatorSelector)s}[1h]))) > 0.4
+              (sum by (controller,namespace) (rate(prometheus_operator_list_operations_failed_total{%(prometheusOperatorSelector)s}[10m])) / sum by (controller,namespace) (rate(prometheus_operator_list_operations_total{%(prometheusOperatorSelector)s}[10m]))) > 0.4
             ||| % $._config,
             labels: {
               severity: 'warning',
@@ -20,7 +20,7 @@
           {
             alert: 'PrometheusOperatorWatchErrors',
             expr: |||
-              (sum by (controller,namespace) (rate(prometheus_operator_watch_operations_failed_total{%(prometheusOperatorSelector)s}[1h])) / sum by (controller,namespace) (rate(prometheus_operator_watch_operations_total{%(prometheusOperatorSelector)s}[1h]))) > 0.4
+              (sum by (controller,namespace) (rate(prometheus_operator_watch_operations_failed_total{%(prometheusOperatorSelector)s}[10m])) / sum by (controller,namespace) (rate(prometheus_operator_watch_operations_total{%(prometheusOperatorSelector)s}[10m]))) > 0.4
             ||| % $._config,
             labels: {
               severity: 'warning',
