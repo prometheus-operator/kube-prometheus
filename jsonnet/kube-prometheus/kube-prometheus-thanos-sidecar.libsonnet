@@ -26,6 +26,15 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         ],
       },
     },
+    // Create a new service that exposes both sidecar's HTTP metrics port and gRPC StoreAPI
+    serviceThanosSidecar:
+      local thanosGrpcSidecarPort = servicePort.newNamed('grpc', 10901, 10901);
+      local thanosHttpSidecarPort = servicePort.newNamed('http', 10902, 10902);
+      service.new('prometheus-' + $._config.prometheus.name + '-thanos-sidecar', { app: 'prometheus', prometheus: $._config.prometheus.name }) +
+      service.mixin.spec.withPorts([thanosGrpcSidecarPort, thanosHttpSidecarPort]) +
+      service.mixin.spec.withClusterIp('None') +
+      service.mixin.metadata.withLabels({'prometheus': $._config.prometheus.name, 'app': 'thanos-sidecar'}) +
+      service.mixin.metadata.withNamespace($._config.namespace),
     prometheus+: {
       spec+: {
         thanos+: {
@@ -35,5 +44,33 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
         },
       },
     },
+    serviceMonitorThanosSidecar:
+      {
+        apiVersion: 'monitoring.coreos.com/v1',
+        kind: 'ServiceMonitor',
+        metadata: {
+          name: 'thanos-sidecar',
+          namespace: $._config.namespace,
+          labels: {
+            'k8s-app': 'prometheus',
+          },
+        },
+        spec: {
+          // Use the service's app label (thanos-sidecar) as the value for the job label.
+          jobLabel: 'app',
+          selector: {
+            matchLabels: {
+              prometheus: $._config.prometheus.name,
+              app: 'thanos-sidecar',
+            },
+          },
+          endpoints: [
+            {
+              port: 'http',
+              interval: '30s',
+            },
+          ],
+        },
+      },
   },
 }
