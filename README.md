@@ -113,7 +113,7 @@ Though for a quickstart a compiled version of the Kubernetes [manifests](manifes
 ```shell
 # Create the namespace and CRDs, and then wait for them to be availble before creating the remaining resources
 kubectl create -f manifests/setup
-until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
+until kubectl get crd alertmanagers.monitoring.coreos.com podmonitors.monitoring.coreos.com prometheuses.monitoring.coreos.com prometheusrules.monitoring.coreos.com servicemonitors.monitoring.coreos.com thanosrulers.monitoring.coreos.com ; do date; sleep 1; echo ""; done
 kubectl create -f manifests/
 ```
 
