@@ -10,7 +10,7 @@ require (
 	github.com/google/go-jsonnet v0.16.1-0.20200703153429-aaf50f5b655f
 	github.com/googleapis/gnostic v0.0.0-20170729233727-0c5108395e2d // indirect
 	github.com/imdario/mergo v0.3.7 // indirect
-	github.com/jsonnet-bundler/jsonnet-bundler v0.3.1
+	github.com/jsonnet-bundler/jsonnet-bundler v0.4.0
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
 	github.com/pkg/errors v0.8.1

@@ -3,7 +3,7 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: kube-state-metrics
-    app.kubernetes.io/version: v1.9.5
+    app.kubernetes.io/version: 1.9.7
   name: kube-state-metrics
 rules:
 - apiGroups:
@@ -105,6 +105,13 @@ rules:
   - networking.k8s.io
   resources:
   - networkpolicies
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
   verbs:
   - list
   - watch
