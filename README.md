@@ -646,7 +646,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
-> NOTE: make sure your service resources has the right labels (eg. `'app': 'myapp'`) applied. Prometheus use kubernetes labels to discovery resources inside the namespaces.
+> NOTE: make sure your service resources have the right labels (eg. `'app': 'myapp'`) applied. Prometheus uses kubernetes labels to discover resources inside the namespaces.
 
 ### Static etcd configuration
 
