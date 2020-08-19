@@ -182,8 +182,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           serviceAccountName: 'prometheus-' + p.name,
           serviceMonitorSelector: {},
           podMonitorSelector: {},
+          probeSelector: {},
           serviceMonitorNamespaceSelector: {},
           podMonitorNamespaceSelector: {},
+          probeNamespaceSelector: {},
           nodeSelector: { 'kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
             role: 'alert-rules',
