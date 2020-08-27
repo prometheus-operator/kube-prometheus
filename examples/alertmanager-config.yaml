@@ -1,6 +1,7 @@
 # external alertmanager yaml
 global:
   resolve_timeout: 10m
+  slack_api_url: url
 route:
   group_by: ['job']
   group_wait: 30s
@@ -13,3 +14,17 @@ route:
     receiver: 'null'
 receivers:
 - name: 'null'
+- name: slack
+slack_configs:
+- channel: '#alertmanager-testing'
+  send_resolved: true
+  title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Monitoring Event Notification'
+  text: |-
+    {{ range .Alerts }}
+      *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
+      *Description:* {{ .Annotations.description }}
+      *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:> *Runbook:* <{{ .Annotations.runbook }}|:spiral_note_pad:>
+      *Details:*
+      {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+      {{ end }}
+    {{ end }}
