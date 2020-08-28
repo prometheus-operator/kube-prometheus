@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring
+  name: kube-prometheus
   namespace: argocd
   annotations:
     recipients.argocd-notifications.argoproj.io: "slack:jenkins"
@@ -17,7 +17,7 @@ spec:
         libs:
           - vendored
       recurse: true
-    path: examples/cd/argocd/kube-prometheus
+    path: examples/continuous-delivery/argocd/kube-prometheus
     repoURL: git@github.com:prometheus-operator/kube-prometheus.git
     targetRevision: HEAD
   syncPolicy:
