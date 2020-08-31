@@ -145,12 +145,18 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
                          'pods',
                        ]) +
                        policyRule.withVerbs(['get', 'list', 'watch']);
+      local ingressRule = policyRule.new() +
+                          policyRule.withApiGroups(['extensions']) +
+                          policyRule.withResources([
+                            'ingresses',
+                          ]) +
+                          policyRule.withVerbs(['get', 'list', 'watch']);
 
       local newSpecificRole(namespace) =
         role.new() +
         role.mixin.metadata.withName('prometheus-' + p.name) +
         role.mixin.metadata.withNamespace(namespace) +
-        role.withRules(coreRule);
+        role.withRules([coreRule, ingressRule]);
 
       local roleList = k3.rbac.v1.roleList;
       roleList.new([newSpecificRole(x) for x in p.roleBindingNamespaces]),
@@ -182,8 +188,10 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
           serviceAccountName: 'prometheus-' + p.name,
           serviceMonitorSelector: {},
           podMonitorSelector: {},
+          probeSelector: {},
           serviceMonitorNamespaceSelector: {},
           podMonitorNamespaceSelector: {},
+          probeNamespaceSelector: {},
           nodeSelector: { 'kubernetes.io/os': 'linux' },
           ruleSelector: selector.withMatchLabels({
             role: 'alert-rules',
