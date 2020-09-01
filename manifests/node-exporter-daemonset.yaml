@@ -88,3 +88,6 @@ spec:
       - hostPath:
           path: /
         name: root
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 10%
