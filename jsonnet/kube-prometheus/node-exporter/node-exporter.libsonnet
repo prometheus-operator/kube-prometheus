@@ -137,6 +137,7 @@ local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
       daemonset.mixin.metadata.withNamespace($._config.namespace) +
       daemonset.mixin.metadata.withLabels(podLabels) +
       daemonset.mixin.spec.selector.withMatchLabels(selectorLabels) +
+      daemonset.mixin.spec.updateStrategy.rollingUpdate.withMaxUnavailable('10%') +
       daemonset.mixin.spec.template.metadata.withLabels(podLabels) +
       daemonset.mixin.spec.template.spec.withTolerations([existsToleration]) +
       daemonset.mixin.spec.template.spec.withNodeSelector({ 'kubernetes.io/os': 'linux' }) +
