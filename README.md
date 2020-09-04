@@ -676,6 +676,10 @@ See [exposing Prometheus/Alertmanager/Grafana](docs/exposing-prometheus-alertman
 
 To use an easy to reproduce example, see [minikube.jsonnet](examples/minikube.jsonnet), which uses the minikube setup as demonstrated in [Prerequisites](#prerequisites). Because we would like easy access to our Prometheus, Alertmanager and Grafana UIs, `minikube.jsonnet` exposes the services as NodePort type services.
 
+## Continuous Delivery
+
+Working examples of use with continuous delivery tools are found in examples/continuous-delivery.
+
 ## Troubleshooting
 
 ### Error retrieving kubelet metrics
