@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    app: traefik
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: k3s.asant.me
+    http:
+      paths:
+      - path: /grafana
+        backend:
+          serviceName: grafana
+          servicePort: 3000
+  tls:
+  - hosts:
+    - k3s.asant.me

@@ -1,7 +1,7 @@
 {
   _config+:: {
     versions+:: {
-      kubeStateMetrics: '1.9.7',
+      kubeStateMetrics: '1.9.6',
     },
     imageRepos+:: {
       kubeStateMetrics: 'quay.io/coreos/kube-state-metrics',

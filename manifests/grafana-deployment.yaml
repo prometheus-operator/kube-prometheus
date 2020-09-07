@@ -18,7 +18,11 @@ spec:
         app: grafana
     spec:
       containers:
-      - env: []
+      - env:
+         - name: GF_SERVER_ROOT_URL
+           value: "https://k3s.asant.me/grafana"
+         - name: GF_SERVER_SERVE_FROM_SUB_PATH
+           value: "true"
         image: grafana/grafana:7.1.0
         name: grafana
         ports:
