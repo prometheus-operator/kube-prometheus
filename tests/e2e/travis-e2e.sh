@@ -13,7 +13,7 @@ chmod +x kubectl
 curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-linux-amd64
 chmod +x kind
 
-./kind create cluster --image=kindest/node:v1.18.0
+./kind create cluster --image=kindest/node:v1.19.0
 # the default kube config location used by kind
 export KUBECONFIG="${HOME}/.kube/config"
 
