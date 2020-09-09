@@ -13,17 +13,30 @@ chmod +x kubectl
 curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-linux-amd64
 chmod +x kind
 
-./kind create cluster --image=kindest/node:v1.18.0
-# the default kube config location used by kind
-export KUBECONFIG="${HOME}/.kube/config"
+run_e2e_tests() {
+    cluster_version=$1
 
-# create namespace, permissions, and CRDs
-./kubectl create -f manifests/setup
+    ./kind create cluster --image=kindest/node:$cluster_version
+    # the default kube config location used by kind
+    export KUBECONFIG="${HOME}/.kube/config"
+    
+    # create namespace, permissions, and CRDs
+    ./kubectl create -f manifests/setup
 
-# wait for CRD creation to complete
-until ./kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
+    # wait for CRD creation to complete
+    until ./kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
 
-# create monitoring components
-./kubectl create -f manifests/
+    # create monitoring components
+    ./kubectl create -f manifests/
 
-make test-e2e
+    make test-e2e
+
+    ./kind delete cluster
+}
+
+cluster_compatible_versions=("v1.18.8" "v1.19.0")
+
+for cluster_version in "${cluster_compatible_versions[@]}"
+do
+    run_e2e_tests $cluster_version
+done
