@@ -105,6 +105,11 @@ local configMapList = k3.core.v1.configMapList;
 
     versions+:: {
       grafana: '7.1.0',
+      kubeRbacProxy: 'v0.6.0',
+    },
+
+    imageRepos+:: {
+      kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy',
     },
 
     tlsCipherSuites: [
