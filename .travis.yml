@@ -19,3 +19,4 @@ jobs:
     script: make --always-make test
   - name: Run e2e tests
     script: ./tests/e2e/travis-e2e.sh
+    env: K8S_VERSION=1.19.0
