@@ -314,7 +314,7 @@ These are the available fields with their respective default values:
 
     versions+:: {
         alertmanager: "v0.17.0",
-        nodeExporter: "v0.18.1",
+        nodeExporter: "v1.0.1",
         kubeStateMetrics: "v1.5.0",
         kubeRbacProxy: "v0.4.1",
         prometheusOperator: "v0.30.0",
