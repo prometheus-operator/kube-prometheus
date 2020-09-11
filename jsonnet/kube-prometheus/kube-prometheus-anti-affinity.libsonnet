@@ -1,4 +1,4 @@
-local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
+local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
 local statefulSet = k.apps.v1.statefulSet;
 local affinity = statefulSet.mixin.spec.template.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecutionType;
 local matchExpression = affinity.mixin.podAffinityTerm.labelSelector.matchExpressionsType;

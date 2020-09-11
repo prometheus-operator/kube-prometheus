@@ -11,7 +11,7 @@
       scrapeTimeout: '30s',
     },
   },
-  kubeStateMetrics+:: (import 'kube-state-metrics/kube-state-metrics.libsonnet') +
+  kubeStateMetrics+:: (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics/kube-state-metrics.libsonnet') +
                       {
                         local ksm = self,
                         name:: 'kube-state-metrics',

@@ -1,4 +1,4 @@
-local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
+local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
 
 // Custom metrics API allows the HPA v2 to scale based on arbirary metrics.
 // For more details on usage visit https://github.com/DirectXMan12/k8s-prometheus-adapter#quick-links
