@@ -6,7 +6,7 @@ local configMapList = k3.core.v1.configMapList;
 (import './kube-state-metrics/kube-state-metrics.libsonnet') +
 (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
 (import './node-exporter/node-exporter.libsonnet') +
-(import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
+(import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
 (import './alertmanager/alertmanager.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
 (import './prometheus/prometheus.libsonnet') +
