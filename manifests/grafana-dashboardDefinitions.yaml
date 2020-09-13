@@ -7467,7 +7467,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_requests_memory_bytes{namespace=\"$namespace\"})",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}) / sum(kube_pod_container_resource_requests_memory_bytes{namespace=\"$namespace\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -7551,7 +7551,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_limits_memory_bytes{namespace=\"$namespace\"})",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}) / sum(kube_pod_container_resource_limits_memory_bytes{namespace=\"$namespace\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8071,7 +8071,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}) by (pod)",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}) by (pod)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{pod}}",
@@ -8379,7 +8379,7 @@ items:
                           ],
                           "targets": [
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod)",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8397,7 +8397,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(kube_pod_container_resource_requests_memory_bytes{namespace=\"$namespace\"}) by (pod)",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}) by (pod) / sum(kube_pod_container_resource_requests_memory_bytes{namespace=\"$namespace\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8415,7 +8415,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(kube_pod_container_resource_limits_memory_bytes{namespace=\"$namespace\"}) by (pod)",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}) by (pod) / sum(kube_pod_container_resource_limits_memory_bytes{namespace=\"$namespace\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -9939,7 +9939,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\", container!=\"\"}) by (pod)",
+                                  "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\", container!=\"\", metrics_path=\"/metrics/cadvisor\"}) by (pod)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{pod}}",
@@ -10231,7 +10231,7 @@ items:
                           ],
                           "targets": [
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod)",
+                                  "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\", metrics_path=\"/metrics/cadvisor\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -10249,7 +10249,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod) / sum(kube_pod_container_resource_requests_memory_bytes{node=~\"$node\"}) by (pod)",
+                                  "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\", metrics_path=\"/metrics/cadvisor\"}) by (pod) / sum(kube_pod_container_resource_requests_memory_bytes{node=~\"$node\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -10267,7 +10267,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\"}) by (pod) / sum(kube_pod_container_resource_limits_memory_bytes{node=~\"$node\"}) by (pod)",
+                                  "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", node=~\"$node\",container!=\"\", metrics_path=\"/metrics/cadvisor\"}) by (pod) / sum(kube_pod_container_resource_limits_memory_bytes{node=~\"$node\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -11402,7 +11402,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", image!=\"\"}) by (container) / sum(kube_pod_container_resource_limits_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}) by (container) / sum(kube_pod_container_resource_limits_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -12657,7 +12657,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n",
+                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{pod}}",
@@ -12892,7 +12892,7 @@ items:
                           ],
                           "targets": [
                               {
-                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n",
+                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -12910,7 +12910,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n/sum(\n    kube_pod_container_resource_requests_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n",
+                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n/sum(\n    kube_pod_container_resource_requests_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -12928,7 +12928,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n/sum(\n    kube_pod_container_resource_limits_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n",
+                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n/sum(\n    kube_pod_container_resource_limits_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\", workload_type=\"$type\"}\n) by (pod)\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -14776,7 +14776,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n",
+                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{workload}} - {{workload_type}}",
@@ -15074,7 +15074,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n",
+                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -15092,7 +15092,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n/sum(\n  kube_pod_container_resource_requests_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\"}\n* on(namespace,pod)\n  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n",
+                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n/sum(\n  kube_pod_container_resource_requests_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\"}\n* on(namespace,pod)\n  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -15110,7 +15110,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n/sum(\n  kube_pod_container_resource_limits_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\"}\n* on(namespace,pod)\n  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n",
+                                  "expr": "sum(\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\", container!=\"\", metrics_path=\"/metrics/cadvisor\", image!=\"\"}\n  * on(namespace,pod)\n    group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n/sum(\n  kube_pod_container_resource_limits_memory_bytes{cluster=\"$cluster\", namespace=\"$namespace\"}\n* on(namespace,pod)\n  group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}\n) by (workload, workload_type)\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
