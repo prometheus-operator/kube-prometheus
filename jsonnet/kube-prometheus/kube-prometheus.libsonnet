@@ -1,20 +1,20 @@
-local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
-local k3 = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
+local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
+local k3 = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.3/k.libsonnet';
 local configMapList = k3.core.v1.configMapList;
 
-(import 'grafana/grafana.libsonnet') +
-(import 'kube-state-metrics/kube-state-metrics.libsonnet') +
-(import 'kube-state-metrics-mixin/mixin.libsonnet') +
-(import 'node-exporter/node-exporter.libsonnet') +
-(import 'node-mixin/mixin.libsonnet') +
-(import 'alertmanager/alertmanager.libsonnet') +
-(import 'prometheus-operator/prometheus-operator.libsonnet') +
-(import 'prometheus/prometheus.libsonnet') +
-(import 'prometheus-adapter/prometheus-adapter.libsonnet') +
-(import 'kubernetes-mixin/mixin.libsonnet') +
-(import 'prometheus/mixin.libsonnet') +
-(import 'alerts/alerts.libsonnet') +
-(import 'rules/rules.libsonnet') + {
+(import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
+(import './kube-state-metrics/kube-state-metrics.libsonnet') +
+(import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
+(import './node-exporter/node-exporter.libsonnet') +
+(import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
+(import './alertmanager/alertmanager.libsonnet') +
+(import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
+(import './prometheus/prometheus.libsonnet') +
+(import './prometheus-adapter/prometheus-adapter.libsonnet') +
+(import 'github.com/kubernetes-monitoring/kubernetes-mixin/mixin.libsonnet') +
+(import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') +
+(import './alerts/alerts.libsonnet') +
+(import './rules/rules.libsonnet') + {
   kubePrometheus+:: {
     namespace: k.core.v1.namespace.new($._config.namespace),
   },

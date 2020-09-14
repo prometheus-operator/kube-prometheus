@@ -1,4 +1,4 @@
-local k = import 'ksonnet/ksonnet.beta.4/k.libsonnet';
+local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
 local service = k.core.v1.service;
 local servicePort = k.core.v1.service.mixin.spec.portsType;
 

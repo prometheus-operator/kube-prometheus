@@ -13,7 +13,7 @@
     {
       "source": {
         "git": {
-          "remote": "https://github.com/coreos/etcd",
+          "remote": "https://github.com/etcd-io/etcd",
           "subdir": "Documentation/etcd-mixin"
         }
       },
