@@ -1,6 +1,7 @@
 local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
 local k3 = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.3/k.libsonnet';
 local configMapList = k3.core.v1.configMapList;
+local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
 
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 (import './kube-state-metrics/kube-state-metrics.libsonnet') +
@@ -60,7 +61,7 @@ local configMapList = k3.core.v1.configMapList;
       ],
     },
   } +
-  ((import 'kube-prometheus/kube-rbac-proxy/container.libsonnet') {
+  (kubeRbacProxyContainer {
     config+:: {
       kubeRbacProxy: {
         local cfg = self,
