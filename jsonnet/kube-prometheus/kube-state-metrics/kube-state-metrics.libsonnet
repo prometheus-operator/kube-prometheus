@@ -1,3 +1,6 @@
+local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
+local ksm = import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics/kube-state-metrics.libsonnet';
+
 {
   _config+:: {
     versions+:: {
@@ -11,9 +14,9 @@
       scrapeTimeout: '30s',
     },
   },
-  kubeStateMetrics+:: (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics/kube-state-metrics.libsonnet') +
-                      {
-                        local ksm = self,
+  kubeStateMetrics+::
+    ksm + {
+                        local version = self.version,
                         name:: 'kube-state-metrics',
                         namespace:: $._config.namespace,
                         version:: $._config.versions.kubeStateMetrics,
@@ -57,7 +60,7 @@
                               namespace: $._config.namespace,
                               labels: {
                                 'app.kubernetes.io/name': 'kube-state-metrics',
-                                'app.kubernetes.io/version': ksm.version,
+                                'app.kubernetes.io/version': version,
                               },
                             },
                             spec: {
@@ -98,7 +101,7 @@
                             },
                           },
                       } +
-                      ((import 'kube-prometheus/kube-rbac-proxy/container.libsonnet') {
+                      (kubeRbacProxyContainer {
                          config+:: {
                            kubeRbacProxy: {
                              local cfg = self,
@@ -112,7 +115,7 @@
                            },
                          },
                        }).deploymentMixin +
-                      ((import 'kube-prometheus/kube-rbac-proxy/container.libsonnet') {
+                      (kubeRbacProxyContainer {
                          config+:: {
                            kubeRbacProxy: {
                              local cfg = self,
