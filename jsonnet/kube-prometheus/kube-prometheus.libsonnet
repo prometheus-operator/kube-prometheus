@@ -10,6 +10,7 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
 (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
 (import './alertmanager/alertmanager.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
+(import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') +
 (import './prometheus/prometheus.libsonnet') +
 (import './prometheus-adapter/prometheus-adapter.libsonnet') +
 (import 'github.com/kubernetes-monitoring/kubernetes-mixin/mixin.libsonnet') +
