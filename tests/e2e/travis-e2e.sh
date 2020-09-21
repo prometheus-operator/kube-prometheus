@@ -8,12 +8,14 @@ set -u
 # print each command before executing it
 set -x
 
+K8S_VERSION="${K8S_VERSION:-"1.19.1"}"
+
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 chmod +x kubectl
-curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.7.0/kind-linux-amd64
+curl -Lo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.9.0/kind-linux-amd64
 chmod +x kind
 
-./kind create cluster --image=kindest/node:v1.19.0
+./kind create cluster --image="kindest/node:v${K8S_VERSION}"
 # the default kube config location used by kind
 export KUBECONFIG="${HOME}/.kube/config"
 
