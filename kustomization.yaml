@@ -57,6 +57,7 @@ resources:
 - ./manifests/setup/0namespace-namespace.yaml
 - ./manifests/setup/prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0podmonitorCustomResourceDefinition.yaml
+- ./manifests/setup/prometheus-operator-0probeCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0prometheusCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0prometheusruleCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0servicemonitorCustomResourceDefinition.yaml
