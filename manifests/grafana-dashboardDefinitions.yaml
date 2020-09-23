@@ -2030,6 +2030,9 @@ items:
                   "id": 5,
                   "lines": true,
                   "linewidth": 1,
+                  "links": [
+
+                  ],
                   "minSpan": 24,
                   "nullPointMode": "null as zero",
                   "renderer": "flot",
@@ -19273,6 +19276,9 @@ items:
                   "id": 5,
                   "lines": true,
                   "linewidth": 1,
+                  "links": [
+
+                  ],
                   "minSpan": 24,
                   "nullPointMode": "null as zero",
                   "renderer": "flot",
@@ -20644,6 +20650,9 @@ items:
                   "id": 5,
                   "lines": true,
                   "linewidth": 1,
+                  "links": [
+
+                  ],
                   "minSpan": 24,
                   "nullPointMode": "null as zero",
                   "renderer": "flot",
