@@ -50,6 +50,7 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
     - [Monitoring all namespaces](#monitoring-all-namespaces)
     - [Static etcd configuration](#static-etcd-configuration)
     - [Pod Anti-Affinity](#pod-anti-affinity)
+    - [Stripping container resource limits](#stripping-container-resource-limits)
     - [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
     - [Exposing Prometheus/Alermanager/Grafana via Ingress](#exposing-prometheusalermanagergrafana-via-ingress)
   - [Minikube Example](#minikube-example)
@@ -693,6 +694,29 @@ possible, one can include the [kube-prometheus-anti-affinity.libsonnet](jsonnet/
 ```jsonnet
 (import 'kube-prometheus/kube-prometheus.libsonnet') +
 (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet')
+```
+
+### Stripping container resource limits
+
+Sometimes in small clusters, the CPU/memory limits can get high enough for alerts to be fired continuously. To prevent this, one can strip off the predefined limits.
+To do that, one can import the following mixin
+
+[embedmd]:# (examples/strip-limits.jsonnet)
+```jsonnet
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/kube-prometheus-strip-limits.libsonnet') + {
+  _config+:: {
+    namespace: 'monitoring',
+  },
+};
+
+{ ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{ ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
+{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
+{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
 ### Customizing Prometheus alerting/recording rules and Grafana dashboards
