@@ -47,6 +47,7 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
     - [Alertmanager configuration](#alertmanager-configuration)
     - [Adding additional namespaces to monitor](#adding-additional-namespaces-to-monitor)
       - [Defining the ServiceMonitor for each additional Namespace](#defining-the-servicemonitor-for-each-additional-namespace)
+    - [Monitoring all namespaces](#monitoring-all-namespaces)
     - [Static etcd configuration](#static-etcd-configuration)
     - [Pod Anti-Affinity](#pod-anti-affinity)
     - [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
