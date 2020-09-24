@@ -648,6 +648,36 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 
 > NOTE: make sure your service resources have the right labels (eg. `'app': 'myapp'`) applied. Prometheus uses kubernetes labels to discover resources inside the namespaces.
 
+### Monitoring all namespaces
+
+In case you want to monitor all namespaces in a cluster, you can add the following mixin. Also, make sure to empty the namespaces defined in prometheus so that roleBindings are not created against them.  
+
+[embedmd]:# (examples/all-namespaces.jsonnet)
+```jsonnet
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/kube-prometheus-all-namespaces.libsonnet') + {
+  _config+:: {
+    namespace: 'monitoring',
+
+    prometheus+:: {
+      namespaces: [],
+    },
+  },
+};
+
+{ ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{ ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
+{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
+{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
+```
+
+> NOTE: This configuration can potentially make your cluster insecure especially in a multi-tenant cluster. This is because this gives Prometheus visibility over the whole cluster which might not be expected in a scenario when certain namespaces are locked down for security reasons.
+
+Proceed with [creating ServiceMonitors for the services in the namespaces](#defining-the-servicemonitor-for-each-additional-namespace) you actually want to monitor
+
 ### Static etcd configuration
 
 In order to configure a static etcd cluster to scrape there is a simple [kube-prometheus-static-etcd.libsonnet](jsonnet/kube-prometheus/kube-prometheus-static-etcd.libsonnet) mixin prepared - see [etcd.jsonnet](examples/etcd.jsonnet) for an example of how to use that mixin, and [Monitoring external etcd](docs/monitoring-external-etcd.md) for more information.
