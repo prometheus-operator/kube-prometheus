@@ -762,21 +762,17 @@ spec:
       record: node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile
   - name: kube-prometheus-node-recording.rules
     rules:
-    - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[3m])) BY
-        (instance)
+    - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[3m])) BY (instance)
       record: instance:node_cpu:rate:sum
     - expr: sum(rate(node_network_receive_bytes_total[3m])) BY (instance)
       record: instance:node_network_receive_bytes:rate:sum
     - expr: sum(rate(node_network_transmit_bytes_total[3m])) BY (instance)
       record: instance:node_network_transmit_bytes:rate:sum
-    - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[5m])) WITHOUT
-        (cpu, mode) / ON(instance) GROUP_LEFT() count(sum(node_cpu_seconds_total)
-        BY (instance, cpu)) BY (instance)
+    - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[5m])) WITHOUT (cpu, mode) / ON(instance) GROUP_LEFT() count(sum(node_cpu_seconds_total) BY (instance, cpu)) BY (instance)
       record: instance:node_cpu:ratio
     - expr: sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[5m]))
       record: cluster:node_cpu:sum_rate5m
-    - expr: cluster:node_cpu_seconds_total:rate5m / count(sum(node_cpu_seconds_total)
-        BY (instance, cpu))
+    - expr: cluster:node_cpu_seconds_total:rate5m / count(sum(node_cpu_seconds_total) BY (instance, cpu))
       record: cluster:node_cpu:ratio
   - name: kube-prometheus-general.rules
     rules:
@@ -788,9 +784,7 @@ spec:
     rules:
     - alert: KubeStateMetricsListErrors
       annotations:
-        description: kube-state-metrics is experiencing errors at an elevated rate
-          in list operations. This is likely causing it to not be able to expose metrics
-          about Kubernetes objects correctly or at all.
+        description: kube-state-metrics is experiencing errors at an elevated rate in list operations. This is likely causing it to not be able to expose metrics about Kubernetes objects correctly or at all.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatemetricslisterrors
         summary: kube-state-metrics is experiencing errors in list operations.
       expr: |
@@ -803,9 +797,7 @@ spec:
         severity: critical
     - alert: KubeStateMetricsWatchErrors
       annotations:
-        description: kube-state-metrics is experiencing errors at an elevated rate
-          in watch operations. This is likely causing it to not be able to expose
-          metrics about Kubernetes objects correctly or at all.
+        description: kube-state-metrics is experiencing errors at an elevated rate in watch operations. This is likely causing it to not be able to expose metrics about Kubernetes objects correctly or at all.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatemetricswatcherrors
         summary: kube-state-metrics is experiencing errors in watch operations.
       expr: |
@@ -820,9 +812,7 @@ spec:
     rules:
     - alert: NodeFilesystemSpaceFillingUp
       annotations:
-        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
-          has only {{ printf "%.2f" $value }}% available space left and is filling
-          up.
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf "%.2f" $value }}% available space left and is filling up.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemspacefillingup
         summary: Filesystem is predicted to run out of space within the next 24 hours.
       expr: |
@@ -838,9 +828,7 @@ spec:
         severity: warning
     - alert: NodeFilesystemSpaceFillingUp
       annotations:
-        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
-          has only {{ printf "%.2f" $value }}% available space left and is filling
-          up fast.
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf "%.2f" $value }}% available space left and is filling up fast.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemspacefillingup
         summary: Filesystem is predicted to run out of space within the next 4 hours.
       expr: |
@@ -856,8 +844,7 @@ spec:
         severity: critical
     - alert: NodeFilesystemAlmostOutOfSpace
       annotations:
-        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
-          has only {{ printf "%.2f" $value }}% available space left.
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf "%.2f" $value }}% available space left.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemalmostoutofspace
         summary: Filesystem has less than 5% space left.
       expr: |
@@ -871,8 +858,7 @@ spec:
         severity: warning
     - alert: NodeFilesystemAlmostOutOfSpace
       annotations:
-        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
-          has only {{ printf "%.2f" $value }}% available space left.
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf "%.2f" $value }}% available space left.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemalmostoutofspace
         summary: Filesystem has less than 3% space left.
       expr: |
@@ -886,9 +872,7 @@ spec:
         severity: critical
     - alert: NodeFilesystemFilesFillingUp
       annotations:
-        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
-          has only {{ printf "%.2f" $value }}% available inodes left and is filling
-          up.
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf "%.2f" $value }}% available inodes left and is filling up.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemfilesfillingup
         summary: Filesystem is predicted to run out of inodes within the next 24 hours.
       expr: |
@@ -904,9 +888,7 @@ spec:
         severity: warning
     - alert: NodeFilesystemFilesFillingUp
       annotations:
-        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
-          has only {{ printf "%.2f" $value }}% available inodes left and is filling
-          up fast.
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf "%.2f" $value }}% available inodes left and is filling up fast.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemfilesfillingup
         summary: Filesystem is predicted to run out of inodes within the next 4 hours.
       expr: |
@@ -922,8 +904,7 @@ spec:
         severity: critical
     - alert: NodeFilesystemAlmostOutOfFiles
       annotations:
-        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
-          has only {{ printf "%.2f" $value }}% available inodes left.
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf "%.2f" $value }}% available inodes left.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemalmostoutoffiles
         summary: Filesystem has less than 5% inodes left.
       expr: |
@@ -937,8 +918,7 @@ spec:
         severity: warning
     - alert: NodeFilesystemAlmostOutOfFiles
       annotations:
-        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }}
-          has only {{ printf "%.2f" $value }}% available inodes left.
+        description: Filesystem on {{ $labels.device }} at {{ $labels.instance }} has only {{ printf "%.2f" $value }}% available inodes left.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodefilesystemalmostoutoffiles
         summary: Filesystem has less than 3% inodes left.
       expr: |
@@ -952,8 +932,7 @@ spec:
         severity: critical
     - alert: NodeNetworkReceiveErrs
       annotations:
-        description: '{{ $labels.instance }} interface {{ $labels.device }} has encountered
-          {{ printf "%.0f" $value }} receive errors in the last two minutes.'
+        description: '{{ $labels.instance }} interface {{ $labels.device }} has encountered {{ printf "%.0f" $value }} receive errors in the last two minutes.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodenetworkreceiveerrs
         summary: Network interface is reporting many receive errors.
       expr: |
@@ -963,8 +942,7 @@ spec:
         severity: warning
     - alert: NodeNetworkTransmitErrs
       annotations:
-        description: '{{ $labels.instance }} interface {{ $labels.device }} has encountered
-          {{ printf "%.0f" $value }} transmit errors in the last two minutes.'
+        description: '{{ $labels.instance }} interface {{ $labels.device }} has encountered {{ printf "%.0f" $value }} transmit errors in the last two minutes.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodenetworktransmiterrs
         summary: Network interface is reporting many transmit errors.
       expr: |
@@ -992,8 +970,7 @@ spec:
         severity: warning
     - alert: NodeClockSkewDetected
       annotations:
-        message: Clock on {{ $labels.instance }} is out of sync by more than 300s.
-          Ensure NTP is configured correctly on this host.
+        message: Clock on {{ $labels.instance }} is out of sync by more than 300s. Ensure NTP is configured correctly on this host.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodeclockskewdetected
         summary: Clock skew detected.
       expr: |
@@ -1013,8 +990,7 @@ spec:
         severity: warning
     - alert: NodeClockNotSynchronising
       annotations:
-        message: Clock on {{ $labels.instance }} is not synchronising. Ensure NTP
-          is configured on this host.
+        message: Clock on {{ $labels.instance }} is not synchronising. Ensure NTP is configured on this host.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodeclocknotsynchronising
         summary: Clock not synchronising.
       expr: |
@@ -1024,9 +1000,7 @@ spec:
         severity: warning
     - alert: NodeRAIDDegraded
       annotations:
-        description: RAID array '{{ $labels.device }}' on {{ $labels.instance }} is
-          in degraded state due to one or more disks failures. Number of spare drives
-          is insufficient to fix issue automatically.
+        description: RAID array '{{ $labels.device }}' on {{ $labels.instance }} is in degraded state due to one or more disks failures. Number of spare drives is insufficient to fix issue automatically.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-noderaiddegraded
         summary: RAID Array is degraded
       expr: |
@@ -1036,8 +1010,7 @@ spec:
         severity: critical
     - alert: NodeRAIDDiskFailure
       annotations:
-        description: At least one device in RAID array on {{ $labels.instance }} failed.
-          Array '{{ $labels.device }}' needs attention and possibly a disk swap.
+        description: At least one device in RAID array on {{ $labels.instance }} failed. Array '{{ $labels.device }}' needs attention and possibly a disk swap.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-noderaiddiskfailure
         summary: Failed device in RAID array
       expr: |
@@ -1048,8 +1021,7 @@ spec:
     rules:
     - alert: PrometheusOperatorListErrors
       annotations:
-        description: Errors while performing List operations in controller {{$labels.controller}}
-          in {{$labels.namespace}} namespace.
+        description: Errors while performing List operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-prometheusoperatorlisterrors
         summary: Errors while performing list operations in controller.
       expr: |
@@ -1059,8 +1031,7 @@ spec:
         severity: warning
     - alert: PrometheusOperatorWatchErrors
       annotations:
-        description: Errors while performing watch operations in controller {{$labels.controller}}
-          in {{$labels.namespace}} namespace.
+        description: Errors while performing watch operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-prometheusoperatorwatcherrors
         summary: Errors while performing watch operations in controller.
       expr: |
@@ -1070,9 +1041,7 @@ spec:
         severity: warning
     - alert: PrometheusOperatorReconcileErrors
       annotations:
-        description: '{{ $value | humanizePercentage }} of reconciling operations
-          failed for {{ $labels.controller }} controller in {{ $labels.namespace }}
-          namespace.'
+        description: '{{ $value | humanizePercentage }} of reconciling operations failed for {{ $labels.controller }} controller in {{ $labels.namespace }} namespace.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-prometheusoperatorreconcileerrors
         summary: Errors while reconciling controller.
       expr: |
@@ -1082,8 +1051,7 @@ spec:
         severity: warning
     - alert: PrometheusOperatorNodeLookupErrors
       annotations:
-        description: Errors while reconciling Prometheus in {{ $labels.namespace }}
-          Namespace.
+        description: Errors while reconciling Prometheus in {{ $labels.namespace }} Namespace.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-prometheusoperatornodelookuperrors
         summary: Errors while reconciling Prometheus.
       expr: |
@@ -1095,8 +1063,7 @@ spec:
     rules:
     - alert: KubePodCrashLooping
       annotations:
-        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container
-          }}) is restarting {{ printf "%.2f" $value }} times / 5 minutes.
+        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is restarting {{ printf "%.2f" $value }} times / 5 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodcrashlooping
         summary: Pod is crash looping.
       expr: |
@@ -1106,8 +1073,7 @@ spec:
         severity: warning
     - alert: KubePodNotReady
       annotations:
-        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready
-          state for longer than 15 minutes.
+        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready state for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepodnotready
         summary: Pod has been in a non-ready state for more than 15 minutes.
       expr: |
@@ -1123,9 +1089,7 @@ spec:
         severity: warning
     - alert: KubeDeploymentGenerationMismatch
       annotations:
-        description: Deployment generation for {{ $labels.namespace }}/{{ $labels.deployment
-          }} does not match, this indicates that the Deployment has failed but has
-          not been rolled back.
+        description: Deployment generation for {{ $labels.namespace }}/{{ $labels.deployment }} does not match, this indicates that the Deployment has failed but has not been rolled back.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedeploymentgenerationmismatch
         summary: Deployment generation mismatch due to possible roll-back
       expr: |
@@ -1137,8 +1101,7 @@ spec:
         severity: warning
     - alert: KubeDeploymentReplicasMismatch
       annotations:
-        description: Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has
-          not matched the expected number of replicas for longer than 15 minutes.
+        description: Deployment {{ $labels.namespace }}/{{ $labels.deployment }} has not matched the expected number of replicas for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedeploymentreplicasmismatch
         summary: Deployment has not matched the expected number of replicas.
       expr: |
@@ -1156,8 +1119,7 @@ spec:
         severity: warning
     - alert: KubeStatefulSetReplicasMismatch
       annotations:
-        description: StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }}
-          has not matched the expected number of replicas for longer than 15 minutes.
+        description: StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} has not matched the expected number of replicas for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatefulsetreplicasmismatch
         summary: Deployment has not matched the expected number of replicas.
       expr: |
@@ -1175,9 +1137,7 @@ spec:
         severity: warning
     - alert: KubeStatefulSetGenerationMismatch
       annotations:
-        description: StatefulSet generation for {{ $labels.namespace }}/{{ $labels.statefulset
-          }} does not match, this indicates that the StatefulSet has failed but has
-          not been rolled back.
+        description: StatefulSet generation for {{ $labels.namespace }}/{{ $labels.statefulset }} does not match, this indicates that the StatefulSet has failed but has not been rolled back.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatefulsetgenerationmismatch
         summary: StatefulSet generation mismatch due to possible roll-back
       expr: |
@@ -1189,8 +1149,7 @@ spec:
         severity: warning
     - alert: KubeStatefulSetUpdateNotRolledOut
       annotations:
-        description: StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }}
-          update has not been rolled out.
+        description: StatefulSet {{ $labels.namespace }}/{{ $labels.statefulset }} update has not been rolled out.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubestatefulsetupdatenotrolledout
         summary: StatefulSet update has not been rolled out.
       expr: |
@@ -1216,8 +1175,7 @@ spec:
         severity: warning
     - alert: KubeDaemonSetRolloutStuck
       annotations:
-        description: DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} has
-          not finished or progressed for at least 15 minutes.
+        description: DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} has not finished or progressed for at least 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedaemonsetrolloutstuck
         summary: DaemonSet rollout is stuck.
       expr: |
@@ -1249,8 +1207,7 @@ spec:
         severity: warning
     - alert: KubeContainerWaiting
       annotations:
-        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} container {{ $labels.container}}
-          has been in waiting state for longer than 1 hour.
+        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} container {{ $labels.container}} has been in waiting state for longer than 1 hour.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecontainerwaiting
         summary: Pod container waiting longer than 1 hour
       expr: |
@@ -1260,8 +1217,7 @@ spec:
         severity: warning
     - alert: KubeDaemonSetNotScheduled
       annotations:
-        description: '{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset
-          }} are not scheduled.'
+        description: '{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} are not scheduled.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedaemonsetnotscheduled
         summary: DaemonSet pods are not scheduled.
       expr: |
@@ -1273,8 +1229,7 @@ spec:
         severity: warning
     - alert: KubeDaemonSetMisScheduled
       annotations:
-        description: '{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset
-          }} are running where they are not supposed to run.'
+        description: '{{ $value }} Pods of DaemonSet {{ $labels.namespace }}/{{ $labels.daemonset }} are running where they are not supposed to run.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubedaemonsetmisscheduled
         summary: DaemonSet pods are misscheduled.
       expr: |
@@ -1284,8 +1239,7 @@ spec:
         severity: warning
     - alert: KubeJobCompletion
       annotations:
-        description: Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking
-          more than 12 hours to complete.
+        description: Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking more than 12 hours to complete.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobcompletion
         summary: Job did not complete in time
       expr: |
@@ -1295,8 +1249,7 @@ spec:
         severity: warning
     - alert: KubeJobFailed
       annotations:
-        description: Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to
-          complete.
+        description: Job {{ $labels.namespace }}/{{ $labels.job_name }} failed to complete.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubejobfailed
         summary: Job failed to complete.
       expr: |
@@ -1306,8 +1259,7 @@ spec:
         severity: warning
     - alert: KubeHpaReplicasMismatch
       annotations:
-        description: HPA {{ $labels.namespace }}/{{ $labels.hpa }} has not matched
-          the desired number of replicas for longer than 15 minutes.
+        description: HPA {{ $labels.namespace }}/{{ $labels.hpa }} has not matched the desired number of replicas for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubehpareplicasmismatch
         summary: HPA has not matched descired number of replicas.
       expr: |
@@ -1321,8 +1273,7 @@ spec:
         severity: warning
     - alert: KubeHpaMaxedOut
       annotations:
-        description: HPA {{ $labels.namespace }}/{{ $labels.hpa }} has been running
-          at max replicas for longer than 15 minutes.
+        description: HPA {{ $labels.namespace }}/{{ $labels.hpa }} has been running at max replicas for longer than 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubehpamaxedout
         summary: HPA is running at max replicas
       expr: |
@@ -1336,8 +1287,7 @@ spec:
     rules:
     - alert: KubeCPUOvercommit
       annotations:
-        description: Cluster has overcommitted CPU resource requests for Pods and
-          cannot tolerate node failure.
+        description: Cluster has overcommitted CPU resource requests for Pods and cannot tolerate node failure.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecpuovercommit
         summary: Cluster has overcommitted CPU resource requests.
       expr: |
@@ -1351,8 +1301,7 @@ spec:
         severity: warning
     - alert: KubeMemoryOvercommit
       annotations:
-        description: Cluster has overcommitted memory resource requests for Pods and
-          cannot tolerate node failure.
+        description: Cluster has overcommitted memory resource requests for Pods and cannot tolerate node failure.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubememoryovercommit
         summary: Cluster has overcommitted memory resource requests.
       expr: |
@@ -1394,8 +1343,7 @@ spec:
         severity: warning
     - alert: KubeQuotaAlmostFull
       annotations:
-        description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage
-          }} of its {{ $labels.resource }} quota.
+        description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubequotaalmostfull
         summary: Namespace quota is going to be full.
       expr: |
@@ -1408,8 +1356,7 @@ spec:
         severity: info
     - alert: KubeQuotaFullyUsed
       annotations:
-        description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage
-          }} of its {{ $labels.resource }} quota.
+        description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubequotafullyused
         summary: Namespace quota is fully used.
       expr: |
@@ -1422,8 +1369,7 @@ spec:
         severity: info
     - alert: KubeQuotaExceeded
       annotations:
-        description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage
-          }} of its {{ $labels.resource }} quota.
+        description: Namespace {{ $labels.namespace }} is using {{ $value | humanizePercentage }} of its {{ $labels.resource }} quota.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubequotaexceeded
         summary: Namespace quota has exceeded the limits.
       expr: |
@@ -1436,9 +1382,7 @@ spec:
         severity: warning
     - alert: CPUThrottlingHigh
       annotations:
-        description: '{{ $value | humanizePercentage }} throttling of CPU in namespace
-          {{ $labels.namespace }} for container {{ $labels.container }} in pod {{
-          $labels.pod }}.'
+        description: '{{ $value | humanizePercentage }} throttling of CPU in namespace {{ $labels.namespace }} for container {{ $labels.container }} in pod {{ $labels.pod }}.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh
         summary: Processes experience elevated CPU throttling.
       expr: |
@@ -1453,9 +1397,7 @@ spec:
     rules:
     - alert: KubePersistentVolumeFillingUp
       annotations:
-        description: The PersistentVolume claimed by {{ $labels.persistentvolumeclaim
-          }} in Namespace {{ $labels.namespace }} is only {{ $value | humanizePercentage
-          }} free.
+        description: The PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is only {{ $value | humanizePercentage }} free.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumefillingup
         summary: PersistentVolume is filling up.
       expr: |
@@ -1468,10 +1410,7 @@ spec:
         severity: critical
     - alert: KubePersistentVolumeFillingUp
       annotations:
-        description: Based on recent sampling, the PersistentVolume claimed by {{
-          $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is
-          expected to fill up within four days. Currently {{ $value | humanizePercentage
-          }} is available.
+        description: Based on recent sampling, the PersistentVolume claimed by {{ $labels.persistentvolumeclaim }} in Namespace {{ $labels.namespace }} is expected to fill up within four days. Currently {{ $value | humanizePercentage }} is available.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumefillingup
         summary: PersistentVolume is filling up.
       expr: |
@@ -1487,8 +1426,7 @@ spec:
         severity: warning
     - alert: KubePersistentVolumeErrors
       annotations:
-        description: The persistent volume {{ $labels.persistentvolume }} has status
-          {{ $labels.phase }}.
+        description: The persistent volume {{ $labels.persistentvolume }} has status {{ $labels.phase }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubepersistentvolumeerrors
         summary: PersistentVolume is having issues with provisioning.
       expr: |
@@ -1500,8 +1438,7 @@ spec:
     rules:
     - alert: KubeVersionMismatch
       annotations:
-        description: There are {{ $value }} different semantic versions of Kubernetes
-          components running.
+        description: There are {{ $value }} different semantic versions of Kubernetes components running.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeversionmismatch
         summary: Different semantic versions of Kubernetes components running.
       expr: |
@@ -1511,8 +1448,7 @@ spec:
         severity: warning
     - alert: KubeClientErrors
       annotations:
-        description: Kubernetes API server client '{{ $labels.job }}/{{ $labels.instance
-          }}' is experiencing {{ $value | humanizePercentage }} errors.'
+        description: Kubernetes API server client '{{ $labels.job }}/{{ $labels.instance }}' is experiencing {{ $value | humanizePercentage }} errors.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeclienterrors
         summary: Kubernetes API server client is experiencing errors.
       expr: |
@@ -1585,8 +1521,7 @@ spec:
     rules:
     - alert: KubeClientCertificateExpiration
       annotations:
-        description: A client certificate used to authenticate to the apiserver is
-          expiring in less than 7.0 days.
+        description: A client certificate used to authenticate to the apiserver is expiring in less than 7.0 days.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeclientcertificateexpiration
         summary: Client certificate is about to expire.
       expr: |
@@ -1595,8 +1530,7 @@ spec:
         severity: warning
     - alert: KubeClientCertificateExpiration
       annotations:
-        description: A client certificate used to authenticate to the apiserver is
-          expiring in less than 24.0 hours.
+        description: A client certificate used to authenticate to the apiserver is expiring in less than 24.0 hours.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeclientcertificateexpiration
         summary: Client certificate is about to expire.
       expr: |
@@ -1605,10 +1539,7 @@ spec:
         severity: critical
     - alert: AggregatedAPIErrors
       annotations:
-        description: An aggregated API {{ $labels.name }}/{{ $labels.namespace }}
-          has reported errors. The number of errors have increased for it in the past
-          five minutes. High values indicate that the availability of the service
-          changes too often.
+        description: An aggregated API {{ $labels.name }}/{{ $labels.namespace }} has reported errors. The number of errors have increased for it in the past five minutes. High values indicate that the availability of the service changes too often.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-aggregatedapierrors
         summary: An aggregated API has reported errors.
       expr: |
@@ -1617,8 +1548,7 @@ spec:
         severity: warning
     - alert: AggregatedAPIDown
       annotations:
-        description: An aggregated API {{ $labels.name }}/{{ $labels.namespace }}
-          has been only {{ $value | humanize }}% available over the last 10m.
+        description: An aggregated API {{ $labels.name }}/{{ $labels.namespace }} has been only {{ $value | humanize }}% available over the last 10m.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-aggregatedapidown
         summary: An aggregated API is down.
       expr: |
@@ -1650,8 +1580,7 @@ spec:
         severity: warning
     - alert: KubeNodeUnreachable
       annotations:
-        description: '{{ $labels.node }} is unreachable and some workloads may be
-          rescheduled.'
+        description: '{{ $labels.node }} is unreachable and some workloads may be rescheduled.'
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodeunreachable
         summary: Node is unreachable.
       expr: |
@@ -1661,8 +1590,7 @@ spec:
         severity: warning
     - alert: KubeletTooManyPods
       annotations:
-        description: Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage
-          }} of its Pod capacity.
+        description: Kubelet '{{ $labels.node }}' is running at {{ $value | humanizePercentage }} of its Pod capacity.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubelettoomanypods
         summary: Kubelet is running at capacity.
       expr: |
@@ -1678,8 +1606,7 @@ spec:
         severity: warning
     - alert: KubeNodeReadinessFlapping
       annotations:
-        description: The readiness status of node {{ $labels.node }} has changed {{
-          $value }} times in the last 15 minutes.
+        description: The readiness status of node {{ $labels.node }} has changed {{ $value }} times in the last 15 minutes.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubenodereadinessflapping
         summary: Node readiness status is flapping.
       expr: |
@@ -1689,8 +1616,7 @@ spec:
         severity: warning
     - alert: KubeletPlegDurationHigh
       annotations:
-        description: The Kubelet Pod Lifecycle Event Generator has a 99th percentile
-          duration of {{ $value }} seconds on node {{ $labels.node }}.
+        description: The Kubelet Pod Lifecycle Event Generator has a 99th percentile duration of {{ $value }} seconds on node {{ $labels.node }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletplegdurationhigh
         summary: Kubelet Pod Lifecycle Event Generator is taking too long to relist.
       expr: |
@@ -1700,8 +1626,7 @@ spec:
         severity: warning
     - alert: KubeletPodStartUpLatencyHigh
       annotations:
-        description: Kubelet Pod startup 99th percentile latency is {{ $value }} seconds
-          on node {{ $labels.node }}.
+        description: Kubelet Pod startup 99th percentile latency is {{ $value }} seconds on node {{ $labels.node }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletpodstartuplatencyhigh
         summary: Kubelet Pod startup latency is too high.
       expr: |
@@ -1711,8 +1636,7 @@ spec:
         severity: warning
     - alert: KubeletClientCertificateExpiration
       annotations:
-        description: Client certificate for Kubelet on node {{ $labels.node }} expires
-          in {{ $value | humanizeDuration }}.
+        description: Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletclientcertificateexpiration
         summary: Kubelet client certificate is about to expire.
       expr: |
@@ -1721,8 +1645,7 @@ spec:
         severity: warning
     - alert: KubeletClientCertificateExpiration
       annotations:
-        description: Client certificate for Kubelet on node {{ $labels.node }} expires
-          in {{ $value | humanizeDuration }}.
+        description: Client certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletclientcertificateexpiration
         summary: Kubelet client certificate is about to expire.
       expr: |
@@ -1731,8 +1654,7 @@ spec:
         severity: critical
     - alert: KubeletServerCertificateExpiration
       annotations:
-        description: Server certificate for Kubelet on node {{ $labels.node }} expires
-          in {{ $value | humanizeDuration }}.
+        description: Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletservercertificateexpiration
         summary: Kubelet server certificate is about to expire.
       expr: |
@@ -1741,8 +1663,7 @@ spec:
         severity: warning
     - alert: KubeletServerCertificateExpiration
       annotations:
-        description: Server certificate for Kubelet on node {{ $labels.node }} expires
-          in {{ $value | humanizeDuration }}.
+        description: Server certificate for Kubelet on node {{ $labels.node }} expires in {{ $value | humanizeDuration }}.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletservercertificateexpiration
         summary: Kubelet server certificate is about to expire.
       expr: |
@@ -1751,8 +1672,7 @@ spec:
         severity: critical
     - alert: KubeletClientCertificateRenewalErrors
       annotations:
-        description: Kubelet on node {{ $labels.node }} has failed to renew its client
-          certificate ({{ $value | humanize }} errors in the last 5 minutes).
+        description: Kubelet on node {{ $labels.node }} has failed to renew its client certificate ({{ $value | humanize }} errors in the last 5 minutes).
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletclientcertificaterenewalerrors
         summary: Kubelet has failed to renew its client certificate.
       expr: |
@@ -1762,8 +1682,7 @@ spec:
         severity: warning
     - alert: KubeletServerCertificateRenewalErrors
       annotations:
-        description: Kubelet on node {{ $labels.node }} has failed to renew its server
-          certificate ({{ $value | humanize }} errors in the last 5 minutes).
+        description: Kubelet on node {{ $labels.node }} has failed to renew its server certificate ({{ $value | humanize }} errors in the last 5 minutes).
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubeletservercertificaterenewalerrors
         summary: Kubelet has failed to renew its server certificate.
       expr: |
@@ -1797,8 +1716,7 @@ spec:
     rules:
     - alert: KubeControllerManagerDown
       annotations:
-        description: KubeControllerManager has disappeared from Prometheus target
-          discovery.
+        description: KubeControllerManager has disappeared from Prometheus target discovery.
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-kubecontrollermanagerdown
         summary: Target disappeared from Prometheus target discovery.
       expr: |
@@ -1810,8 +1728,7 @@ spec:
     rules:
     - alert: PrometheusBadConfig
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to
-          reload its configuration.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to reload its configuration.
         summary: Failed Prometheus configuration reload.
       expr: |
         # Without max_over_time, failed scrapes could create false negatives, see
@@ -1822,10 +1739,8 @@ spec:
         severity: critical
     - alert: PrometheusNotificationQueueRunningFull
       annotations:
-        description: Alert notification queue of Prometheus {{$labels.namespace}}/{{$labels.pod}}
-          is running full.
-        summary: Prometheus alert notification queue predicted to run full in less
-          than 30m.
+        description: Alert notification queue of Prometheus {{$labels.namespace}}/{{$labels.pod}} is running full.
+        summary: Prometheus alert notification queue predicted to run full in less than 30m.
       expr: |
         # Without min_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
@@ -1839,10 +1754,8 @@ spec:
         severity: warning
     - alert: PrometheusErrorSendingAlertsToSomeAlertmanagers
       annotations:
-        description: '{{ printf "%.1f" $value }}% errors while sending alerts from
-          Prometheus {{$labels.namespace}}/{{$labels.pod}} to Alertmanager {{$labels.alertmanager}}.'
-        summary: Prometheus has encountered more than 1% errors sending alerts to
-          a specific Alertmanager.
+        description: '{{ printf "%.1f" $value }}% errors while sending alerts from Prometheus {{$labels.namespace}}/{{$labels.pod}} to Alertmanager {{$labels.alertmanager}}.'
+        summary: Prometheus has encountered more than 1% errors sending alerts to a specific Alertmanager.
       expr: |
         (
           rate(prometheus_notifications_errors_total{job="prometheus-k8s",namespace="monitoring"}[5m])
@@ -1856,8 +1769,7 @@ spec:
         severity: warning
     - alert: PrometheusErrorSendingAlertsToAnyAlertmanager
       annotations:
-        description: '{{ printf "%.1f" $value }}% minimum errors while sending alerts
-          from Prometheus {{$labels.namespace}}/{{$labels.pod}} to any Alertmanager.'
+        description: '{{ printf "%.1f" $value }}% minimum errors while sending alerts from Prometheus {{$labels.namespace}}/{{$labels.pod}} to any Alertmanager.'
         summary: Prometheus encounters more than 3% errors sending alerts to any Alertmanager.
       expr: |
         min without(alertmanager) (
@@ -1872,8 +1784,7 @@ spec:
         severity: critical
     - alert: PrometheusNotConnectedToAlertmanagers
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not connected
-          to any Alertmanagers.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not connected to any Alertmanagers.
         summary: Prometheus is not connected to any Alertmanagers.
       expr: |
         # Without max_over_time, failed scrapes could create false negatives, see
@@ -1884,8 +1795,7 @@ spec:
         severity: warning
     - alert: PrometheusTSDBReloadsFailing
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected
-          {{$value | humanize}} reload failures over the last 3h.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected {{$value | humanize}} reload failures over the last 3h.
         summary: Prometheus has issues reloading blocks from disk.
       expr: |
         increase(prometheus_tsdb_reloads_failures_total{job="prometheus-k8s",namespace="monitoring"}[3h]) > 0
@@ -1894,8 +1804,7 @@ spec:
         severity: warning
     - alert: PrometheusTSDBCompactionsFailing
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected
-          {{$value | humanize}} compaction failures over the last 3h.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected {{$value | humanize}} compaction failures over the last 3h.
         summary: Prometheus has issues compacting blocks.
       expr: |
         increase(prometheus_tsdb_compactions_failed_total{job="prometheus-k8s",namespace="monitoring"}[3h]) > 0
@@ -1904,8 +1813,7 @@ spec:
         severity: warning
     - alert: PrometheusNotIngestingSamples
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not ingesting
-          samples.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not ingesting samples.
         summary: Prometheus is not ingesting samples.
       expr: |
         rate(prometheus_tsdb_head_samples_appended_total{job="prometheus-k8s",namespace="monitoring"}[5m]) <= 0
@@ -1914,9 +1822,7 @@ spec:
         severity: warning
     - alert: PrometheusDuplicateTimestamps
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping
-          {{ printf "%.4g" $value  }} samples/s with different values but duplicated
-          timestamp.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping {{ printf "%.4g" $value  }} samples/s with different values but duplicated timestamp.
         summary: Prometheus is dropping samples with duplicate timestamps.
       expr: |
         rate(prometheus_target_scrapes_sample_duplicate_timestamp_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
@@ -1925,8 +1831,7 @@ spec:
         severity: warning
     - alert: PrometheusOutOfOrderTimestamps
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping
-          {{ printf "%.4g" $value  }} samples/s with timestamps arriving out of order.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping {{ printf "%.4g" $value  }} samples/s with timestamps arriving out of order.
         summary: Prometheus drops samples with out-of-order timestamps.
       expr: |
         rate(prometheus_target_scrapes_sample_out_of_order_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
@@ -1935,9 +1840,7 @@ spec:
         severity: warning
     - alert: PrometheusRemoteStorageFailures
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} failed to send
-          {{ printf "%.1f" $value }}% of the samples to {{ $labels.remote_name}}:{{
-          $labels.url }}
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} failed to send {{ printf "%.1f" $value }}% of the samples to {{ $labels.remote_name}}:{{ $labels.url }}
         summary: Prometheus fails to send samples to remote storage.
       expr: |
         (
@@ -1956,9 +1859,7 @@ spec:
         severity: critical
     - alert: PrometheusRemoteWriteBehind
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
-          is {{ printf "%.1f" $value }}s behind for {{ $labels.remote_name}}:{{ $labels.url
-          }}.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write is {{ printf "%.1f" $value }}s behind for {{ $labels.remote_name}}:{{ $labels.url }}.
         summary: Prometheus remote write is behind.
       expr: |
         # Without max_over_time, failed scrapes could create false negatives, see
@@ -1974,13 +1875,8 @@ spec:
         severity: critical
     - alert: PrometheusRemoteWriteDesiredShards
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
-          desired shards calculation wants to run {{ $value }} shards for queue {{
-          $labels.remote_name}}:{{ $labels.url }}, which is more than the max of {{
-          printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
-          $labels.instance | query | first | value }}.
-        summary: Prometheus remote write desired shards calculation wants to run more
-          than configured max shards.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write desired shards calculation wants to run {{ $value }} shards for queue {{ $labels.remote_name}}:{{ $labels.url }}, which is more than the max of {{ printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}` $labels.instance | query | first | value }}.
+        summary: Prometheus remote write desired shards calculation wants to run more than configured max shards.
       expr: |
         # Without max_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
@@ -1994,8 +1890,7 @@ spec:
         severity: warning
     - alert: PrometheusRuleFailures
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to
-          evaluate {{ printf "%.0f" $value }} rules in the last 5m.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to evaluate {{ printf "%.0f" $value }} rules in the last 5m.
         summary: Prometheus is failing rule evaluations.
       expr: |
         increase(prometheus_rule_evaluation_failures_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
@@ -2004,8 +1899,7 @@ spec:
         severity: critical
     - alert: PrometheusMissingRuleEvaluations
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has missed {{
-          printf "%.0f" $value }} rule group evaluations in the last 5m.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has missed {{ printf "%.0f" $value }} rule group evaluations in the last 5m.
         summary: Prometheus is missing rule evaluations due to slow rule group evaluation.
       expr: |
         increase(prometheus_rule_group_iterations_missed_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
@@ -2028,8 +1922,7 @@ spec:
         severity: critical
     - alert: AlertmanagerFailedReload
       annotations:
-        message: Reloading Alertmanager's configuration has failed for {{ $labels.namespace
-          }}/{{ $labels.pod}}.
+        message: Reloading Alertmanager's configuration has failed for {{ $labels.namespace }}/{{ $labels.pod}}.
       expr: |
         alertmanager_config_last_reload_successful{job="alertmanager-main",namespace="monitoring"} == 0
       for: 10m
@@ -2049,10 +1942,8 @@ spec:
     rules:
     - alert: TargetDown
       annotations:
-        message: '{{ printf "%.4g" $value }}% of the {{ $labels.job }}/{{ $labels.service
-          }} targets in {{ $labels.namespace }} namespace are down.'
-      expr: 100 * (count(up == 0) BY (job, namespace, service) / count(up) BY (job,
-        namespace, service)) > 10
+        message: '{{ printf "%.4g" $value }}% of the {{ $labels.job }}/{{ $labels.service }} targets in {{ $labels.namespace }} namespace are down.'
+      expr: 100 * (count(up == 0) BY (job, namespace, service) / count(up) BY (job, namespace, service)) > 10
       for: 10m
       labels:
         severity: warning
@@ -2071,8 +1962,7 @@ spec:
     rules:
     - alert: NodeNetworkInterfaceFlapping
       annotations:
-        message: Network interface "{{ $labels.device }}" changing it's up status
-          often on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}"
+        message: Network interface "{{ $labels.device }}" changing it's up status often on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}"
       expr: |
         changes(node_network_up{job="node-exporter",device!~"veth.+"}[2m]) > 2
       for: 2m
