@@ -5,7 +5,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      nodeExporter: 'v0.18.1',
+      nodeExporter: 'v1.0.1',
     },
 
     imageRepos+:: {
