@@ -79,11 +79,15 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
                                toleration.withOperator('Exists');
       local procVolumeName = 'proc';
       local procVolume = volume.fromHostPath(procVolumeName, '/proc');
-      local procVolumeMount = containerVolumeMount.new(procVolumeName, '/host/proc');
+      local procVolumeMount = containerVolumeMount.new(procVolumeName, '/host/proc').
+        withMountPropagation('HostToContainer').
+        withReadOnly(true);
 
       local sysVolumeName = 'sys';
       local sysVolume = volume.fromHostPath(sysVolumeName, '/sys');
-      local sysVolumeMount = containerVolumeMount.new(sysVolumeName, '/host/sys');
+      local sysVolumeMount = containerVolumeMount.new(sysVolumeName, '/host/sys').
+        withMountPropagation('HostToContainer').
+        withReadOnly(true);
 
       local rootVolumeName = 'root';
       local rootVolume = volume.fromHostPath(rootVolumeName, '/');
