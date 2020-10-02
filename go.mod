@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/Jeffail/gabs v1.2.0
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
-	github.com/brancz/gojsontoyaml v0.0.0-20191212081931-bf2969bbd742
+	github.com/brancz/gojsontoyaml v0.0.0-20200602132005-3697ded27e8c
 	github.com/campoy/embedmd v1.0.0
 	github.com/google/go-jsonnet v0.16.1-0.20200703153429-aaf50f5b655f
 	github.com/googleapis/gnostic v0.0.0-20170729233727-0c5108395e2d // indirect

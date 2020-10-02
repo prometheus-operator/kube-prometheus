@@ -18,8 +18,8 @@
           "subdir": "Documentation/etcd-mixin"
         }
       },
-      "version": "205a656cc58b32ab701c74297ce440bd517a680f",
-      "sum": "NhOkJWkO7ZO2DSE8Fvipcs7Hh2/GOCS0WjPPZU8OiaQ="
+      "version": "ab4cc3caef3d6a1bb7c8c9e79749357eafef42df",
+      "sum": "5awm+ZMs5J/nOFB+hLAb7hdeQxz/iIrls5hEZoEkXjM="
     },
     {
       "source": {
@@ -28,8 +28,8 @@
           "subdir": "grafonnet"
         }
       },
-      "version": "cc1626a1b4dee45c99b78ddd9714dfd5f5d7816e",
-      "sum": "nkgrtMYPCq/YB4r3mKyToepaLhicwWnxDdGIodPpzz0="
+      "version": "4ae0ba995612d3fe71bb74ec23a49815b6896817",
+      "sum": "J5CaYYEP02FleLx34/qgS+ckWUaxUaADlfnV7CriSo8="
     },
     {
       "source": {
@@ -38,7 +38,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "ecc83f569bbf56f2863e9c3cefa4487e3253aaa6",
+      "version": "b8cb0881befce313a6741489c6018662be663d5e",
       "sum": "mD0zEP9FVFXeag7EaeS5OvUr2A9D6DQhGemoNn6+PLc="
     },
     {
@@ -79,7 +79,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "2ebe4dffc52ee2d1ca5b6444be54bcf0dba5372a",
+      "version": "392f9249f808041612a8d3c5348fc48b64cece74",
       "sum": "WJGwddC7KJnEN7CWGELiOHKam+vmv9XYkwrMCwmXi2M="
     },
     {
@@ -89,7 +89,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "2ebe4dffc52ee2d1ca5b6444be54bcf0dba5372a",
+      "version": "392f9249f808041612a8d3c5348fc48b64cece74",
       "sum": "Yf8mNAHrV1YWzrdV8Ry5dJ8YblepTGw3C0Zp10XIYLo="
     },
     {
@@ -99,7 +99,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "d7befd55020b3c040bea42fdb5b13d9f9d96474c",
+      "version": "fbd01683839aa408b31fa15fa1aa91c68f13d7ef",
       "sum": "vqz67twCROf5kVgo/61luBOx25Mk7Okbt8YP+/7xjT0="
     },
     {
@@ -109,7 +109,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "a1eb8fd04f3cd2bfb11aee8943e0b3469ff2f199",
+      "version": "cd331ce9bb58bb926e391c6ae807621cb12cc29e",
       "sum": "nM1eDP5vftqAeQSmVYzSBAh+lG0SN6zu46QiocQiVhk="
     },
     {
@@ -119,8 +119,8 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "ff2ff3410f4ea8195e51f5fb8d84151684f91b3f",
-      "sum": "znDrZiHvvascm7Xuj3lTASIOfwX4Vmx7PELmKKw4YiI="
+      "version": "a3aaf63bb1262aada3cd9ca1fe59ffc3ea32e9e2",
+      "sum": "zpo4/qvCbAmfJXGjwrdzXcfsvg4fxZD6wi5af/kt+8g="
     },
     {
       "source": {

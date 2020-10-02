@@ -13,6 +13,8 @@ github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+Ce
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/brancz/gojsontoyaml v0.0.0-20191212081931-bf2969bbd742 h1:PdvQdwUXiFnSmWsOJcBXLpyH3mJfP2FMPTT3J0i7+8o=
 github.com/brancz/gojsontoyaml v0.0.0-20191212081931-bf2969bbd742/go.mod h1:IyUJYN1gvWjtLF5ZuygmxbnsAyP3aJS6cHzIuZY50B0=
+github.com/brancz/gojsontoyaml v0.0.0-20200602132005-3697ded27e8c h1:hb6WqfcKQZlNx/vahy51SaIvKnoXD5609Nm0PC4msEM=
+github.com/brancz/gojsontoyaml v0.0.0-20200602132005-3697ded27e8c/go.mod h1:+00lOjYXPgMfxHVPvg9GDtc3BX5Xh5aFpB4gMB8gfMo=
 github.com/campoy/embedmd v1.0.0 h1:V4kI2qTJJLf4J29RzI/MAt2c3Bl4dQSYPuflzwFH2hY=
 github.com/campoy/embedmd v1.0.0/go.mod h1:oxyr9RCiSXg0M3VJ3ks0UGfp98BpSSGr0kpiX3MzVl8=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
@@ -168,6 +170,8 @@ gopkg.in/yaml.v2 v2.2.4 h1:/eiJrUcujPVeJ3xlSWaiNi3uSVmDGBK1pDHUHAnao1I=
 gopkg.in/yaml.v2 v2.2.4/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.5 h1:ymVxjfMaHvXD8RqPRmzHHsB3VvucivSkIAvJFDI5O3c=
 gopkg.in/yaml.v2 v2.2.5/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
+gopkg.in/yaml.v2 v2.3.0 h1:clyUAQHOM3G0M3f5vQj7LuJrETvjVot3Z5el9nffUtU=
+gopkg.in/yaml.v2 v2.3.0/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 k8s.io/api v0.0.0-20190313235455-40a48860b5ab h1:DG9A67baNpoeweOy2spF1OWHhnVY5KR7/Ek/+U1lVZc=
 k8s.io/api v0.0.0-20190313235455-40a48860b5ab/go.mod h1:iuAfoD4hCxJ8Onx9kaTIt30j7jUFS00AXQi6QMi99vA=
 k8s.io/apimachinery v0.0.0-20190313205120-d7deff9243b1 h1:IS7K02iBkQXpCeieSiyJjGoLSdVOv2DbPaWHJ+ZtgKg=
