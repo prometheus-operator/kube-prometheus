@@ -3,7 +3,7 @@ kind: DaemonSet
 metadata:
   labels:
     app.kubernetes.io/name: node-exporter
-    app.kubernetes.io/version: v0.18.1
+    app.kubernetes.io/version: v1.0.1
   name: node-exporter
   namespace: monitoring
 spec:
@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: node-exporter
-        app.kubernetes.io/version: v0.18.1
+        app.kubernetes.io/version: v1.0.1
     spec:
       containers:
       - args:
@@ -25,7 +25,7 @@ spec:
         - --no-collector.wifi
         - --no-collector.hwmon
         - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)
-        image: quay.io/prometheus/node-exporter:v0.18.1
+        image: quay.io/prometheus/node-exporter:v1.0.1
         name: node-exporter
         resources:
           limits:
