@@ -312,6 +312,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
               path: '/metrics/cadvisor',
               interval: '30s',
               honorLabels: true,
+              honorTimestamps: false,
               tlsConfig: {
                 insecureSkipVerify: true,
               },
