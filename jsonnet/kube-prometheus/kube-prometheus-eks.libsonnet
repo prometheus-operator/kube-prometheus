@@ -6,26 +6,26 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
   _config+:: {
     eks: {
       minimumAvailableIPs: 10,
-      minimumAvailableIPsTime: '10m'
-    }
+      minimumAvailableIPsTime: '10m',
+    },
   },
   prometheus+: {
     serviceMonitorCoreDNS+: {
-        spec+: {
-          endpoints: [
-            {
-              bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token",
-              interval: "15s",
-              targetPort: 9153
-            }
-          ]
-        },
+      spec+: {
+        endpoints: [
+          {
+            bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+            interval: '15s',
+            targetPort: 9153,
+          },
+        ],
       },
+    },
     AwsEksCniMetricService:
-        service.new('aws-node', { 'k8s-app' : 'aws-node' } , servicePort.newNamed('cni-metrics-port', 61678, 61678)) +
-        service.mixin.metadata.withNamespace('kube-system') +
-        service.mixin.metadata.withLabels({ 'k8s-app': 'aws-node' }) +
-        service.mixin.spec.withClusterIp('None'),
+      service.new('aws-node', { 'k8s-app': 'aws-node' }, servicePort.newNamed('cni-metrics-port', 61678, 61678)) +
+      service.mixin.metadata.withNamespace('kube-system') +
+      service.mixin.metadata.withLabels({ 'k8s-app': 'aws-node' }) +
+      service.mixin.spec.withClusterIp('None'),
     serviceMonitorAwsEksCNI:
       {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -70,10 +70,10 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
               severity: 'critical',
             },
             annotations: {
-              message: 'Instance {{ $labels.instance }} has less than 10 IPs available.'
+              message: 'Instance {{ $labels.instance }} has less than 10 IPs available.',
             },
             'for': $._config.eks.minimumAvailableIPsTime,
-            alert: 'EksAvailableIPs'
+            alert: 'EksAvailableIPs',
           },
         ],
       },

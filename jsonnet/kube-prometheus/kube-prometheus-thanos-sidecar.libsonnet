@@ -33,7 +33,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
       service.new('prometheus-' + $._config.prometheus.name + '-thanos-sidecar', { app: 'prometheus', prometheus: $._config.prometheus.name }) +
       service.mixin.spec.withPorts([thanosGrpcSidecarPort, thanosHttpSidecarPort]) +
       service.mixin.spec.withClusterIp('None') +
-      service.mixin.metadata.withLabels({'prometheus': $._config.prometheus.name, 'app': 'thanos-sidecar'}) +
+      service.mixin.metadata.withLabels({ prometheus: $._config.prometheus.name, app: 'thanos-sidecar' }) +
       service.mixin.metadata.withNamespace($._config.namespace),
     prometheus+: {
       spec+: {

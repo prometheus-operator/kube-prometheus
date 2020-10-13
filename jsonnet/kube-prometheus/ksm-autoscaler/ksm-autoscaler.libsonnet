@@ -3,11 +3,11 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
 {
   _config+:: {
     versions+:: {
-      clusterVerticalAutoscaler: "v0.8.1"
+      clusterVerticalAutoscaler: 'v0.8.1',
     },
 
     imageRepos+:: {
-      clusterVerticalAutoscaler: 'gcr.io/google_containers/cpvpa-amd64'
+      clusterVerticalAutoscaler: 'gcr.io/google_containers/cpvpa-amd64',
     },
 
     kubeStateMetrics+:: {
@@ -45,7 +45,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
 
     roleBinding:
       local roleBinding = k.rbac.v1.roleBinding;
-  
+
       roleBinding.new() +
       roleBinding.mixin.metadata.withName('ksm-autoscaler') +
       roleBinding.mixin.metadata.withNamespace($._config.namespace) +
@@ -57,7 +57,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
     role:
       local role = k.rbac.v1.role;
       local rulesType = role.rulesType;
-  
+
       local extensionsRule = rulesType.new() +
                              rulesType.withApiGroups(['extensions']) +
                              rulesType.withResources([
@@ -65,7 +65,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
                              ]) +
                              rulesType.withVerbs(['patch']) +
                              rulesType.withResourceNames(['kube-state-metrics']);
-  
+
       local appsRule = rulesType.new() +
                        rulesType.withApiGroups(['apps']) +
                        rulesType.withResources([
@@ -73,17 +73,17 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
                        ]) +
                        rulesType.withVerbs(['patch']) +
                        rulesType.withResourceNames(['kube-state-metrics']);
-  
+
       local rules = [extensionsRule, appsRule];
-  
+
       role.new() +
       role.mixin.metadata.withName('ksm-autoscaler') +
       role.mixin.metadata.withNamespace($._config.namespace) +
       role.withRules(rules),
-  
+
     serviceAccount:
       local serviceAccount = k.core.v1.serviceAccount;
-  
+
       serviceAccount.new('ksm-autoscaler') +
       serviceAccount.mixin.metadata.withNamespace($._config.namespace),
     deployment:
@@ -91,7 +91,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
       local container = deployment.mixin.spec.template.spec.containersType;
       local podSelector = deployment.mixin.spec.template.spec.selectorType;
       local podLabels = { app: 'ksm-autoscaler' };
-  
+
       local kubeStateMetricsAutoscaler =
         container.new('ksm-autoscaler', $._config.imageRepos.clusterVerticalAutoscaler + ':' + $._config.versions.clusterVerticalAutoscaler) +
         container.withArgs([
@@ -100,12 +100,12 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
           '--namespace=' + $._config.namespace,
           '--logtostderr=true',
           '--poll-period-seconds=10',
-          '--default-config={"kube-state-metrics":{"requests":{"cpu":{"base":"' + $._config.kubeStateMetrics.baseCPU + '","step":"' + $._config.kubeStateMetrics.stepCPU + '","nodesPerStep":1},"memory":{"base":"' + $._config.kubeStateMetrics.baseMemory + '","step":"' + $._config.kubeStateMetrics.stepMemory + '","nodesPerStep":1}},"limits":{"cpu":{"base":"' + $._config.kubeStateMetrics.baseCPU + '","step":"' + $._config.kubeStateMetrics.stepCPU + '","nodesPerStep":1},"memory":{"base":"' + $._config.kubeStateMetrics.baseMemory + '","step":"' + $._config.kubeStateMetrics.stepMemory + '","nodesPerStep":1}}}}'
+          '--default-config={"kube-state-metrics":{"requests":{"cpu":{"base":"' + $._config.kubeStateMetrics.baseCPU + '","step":"' + $._config.kubeStateMetrics.stepCPU + '","nodesPerStep":1},"memory":{"base":"' + $._config.kubeStateMetrics.baseMemory + '","step":"' + $._config.kubeStateMetrics.stepMemory + '","nodesPerStep":1}},"limits":{"cpu":{"base":"' + $._config.kubeStateMetrics.baseCPU + '","step":"' + $._config.kubeStateMetrics.stepCPU + '","nodesPerStep":1},"memory":{"base":"' + $._config.kubeStateMetrics.baseMemory + '","step":"' + $._config.kubeStateMetrics.stepMemory + '","nodesPerStep":1}}}}',
         ]) +
-        container.mixin.resources.withRequests({cpu: '20m', memory: '10Mi'}); 
-  
+        container.mixin.resources.withRequests({ cpu: '20m', memory: '10Mi' });
+
       local c = [kubeStateMetricsAutoscaler];
-  
+
       deployment.new('ksm-autoscaler', 1, c, podLabels) +
       deployment.mixin.metadata.withNamespace($._config.namespace) +
       deployment.mixin.metadata.withLabels(podLabels) +

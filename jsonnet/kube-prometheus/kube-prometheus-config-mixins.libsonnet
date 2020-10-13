@@ -9,9 +9,9 @@ local withImageRepository(repository) = {
     if repository == null then image else repository + '/' + l.imageName(image),
   _config+:: {
     imageRepos:: {
-      [field]: substituteRepository(oldRepos[field], repository),
+      [field]: substituteRepository(oldRepos[field], repository)
       for field in std.objectFields(oldRepos)
-    }
+    },
   },
 };
 

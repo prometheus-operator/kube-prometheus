@@ -5,7 +5,7 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
 {
   prometheus+: {
     serviceWeaveNet:
-      service.new('weave-net', { 'name': 'weave-net' }, servicePort.newNamed('weave-net-metrics', 6782, 6782)) +
+      service.new('weave-net', { name: 'weave-net' }, servicePort.newNamed('weave-net-metrics', 6782, 6782)) +
       service.mixin.metadata.withNamespace('kube-system') +
       service.mixin.metadata.withLabels({ 'k8s-app': 'weave-net' }) +
       service.mixin.spec.withClusterIp('None'),

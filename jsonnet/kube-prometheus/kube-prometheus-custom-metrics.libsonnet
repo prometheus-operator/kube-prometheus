@@ -15,18 +15,18 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
             resources: {
               overrides: {
                 namespace: {
-                  resource: 'namespace'
+                  resource: 'namespace',
                 },
                 pod: {
-                  resource: 'pod'
-                }
+                  resource: 'pod',
+                },
               },
             },
             name: {
               matches: '^container_(.*)_seconds_total$',
-              as: ""
+              as: '',
             },
-            metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>,container!="POD"}[1m])) by (<<.GroupBy>>)'
+            metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>,container!="POD"}[1m])) by (<<.GroupBy>>)',
           },
           {
             seriesQuery: '{__name__=~"^container_.*",container!="POD",namespace!="",pod!=""}',
@@ -36,18 +36,18 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
             resources: {
               overrides: {
                 namespace: {
-                  resource: 'namespace'
+                  resource: 'namespace',
                 },
                 pod: {
-                  resource: 'pod'
-                }
+                  resource: 'pod',
+                },
               },
             },
             name: {
               matches: '^container_(.*)_total$',
-              as: ''
+              as: '',
             },
-            metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>,container!="POD"}[1m])) by (<<.GroupBy>>)'
+            metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>,container!="POD"}[1m])) by (<<.GroupBy>>)',
           },
           {
             seriesQuery: '{__name__=~"^container_.*",container!="POD",namespace!="",pod!=""}',
@@ -57,18 +57,18 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
             resources: {
               overrides: {
                 namespace: {
-                  resource: 'namespace'
+                  resource: 'namespace',
                 },
                 pod: {
-                  resource: 'pod'
-                }
+                  resource: 'pod',
+                },
               },
             },
             name: {
               matches: '^container_(.*)$',
-              as: ''
+              as: '',
             },
-            metricsQuery: 'sum(<<.Series>>{<<.LabelMatchers>>,container!="POD"}) by (<<.GroupBy>>)'
+            metricsQuery: 'sum(<<.Series>>{<<.LabelMatchers>>,container!="POD"}) by (<<.GroupBy>>)',
           },
           {
             seriesQuery: '{namespace!="",__name__!~"^container_.*"}',
@@ -76,13 +76,13 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
               { isNot: '.*_total$' },
             ],
             resources: {
-              template: '<<.Resource>>'
+              template: '<<.Resource>>',
             },
             name: {
               matches: '',
-              as: ''
+              as: '',
             },
-            metricsQuery: 'sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)'
+            metricsQuery: 'sum(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)',
           },
           {
             seriesQuery: '{namespace!="",__name__!~"^container_.*"}',
@@ -90,26 +90,26 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
               { isNot: '.*_seconds_total' },
             ],
             resources: {
-              template: '<<.Resource>>'
+              template: '<<.Resource>>',
             },
             name: {
               matches: '^(.*)_total$',
-              as: ''
+              as: '',
             },
-            metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)'
+            metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)',
           },
           {
             seriesQuery: '{namespace!="",__name__!~"^container_.*"}',
             seriesFilters: [],
             resources: {
-              template: '<<.Resource>>'
+              template: '<<.Resource>>',
             },
             name: {
               matches: '^(.*)_seconds_total$',
-              as: ''
+              as: '',
             },
-            metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)'
-          }
+            metricsQuery: 'sum(rate(<<.Series>>{<<.LabelMatchers>>}[1m])) by (<<.GroupBy>>)',
+          },
         ],
       },
     },
@@ -193,5 +193,5 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
         name: 'horizontal-pod-autoscaler',
         namespace: 'kube-system',
       }]),
-  }
+  },
 }

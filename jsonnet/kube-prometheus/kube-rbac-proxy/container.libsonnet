@@ -35,7 +35,7 @@ local containerPort = container.portsType;
         spec+: {
           containers+: [
             container.new(krp.config.kubeRbacProxy.name, krp.config.kubeRbacProxy.image) +
-            container.mixin.securityContext.withRunAsUser(65534) +	    
+            container.mixin.securityContext.withRunAsUser(65534) +
             container.withArgs([
               '--logtostderr',
               '--secure-listen-address=' + krp.config.kubeRbacProxy.secureListenAddress,

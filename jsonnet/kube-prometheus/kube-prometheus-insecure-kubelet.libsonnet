@@ -12,7 +12,7 @@
               relabelings: [
                 {
                   sourceLabels: ['__metrics_path__'],
-                  targetLabel: 'metrics_path'
+                  targetLabel: 'metrics_path',
                 },
               ],
             },
@@ -26,7 +26,7 @@
               relabelings: [
                 {
                   sourceLabels: ['__metrics_path__'],
-                  targetLabel: 'metrics_path'
+                  targetLabel: 'metrics_path',
                 },
               ],
               metricRelabelings: [

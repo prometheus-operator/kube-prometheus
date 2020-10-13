@@ -24,17 +24,17 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
             resources: {
               overrides: {
                 node: {
-                  resource: 'node'
+                  resource: 'node',
                 },
                 namespace: {
-                  resource: 'namespace'
+                  resource: 'namespace',
                 },
                 pod: {
-                  resource: 'pod'
+                  resource: 'pod',
                 },
               },
             },
-            containerLabel: 'container'
+            containerLabel: 'container',
           },
           memory: {
             containerQuery: 'sum(container_memory_working_set_bytes{<<.LabelMatchers>>,container!="POD",container!="",pod!=""}) by (<<.GroupBy>>)',
@@ -42,21 +42,21 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
             resources: {
               overrides: {
                 instance: {
-                  resource: 'node'
+                  resource: 'node',
                 },
                 namespace: {
-                  resource: 'namespace'
+                  resource: 'namespace',
                 },
                 pod: {
-                  resource: 'pod'
+                  resource: 'pod',
                 },
               },
             },
-            containerLabel: 'container'
+            containerLabel: 'container',
           },
           window: '5m',
         },
-      }
+      },
     },
   },
 
@@ -232,14 +232,14 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
         policyRule.new() +
         policyRule.withApiGroups(['metrics.k8s.io']) +
         policyRule.withResources(['pods', 'nodes']) +
-        policyRule.withVerbs(['get','list','watch']);
+        policyRule.withVerbs(['get', 'list', 'watch']);
 
       clusterRole.new() +
       clusterRole.mixin.metadata.withName('system:aggregated-metrics-reader') +
       clusterRole.mixin.metadata.withLabels({
-        "rbac.authorization.k8s.io/aggregate-to-admin": "true",
-        "rbac.authorization.k8s.io/aggregate-to-edit": "true",
-        "rbac.authorization.k8s.io/aggregate-to-view": "true",
+        'rbac.authorization.k8s.io/aggregate-to-admin': 'true',
+        'rbac.authorization.k8s.io/aggregate-to-edit': 'true',
+        'rbac.authorization.k8s.io/aggregate-to-view': 'true',
       }) +
       clusterRole.withRules(rules),
 
