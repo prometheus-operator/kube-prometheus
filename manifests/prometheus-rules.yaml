@@ -1906,6 +1906,15 @@ spec:
       for: 15m
       labels:
         severity: warning
+    - alert: PrometheusTargetLimitHit
+      annotations:
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped {{ printf "%.0f" $value }} targets because the number of targets exceeded the configured target_limit.
+        summary: Prometheus has dropped targets because some scrape configs have exceeded the targets limit.
+      expr: |
+        increase(prometheus_target_scrape_pool_exceeded_target_limit_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
+      for: 15m
+      labels:
+        severity: warning
   - name: alertmanager.rules
     rules:
     - alert: AlertmanagerConfigInconsistent

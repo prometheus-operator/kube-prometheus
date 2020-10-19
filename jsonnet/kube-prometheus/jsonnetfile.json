@@ -90,7 +90,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "release-2.20",
+      "version": "release-2.22",
       "name": "prometheus"
     }
   ],

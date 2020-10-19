@@ -657,7 +657,7 @@ In case you want to monitor all namespaces in a cluster, you can add the followi
 [embedmd]:# (examples/all-namespaces.jsonnet)
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-  (import 'kube-prometheus/kube-prometheus-all-namespaces.libsonnet') + {
+           (import 'kube-prometheus/kube-prometheus-all-namespaces.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
 
@@ -704,7 +704,7 @@ To do that, one can import the following mixin
 [embedmd]:# (examples/strip-limits.jsonnet)
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-  (import 'kube-prometheus/kube-prometheus-strip-limits.libsonnet') + {
+           (import 'kube-prometheus/kube-prometheus-strip-limits.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
