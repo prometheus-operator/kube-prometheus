@@ -936,7 +936,7 @@ spec:
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodenetworkreceiveerrs
         summary: Network interface is reporting many receive errors.
       expr: |
-        increase(node_network_receive_errs_total[2m]) > 10
+        rate(node_network_receive_errs_total[2m]) / rate(node_network_receive_packets_total[2m]) > 0.01
       for: 1h
       labels:
         severity: warning
@@ -946,7 +946,7 @@ spec:
         runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-nodenetworktransmiterrs
         summary: Network interface is reporting many transmit errors.
       expr: |
-        increase(node_network_transmit_errs_total[2m]) > 10
+        rate(node_network_transmit_errs_total[2m]) / rate(node_network_transmit_packets_total[2m]) > 0.01
       for: 1h
       labels:
         severity: warning
@@ -995,6 +995,8 @@ spec:
         summary: Clock not synchronising.
       expr: |
         min_over_time(node_timex_sync_status[5m]) == 0
+        and
+        node_timex_maxerror_seconds >= 16
       for: 10m
       labels:
         severity: warning
