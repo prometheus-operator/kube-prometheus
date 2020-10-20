@@ -18,7 +18,7 @@
           "subdir": "Documentation/etcd-mixin"
         }
       },
-      "version": "7da5182f1d02c0baaefd52f361fd0459d5b6703e",
+      "version": "6e800b9b0161ef874784fc6c679325acd67e2452",
       "sum": "L+PGlPK9mykGCJ9TIoEWdhMBjz+9lKuQ4YZ8fOeP9sk="
     },
     {
@@ -38,7 +38,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "fe3e027c5a0d8311e1bd6cd9de2c295707c3ae76",
+      "version": "8488040f4687d6b00959254d6258c8a947a47ce1",
       "sum": "mD0zEP9FVFXeag7EaeS5OvUr2A9D6DQhGemoNn6+PLc="
     },
     {
@@ -59,8 +59,8 @@
           "subdir": ""
         }
       },
-      "version": "8a98e9c6fab000ef090b8d313292043696a8b3bb",
-      "sum": "btFPZfE2paWZdvLtFwv4gfDoygj1axt7Q4ACGSdeuJ8="
+      "version": "55feeb4a510cddc67f24751bf9c18408cd34e2f3",
+      "sum": "GOLbNBTZGM/t7P9Y0rvJWFlYs8NcR4DA7m4sIioGE50="
     },
     {
       "source": {
@@ -69,7 +69,7 @@
           "subdir": "lib/promgrafonnet"
         }
       },
-      "version": "8a98e9c6fab000ef090b8d313292043696a8b3bb",
+      "version": "55feeb4a510cddc67f24751bf9c18408cd34e2f3",
       "sum": "zv7hXGui6BfHzE9wPatHI/AGZa4A2WKo6pq7ZdqBsps="
     },
     {
@@ -89,7 +89,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "a4867d8809ba60a59013034646d0a4bc89576b9c",
+      "version": "b6e67d0d865a589ee05f697086de3fe917abf128",
       "sum": "Yf8mNAHrV1YWzrdV8Ry5dJ8YblepTGw3C0Zp10XIYLo="
     },
     {
@@ -99,7 +99,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "f6ce472ecd6064fb6769e306b55b149dfb6af903",
+      "version": "30b03e839a460ef230256873c10ad56f9a5abd37",
       "sum": "6reUygVmQrLEWQzTKcH8ceDbvM+2ztK3z2VBR2K2l+U="
     },
     {
@@ -109,7 +109,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "633ea519b2ce86396f6e006f7fd967c04bc45bda",
+      "version": "c070a93f97fbc967e404d81e12b9988a6631bf5f",
       "sum": "P8EcWO33RCyVTfwMdpy4S4jFZjJVHiu190j8yd/CGfs="
     },
     {

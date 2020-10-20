@@ -29,6 +29,9 @@ generate: manifests **.md
 manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor build.sh
 	./build.sh $<
 
+update_libs: $(JB_BIN)
+	$(JB_BIN) update
+
 vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor
 	$(JB_BIN) install
