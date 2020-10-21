@@ -35,7 +35,7 @@ vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 
 .PHONY: fmt
 fmt: $(JSONNETFMT_BIN)
-	find . -name 'vendor' -prune -o -name '*.libsonnet' -o -name '*.jsonnet' -print | \
+	find . -name 'vendor' -prune -o -name '*.libsonnet' -print -o -name '*.jsonnet' -print | \
 		xargs -n 1 -- $(JSONNETFMT_BIN) $(JSONNETFMT_ARGS) -i
 
 .PHONY: test
