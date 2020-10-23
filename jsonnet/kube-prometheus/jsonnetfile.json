@@ -63,7 +63,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "master"
+      "version": "release-1.9"
     },
     {
       "source": {
