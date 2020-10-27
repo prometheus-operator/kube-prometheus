@@ -67,13 +67,14 @@ local kp =
                   httpIngressPath.mixin.backend.withServicePort('http')
           )]
         ),
-    }, + {
+    },
+  } + {
     // Create basic auth secret - replace 'auth' file with your own
     ingress+:: {
       'basic-auth-secret':
         secret.new('basic-auth', { auth: std.base64(importstr 'auth') }) +
         secret.mixin.metadata.withNamespace($._config.namespace),
-    },
+    },      
   };
 
 { [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) }
