@@ -4,6 +4,16 @@ local affinity = statefulSet.mixin.spec.template.spec.affinity.podAntiAffinity.p
 local matchExpression = affinity.mixin.podAffinityTerm.labelSelector.matchExpressionsType;
 
 {
+  _config+:: {
+    prometheus+:: {
+      namespace: $._config.namespace,
+    },
+
+    alertmanager+:: {
+      namespace: $._config.namespace,
+    },
+  },
+
   local antiaffinity(key, values, namespace) = {
     affinity: {
       podAntiAffinity: {
@@ -26,16 +36,14 @@ local matchExpression = affinity.mixin.podAffinityTerm.labelSelector.matchExpres
   alertmanager+:: {
     alertmanager+: {
       spec+:
-        antiaffinity('alertmanager', [$._config.alertmanager.name], $._config.namespace),
+        antiaffinity('alertmanager', [$._config.alertmanager.name], $._config.alertmanager.namespace),
     },
   },
 
   prometheus+: {
-    local p = self,
-
     prometheus+: {
       spec+:
-        antiaffinity('prometheus', [p.name], p.namespace),
+        antiaffinity('prometheus', [$._config.prometheus.name], $._config.prometheus.namespace),
     },
   },
 }
