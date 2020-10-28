@@ -4,6 +4,7 @@
 {
   _config+:: {
     prometheusAdapter+:: {
+      namespace: $._config.namespace,
       // Rules for custom-metrics
       config+:: {
         rules+: [
@@ -87,7 +88,7 @@
       spec: {
         service: {
           name: $.prometheusAdapter.service.metadata.name,
-          namespace: $._config.namespace,
+          namespace: $._config.prometheusAdapter.namespace,
         },
         group: 'custom.metrics.k8s.io',
         version: 'v1beta1',
@@ -105,7 +106,7 @@
       spec: {
         service: {
           name: $.prometheusAdapter.service.metadata.name,
-          namespace: $._config.namespace,
+          namespace: $._config.prometheusAdapter.namespace,
         },
         group: 'custom.metrics.k8s.io',
         version: 'v1beta2',
@@ -141,7 +142,7 @@
       subjects: [{
         kind: 'ServiceAccount',
         name: $.prometheusAdapter.serviceAccount.metadata.name,
-        namespace: $._config.namespace,
+        namespace: $._config.prometheusAdapter.namespace,
       }],
     },
     customMetricsClusterRoleBindingHPA: {
