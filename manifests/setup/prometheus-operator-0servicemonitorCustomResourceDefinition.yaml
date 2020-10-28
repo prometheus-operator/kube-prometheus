@@ -190,7 +190,7 @@ spec:
                       description: TLS configuration to use when scraping the endpoint
                       properties:
                         ca:
-                          description: Stuct containing the CA cert to use for the targets.
+                          description: Struct containing the CA cert to use for the targets.
                           properties:
                             configMap:
                               description: ConfigMap containing data to use for the targets.
@@ -349,6 +349,10 @@ spec:
                 items:
                   type: string
                 type: array
+              targetLimit:
+                description: TargetLimit defines a limit on the number of scraped targets that will be accepted.
+                format: int64
+                type: integer
             required:
             - endpoints
             - selector
