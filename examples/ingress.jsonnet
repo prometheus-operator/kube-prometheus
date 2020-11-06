@@ -1,5 +1,5 @@
 local ingress(name, namespace, rules) = {
-  apiVersion: 'extensions/v1beta1',
+  apiVersion: 'networking.k8s.io/v1',
   kind: 'Ingress',
   metadata: {
     name: name,
@@ -53,8 +53,10 @@ local kp =
           http: {
             paths: [{
               backend: {
-                serviceName: 'alertmanager-main',
-                servicePort: 'web',
+                service: {
+                  name: 'alertmanager-main',
+                  port: 'web',
+                },
               },
             }],
           },
@@ -68,8 +70,10 @@ local kp =
           http: {
             paths: [{
               backend: {
-                serviceName: 'grafana',
-                servicePort: 'http',
+                service: {
+                  name: 'grafana',
+                  port: 'http',
+                },
               },
             }],
           },
@@ -83,8 +87,10 @@ local kp =
           http: {
             paths: [{
               backend: {
-                serviceName: 'prometheus-k8s',
-                servicePort: 'web',
+                service: {
+                  name: 'prometheus-k8s',
+                  port: 'web',
+                },
               },
             }],
           },

@@ -42,7 +42,7 @@ local kp =
     },
     ingress+:: {
       'prometheus-k8s': {
-        apiVersion: 'extensions/v1beta1',
+        apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
           name: $.prometheus.prometheus.metadata.name,
@@ -59,8 +59,10 @@ local kp =
             http: {
               paths: [{
                 backend: {
-                  serviceName: $.prometheus.service.metadata.name,
-                  servicePort: 'web',
+                  service: {
+                    name: $.prometheus.service.metadata.name,
+                    port: 'web',
+                  },
                 },
               }],
             },
