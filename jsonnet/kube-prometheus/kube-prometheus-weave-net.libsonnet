@@ -1,14 +1,21 @@
-local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
-local service = k.core.v1.service;
-local servicePort = k.core.v1.service.mixin.spec.portsType;
-
 {
   prometheus+: {
-    serviceWeaveNet:
-      service.new('weave-net', { 'name': 'weave-net' }, servicePort.newNamed('weave-net-metrics', 6782, 6782)) +
-      service.mixin.metadata.withNamespace('kube-system') +
-      service.mixin.metadata.withLabels({ 'k8s-app': 'weave-net' }) +
-      service.mixin.spec.withClusterIp('None'),
+    serviceWeaveNet: {
+      apiVersion: 'v1',
+      kind: 'Service',
+      metadata: {
+        name: 'weave-net',
+        namespace: 'kube-system',
+        labels: { 'k8s-app': 'weave-net' },
+      },
+      spec: {
+        ports: [
+          { name: 'weave-net-metrics', targetPort: 6782, port: 6782 },
+        ],
+        selector: { name: 'weave-net' },
+        clusterIP: 'None',
+      },
+    },
     serviceMonitorWeaveNet: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
