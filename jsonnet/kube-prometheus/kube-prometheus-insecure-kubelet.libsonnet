@@ -10,10 +10,7 @@
               interval: '30s',
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               relabelings: [
-                {
-                  sourceLabels: ['__metrics_path__'],
-                  targetLabel: 'metrics_path'
-                },
+                { sourceLabels: ['__metrics_path__'], targetLabel: 'metrics_path' },
               ],
             },
             {
@@ -24,10 +21,7 @@
               honorLabels: true,
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               relabelings: [
-                {
-                  sourceLabels: ['__metrics_path__'],
-                  targetLabel: 'metrics_path'
-                },
+                { sourceLabels: ['__metrics_path__'], targetLabel: 'metrics_path' },
               ],
               metricRelabelings: [
                 // Drop a bunch of metrics which are disabled but still sent, see
