@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 
@@ -50,7 +51,7 @@ func (c *prometheusClient) apiRequest(endpoint string, selector string, query st
 		Suffix(endpoint).Param(selector, query)
 
 	var data Response
-	b, err := req.DoRaw()
+	b, err := req.DoRaw(context.Background())
 	if err != nil {
 		return data, err
 	}
@@ -78,7 +79,7 @@ func (c *prometheusClient) query(query string) (int, error) {
 		Name("prometheus-k8s-0:9090").
 		Suffix("/api/v1/query").Param("query", query)
 
-	b, err := req.DoRaw()
+	b, err := req.DoRaw(context.Background())
 	if err != nil {
 		return 0, err
 	}
