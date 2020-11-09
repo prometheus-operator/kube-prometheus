@@ -107,7 +107,7 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
 
     versions+:: {
       grafana: '7.1.0',
-      kubeRbacProxy: 'v0.6.0',
+      kubeRbacProxy: 'v0.8.0',
     },
 
     imageRepos+:: {
