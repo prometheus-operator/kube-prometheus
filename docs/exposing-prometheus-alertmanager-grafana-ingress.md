@@ -27,13 +27,6 @@ In order to use this a secret needs to be created containing the name of the `ht
 Also, the applications provide external links to themselves in alerts and various places. When an ingress is used in front of the applications these links need to be based on the external URL's. This can be configured for each application in jsonnet.
 
 ```jsonnet
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
-local secret = k.core.v1.secret;
-local ingress = k.extensions.v1beta1.ingress;
-local ingressTls = ingress.mixin.spec.tlsType;
-local ingressRule = ingress.mixin.spec.rulesType;
-local httpIngressPath = ingressRule.mixin.http.pathsType;
-
 local kp =
   (import 'kube-prometheus/kube-prometheus.libsonnet') +
   {
@@ -48,30 +41,46 @@ local kp =
       },
     },
     ingress+:: {
-      'prometheus-k8s':
-        ingress.new() +
-        ingress.mixin.metadata.withName($.prometheus.prometheus.metadata.name) +
-        ingress.mixin.metadata.withNamespace($.prometheus.prometheus.metadata.namespace) +
-        ingress.mixin.metadata.withAnnotations({
-          'nginx.ingress.kubernetes.io/auth-type': 'basic',
-          'nginx.ingress.kubernetes.io/auth-secret': 'basic-auth',
-          'nginx.ingress.kubernetes.io/auth-realm': 'Authentication Required',
-        }) +
-        ingress.mixin.spec.withRules(
-          ingressRule.new() +
-          ingressRule.withHost('prometheus.example.com') +
-          ingressRule.mixin.http.withPaths(
-            httpIngressPath.new() +
-            httpIngressPath.mixin.backend.withServiceName($.prometheus.service.metadata.name) +
-            httpIngressPath.mixin.backend.withServicePort('web')
-          ),
-        ),
+      'prometheus-k8s': {
+        apiVersion: 'networking.k8s.io/v1',
+        kind: 'Ingress',
+        metadata: {
+          name: $.prometheus.prometheus.metadata.name,
+          namespace: $.prometheus.prometheus.metadata.namespace,
+          annotations: {
+            'nginx.ingress.kubernetes.io/auth-type': 'basic',
+            'nginx.ingress.kubernetes.io/auth-secret': 'basic-auth',
+            'nginx.ingress.kubernetes.io/auth-realm': 'Authentication Required',
+          },
+        },
+        spec: {
+          rules: [{
+            host: 'prometheus.example.com',
+            http: {
+              paths: [{
+                backend: {
+                  service: {
+                    name: $.prometheus.service.metadata.name,
+                    port: 'web',
+                  },
+                },
+              }],
+            },
+          }],
+        },
     },
   } + {
     ingress+:: {
-      'basic-auth-secret':
-        secret.new('basic-auth', { auth: std.base64(importstr 'auth') }) +
-        secret.mixin.metadata.withNamespace($._config.namespace),
+      'basic-auth-secret': {
+        apiVersion: 'v1',
+        kind: 'Secret',
+        metadata: {
+          name: 'basic-auth',
+          namespace: $._config.namespace,
+        },
+        data: { auth: std.base64(importstr 'auth') },
+        type: 'Opaque',
+      },
     },
   };
 
