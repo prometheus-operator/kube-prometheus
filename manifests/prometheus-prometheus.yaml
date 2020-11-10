@@ -20,8 +20,13 @@ spec:
   probeSelector: {}
   replicas: 2
   resources:
-    requests:
-      memory: 400Mi
+    resources:
+      limits:
+        cpu: 500m
+        memory: 4096Mi
+      requests:
+        cpu: 200m
+        memory: 2048Mi
   ruleSelector:
     matchLabels:
       prometheus: k8s
