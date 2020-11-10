@@ -169,7 +169,8 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
 
       local resources =
         resourceRequirements.new() +
-        resourceRequirements.withRequests({ memory: '400Mi' });
+        container.mixin.resources.withRequests($._config.resources['prometheus'].requests) +
+        container.mixin.resources.withLimits($._config.resources['prometheus'].limits);
 
       {
         apiVersion: 'monitoring.coreos.com/v1',

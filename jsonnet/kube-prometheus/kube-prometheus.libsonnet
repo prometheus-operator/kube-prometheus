@@ -190,6 +190,10 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
         requests: { cpu: '102m', memory: '180Mi' },
         limits: { cpu: '250m', memory: '180Mi' },
       },
+      'prometheus': {
+        requests: { cpu: '200m', memory: '2048Mi' },
+        limits: { cpu: '500m', memory: '4096Mi' },
+      },
     },
     prometheus+:: {
       rules: $.prometheusRules + $.prometheusAlerts,
