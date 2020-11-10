@@ -19,7 +19,7 @@ $(<examples/jsonnet-build-snippet/build-snippet.jsonnet)"
     echo "${snippet}"
     echo "\`\`\`"
     echo ""
-    jsonnet -J vendor "test.jsonnet" > /dev/null
+    jsonnet -J vendor -m tmp/manifests "test.jsonnet" | xargs -I{} sh -c 'cat {} | gojsontoyaml | kubeval --ignore-missing-schemas; rm -f {}' -- {}
     rm -rf "test.jsonnet"
 done
 
@@ -31,5 +31,5 @@ for i in examples/*.jsonnet; do
     cat "${i}"
     echo "\`\`\`"
     echo ""
-    jsonnet -J vendor "${i}" > /dev/null
+    jsonnet -J vendor  -m tmp/manifests "${i}" | xargs -I{} sh -c 'cat {} | gojsontoyaml | kubeval --ignore-missing-schemas; rm -f {}' -- {}
 done
