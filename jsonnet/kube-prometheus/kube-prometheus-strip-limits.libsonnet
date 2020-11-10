@@ -15,7 +15,7 @@
       'node-exporter'+: {
         limits: {},
       },
-      'prometheus': {
+      'prometheus'+: {
         limits: {},
       },
     },
