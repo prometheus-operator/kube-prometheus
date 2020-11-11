@@ -1,13 +1,20 @@
-local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
-local service = k.core.v1.service;
-local servicePort = k.core.v1.service.mixin.spec.portsType;
-
 {
   prometheus+:: {
-      kubeDnsPrometheusDiscoveryService:
-      service.new('kube-dns-prometheus-discovery', { 'k8s-app': 'kube-dns' }, [servicePort.newNamed('metrics', 9153, 9153)]) +
-      service.mixin.metadata.withNamespace('kube-system') +
-      service.mixin.metadata.withLabels({ 'k8s-app': 'kube-dns' }) +
-      service.mixin.spec.withClusterIp('None'),
+    kubeDnsPrometheusDiscoveryService: {
+      apiVersion: 'v1',
+      kind: 'Service',
+      metadata: {
+        name: 'kube-dns-prometheus-discovery',
+        namespace: 'kube-system',
+        labels: { 'k8s-app': 'kube-dns' },
+      },
+      spec: {
+        ports: [
+          { name: 'metrics', port: 9153, targetPort: 9153 },
+        ],
+        selector: { 'k8s-app': 'kube-dns' },
+        cluserAPI: 'None',
+      },
+    },
   },
 }
