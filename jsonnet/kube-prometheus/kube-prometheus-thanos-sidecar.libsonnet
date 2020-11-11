@@ -1,15 +1,7 @@
-local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
-local service = k.core.v1.service;
-local servicePort = k.core.v1.service.mixin.spec.portsType;
-
 {
   _config+:: {
-    versions+:: {
-      thanos: 'v0.14.0',
-    },
-    imageRepos+:: {
-      thanos: 'quay.io/thanos/thanos',
-    },
+    versions+:: { thanos: 'v0.14.0' },
+    imageRepos+:: { thanos: 'quay.io/thanos/thanos' },
     thanos+:: {
       objectStorageConfig: {
         key: 'thanos.yaml',  // How the file inside the secret is called
@@ -22,19 +14,28 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
     service+: {
       spec+: {
         ports+: [
-          servicePort.newNamed('grpc', 10901, 10901),
+          { name: 'grpc', port: 10901, targetPort: 10901 },
         ],
       },
     },
     // Create a new service that exposes both sidecar's HTTP metrics port and gRPC StoreAPI
-    serviceThanosSidecar:
-      local thanosGrpcSidecarPort = servicePort.newNamed('grpc', 10901, 10901);
-      local thanosHttpSidecarPort = servicePort.newNamed('http', 10902, 10902);
-      service.new('prometheus-' + $._config.prometheus.name + '-thanos-sidecar', { app: 'prometheus', prometheus: $._config.prometheus.name }) +
-      service.mixin.spec.withPorts([thanosGrpcSidecarPort, thanosHttpSidecarPort]) +
-      service.mixin.spec.withClusterIp('None') +
-      service.mixin.metadata.withLabels({'prometheus': $._config.prometheus.name, 'app': 'thanos-sidecar'}) +
-      service.mixin.metadata.withNamespace($._config.namespace),
+    serviceThanosSidecar: {
+      apiVersion: 'v1',
+      kind: 'Service',
+      metadata: {
+        name: 'prometheus-' + $._config.prometheus.name + '-thanos-sidecar',
+        namespace: $._config.namespace,
+        labels: { prometheus: $._config.prometheus.name, app: 'thanos-sidecar' },
+      },
+      spec: {
+        ports: [
+          { name: 'grpc', port: 10901, targetPort: 10901 },
+          { name: 'http', port: 10902, targetPort: 10902 },
+        ],
+        selector: { app: 'prometheus', prometheus: $._config.prometheus.name },
+        clusterIP: 'None',
+      },
+    },
     prometheus+: {
       spec+: {
         thanos+: {
