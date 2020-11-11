@@ -14,6 +14,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
 
     prometheusAdapter+:: {
       name: 'prometheus-adapter',
+      namespace: $._config.namespace,
       labels: { name: $._config.prometheusAdapter.name },
       prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc.cluster.local:9090/',
       config: {
@@ -71,7 +72,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
         spec: {
           service: {
             name: $.prometheusAdapter.service.metadata.name,
-            namespace: $._config.namespace,
+            namespace: $._config.prometheusAdapter.namespace,
           },
           group: 'metrics.k8s.io',
           version: 'v1beta1',
@@ -85,7 +86,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
       local configmap = k.core.v1.configMap;
       configmap.new('adapter-config', { 'config.yaml': std.manifestYamlDoc($._config.prometheusAdapter.config) }) +
 
-      configmap.mixin.metadata.withNamespace($._config.namespace),
+      configmap.mixin.metadata.withNamespace($._config.prometheusAdapter.namespace),
 
     serviceMonitor:
       {
@@ -93,7 +94,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
         kind: 'ServiceMonitor',
         metadata: {
           name: $._config.prometheusAdapter.name,
-          namespace: $._config.namespace,
+          namespace: $._config.prometheusAdapter.namespace,
           labels: $._config.prometheusAdapter.labels,
         },
         spec: {
@@ -123,7 +124,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
         $._config.prometheusAdapter.labels,
         servicePort.newNamed('https', 443, 6443),
       ) +
-      service.mixin.metadata.withNamespace($._config.namespace) +
+      service.mixin.metadata.withNamespace($._config.prometheusAdapter.namespace) +
       service.mixin.metadata.withLabels($._config.prometheusAdapter.labels),
 
     deployment:
@@ -150,7 +151,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
         ],);
 
       deployment.new($._config.prometheusAdapter.name, 1, c, $._config.prometheusAdapter.labels) +
-      deployment.mixin.metadata.withNamespace($._config.namespace) +
+      deployment.mixin.metadata.withNamespace($._config.prometheusAdapter.namespace) +
       deployment.mixin.spec.selector.withMatchLabels($._config.prometheusAdapter.labels) +
       deployment.mixin.spec.template.spec.withServiceAccountName($.prometheusAdapter.serviceAccount.metadata.name) +
       deployment.mixin.spec.template.spec.withNodeSelector({ 'kubernetes.io/os': 'linux' }) +
@@ -166,7 +167,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
       local serviceAccount = k.core.v1.serviceAccount;
 
       serviceAccount.new($._config.prometheusAdapter.name) +
-      serviceAccount.mixin.metadata.withNamespace($._config.namespace),
+      serviceAccount.mixin.metadata.withNamespace($._config.prometheusAdapter.namespace),
 
     clusterRole:
       local clusterRole = k.rbac.v1.clusterRole;
@@ -193,7 +194,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
       clusterRoleBinding.withSubjects([{
         kind: 'ServiceAccount',
         name: $.prometheusAdapter.serviceAccount.metadata.name,
-        namespace: $._config.namespace,
+        namespace: $._config.prometheusAdapter.namespace,
       }]),
 
     clusterRoleBindingDelegator:
@@ -207,7 +208,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
       clusterRoleBinding.withSubjects([{
         kind: 'ServiceAccount',
         name: $.prometheusAdapter.serviceAccount.metadata.name,
-        namespace: $._config.namespace,
+        namespace: $._config.prometheusAdapter.namespace,
       }]),
 
     clusterRoleServerResources:
@@ -255,7 +256,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
       roleBinding.withSubjects([{
         kind: 'ServiceAccount',
         name: $.prometheusAdapter.serviceAccount.metadata.name,
-        namespace: $._config.namespace,
+        namespace: $._config.prometheusAdapter.namespace,
       }]),
   },
 }
