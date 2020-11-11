@@ -53,6 +53,7 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
     - [Stripping container resource limits](#stripping-container-resource-limits)
     - [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
     - [Exposing Prometheus/Alermanager/Grafana via Ingress](#exposing-prometheusalermanagergrafana-via-ingress)
+    - [Setting up a blackbox exporter](#setting-up-a-blackbox exporter)
   - [Minikube Example](#minikube-example)
   - [Troubleshooting](#troubleshooting)
     - [Error retrieving kubelet metrics](#error-retrieving-kubelet-metrics)
@@ -728,6 +729,37 @@ See [developing Prometheus rules and Grafana dashboards](docs/developing-prometh
 ### Exposing Prometheus/Alermanager/Grafana via Ingress
 
 See [exposing Prometheus/Alertmanager/Grafana](docs/exposing-prometheus-alertmanager-grafana-ingress.md) guide.
+
+### Setting up a blackbox exporter
+
+```jsonnet
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
+           // ... other necessary mixins ...
+           (import 'kube-prometheus/blackbox-exporter/blackbox-exporter.libsonnet') +
+  {
+    _config+:: {
+      // ... configuration for other features ...
+      blackboxExporter+:: {
+        modules+:: {
+          tls_connect: {
+            prober: 'tcp',
+            tcp: {
+              tls: true
+            }
+          }
+        }
+      }
+    }
+  };
+
+{ ['setup/0namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+// ... other rendering blocks ...
+{ ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) }
+```
+
+Then describe the actual blackbox checks you want to run using `Probe` resources. Specify `blackbox-exporter.<namespace>.svc.cluster.local:9115` as the `spec.prober.url` field of the `Probe` resource.
+
+See the [blackbox exporter guide](docs/blackbox-exporter.md) for the list of configurable options and a complete example.
 
 ## Minikube Example
 
