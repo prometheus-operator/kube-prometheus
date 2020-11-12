@@ -6,7 +6,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      prometheus: 'v2.20.0',
+      prometheus: 'v2.22.1',
     },
 
     imageRepos+:: {
@@ -256,11 +256,11 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
             {
               port: 'https-metrics',
               interval: '30s',
-              scheme: "https",
-              bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token",
+              scheme: 'https',
+              bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               tlsConfig: {
-                insecureSkipVerify: true
-              }
+                insecureSkipVerify: true,
+              },
             },
           ],
           selector: {
@@ -380,10 +380,10 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
             {
               port: 'https-metrics',
               interval: '30s',
-              scheme: "https",
-              bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token",
+              scheme: 'https',
+              bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               tlsConfig: {
-                insecureSkipVerify: true
+                insecureSkipVerify: true,
               },
               metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
                 {

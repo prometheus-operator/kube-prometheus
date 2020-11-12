@@ -18,7 +18,7 @@
           "subdir": "Documentation/etcd-mixin"
         }
       },
-      "version": "8866d55b9bc8539f5f15db33cc78b9737cad0394",
+      "version": "7da5182f1d02c0baaefd52f361fd0459d5b6703e",
       "sum": "L+PGlPK9mykGCJ9TIoEWdhMBjz+9lKuQ4YZ8fOeP9sk="
     },
     {
@@ -38,7 +38,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "dfa2a427d884da8d169eb356bfb85717aed61b13",
+      "version": "fe3e027c5a0d8311e1bd6cd9de2c295707c3ae76",
       "sum": "mD0zEP9FVFXeag7EaeS5OvUr2A9D6DQhGemoNn6+PLc="
     },
     {
@@ -89,7 +89,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "2323702757a75e12b1dd1efecedfc0a340c1d104",
+      "version": "a4867d8809ba60a59013034646d0a4bc89576b9c",
       "sum": "Yf8mNAHrV1YWzrdV8Ry5dJ8YblepTGw3C0Zp10XIYLo="
     },
     {
@@ -99,7 +99,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "e32c86ffa4c6e9c582cc76785e711d695b641d46",
+      "version": "7134bc321bda7e69db0aacc9a41949167de7a56f",
       "sum": "6reUygVmQrLEWQzTKcH8ceDbvM+2ztK3z2VBR2K2l+U="
     },
     {
@@ -109,8 +109,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "cd331ce9bb58bb926e391c6ae807621cb12cc29e",
-      "sum": "nM1eDP5vftqAeQSmVYzSBAh+lG0SN6zu46QiocQiVhk="
+      "version": "b86ab77239f2a11ee69ad05b24122958d8b2df5b",
+      "sum": "Zof470kQY377VxlEH5MQJUSbtViNEdLyLPv/P7fX8QQ="
     },
     {
       "source": {
@@ -119,8 +119,8 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "ed104850737ccad9a815277641ac2549cbbde931",
-      "sum": "3b9xJI6cjh58SMfpUBhyrC+IG8D/5lpNyRGJibFi+5g="
+      "version": "f645d4924224f1f3abab7b20798ca8e24957724c",
+      "sum": "rvyiD/yCB4BeYAWqYF53bP8c+aCUt2ipLHW2Ea8ELO8="
     },
     {
       "source": {
@@ -129,7 +129,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "0a7fdd3b76960808c3a91d92267c3d815c1bc354",
+      "version": "00f16d1ac3a4c94561e5133b821d8e4d9ef78ec2",
       "sum": "CGxvaHkP7z/gnsLB/8Imvt/AnW+9nJUnTcL+fvIAZUs=",
       "name": "prometheus"
     },

@@ -1,5 +1,3 @@
-local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
-
 {
   _config+:: {
     namespace: 'default',
@@ -42,30 +40,14 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
           repeat_interval: '12h',
           receiver: 'Default',
           routes: [
-            {
-              receiver: 'Watchdog',
-              match: {
-                alertname: 'Watchdog',
-              },
-            },
-            {
-              receiver: 'Critical',
-              match: {
-                severity: 'critical',
-              },
-            },
+            { receiver: 'Watchdog', match: { alertname: 'Watchdog' } },
+            { receiver: 'Critical', match: { severity: 'critical' } },
           ],
         },
         receivers: [
-          {
-            name: 'Default',
-          },
-          {
-            name: 'Watchdog',
-          },
-          {
-            name: 'Critical',
-          },
+          { name: 'Default' },
+          { name: 'Watchdog' },
+          { name: 'Critical' },
         ],
       },
       replicas: 3,
@@ -73,34 +55,48 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
   },
 
   alertmanager+:: {
-    secret:
-      local secret = k.core.v1.secret;
+    secret: {
+      apiVersion: 'v1',
+      kind: 'Secret',
+      type: 'Opaque',
+      metadata: {
+        name: 'alertmanager-' + $._config.alertmanager.name,
+        namespace: $._config.namespace,
+      },
+      stringData: {
+        'alertmanager.yaml': if std.type($._config.alertmanager.config) == 'object'
+        then
+          std.manifestYamlDoc($._config.alertmanager.config)
+        else
+          $._config.alertmanager.config,
+      },
+    },
 
-      if std.type($._config.alertmanager.config) == 'object' then
-        secret.new('alertmanager-' + $._config.alertmanager.name, {})
-        .withStringData({ 'alertmanager.yaml': std.manifestYamlDoc($._config.alertmanager.config) }) +
-        secret.mixin.metadata.withNamespace($._config.namespace)
-      else
-        secret.new('alertmanager-' + $._config.alertmanager.name, {})
-        .withStringData({ 'alertmanager.yaml': $._config.alertmanager.config }) +
-        secret.mixin.metadata.withNamespace($._config.namespace),
+    serviceAccount: {
+      apiVersion: 'v1',
+      kind: 'ServiceAccount',
+      metadata: {
+        name: 'alertmanager-' + $._config.alertmanager.name,
+        namespace: $._config.namespace,
+      },
+    },
 
-    serviceAccount:
-      local serviceAccount = k.core.v1.serviceAccount;
-
-      serviceAccount.new('alertmanager-' + $._config.alertmanager.name) +
-      serviceAccount.mixin.metadata.withNamespace($._config.namespace),
-
-    service:
-      local service = k.core.v1.service;
-      local servicePort = k.core.v1.service.mixin.spec.portsType;
-
-      local alertmanagerPort = servicePort.newNamed('web', 9093, 'web');
-
-      service.new('alertmanager-' + $._config.alertmanager.name, { app: 'alertmanager', alertmanager: $._config.alertmanager.name }, alertmanagerPort) +
-      service.mixin.spec.withSessionAffinity('ClientIP') +
-      service.mixin.metadata.withNamespace($._config.namespace) +
-      service.mixin.metadata.withLabels({ alertmanager: $._config.alertmanager.name }),
+    service: {
+      apiVersion: 'v1',
+      kind: 'Service',
+      metadata: {
+        name: 'alertmanager-' + $._config.alertmanager.name,
+        namespace: $._config.namespace,
+        labels: { alertmanager: $._config.alertmanager.name },
+      },
+      spec: {
+        ports: [
+          { name: 'web', targetPort: 'web', port: 9093 },
+        ],
+        selector: { app: 'alertmanager', alertmanager: $._config.alertmanager.name },
+        sessionAffinity: 'ClientIP',
+      },
+    },
 
     serviceMonitor:
       {
@@ -120,10 +116,7 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
             },
           },
           endpoints: [
-            {
-              port: 'web',
-              interval: '30s',
-            },
+            { port: 'web', interval: '30s' },
           ],
         },
       },

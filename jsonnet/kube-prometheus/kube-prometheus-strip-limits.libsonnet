@@ -23,9 +23,9 @@
         template+: {
           spec+: {
             local addArgs(c) =
-                if c.name == 'prometheus-operator'
-                then c + {args+: ['--config-reloader-cpu=0']}
-                else c,
+              if c.name == 'prometheus-operator'
+              then c { args+: ['--config-reloader-cpu=0'] }
+              else c,
             containers: std.map(addArgs, super.containers),
           },
         },

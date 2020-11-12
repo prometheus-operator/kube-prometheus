@@ -15,13 +15,16 @@
 package e2e
 
 import (
+	"context"
 	"log"
 	"os"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Jeffail/gabs"
 	"github.com/pkg/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -121,7 +124,7 @@ func TestDroppedMetrics(t *testing.T) {
 	// query metadata for all metrics and their metadata
 	md, err := promClient.metadata("{job=~\".+\"}")
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 	for _, k := range md {
 		// check if the metric' help text contains Deprecated
@@ -129,13 +132,12 @@ func TestDroppedMetrics(t *testing.T) {
 			// query prometheus for the Deprecated metric
 			n, err := promClient.query(k.Metric)
 			if err != nil {
-				log.Fatal(err)
+				t.Fatal(err)
 			}
 			if n > 0 {
 				t.Fatalf("deprecated metric with name: %s and help text: %s exists.", k.Metric, k.Help)
 			}
 		}
-
 	}
 }
 
@@ -143,7 +145,7 @@ func TestTargetsScheme(t *testing.T) {
 	// query targets for all endpoints
 	tgs, err := promClient.targets()
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 
 	// exclude jobs from checking for http endpoints
@@ -158,7 +160,120 @@ func TestTargetsScheme(t *testing.T) {
 	for _, k := range tgs.Active {
 		job := k.Labels["job"]
 		if k.DiscoveredLabels["__scheme__"] == "http" && !exclude[string(job)] {
-			log.Fatalf("target exposing metrics over HTTP instead of HTTPS: %+v", k)
+			t.Fatalf("target exposing metrics over HTTP instead of HTTPS: %+v", k)
 		}
+	}
+}
+
+// TestFailedRuleEvaluations detects recording and alerting rules that may
+// trigger "many-to-many" evaluation errors when multiple kube-state-metrics
+// instances are running.
+func TestFailedRuleEvaluations(t *testing.T) {
+	// Scale kube-state-metrics to 2 replicas.
+	kClient := promClient.kubeClient
+
+	scale, err := kClient.AppsV1().Deployments("monitoring").GetScale(context.Background(), "kube-state-metrics", metav1.GetOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	scale.Spec.Replicas = 2
+	scale, err = kClient.AppsV1().Deployments("monitoring").UpdateScale(context.Background(), "kube-state-metrics", scale, metav1.UpdateOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Rollback to 1 replica at the end of the test.
+	defer func() {
+		scale, err := kClient.AppsV1().Deployments("monitoring").GetScale(context.Background(), "kube-state-metrics", metav1.GetOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		scale.Spec.Replicas = 1
+		_, err = kClient.AppsV1().Deployments("monitoring").UpdateScale(context.Background(), "kube-state-metrics", scale, metav1.UpdateOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+	}()
+
+	// Wait for the 2 replicas of kube-state-metrics to be successfully scraped.
+	err = wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
+		n, err := promClient.query(`up{job="kube-state-metrics"} == 1`)
+		if err != nil {
+			return false, err
+		}
+
+		if n != 2 {
+			t.Logf("expecting 2 kube-state-metrics targets, got %d", n)
+			return false, nil
+		}
+
+		return true, nil
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Wait for all rule groups to be evaluated at least once without error.
+	now := time.Now()
+	err = wait.Poll(30*time.Second, 5*time.Minute, func() (bool, error) {
+		rsp, err := promClient.apiRequest("/api/v1/rules", "type", "")
+		if err != nil {
+			return false, err
+		}
+
+		res, err := gabs.ParseJSON(rsp.Data)
+		if err != nil {
+			return false, err
+		}
+
+		groups, err := res.Path("groups").Children()
+		if err != nil {
+			return false, err
+		}
+
+		if len(groups) == 0 {
+			return false, errors.New("got 0 rule groups")
+		}
+
+		for _, group := range groups {
+			groupName := group.Path("name").Data().(string)
+			if err != nil {
+				return false, err
+			}
+
+			lastEvalString := group.Path("lastEvaluation").Data().(string)
+			lastEval, err := time.Parse(time.RFC3339Nano, lastEvalString)
+			if err != nil {
+				return false, err
+			}
+
+			if lastEval.Before(now) {
+				t.Logf("%s not yet evaluated", groupName)
+				return false, nil
+			}
+
+			rules, err := group.Path("rules").Children()
+			if err != nil {
+				return false, err
+			}
+
+			if len(rules) == 0 {
+				return false, errors.Errorf("got 0 rules in group %s", groupName)
+			}
+
+			for _, rule := range rules {
+				health := rule.Path("health").Data().(string)
+				if health != "ok" {
+					return false, errors.Errorf("error evaluating rule: %v", rule)
+				}
+			}
+		}
+
+		return true, nil
+	})
+	if err != nil {
+		t.Fatal(err)
 	}
 }

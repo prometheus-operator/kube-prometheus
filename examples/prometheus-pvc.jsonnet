@@ -1,10 +1,3 @@
-// Reference info: documentation for https://github.com/ksonnet/ksonnet-lib can be found at http://g.bryan.dev.hepti.center
-//
-local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';  // https://github.com/ksonnet/ksonnet-lib/blob/master/ksonnet.beta.3/k.libsonnet - imports k8s.libsonnet
-// * https://github.com/ksonnet/ksonnet-lib/blob/master/ksonnet.beta.3/k8s.libsonnet defines things such as "persistentVolumeClaim:: {"
-//
-local pvc = k.core.v1.persistentVolumeClaim;  // https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#persistentvolumeclaim-v1-core (defines variable named 'spec' of type 'PersistentVolumeClaimSpec')
-
 local kp =
   (import 'kube-prometheus/kube-prometheus.libsonnet') +
   // Uncomment the following imports to enable its patches
@@ -32,22 +25,22 @@ local kp =
           //  * PersistentVolumeClaim (and a corresponding PersistentVolume)
           //  * the actual volume (per the StorageClassName specified below)
           storage: {  // https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#storagespec
-            volumeClaimTemplate:  // (same link as above where the 'pvc' variable is defined)
-              pvc.new() +  // http://g.bryan.dev.hepti.center/core/v1/persistentVolumeClaim/#core.v1.persistentVolumeClaim.new
-
-              pvc.mixin.spec.withAccessModes('ReadWriteOnce') +
-
-              // https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#resourcerequirements-v1-core (defines 'requests'),
-              // and https://kubernetes.io/docs/concepts/policy/resource-quotas/#storage-resource-quota (defines 'requests.storage')
-              pvc.mixin.spec.resources.withRequests({ storage: '100Gi' }) +
-
-              // A StorageClass of the following name (which can be seen via `kubectl get storageclass` from a node in the given K8s cluster) must exist prior to kube-prometheus being deployed.
-              pvc.mixin.spec.withStorageClassName('ssd'),
-
-            // The following 'selector' is only needed if you're using manual storage provisioning (https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md#manual-storage-provisioning).
-            // And note that this is not supported/allowed by AWS - uncommenting the following 'selector' line (when deploying kube-prometheus to a K8s cluster in AWS) will cause the pvc to be stuck in the Pending status and have the following error:
-            //  * 'Failed to provision volume with StorageClass "ssd": claim.Spec.Selector is not supported for dynamic provisioning on AWS'
-            //pvc.mixin.spec.selector.withMatchLabels({}),
+            volumeClaimTemplate: {  // https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#persistentvolumeclaim-v1-core (defines variable named 'spec' of type 'PersistentVolumeClaimSpec')
+              apiVersion: 'v1',
+              kind: 'PersistentVolumeClaim',
+              spec: {
+                accessModes: ['ReadWriteOnce'],
+                // https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#resourcerequirements-v1-core (defines 'requests'),
+                // and https://kubernetes.io/docs/concepts/policy/resource-quotas/#storage-resource-quota (defines 'requests.storage')
+                resources: { requests: { storage: '100Gi' } },
+                // A StorageClass of the following name (which can be seen via `kubectl get storageclass` from a node in the given K8s cluster) must exist prior to kube-prometheus being deployed.
+                storageClassName: 'ssd',
+                // The following 'selector' is only needed if you're using manual storage provisioning (https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/storage.md#manual-storage-provisioning).
+                // And note that this is not supported/allowed by AWS - uncommenting the following 'selector' line (when deploying kube-prometheus to a K8s cluster in AWS) will cause the pvc to be stuck in the Pending status and have the following error:
+                //  * 'Failed to provision volume with StorageClass "ssd": claim.Spec.Selector is not supported for dynamic provisioning on AWS'
+                // selector: { matchLabels: {} },
+              },
+            },
           },  // storage
         },  // spec
       },  // prometheus
