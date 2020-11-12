@@ -1,6 +1,6 @@
 module github.com/prometheus-operator/kube-prometheus
 
-go 1.13
+go 1.15
 
 require (
 	github.com/Jeffail/gabs v1.4.0
