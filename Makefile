@@ -52,4 +52,4 @@ $(BIN_DIR):
 
 $(TOOLING): $(BIN_DIR)
 	@echo Installing tools from scripts/tools.go
-	@cat scripts/tools.go | grep _ | awk -F'"' '{print $$2}' | GOBIN=$(BIN_DIR) xargs -tI % go install %
+	@cat scripts/tools.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go build -o $(BIN_DIR) %
