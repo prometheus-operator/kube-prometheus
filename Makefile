@@ -10,8 +10,8 @@ JB_BIN=$(BIN_DIR)/jb
 GOJSONTOYAML_BIN=$(BIN_DIR)/gojsontoyaml
 JSONNET_BIN=$(BIN_DIR)/jsonnet
 JSONNETFMT_BIN=$(BIN_DIR)/jsonnetfmt
-KUBEVAL_BIN=$(BIN_DIR)/kubeval
-TOOLING=$(EMBEDMD_BIN) $(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETFMT_BIN) $(KUBEVAL_BIN)
+KUBECONFORM_BIN=$(BIN_DIR)/kubeconform
+TOOLING=$(EMBEDMD_BIN) $(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETFMT_BIN) $(KUBECONFORM_BIN)
 
 JSONNETFMT_ARGS=-n 2 --max-blank-lines 2 --string-style s --comment-style s
 
@@ -32,8 +32,8 @@ manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor build.sh
 	./build.sh $<
 
 .PHONY: validate
-validate: manifests $(KUBEVAL_BIN)
-	$(KUBEVAL_BIN) --ignore-missing-schemas examples/example-app/*.yaml
+validate: manifests $(KUBECONFORM_BIN)
+	$(KUBECONFORM_BIN) -ignore-missing-schemas examples/example-app/*.yaml
 
 vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor
@@ -45,7 +45,7 @@ fmt: $(JSONNETFMT_BIN)
 		xargs -n 1 -- $(JSONNETFMT_BIN) $(JSONNETFMT_ARGS) -i
 
 .PHONY: test
-test: $(JB_BIN) $(KUBEVAL_BIN) $(TEST_DIR)
+test: $(JB_BIN) $(KUBECONFORM_BIN) $(TEST_DIR)
 	$(JB_BIN) install
 	./test.sh
 
