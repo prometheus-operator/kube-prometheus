@@ -1,7 +1,5 @@
 SHELL=/bin/bash -o pipefail
 
-export GO111MODULE=on
-
 BIN_DIR?=$(shell pwd)/tmp/bin
 
 EMBEDMD_BIN=$(BIN_DIR)/embedmd
@@ -52,4 +50,4 @@ $(BIN_DIR):
 
 $(TOOLING): $(BIN_DIR)
 	@echo Installing tools from scripts/tools.go
-	@cat scripts/tools.go | grep _ | awk -F'"' '{print $$2}' | GOBIN=$(BIN_DIR) xargs -tI % go install %
+	@cd scripts && cat tools.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go build -modfile=go.mod -o $(BIN_DIR) %
