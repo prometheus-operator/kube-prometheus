@@ -13,7 +13,7 @@
           { name: 'metrics', port: 9153, targetPort: 9153 },
         ],
         selector: { 'k8s-app': 'kube-dns' },
-        cluserAPI: 'None',
+        clusterIP: 'None',
       },
     },
   },
