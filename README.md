@@ -60,6 +60,7 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
       - [Authorization problem](#authorization-problem)
     - [kube-state-metrics resource usage](#kube-state-metrics-resource-usage)
   - [Contributing](#contributing)
+  - [License](#license)
 
 ## Prerequisites
 
@@ -327,7 +328,7 @@ These are the available fields with their respective default values:
         prometheus: "quay.io/prometheus/prometheus",
         alertmanager: "quay.io/prometheus/alertmanager",
         kubeStateMetrics: "quay.io/coreos/kube-state-metrics",
-        kubeRbacProxy: "quay.io/coreos/kube-rbac-proxy",
+        kubeRbacProxy: "quay.io/brancz/kube-rbac-proxy",
         nodeExporter: "quay.io/prometheus/node-exporter",
         prometheusOperator: "quay.io/prometheus-operator/prometheus-operator",
     },
@@ -737,6 +738,8 @@ Working examples of use with continuous delivery tools are found in examples/con
 
 ## Troubleshooting
 
+See the general [guidelines](docs/community-support.md) for getting support from the community.
+
 ### Error retrieving kubelet metrics
 
 Should the Prometheus `/targets` page show kubelet targets, but not able to successfully scrape the metrics, then most likely it is a problem with the authentication and authorization setup of the kubelets.
@@ -787,3 +790,7 @@ the following process:
 3. Update the pinned kube-prometheus dependency in `jsonnetfile.lock.json`: `jb update`
 3. Generate dependent `*.yaml` files: `make generate`
 4. Commit the generated changes.
+
+## License
+
+Apache License 2.0, see [LICENSE](https://github.com/prometheus-operator/kube-prometheus/blob/master/LICENSE).
