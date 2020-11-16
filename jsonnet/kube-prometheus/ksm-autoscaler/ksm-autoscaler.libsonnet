@@ -1,12 +1,7 @@
 {
   _config+:: {
-    versions+:: {
-      clusterVerticalAutoscaler: 'v0.8.1',
-    },
-
-    imageRepos+:: {
-      clusterVerticalAutoscaler: 'gcr.io/google_containers/cpvpa-amd64',
-    },
+    versions+:: { clusterVerticalAutoscaler: '0.8.1' },
+    imageRepos+:: { clusterVerticalAutoscaler: 'gcr.io/google_containers/cpvpa-amd64' },
 
     kubeStateMetrics+:: {
       stepCPU: '1m',
@@ -88,7 +83,7 @@
       local podLabels = { app: 'ksm-autoscaler' };
       local c = {
         name: 'ksm-autoscaler',
-        image: $._config.imageRepos.clusterVerticalAutoscaler + ':' + $._config.versions.clusterVerticalAutoscaler,
+        image: $._config.imageRepos.clusterVerticalAutoscaler + ':v' + $._config.versions.clusterVerticalAutoscaler,
         args: [
           '/cpvpa',
           '--target=deployment/kube-state-metrics',
