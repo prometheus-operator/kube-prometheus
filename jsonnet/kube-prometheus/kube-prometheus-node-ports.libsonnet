@@ -1,6 +1,6 @@
 local patch(ports) = {
   spec+: {
-    ports+: ports,
+    ports: ports,
     type: 'NodePort',
   },
 };
