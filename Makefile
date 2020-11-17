@@ -33,7 +33,7 @@ manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor build.sh
 
 .PHONY: validate
 validate: manifests $(KUBECONFORM_BIN)
-	$(KUBECONFORM_BIN) -ignore-missing-schemas examples/example-app/*.yaml
+	$(KUBECONFORM_BIN) -schema-location 'https://kubernetesjsonschema.dev' -schema-location 'jsonschemas/{{ .ResourceKind }}_{{ .ResourceAPIVersion }}.json' examples/example-app/*.yaml
 
 vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor

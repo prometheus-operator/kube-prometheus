@@ -17,7 +17,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.5.1
 	github.com/spf13/pflag v1.0.3 // indirect
-	github.com/yannh/kubeconform v0.3.1 // indirect
+	github.com/yannh/kubeconform v0.4.0 // indirect
 	golang.org/x/crypto v0.0.0-20190411191339-88737f569e3a // indirect
 	golang.org/x/oauth2 v0.0.0-20190402181905-9f3314589c9a // indirect
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
