@@ -93,3 +93,4 @@ spec:
   updateStrategy:
     rollingUpdate:
       maxUnavailable: 10%
+    type: RollingUpdate
