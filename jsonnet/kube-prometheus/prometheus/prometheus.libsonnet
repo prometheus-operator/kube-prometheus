@@ -1,3 +1,5 @@
+local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet';
+
 {
   _config+:: {
     namespace: 'default',
@@ -291,7 +293,7 @@
             honorLabels: true,
             tlsConfig: { insecureSkipVerify: true },
             bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-            metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet'),
+            metricRelabelings: relabelings,
             relabelings: [{
               sourceLabels: ['__metrics_path__'],
               targetLabel: 'metrics_path',
@@ -363,7 +365,7 @@
           tlsConfig: {
             insecureSkipVerify: true,
           },
-          metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
+          metricRelabelings: relabelings + [
             {
               sourceLabels: ['__name__'],
               regex: 'etcd_(debugging|disk|request|server).*',
@@ -408,7 +410,7 @@
             serverName: 'kubernetes',
           },
           bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-          metricRelabelings: (import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet') + [
+          metricRelabelings: relabelings + [
             {
               sourceLabels: ['__name__'],
               regex: 'etcd_(debugging|disk|server).*',
