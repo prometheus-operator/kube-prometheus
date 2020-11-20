@@ -1,5 +1,3 @@
-local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
-
 (import 'github.com/etcd-io/etcd/Documentation/etcd-mixin/mixin.libsonnet') + {
   _config+:: {
     etcd: {
@@ -28,23 +26,23 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
       },
     },
     endpointsEtcd: {
-        apiVersion: 'v1',
-        kind: 'Endpoints',
-        metadata: {
-          name: 'etcd',
-          namespace: 'kube-system',
-          labels: { 'k8s-app': 'etcd' },
-        },
-        subsets: [{
-          addresses: [
-            { ip: etcdIP }
-            for etcdIP in $._config.etcd.ips
-          ],
-          ports: [
-            { name: 'metrics', port: 2379, protocol: 'TCP' },
-          ],
-        }],
+      apiVersion: 'v1',
+      kind: 'Endpoints',
+      metadata: {
+        name: 'etcd',
+        namespace: 'kube-system',
+        labels: { 'k8s-app': 'etcd' },
       },
+      subsets: [{
+        addresses: [
+          { ip: etcdIP }
+          for etcdIP in $._config.etcd.ips
+        ],
+        ports: [
+          { name: 'metrics', port: 2379, protocol: 'TCP' },
+        ],
+      }],
+    },
     serviceMonitorEtcd: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
@@ -94,12 +92,11 @@ local k = import 'github.com/ksonnet/ksonnet-lib/ksonnet.beta.4/k.libsonnet';
         'etcd-client.crt': std.base64($._config.etcd.clientCert),
       },
     },
-    prometheus+:
-      {
-        // Reference info: https://coreos.com/operators/prometheus/docs/latest/api.html#prometheusspec
-        spec+: {
-          secrets+: [$.prometheus.secretEtcdCerts.metadata.name],
-        },
+    prometheus+: {
+      // Reference info: https://coreos.com/operators/prometheus/docs/latest/api.html#prometheusspec
+      spec+: {
+        secrets+: [$.prometheus.secretEtcdCerts.metadata.name],
       },
+    },
   },
 }
