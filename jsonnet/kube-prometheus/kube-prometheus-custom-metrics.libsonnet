@@ -133,7 +133,6 @@
       metadata: {
         name: 'custom-metrics-server-resources',
       },
-
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
         kind: 'ClusterRole',
@@ -151,7 +150,6 @@
       metadata: {
         name: 'hpa-controller-custom-metrics',
       },
-
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
         kind: 'ClusterRole',
