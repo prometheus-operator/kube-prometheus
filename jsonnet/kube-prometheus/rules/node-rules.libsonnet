@@ -5,7 +5,7 @@
         name: 'kube-prometheus-node-recording.rules',
         rules: [
           {
-            expr: 'sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[3m])) BY (instance)',
+            expr: 'sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal"}[3m])) BY (instance)',
             record: 'instance:node_cpu:rate:sum',
           },
           {
@@ -17,11 +17,11 @@
             record: 'instance:node_network_transmit_bytes:rate:sum',
           },
           {
-            expr: 'sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[5m])) WITHOUT (cpu, mode) / ON(instance) GROUP_LEFT() count(sum(node_cpu_seconds_total) BY (instance, cpu)) BY (instance)',
+            expr: 'sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal"}[5m])) WITHOUT (cpu, mode) / ON(instance) GROUP_LEFT() count(sum(node_cpu_seconds_total) BY (instance, cpu)) BY (instance)',
             record: 'instance:node_cpu:ratio',
           },
           {
-            expr: 'sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait"}[5m]))',
+            expr: 'sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal"}[5m]))',
             record: 'cluster:node_cpu:sum_rate5m',
           },
           {
