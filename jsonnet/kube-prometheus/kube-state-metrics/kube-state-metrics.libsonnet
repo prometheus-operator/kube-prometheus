@@ -15,7 +15,7 @@ local ksm = import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-
     },
   },
   kubeStateMetrics+::
-    ksm + {
+    ksm {
       local version = self.version,
       name:: 'kube-state-metrics',
       namespace:: $._config.namespace,
@@ -100,33 +100,33 @@ local ksm = import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-
             ],
           },
         },
-      } +
-      (kubeRbacProxyContainer {
-        config+:: {
-          kubeRbacProxy: {
-            local cfg = self,
-            image: $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy,
-            name: 'kube-rbac-proxy-main',
-            securePortName: 'https-main',
-            securePort: 8443,
-            secureListenAddress: ':%d' % self.securePort,
-            upstream: 'http://127.0.0.1:8081/',
-            tlsCipherSuites: $._config.tlsCipherSuites,
-          },
-        },
-      }).deploymentMixin +
-      (kubeRbacProxyContainer {
-        config+:: {
-          kubeRbacProxy: {
-            local cfg = self,
-            image: $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy,
-            name: 'kube-rbac-proxy-self',
-            securePortName: 'https-self',
-            securePort: 9443,
-            secureListenAddress: ':%d' % self.securePort,
-            upstream: 'http://127.0.0.1:8082/',
-            tlsCipherSuites: $._config.tlsCipherSuites,
-          },
-        },
-      }).deploymentMixin,
+    } +
+    (kubeRbacProxyContainer {
+       config+:: {
+         kubeRbacProxy: {
+           local cfg = self,
+           image: $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy,
+           name: 'kube-rbac-proxy-main',
+           securePortName: 'https-main',
+           securePort: 8443,
+           secureListenAddress: ':%d' % self.securePort,
+           upstream: 'http://127.0.0.1:8081/',
+           tlsCipherSuites: $._config.tlsCipherSuites,
+         },
+       },
+     }).deploymentMixin +
+    (kubeRbacProxyContainer {
+       config+:: {
+         kubeRbacProxy: {
+           local cfg = self,
+           image: $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy,
+           name: 'kube-rbac-proxy-self',
+           securePortName: 'https-self',
+           securePort: 9443,
+           secureListenAddress: ':%d' % self.securePort,
+           upstream: 'http://127.0.0.1:8082/',
+           tlsCipherSuites: $._config.tlsCipherSuites,
+         },
+       },
+     }).deploymentMixin,
 }

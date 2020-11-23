@@ -98,52 +98,50 @@
       },
     },
 
-    serviceMonitor:
-      {
-        apiVersion: 'monitoring.coreos.com/v1',
-        kind: 'ServiceMonitor',
-        metadata: {
-          name: 'alertmanager',
-          namespace: $._config.namespace,
-          labels: {
-            'k8s-app': 'alertmanager',
-          },
-        },
-        spec: {
-          selector: {
-            matchLabels: {
-              alertmanager: $._config.alertmanager.name,
-            },
-          },
-          endpoints: [
-            { port: 'web', interval: '30s' },
-          ],
+    serviceMonitor: {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'ServiceMonitor',
+      metadata: {
+        name: 'alertmanager',
+        namespace: $._config.namespace,
+        labels: {
+          'k8s-app': 'alertmanager',
         },
       },
-
-    alertmanager:
-      {
-        apiVersion: 'monitoring.coreos.com/v1',
-        kind: 'Alertmanager',
-        metadata: {
-          name: $._config.alertmanager.name,
-          namespace: $._config.namespace,
-          labels: {
+      spec: {
+        selector: {
+          matchLabels: {
             alertmanager: $._config.alertmanager.name,
           },
         },
-        spec: {
-          replicas: $._config.alertmanager.replicas,
-          version: $._config.versions.alertmanager,
-          image: $._config.imageRepos.alertmanager + ':' + $._config.versions.alertmanager,
-          nodeSelector: { 'kubernetes.io/os': 'linux' },
-          serviceAccountName: 'alertmanager-' + $._config.alertmanager.name,
-          securityContext: {
-            runAsUser: 1000,
-            runAsNonRoot: true,
-            fsGroup: 2000,
-          },
+        endpoints: [
+          { port: 'web', interval: '30s' },
+        ],
+      },
+    },
+
+    alertmanager: {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'Alertmanager',
+      metadata: {
+        name: $._config.alertmanager.name,
+        namespace: $._config.namespace,
+        labels: {
+          alertmanager: $._config.alertmanager.name,
         },
       },
+      spec: {
+        replicas: $._config.alertmanager.replicas,
+        version: $._config.versions.alertmanager,
+        image: $._config.imageRepos.alertmanager + ':' + $._config.versions.alertmanager,
+        nodeSelector: { 'kubernetes.io/os': 'linux' },
+        serviceAccountName: 'alertmanager-' + $._config.alertmanager.name,
+        securityContext: {
+          runAsUser: 1000,
+          runAsNonRoot: true,
+          fsGroup: 2000,
+        },
+      },
+    },
   },
 }
