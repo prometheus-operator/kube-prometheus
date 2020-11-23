@@ -103,6 +103,11 @@
           { name: 'https', containerPort: $._config.nodeExporter.port, hostPort: $._config.nodeExporter.port },
         ],
         resources: $._config.resources['kube-rbac-proxy'],
+        securityContext: {
+          runAsUser: 65532,
+          runAsGroup: 65532,
+          runAsNonRoot: true,
+        },
       };
 
       {
