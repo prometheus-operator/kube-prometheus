@@ -36,7 +36,9 @@ spec:
         - containerPort: 8443
           name: https-main
         securityContext:
-          runAsUser: 65534
+          runAsGroup: 65532
+          runAsNonRoot: true
+          runAsUser: 65532
       - args:
         - --logtostderr
         - --secure-listen-address=:9443
@@ -48,7 +50,9 @@ spec:
         - containerPort: 9443
           name: https-self
         securityContext:
-          runAsUser: 65534
+          runAsGroup: 65532
+          runAsNonRoot: true
+          runAsUser: 65532
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: kube-state-metrics
