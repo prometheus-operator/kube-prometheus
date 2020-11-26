@@ -146,6 +146,8 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
       'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305',
     ],
 
+    runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
+
     cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
     kubeletSelector: 'job="kubelet", metrics_path="/metrics"',
     kubeStateMetricsSelector: 'job="kube-state-metrics"',
