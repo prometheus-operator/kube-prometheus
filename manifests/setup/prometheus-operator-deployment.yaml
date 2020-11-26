@@ -50,7 +50,9 @@ spec:
         - containerPort: 8443
           name: https
         securityContext:
-          runAsUser: 65534
+          runAsGroup: 65532
+          runAsNonRoot: true
+          runAsUser: 65532
       nodeSelector:
         beta.kubernetes.io/os: linux
       securityContext:

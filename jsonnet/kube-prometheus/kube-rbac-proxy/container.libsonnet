@@ -41,7 +41,9 @@
               { name: krp.config.kubeRbacProxy.securePortName, containerPort: krp.config.kubeRbacProxy.securePort },
             ],
             securityContext: {
-              runAsUser: 65534,
+              runAsUser: 65532,
+              runAsGroup: 65532,
+              runAsNonRoot: true,
             },
           }],
         },
