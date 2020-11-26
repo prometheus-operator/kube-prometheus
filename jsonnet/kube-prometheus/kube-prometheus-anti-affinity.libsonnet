@@ -4,6 +4,7 @@
       podAntiAffinity: {
         preferredDuringSchedulingIgnoredDuringExecution: [
           {
+            weight: 100,
             podAffinityTerm: {
               namespaces: [namespace],
               topologyKey: 'kubernetes.io/hostname',
@@ -14,7 +15,6 @@
                   values: values,
                 }],
               },
-              weight: 100,
             },
           },
         ],
