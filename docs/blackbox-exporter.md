@@ -4,12 +4,8 @@ The `prometheus-operator` defines a `Probe` resource type that can be used to de
 
 ## Adding blackbox exporter manifests to an existing `kube-prometheus` configuration
 
-1. Add the blackbox exporter mixin to the list of imports:
-```
-(import 'kube-prometheus/blackbox-exporter/blackbox-exporter.libsonnet')
-```
-2. Override blackbox-related configuration parameters as needed.
-3. Add the following to the list of renderers to render the blackbox exporter manifests:
+1. Override blackbox-related configuration parameters as needed.
+2. Add the following to the list of renderers to render the blackbox exporter manifests:
 ```
 { ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) }
 ```
@@ -35,7 +31,6 @@ The `prometheus-operator` defines a `Probe` resource type that can be used to de
 ```jsonnet
 local kp =
   (import 'kube-prometheus/kube-prometheus.libsonnet') +
-  (import 'kube-prometheus/blackbox-exporter/blackbox-exporter.libsonnet')
   {
     _config+:: {
       namespace: 'monitoring',

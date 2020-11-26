@@ -734,8 +734,7 @@ See [exposing Prometheus/Alertmanager/Grafana](docs/exposing-prometheus-alertman
 
 ```jsonnet
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           // ... other necessary mixins ...
-           (import 'kube-prometheus/blackbox-exporter/blackbox-exporter.libsonnet') +
+           // ... all necessary mixins ...
   {
     _config+:: {
       // ... configuration for other features ...
