@@ -194,6 +194,7 @@
           kind: 'ServiceMonitor',
           metadata: {
             name: 'blackbox-exporter',
+            namespace: $._config.namespace,
             labels: bb.assignLabels
           },
           spec: {
