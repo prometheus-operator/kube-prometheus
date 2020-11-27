@@ -82,6 +82,15 @@
       },
       "version": "release-2.22",
       "name": "prometheus"
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/thanos-io/thanos",
+          "subdir": "mixin"
+        }
+      },
+      "version": "release-0.17"
     }
   ],
   "legacyImports": true
