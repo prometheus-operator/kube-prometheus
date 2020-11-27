@@ -135,6 +135,16 @@
     },
     {
       "source": {
+        "git": {
+          "remote": "https://github.com/thanos-io/thanos.git",
+          "subdir": "mixin"
+        }
+      },
+      "version": "f6ffb89898a966d87dcc2ad4a0bc6c0db1e61a0b",
+      "sum": "OptiWUMOHFrRGTZhSfxV1RCeXZ90qsefGNTD4lDYVG0="
+    },
+    {
+      "source": {
         "local": {
           "directory": "jsonnet/kube-prometheus"
         }

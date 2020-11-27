@@ -1,3 +1,4 @@
+(import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') +
 {
   _config+:: {
     versions+:: { thanos: 'v0.14.0' },
