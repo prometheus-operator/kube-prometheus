@@ -10,6 +10,8 @@
     },
   },
   prometheus+:: {
+    local p = self,
+
     // Add the grpc port to the Prometheus service to be able to query it with the Thanos Querier
     service+: {
       spec+: {
@@ -23,16 +25,16 @@
       apiVersion: 'v1',
       kind: 'Service',
       metadata: {
-        name: 'prometheus-' + $._config.prometheus.name + '-thanos-sidecar',
-        namespace: $._config.namespace,
-        labels: { prometheus: $._config.prometheus.name, app: 'thanos-sidecar' },
+        name: 'prometheus-' + p.name + '-thanos-sidecar',
+        namespace: p.namespace,
+        labels: { prometheus: p.name, app: 'thanos-sidecar' },
       },
       spec: {
         ports: [
           { name: 'grpc', port: 10901, targetPort: 10901 },
           { name: 'http', port: 10902, targetPort: 10902 },
         ],
-        selector: { app: 'prometheus', prometheus: $._config.prometheus.name },
+        selector: { app: 'prometheus', prometheus: p.name },
         clusterIP: 'None',
       },
     },
@@ -51,7 +53,7 @@
         kind: 'ServiceMonitor',
         metadata: {
           name: 'thanos-sidecar',
-          namespace: $._config.namespace,
+          namespace: p.namespace,
           labels: {
             'k8s-app': 'prometheus',
           },
@@ -61,7 +63,7 @@
           jobLabel: 'app',
           selector: {
             matchLabels: {
-              prometheus: $._config.prometheus.name,
+              prometheus: p.name,
               app: 'thanos-sidecar',
             },
           },
