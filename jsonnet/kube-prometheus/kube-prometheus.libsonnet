@@ -114,7 +114,7 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
   _config+:: {
     namespace: 'default',
 
-    versions+:: { grafana: '7.1.5', kubeRbacProxy: 'v0.8.0' },
+    versions+:: { grafana: '7.3.4', kubeRbacProxy: 'v0.8.0' },
     imageRepos+:: { kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy' },
 
     tlsCipherSuites: [
