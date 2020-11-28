@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: blackbox-exporter
+    app.kubernetes.io/version: v0.18.0
+  name: blackbox-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: blackbox-exporter
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: blackbox-exporter
+        app.kubernetes.io/version: v0.18.0
+    spec:
+      containers:
+      - image: quay.io/prometheus/blackbox-exporter:v0.18.0
+        name: blackbox-exporter
+        ports:
+        - containerPort: 9115
+          name: http
+        resources:
+          limits:
+            cpu: 20m
+            memory: 40Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65534
+        volumeMounts:
+        - mountPath: /etc/blackbox_exporter/
+          name: config
+          readOnly: true
+      - args:
+        - --webhook-url=http://localhost:9115/-/reload
+        - --volume-dir=/etc/blackbox_exporter/
+        image: jimmidyson/configmap-reload:v0.4.0
+        name: module-configmap-reloader
+        resources:
+          limits:
+            cpu: 20m
+            memory: 40Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 65534
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: FallbackToLogsOnError
+        volumeMounts:
+        - mountPath: /etc/blackbox_exporter/
+          name: config
+          readOnly: true
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: blackbox-exporter
+      volumes:
+      - configMap:
+          name: blackbox-exporter-configuration
+        name: config

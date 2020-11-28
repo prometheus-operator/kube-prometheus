@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: blackbox-exporter
+    app.kubernetes.io/version: v0.18.0
+  name: blackbox-exporter
+  namespace: monitoring
+spec:
+  endpoints:
+  - interval: 30s
+    path: /metrics
+    port: http
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: blackbox-exporter

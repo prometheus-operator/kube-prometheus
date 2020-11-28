@@ -6,6 +6,11 @@ resources:
 - ./manifests/alertmanager-service.yaml
 - ./manifests/alertmanager-serviceAccount.yaml
 - ./manifests/alertmanager-serviceMonitor.yaml
+- ./manifests/blackbox-exporter-configuration.yaml
+- ./manifests/blackbox-exporter-deployment.yaml
+- ./manifests/blackbox-exporter-service.yaml
+- ./manifests/blackbox-exporter-serviceAccount.yaml
+- ./manifests/blackbox-exporter-serviceMonitor.yaml
 - ./manifests/grafana-dashboardDatasources.yaml
 - ./manifests/grafana-dashboardDefinitions.yaml
 - ./manifests/grafana-dashboardSources.yaml
