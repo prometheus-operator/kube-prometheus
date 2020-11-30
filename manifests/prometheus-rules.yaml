@@ -1299,6 +1299,14 @@ spec:
           !=
         kube_hpa_status_current_replicas{job="kube-state-metrics"})
           and
+        (kube_hpa_status_current_replicas{job="kube-state-metrics"}
+          >
+        kube_hpa_spec_min_replicas{job="kube-state-metrics"})
+          and
+        (kube_hpa_status_current_replicas{job="kube-state-metrics"}
+          <
+        kube_hpa_spec_max_replicas{job="kube-state-metrics"})
+          and
         changes(kube_hpa_status_current_replicas[15m]) == 0
       for: 15m
       labels:
@@ -1368,7 +1376,7 @@ spec:
       expr: |
         sum(kube_resourcequota{job="kube-state-metrics", type="hard", resource="memory"})
           /
-        sum(kube_node_status_allocatable_memory_bytes{job="node-exporter"})
+        sum(kube_node_status_allocatable_memory_bytes{job="kube-state-metrics"})
           > 1.5
       for: 5m
       labels:
