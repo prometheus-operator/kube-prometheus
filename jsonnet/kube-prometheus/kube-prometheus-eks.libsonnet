@@ -72,7 +72,7 @@
         name: 'kube-prometheus-eks.rules',
         rules: [
           {
-            expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % $._config.eks.minimumAvailableIPs,
+            expr: 'sum by(instance) (awscni_ip_max) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % $._config.eks.minimumAvailableIPs,
             labels: {
               severity: 'critical',
             },
