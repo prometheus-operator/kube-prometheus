@@ -29,12 +29,12 @@
     },
   },
 
-  prometheus+: {
+  prometheus+:: {
     local p = self,
 
     prometheus+: {
       spec+:
-        antiaffinity('prometheus', [p.name], p.namespace),
+        antiaffinity('prometheus', [$._config.prometheus.name], $._config.namespace),
     },
   },
 }
