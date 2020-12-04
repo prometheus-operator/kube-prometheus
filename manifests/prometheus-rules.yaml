@@ -1019,6 +1019,115 @@ spec:
         node_md_disks{state="fail"} > 0
       labels:
         severity: warning
+  - name: alertmanager.rules
+    rules:
+    - alert: AlertmanagerFailedReload
+      annotations:
+        description: Configuration has failed to load for {{ $labels.namespace }}/{{ $labels.pod}}.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/alertmanagerfailedreload
+        summary: Reloading an Alertmanager configuration has failed.
+      expr: |
+        # Without max_over_time, failed scrapes could create false negatives, see
+        # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
+        max_over_time(alertmanager_config_last_reload_successful{job="alertmanager-main",namespace="monitoring"}[5m]) == 0
+      for: 10m
+      labels:
+        severity: critical
+    - alert: AlertmanagerMembersInconsistent
+      annotations:
+        description: Alertmanager {{ $labels.namespace }}/{{ $labels.pod}} has only found {{ $value }} members of the {{$labels.job}} cluster.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/alertmanagermembersinconsistent
+        summary: A member of an Alertmanager cluster has not found all other cluster members.
+      expr: |
+        # Without max_over_time, failed scrapes could create false negatives, see
+        # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
+          max_over_time(alertmanager_cluster_members{job="alertmanager-main",namespace="monitoring"}[5m])
+        < on (namespace,service) group_left
+          count by (namespace,service) (max_over_time(alertmanager_cluster_members{job="alertmanager-main",namespace="monitoring"}[5m]))
+      for: 10m
+      labels:
+        severity: critical
+    - alert: AlertmanagerFailedToSendAlerts
+      annotations:
+        description: Alertmanager {{ $labels.namespace }}/{{ $labels.pod}} failed to send {{ $value | humanizePercentage }} of notifications to {{ $labels.integration }}.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/alertmanagerfailedtosendalerts
+        summary: An Alertmanager instance failed to send notifications.
+      expr: |
+        (
+          rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring"}[5m])
+        /
+          rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring"}[5m])
+        )
+        > 0.01
+      for: 5m
+      labels:
+        severity: warning
+    - alert: AlertmanagerClusterFailedToSendAlerts
+      annotations:
+        description: The minimum notification failure rate to {{ $labels.integration }} sent from any instance in the {{$labels.job}} cluster is {{ $value | humanizePercentage }}.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/alertmanagerclusterfailedtosendalerts
+        summary: All Alertmanager instances in a cluster failed to send notifications.
+      expr: |
+        min by (namespace,service) (
+          rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring"}[5m])
+        /
+          rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring"}[5m])
+        )
+        > 0.01
+      for: 5m
+      labels:
+        severity: critical
+    - alert: AlertmanagerConfigInconsistent
+      annotations:
+        description: Alertmanager instances within the {{$labels.job}} cluster have different configurations.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/alertmanagerconfiginconsistent
+        summary: Alertmanager instances within the same cluster have different configurations.
+      expr: |
+        count by (namespace,service) (
+          count_values by (namespace,service) ("config_hash", alertmanager_config_hash{job="alertmanager-main",namespace="monitoring"})
+        )
+        != 1
+      for: 20m
+      labels:
+        severity: critical
+    - alert: AlertmanagerClusterDown
+      annotations:
+        description: '{{ $value | humanizePercentage }} of Alertmanager instances within the {{$labels.job}} cluster have been up for less than half of the last 5m.'
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/alertmanagerclusterdown
+        summary: Half or more of the Alertmanager instances within the same cluster are down.
+      expr: |
+        (
+          count by (namespace,service) (
+            avg_over_time(up{job="alertmanager-main",namespace="monitoring"}[5m]) < 0.5
+          )
+        /
+          count by (namespace,service) (
+            up{job="alertmanager-main",namespace="monitoring"}
+          )
+        )
+        >= 0.5
+      for: 5m
+      labels:
+        severity: critical
+    - alert: AlertmanagerClusterCrashlooping
+      annotations:
+        description: '{{ $value | humanizePercentage }} of Alertmanager instances within the {{$labels.job}} cluster have restarted at least 5 times in the last 10m.'
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/alertmanagerclustercrashlooping
+        summary: Half or more of the Alertmanager instances within the same cluster are crashlooping.
+      expr: |
+        (
+          count by (namespace,service) (
+            changes(process_start_time_seconds{job="alertmanager-main",namespace="monitoring"}[10m]) > 4
+          )
+        /
+          count by (namespace,service) (
+            up{job="alertmanager-main",namespace="monitoring"}
+          )
+        )
+        >= 0.5
+      for: 5m
+      labels:
+        severity: critical
   - name: prometheus-operator
     rules:
     - alert: PrometheusOperatorListErrors
@@ -1955,38 +2064,6 @@ spec:
       for: 15m
       labels:
         severity: warning
-  - name: alertmanager.rules
-    rules:
-    - alert: AlertmanagerConfigInconsistent
-      annotations:
-        message: |
-          The configuration of the instances of the Alertmanager cluster `{{ $labels.namespace }}/{{ $labels.service }}` are out of sync.
-          {{ range printf "alertmanager_config_hash{namespace=\"%s\",service=\"%s\"}" $labels.namespace $labels.service | query }}
-          Configuration hash for pod {{ .Labels.pod }} is "{{ printf "%.f" .Value }}"
-          {{ end }}
-      expr: |
-        count by(namespace,service) (count_values by(namespace,service) ("config_hash", alertmanager_config_hash{job="alertmanager-main",namespace="monitoring"})) != 1
-      for: 5m
-      labels:
-        severity: critical
-    - alert: AlertmanagerFailedReload
-      annotations:
-        message: Reloading Alertmanager's configuration has failed for {{ $labels.namespace }}/{{ $labels.pod}}.
-      expr: |
-        alertmanager_config_last_reload_successful{job="alertmanager-main",namespace="monitoring"} == 0
-      for: 10m
-      labels:
-        severity: warning
-    - alert: AlertmanagerMembersInconsistent
-      annotations:
-        message: Alertmanager has not found all other members of the cluster.
-      expr: |
-        alertmanager_cluster_members{job="alertmanager-main",namespace="monitoring"}
-          != on (service) GROUP_LEFT()
-        count by (service) (alertmanager_cluster_members{job="alertmanager-main",namespace="monitoring"})
-      for: 5m
-      labels:
-        severity: critical
   - name: general.rules
     rules:
     - alert: TargetDown
