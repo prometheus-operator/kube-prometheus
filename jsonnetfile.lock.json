@@ -115,6 +115,17 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/prometheus/alertmanager.git",
+          "subdir": "doc/alertmanager-mixin"
+        }
+      },
+      "version": "193ebba04d1e70d971047e983a0b489112610460",
+      "sum": "QcftU7gjCQyj7B6M4YJeCAeaPd0kwxd4J4rolo7AnLE=",
+      "name": "alertmanager"
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/prometheus/node_exporter.git",
           "subdir": "docs/node-mixin"
         }
