@@ -6,6 +6,7 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
 (import './node-exporter/node-exporter.libsonnet') +
 (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
 (import './alertmanager/alertmanager.libsonnet') +
+(import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') +
 (import './prometheus/prometheus.libsonnet') +
@@ -160,6 +161,8 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
     coreDNSSelector: 'job="kube-dns"',
     podLabel: 'pod',
 
+    alertmanagerName: '{{ $labels.namespace }}/{{ $labels.pod}}',
+    alertmanagerClusterLabels: 'namespace,service',
     alertmanagerSelector: 'job="alertmanager-' + $._config.alertmanager.name + '",namespace="' + $._config.namespace + '"',
     prometheusSelector: 'job="prometheus-' + $._config.prometheus.name + '",namespace="' + $._config.namespace + '"',
     prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',

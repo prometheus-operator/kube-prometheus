@@ -86,6 +86,16 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/prometheus/alertmanager",
+          "subdir": "doc/alertmanager-mixin"
+        }
+      },
+      "version": "master",
+      "name": "alertmanager"
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/thanos-io/thanos",
           "subdir": "mixin"
         }
