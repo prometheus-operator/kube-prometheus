@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.4
+    controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
   name: alertmanagers.monitoring.coreos.com
 spec:
@@ -454,6 +454,15 @@ spec:
               clusterAdvertiseAddress:
                 description: 'ClusterAdvertiseAddress is the explicit address to advertise in cluster. Needs to be provided for non RFC1918 [1] (public) addresses. [1] RFC1918: https://tools.ietf.org/html/rfc1918'
                 type: string
+              clusterGossipInterval:
+                description: Interval between gossip attempts.
+                type: string
+              clusterPeerTimeout:
+                description: Timeout for cluster peering.
+                type: string
+              clusterPushpullInterval:
+                description: Interval between pushpull attempts.
+                type: string
               configMaps:
                 description: ConfigMaps is a list of ConfigMaps in the same namespace as the Alertmanager object, which shall be mounted into the Alertmanager Pods. The ConfigMaps are mounted into /etc/alertmanager/configmaps/<configmap-name>.
                 items:
@@ -525,8 +534,12 @@ spec:
                                     description: 'Container name: required for volumes, optional for env vars'
                                     type: string
                                   divisor:
+                                    anyOf:
+                                    - type: integer
+                                    - type: string
                                     description: Specifies the output format of the exposed resources, defaults to "1"
-                                    type: string
+                                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                    x-kubernetes-int-or-string: true
                                   resource:
                                     description: 'Required: resource to select'
                                     type: string
@@ -831,12 +844,17 @@ spec:
                             description: If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services.
                             type: string
                           protocol:
+                            default: TCP
                             description: Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP".
                             type: string
                         required:
                         - containerPort
                         type: object
                       type: array
+                      x-kubernetes-list-map-keys:
+                      - containerPort
+                      - protocol
+                      x-kubernetes-list-type: map
                     readinessProbe:
                       description: 'Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
                       properties:
@@ -927,12 +945,20 @@ spec:
                       properties:
                         limits:
                           additionalProperties:
-                            type: string
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
                           description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                           type: object
                         requests:
                           additionalProperties:
-                            type: string
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
                           description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                           type: object
                       type: object
@@ -1241,8 +1267,12 @@ spec:
                                     description: 'Container name: required for volumes, optional for env vars'
                                     type: string
                                   divisor:
+                                    anyOf:
+                                    - type: integer
+                                    - type: string
                                     description: Specifies the output format of the exposed resources, defaults to "1"
-                                    type: string
+                                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                    x-kubernetes-int-or-string: true
                                   resource:
                                     description: 'Required: resource to select'
                                     type: string
@@ -1547,12 +1577,17 @@ spec:
                             description: If specified, this must be an IANA_SVC_NAME and unique within the pod. Each named port in a pod must have a unique name. Name for the port that can be referred to by services.
                             type: string
                           protocol:
+                            default: TCP
                             description: Protocol for port. Must be UDP, TCP, or SCTP. Defaults to "TCP".
                             type: string
                         required:
                         - containerPort
                         type: object
                       type: array
+                      x-kubernetes-list-map-keys:
+                      - containerPort
+                      - protocol
+                      x-kubernetes-list-type: map
                     readinessProbe:
                       description: 'Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes'
                       properties:
@@ -1643,12 +1678,20 @@ spec:
                       properties:
                         limits:
                           additionalProperties:
-                            type: string
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
                           description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                           type: object
                         requests:
                           additionalProperties:
-                            type: string
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
                           description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                           type: object
                       type: object
@@ -1890,7 +1933,7 @@ spec:
                 description: Define which Nodes the Pods are scheduled on.
                 type: object
               paused:
-                description: If set to true all actions on the underlaying managed objects are not goint to be performed, except for delete actions.
+                description: If set to true all actions on the underlying managed objects are not goint to be performed, except for delete actions.
                 type: boolean
               podMetadata:
                 description: PodMetadata configures Labels and Annotations which are propagated to the alertmanager pods.
@@ -1924,12 +1967,20 @@ spec:
                 properties:
                   limits:
                     additionalProperties:
-                      type: string
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
                     description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                     type: object
                   requests:
                     additionalProperties:
-                      type: string
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
                     description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                     type: object
                 type: object
@@ -2036,8 +2087,12 @@ spec:
                         description: 'What type of storage medium should back this directory. The default is "" which means to use the node''s default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir'
                         type: string
                       sizeLimit:
+                        anyOf:
+                        - type: integer
+                        - type: string
                         description: 'Total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir'
-                        type: string
+                        pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                        x-kubernetes-int-or-string: true
                     type: object
                   volumeClaimTemplate:
                     description: A PVC spec to be used by the Prometheus StatefulSets.
@@ -2094,12 +2149,20 @@ spec:
                             properties:
                               limits:
                                 additionalProperties:
-                                  type: string
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                  x-kubernetes-int-or-string: true
                                 description: 'Limits describes the maximum amount of compute resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                                 type: object
                               requests:
                                 additionalProperties:
-                                  type: string
+                                  anyOf:
+                                  - type: integer
+                                  - type: string
+                                  pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                  x-kubernetes-int-or-string: true
                                 description: 'Requests describes the minimum amount of compute resources required. If Requests is omitted for a container, it defaults to Limits if that is explicitly specified, otherwise to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
                                 type: object
                             type: object
@@ -2153,7 +2216,11 @@ spec:
                             type: array
                           capacity:
                             additionalProperties:
-                              type: string
+                              anyOf:
+                              - type: integer
+                              - type: string
+                              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                              x-kubernetes-int-or-string: true
                             description: Represents the actual resources of the underlying volume.
                             type: object
                           conditions:
@@ -2515,8 +2582,12 @@ spec:
                                     description: 'Container name: required for volumes, optional for env vars'
                                     type: string
                                   divisor:
+                                    anyOf:
+                                    - type: integer
+                                    - type: string
                                     description: Specifies the output format of the exposed resources, defaults to "1"
-                                    type: string
+                                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                    x-kubernetes-int-or-string: true
                                   resource:
                                     description: 'Required: resource to select'
                                     type: string
@@ -2535,8 +2606,12 @@ spec:
                           description: 'What type of storage medium should back this directory. The default is "" which means to use the node''s default medium. Must be an empty string (default) or Memory. More info: https://kubernetes.io/docs/concepts/storage/volumes#emptydir'
                           type: string
                         sizeLimit:
+                          anyOf:
+                          - type: integer
+                          - type: string
                           description: 'Total amount of local storage required for this EmptyDir volume. The size limit is also applicable for memory medium. The maximum usage on memory medium EmptyDir would be the minimum value between the SizeLimit specified here and the sum of memory limits of all containers in a pod. The default is nil which means that the limit is undefined. More info: http://kubernetes.io/docs/user-guide/volumes#emptydir'
-                          type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
                       type: object
                     fc:
                       description: FC represents a Fibre Channel resource that is attached to a kubelet's host machine and then exposed to the pod.
@@ -2843,8 +2918,12 @@ spec:
                                               description: 'Container name: required for volumes, optional for env vars'
                                               type: string
                                             divisor:
+                                              anyOf:
+                                              - type: integer
+                                              - type: string
                                               description: Specifies the output format of the exposed resources, defaults to "1"
-                                              type: string
+                                              pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                              x-kubernetes-int-or-string: true
                                             resource:
                                               description: 'Required: resource to select'
                                               type: string
@@ -3099,7 +3178,7 @@ spec:
                 format: int32
                 type: integer
               paused:
-                description: Represents whether any actions on the underlaying managed objects are being performed. Only delete actions will be performed.
+                description: Represents whether any actions on the underlying managed objects are being performed. Only delete actions will be performed.
                 type: boolean
               replicas:
                 description: Total number of non-terminated pods targeted by this Alertmanager cluster (their labels match the selector).
