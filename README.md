@@ -79,7 +79,7 @@ This adapter is an Extension API Server and Kubernetes needs to be have this fea
 To try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
 
 ```shell
-$ minikube delete && minikube start --kubernetes-version=v1.19.0 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
+$ minikube delete && minikube start --kubernetes-version=v1.20.0 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
 ```
 
 The kube-prometheus stack includes a resource metrics API server, so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:
@@ -94,19 +94,19 @@ $ minikube addons disable metrics-server
 
 The following versions are supported and work as we test against these versions in their respective branches. But note that other versions might work!
 
-| kube-prometheus stack | Kubernetes 1.14 | Kubernetes 1.15 | Kubernetes 1.16 | Kubernetes 1.17 | Kubernetes 1.18 | Kubernetes 1.19 |
-|-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| `release-0.3`         | ✔               | ✔               | ✔               | ✔               | ✗               | ✗               |
-| `release-0.4`         | ✗               | ✗               | ✔ (v1.16.5+)    | ✔               | ✗               | ✗               |
-| `release-0.5`         | ✗               | ✗               | ✗               | ✗               | ✔               | ✗               |
-| `release-0.6`         | ✗               | ✗               | ✗               | ✗               | ✔               | ✔               |
-| `HEAD`                | ✗               | ✗               | ✗               | ✗               | x               | ✔               |
+| kube-prometheus stack | Kubernetes 1.16 | Kubernetes 1.17 | Kubernetes 1.18 | Kubernetes 1.19 | Kubernetes 1.20 |
+|-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
+| `release-0.4`         | ✔ (v1.16.5+)    | ✔               | ✗               | ✗               | ✗               |
+| `release-0.5`         | ✗               | ✗               | ✔               | ✗               | ✗               |
+| `release-0.6`         | ✗               | ✗               | ✔               | ✔               | ✗               |
+| `release-0.7`         | ✗               | ✗               | ✗               | ✔               | ✔               |
+| `HEAD`                | ✗               | ✗               | ✗               | ✔               | ✔               |
 
 Note: Due to [two](https://github.com/kubernetes/kubernetes/issues/83778) [bugs](https://github.com/kubernetes/kubernetes/issues/86359) in Kubernetes v1.16.1, and prior to Kubernetes v1.16.5 the kube-prometheus release-0.4 branch only supports v1.16.5 and higher.  The `extension-apiserver-authentication-reader` role in the kube-system namespace can be manually edited to include list and watch permissions in order to workaround the second issue with Kubernetes v1.16.2 through v1.16.4.
 
 ## Quickstart
 
->Note: For versions before Kubernetes v1.19.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
+>Note: For versions before Kubernetes v1.20.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
 
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 

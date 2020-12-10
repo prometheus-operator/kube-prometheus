@@ -38,8 +38,8 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "cb8787cd974c4291ee6aa2c17f211010429da554",
-      "sum": "mD0zEP9FVFXeag7EaeS5OvUr2A9D6DQhGemoNn6+PLc="
+      "version": "9c3fb8096e1f80e2f3a84566566906ff187f5a8c",
+      "sum": "9/eJqljTTtJeq9QRjabdKWL6yD8a7VzLmGKBK3ir77k="
     },
     {
       "source": {
@@ -59,8 +59,8 @@
           "subdir": ""
         }
       },
-      "version": "d4dbc0aa59dd2c35453b53155fd4021719df5cb1",
-      "sum": "YKCJpap1C7G54dk6vD0BTJ9N6MmRGbooxmsHI2EQRDc="
+      "version": "ead45674dba3c8712e422d99223453177aac6bf4",
+      "sum": "3i0NkntlBluDS1NRF+iSc2e727Alkv3ziuVjAP12/kE="
     },
     {
       "source": {
@@ -69,7 +69,7 @@
           "subdir": "lib/promgrafonnet"
         }
       },
-      "version": "d4dbc0aa59dd2c35453b53155fd4021719df5cb1",
+      "version": "ead45674dba3c8712e422d99223453177aac6bf4",
       "sum": "zv7hXGui6BfHzE9wPatHI/AGZa4A2WKo6pq7ZdqBsps="
     },
     {
@@ -89,7 +89,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "33db2356bf1f0a1f51ddaaeb165bce04ab5aa0df",
+      "version": "7bdd62593c9273b5179cf3c9d2d819e9d997aaa4",
       "sum": "Yf8mNAHrV1YWzrdV8Ry5dJ8YblepTGw3C0Zp10XIYLo="
     },
     {
@@ -140,8 +140,8 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "de1c1243f4dd66fbac3e8213e9a7bd8dbc9f38b2",
-      "sum": "CGxvaHkP7z/gnsLB/8Imvt/AnW+9nJUnTcL+fvIAZUs=",
+      "version": "26d89b4b0776fe4cd5a3656dfa520f119a375273",
+      "sum": "1VRVMuxAEZ9vdGHFlndmG9iQzDD6AoIXrX80CDpGDaU=",
       "name": "prometheus"
     },
     {
@@ -151,7 +151,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "d57813b2bc9b349842e1f9a06313731b005c6e00",
+      "version": "37e6ef61566c7c70793ba6d128f00c4c66cb2402",
       "sum": "OptiWUMOHFrRGTZhSfxV1RCeXZ90qsefGNTD4lDYVG0="
     },
     {

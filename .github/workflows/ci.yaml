@@ -33,6 +33,7 @@ jobs:
       matrix:
         kind-image:
           - 'kindest/node:v1.19.0'
+          - 'kindest/node:v1.20.0'
     steps:
     - uses: actions/checkout@v2
     - name: Start KinD
