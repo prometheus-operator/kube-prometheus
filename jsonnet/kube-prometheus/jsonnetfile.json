@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "master"
+      "version": "release-0.2"
     },
     {
       "source": {
@@ -35,7 +35,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "master"
+      "version": "release-0.44"
     },
     {
       "source": {
@@ -44,7 +44,7 @@
           "subdir": ""
         }
       },
-      "version": "master"
+      "version": "release-0.6"
     },
     {
       "source": {
@@ -62,7 +62,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "master"
+      "version": "release-1.9"
     },
     {
       "source": {

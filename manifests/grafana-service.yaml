@@ -12,4 +12,3 @@ spec:
     targetPort: http
   selector:
     app: grafana
-  type: NodePort
