@@ -10,6 +10,8 @@
       labels: {
         'app.kubernetes.io/name': 'node-exporter',
         'app.kubernetes.io/version': $._config.versions.nodeExporter,
+        'app.kubernetes.io/component': 'exporter',
+        'app.kubernetes.io/part-of': 'kube-prometheus',
       },
       selectorLabels: {
         [labelName]: $._config.nodeExporter.labels[labelName]

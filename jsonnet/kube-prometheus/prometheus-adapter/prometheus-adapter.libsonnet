@@ -8,7 +8,17 @@
     prometheusAdapter+:: {
       name: 'prometheus-adapter',
       namespace: $._config.namespace,
-      labels: { name: $._config.prometheusAdapter.name },
+      labels: {
+        'app.kubernetes.io/name': $._config.prometheusAdapter.name,
+        'app.kubernetes.io/version': $._config.versions.prometheusAdapter,
+        'app.kubernetes.io/component': 'metrics-adapter',
+        'app.kubernetes.io/part-of': 'kube-prometheus',
+      },
+      selectorLabels: {
+        [labelName]: $._config.prometheusAdapter.labels[labelName]
+        for labelName in std.objectFields($._config.prometheusAdapter.labels)
+        if !std.setMember(labelName, ['app.kubernetes.io/version'])
+      },
       prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc.cluster.local:9090/',
       config: {
         resourceRules: {
@@ -82,7 +92,7 @@
       },
       spec: {
         selector: {
-          matchLabels: $._config.prometheusAdapter.labels,
+          matchLabels: $._config.prometheusAdapter.selectorLabels,
         },
         endpoints: [
           {
@@ -110,7 +120,7 @@
         ports: [
           { name: 'https', targetPort: 6443, port: 443 },
         ],
-        selector: $._config.prometheusAdapter.labels,
+        selector: $._config.prometheusAdapter.selectorLabels,
       },
     },
 
@@ -143,7 +153,7 @@
         },
         spec: {
           replicas: 1,
-          selector: { matchLabels: $._config.prometheusAdapter.labels },
+          selector: { matchLabels: $._config.prometheusAdapter.selectorLabels },
           strategy: {
             rollingUpdate: {
               maxSurge: 1,
