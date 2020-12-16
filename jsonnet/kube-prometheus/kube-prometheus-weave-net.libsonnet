@@ -6,7 +6,7 @@
       metadata: {
         name: 'weave-net',
         namespace: 'kube-system',
-        labels: { 'k8s-app': 'weave-net' },
+        labels: { 'app.kubernetes.io/name': 'weave-net' },
       },
       spec: {
         ports: [
@@ -22,12 +22,12 @@
       metadata: {
         name: 'weave-net',
         labels: {
-          'k8s-app': 'weave-net',
+          'app.kubernetes.io/name': 'weave-net',
         },
         namespace: 'monitoring',
       },
       spec: {
-        jobLabel: 'k8s-app',
+        jobLabel: 'app.kubernetes.io/name',
         endpoints: [
           {
             port: 'weave-net-metrics',
@@ -42,7 +42,7 @@
         },
         selector: {
           matchLabels: {
-            'k8s-app': 'weave-net',
+            'app.kubernetes.io/name': 'weave-net',
           },
         },
       },

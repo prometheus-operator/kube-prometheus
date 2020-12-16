@@ -23,13 +23,13 @@
       metadata: {
         name: 'aws-node',
         namespace: 'kube-system',
-        labels: { 'k8s-app': 'aws-node' },
+        labels: { 'app.kubernetes.io/name': 'aws-node' },
       },
       spec: {
         ports: [
           { name: 'cni-metrics-port', port: 61678, targetPort: 61678 },
         ],
-        selector: { 'k8s-app': 'aws-node' },
+        selector: { 'app.kubernetes.io/name': 'aws-node' },
         clusterIP: 'None',
       },
     },
@@ -41,14 +41,14 @@
         name: 'awsekscni',
         namespace: $._config.namespace,
         labels: {
-          'k8s-app': 'eks-cni',
+          'app.kubernetes.io/name': 'eks-cni',
         },
       },
       spec: {
-        jobLabel: 'k8s-app',
+        jobLabel: 'app.kubernetes.io/name',
         selector: {
           matchLabels: {
-            'k8s-app': 'aws-node',
+            'app.kubernetes.io/name': 'aws-node',
           },
         },
         namespaceSelector: {

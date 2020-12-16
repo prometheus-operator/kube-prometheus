@@ -56,7 +56,7 @@
           name: 'thanos-sidecar',
           namespace: p.namespace,
           labels: {
-            'k8s-app': 'prometheus',
+            'app.kubernetes.io/name': 'prometheus',
           },
         },
         spec: {
