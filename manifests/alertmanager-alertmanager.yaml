@@ -3,12 +3,22 @@ kind: Alertmanager
 metadata:
   labels:
     alertmanager: main
+    app.kubernetes.io/component: router
+    app.kubernetes.io/name: alertmanager-main
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: v0.21.0
   name: main
   namespace: monitoring
 spec:
   image: quay.io/prometheus/alertmanager:v0.21.0
   nodeSelector:
     kubernetes.io/os: linux
+  podMetadata:
+    labels:
+      app.kubernetes.io/component: router
+      app.kubernetes.io/name: alertmanager-main
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: v0.21.0
   replicas: 3
   securityContext:
     fsGroup: 2000

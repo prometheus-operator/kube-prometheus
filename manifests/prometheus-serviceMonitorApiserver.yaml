@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
-    k8s-app: apiserver
+    app.kubernetes.io/name: apiserver
   name: kube-apiserver
   namespace: monitoring
 spec:

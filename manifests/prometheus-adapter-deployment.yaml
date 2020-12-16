@@ -7,7 +7,9 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: prometheus-adapter
+      app.kubernetes.io/component: metrics-adapter
+      app.kubernetes.io/name: prometheus-adapter
+      app.kubernetes.io/part-of: kube-prometheus
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,7 +17,10 @@ spec:
   template:
     metadata:
       labels:
-        name: prometheus-adapter
+        app.kubernetes.io/component: metrics-adapter
+        app.kubernetes.io/name: prometheus-adapter
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: v0.8.2
     spec:
       containers:
       - args:

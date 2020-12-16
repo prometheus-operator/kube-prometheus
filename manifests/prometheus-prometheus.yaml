@@ -2,6 +2,10 @@ apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
 metadata:
   labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/name: prometheus-k8s
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: v2.22.1
     prometheus: k8s
   name: k8s
   namespace: monitoring
@@ -14,6 +18,12 @@ spec:
   image: quay.io/prometheus/prometheus:v2.22.1
   nodeSelector:
     kubernetes.io/os: linux
+  podMetadata:
+    labels:
+      app.kubernetes.io/component: prometheus
+      app.kubernetes.io/name: prometheus-k8s
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: v2.22.1
   podMonitorNamespaceSelector: {}
   podMonitorSelector: {}
   probeNamespaceSelector: {}
