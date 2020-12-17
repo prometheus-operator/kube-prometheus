@@ -6,13 +6,13 @@
       metadata: {
         name: 'kube-dns-prometheus-discovery',
         namespace: 'kube-system',
-        labels: { 'k8s-app': 'kube-dns' },
+        labels: { 'app.kubernetes.io/name': 'kube-dns' },
       },
       spec: {
         ports: [
           { name: 'metrics', port: 9153, targetPort: 9153 },
         ],
-        selector: { 'k8s-app': 'kube-dns' },
+        selector: { 'app.kubernetes.io/name': 'kube-dns' },
         clusterIP: 'None',
       },
     },

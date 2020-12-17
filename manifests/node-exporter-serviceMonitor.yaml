@@ -2,7 +2,9 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
+    app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
+    app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: v1.0.1
   name: node-exporter
   namespace: monitoring
@@ -24,4 +26,6 @@ spec:
   jobLabel: app.kubernetes.io/name
   selector:
     matchLabels:
+      app.kubernetes.io/component: exporter
       app.kubernetes.io/name: node-exporter
+      app.kubernetes.io/part-of: kube-prometheus

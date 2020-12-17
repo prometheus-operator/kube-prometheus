@@ -13,6 +13,17 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       replicas: 2,
       rules: {},
       namespaces: ['default', 'kube-system', $._config.namespace],
+      labels: {
+        'app.kubernetes.io/name': 'prometheus-' + $._config.prometheus.name,
+        'app.kubernetes.io/version': $._config.versions.prometheus,
+        'app.kubernetes.io/component': 'prometheus',
+        'app.kubernetes.io/part-of': 'kube-prometheus',
+      },
+      selectorLabels: {
+        [labelName]: $._config.prometheus.labels[labelName]
+        for labelName in std.objectFields($._config.prometheus.labels)
+        if !std.setMember(labelName, ['app.kubernetes.io/version'])
+      },
     },
   },
 
@@ -41,13 +52,13 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'prometheus-' + p.name,
         namespace: p.namespace,
-        labels: { prometheus: p.name },
+        labels: { prometheus: p.name } + $._config.prometheus.labels,
       },
       spec: {
         ports: [
           { name: 'web', targetPort: 'web', port: 9090 },
         ],
-        selector: { app: 'prometheus', prometheus: p.name },
+        selector: { app: 'prometheus', prometheus: p.name } + $._config.prometheus.selectorLabels,
         sessionAffinity: 'ClientIP',
       },
     },
@@ -192,12 +203,15 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: p.name,
         namespace: p.namespace,
-        labels: { prometheus: p.name },
+        labels: { prometheus: p.name } + $._config.prometheus.labels,
       },
       spec: {
         replicas: p.replicas,
         version: $._config.versions.prometheus,
         image: $._config.imageRepos.prometheus + ':' + $._config.versions.prometheus,
+        podMetadata: {
+          labels: $._config.prometheus.labels
+        },
         serviceAccountName: 'prometheus-' + p.name,
         serviceMonitorSelector: {},
         podMonitorSelector: {},
@@ -236,11 +250,11 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'prometheus',
         namespace: p.namespace,
-        labels: { 'k8s-app': 'prometheus' },
+        labels: $._config.prometheus.labels,
       },
       spec: {
         selector: {
-          matchLabels: { prometheus: p.name },
+          matchLabels: { prometheus: p.name } + $._config.prometheus.selectorLabels,
         },
         endpoints: [{
           port: 'web',
@@ -255,10 +269,10 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'kube-scheduler',
         namespace: p.namespace,
-        labels: { 'k8s-app': 'kube-scheduler' },
+        labels: { 'app.kubernetes.io/name': 'kube-scheduler' },
       },
       spec: {
-        jobLabel: 'k8s-app',
+        jobLabel: 'app.kubernetes.io/name',
         endpoints: [{
           port: 'https-metrics',
           interval: '30s',
@@ -267,7 +281,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
           tlsConfig: { insecureSkipVerify: true },
         }],
         selector: {
-          matchLabels: { 'k8s-app': 'kube-scheduler' },
+          matchLabels: { 'app.kubernetes.io/name': 'kube-scheduler' },
         },
         namespaceSelector: {
           matchNames: ['kube-system'],
@@ -281,10 +295,10 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'kubelet',
         namespace: p.namespace,
-        labels: { 'k8s-app': 'kubelet' },
+        labels: { 'app.kubernetes.io/name': 'kubelet' },
       },
       spec: {
-        jobLabel: 'k8s-app',
+        jobLabel: 'app.kubernetes.io/name',
         endpoints: [
           {
             port: 'https-metrics',
@@ -339,7 +353,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
           },
         ],
         selector: {
-          matchLabels: { 'k8s-app': 'kubelet' },
+          matchLabels: { 'app.kubernetes.io/name': 'kubelet' },
         },
         namespaceSelector: {
           matchNames: ['kube-system'],
@@ -353,10 +367,10 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'kube-controller-manager',
         namespace: p.namespace,
-        labels: { 'k8s-app': 'kube-controller-manager' },
+        labels: { 'app.kubernetes.io/name': 'kube-controller-manager' },
       },
       spec: {
-        jobLabel: 'k8s-app',
+        jobLabel: 'app.kubernetes.io/name',
         endpoints: [{
           port: 'https-metrics',
           interval: '30s',
@@ -374,7 +388,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
           ],
         }],
         selector: {
-          matchLabels: { 'k8s-app': 'kube-controller-manager' },
+          matchLabels: { 'app.kubernetes.io/name': 'kube-controller-manager' },
         },
         namespaceSelector: {
           matchNames: ['kube-system'],
@@ -388,7 +402,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'kube-apiserver',
         namespace: p.namespace,
-        labels: { 'k8s-app': 'apiserver' },
+        labels: { 'app.kubernetes.io/name': 'apiserver' },
       },
       spec: {
         jobLabel: 'component',
@@ -442,12 +456,12 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'coredns',
         namespace: p.namespace,
-        labels: { 'k8s-app': 'coredns' },
+        labels: { 'app.kubernetes.io/name': 'coredns' },
       },
       spec: {
-        jobLabel: 'k8s-app',
+        jobLabel: 'app.kubernetes.io/name',
         selector: {
-          matchLabels: { 'k8s-app': 'kube-dns' },
+          matchLabels: { 'app.kubernetes.io/name': 'kube-dns' },
         },
         namespaceSelector: {
           matchNames: ['kube-system'],

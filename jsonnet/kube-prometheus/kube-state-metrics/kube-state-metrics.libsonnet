@@ -12,6 +12,17 @@ local ksm = import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-
     kubeStateMetrics+:: {
       scrapeInterval: '30s',
       scrapeTimeout: '30s',
+      labels: {
+        'app.kubernetes.io/name': 'kube-state-metrics',
+        'app.kubernetes.io/version': $._config.versions.kubeStateMetrics,
+        'app.kubernetes.io/component': 'exporter',
+        'app.kubernetes.io/part-of': 'kube-prometheus',
+      },
+      selectorLabels: {
+        [labelName]: $._config.kubeStateMetrics.labels[labelName]
+        for labelName in std.objectFields($._config.kubeStateMetrics.labels)
+        if !std.setMember(labelName, ['app.kubernetes.io/version'])
+      },
     },
   },
   kubeStateMetrics+::
@@ -21,6 +32,8 @@ local ksm = import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-
       namespace:: $._config.namespace,
       version:: $._config.versions.kubeStateMetrics,
       image:: $._config.imageRepos.kubeStateMetrics + ':v' + $._config.versions.kubeStateMetrics,
+      commonLabels:: $._config.kubeStateMetrics.labels,
+      podLabels:: $._config.kubeStateMetrics.selectorLabels,
       service+: {
         spec+: {
           ports: [
@@ -58,18 +71,11 @@ local ksm = import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-
           metadata: {
             name: 'kube-state-metrics',
             namespace: $._config.namespace,
-            labels: {
-              'app.kubernetes.io/name': 'kube-state-metrics',
-              'app.kubernetes.io/version': version,
-            },
+            labels: $._config.kubeStateMetrics.labels,
           },
           spec: {
             jobLabel: 'app.kubernetes.io/name',
-            selector: {
-              matchLabels: {
-                'app.kubernetes.io/name': 'kube-state-metrics',
-              },
-            },
+            selector: { matchLabels: $._config.kubeStateMetrics.selectorLabels },
             endpoints: [
               {
                 port: 'https-main',

@@ -18,14 +18,14 @@ local service(name, namespace, labels, selector, ports) = {
     kubeControllerManagerPrometheusDiscoveryService: service(
       'kube-controller-manager-prometheus-discovery',
       'kube-system',
-      { 'k8s-app': 'kube-controller-manager' },
+      { 'app.kubernetes.io/name': 'kube-controller-manager' },
       { component: 'kube-controller-manager' },
       [{ name: 'https-metrics', port: 10257, targetPort: 10257 }]
     ),
     kubeSchedulerPrometheusDiscoveryService: service(
       'kube-scheduler-prometheus-discovery',
       'kube-system',
-      { 'k8s-app': 'kube-scheduler' },
+      { 'app.kubernetes.io/name': 'kube-scheduler' },
       { component: 'kube-scheduler' },
       [{ name: 'https-metrics', port: 10259, targetPort: 10259 }],
     ),

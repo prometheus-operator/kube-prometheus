@@ -16,7 +16,7 @@
       metadata: {
         name: 'etcd',
         namespace: 'kube-system',
-        labels: { 'k8s-app': 'etcd' },
+        labels: { 'app.kubernetes.io/name': 'etcd' },
       },
       spec: {
         ports: [
@@ -31,7 +31,7 @@
       metadata: {
         name: 'etcd',
         namespace: 'kube-system',
-        labels: { 'k8s-app': 'etcd' },
+        labels: { 'app.kubernetes.io/name': 'etcd' },
       },
       subsets: [{
         addresses: [
@@ -50,11 +50,11 @@
         name: 'etcd',
         namespace: 'kube-system',
         labels: {
-          'k8s-app': 'etcd',
+          'app.kubernetes.io/name': 'etcd',
         },
       },
       spec: {
-        jobLabel: 'k8s-app',
+        jobLabel: 'app.kubernetes.io/name',
         endpoints: [
           {
             port: 'metrics',
@@ -72,7 +72,7 @@
         ],
         selector: {
           matchLabels: {
-            'k8s-app': 'etcd',
+            'app.kubernetes.io/name': 'etcd',
           },
         },
       },

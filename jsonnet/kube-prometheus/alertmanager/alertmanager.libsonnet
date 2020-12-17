@@ -51,6 +51,17 @@
         ],
       },
       replicas: 3,
+      labels: {
+        'app.kubernetes.io/name': 'alertmanager-' + $._config.alertmanager.name,
+        'app.kubernetes.io/version': $._config.versions.alertmanager,
+        'app.kubernetes.io/component': 'router',
+        'app.kubernetes.io/part-of': 'kube-prometheus',
+      },
+      selectorLabels: {
+        [labelName]: $._config.alertmanager.labels[labelName]
+        for labelName in std.objectFields($._config.alertmanager.labels)
+        if !std.setMember(labelName, ['app.kubernetes.io/version'])
+      },
     },
   },
 
@@ -87,13 +98,16 @@
       metadata: {
         name: 'alertmanager-' + $._config.alertmanager.name,
         namespace: $._config.namespace,
-        labels: { alertmanager: $._config.alertmanager.name },
+        labels: { alertmanager: $._config.alertmanager.name } + $._config.alertmanager.labels,
       },
       spec: {
         ports: [
           { name: 'web', targetPort: 'web', port: 9093 },
         ],
-        selector: { app: 'alertmanager', alertmanager: $._config.alertmanager.name },
+        selector: {
+          app: 'alertmanager',
+          alertmanager: $._config.alertmanager.name
+        } + $._config.alertmanager.selectorLabels,
         sessionAffinity: 'ClientIP',
       },
     },
@@ -104,15 +118,13 @@
       metadata: {
         name: 'alertmanager',
         namespace: $._config.namespace,
-        labels: {
-          'k8s-app': 'alertmanager',
-        },
+        labels: $._config.alertmanager.labels,
       },
       spec: {
         selector: {
           matchLabels: {
             alertmanager: $._config.alertmanager.name,
-          },
+          } + $._config.alertmanager.selectorLabels,
         },
         endpoints: [
           { port: 'web', interval: '30s' },
@@ -128,12 +140,15 @@
         namespace: $._config.namespace,
         labels: {
           alertmanager: $._config.alertmanager.name,
-        },
+        } + $._config.alertmanager.labels,
       },
       spec: {
         replicas: $._config.alertmanager.replicas,
         version: $._config.versions.alertmanager,
         image: $._config.imageRepos.alertmanager + ':' + $._config.versions.alertmanager,
+        podMetadata: {
+          labels: $._config.alertmanager.labels,
+        },
         nodeSelector: { 'kubernetes.io/os': 'linux' },
         serviceAccountName: 'alertmanager-' + $._config.alertmanager.name,
         securityContext: {
