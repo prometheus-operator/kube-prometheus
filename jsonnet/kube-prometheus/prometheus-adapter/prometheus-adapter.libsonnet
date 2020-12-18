@@ -9,7 +9,7 @@
       name: 'prometheus-adapter',
       namespace: $._config.namespace,
       labels: {
-        'app.kubernetes.io/name': $._config.prometheusAdapter.name,
+        'app.kubernetes.io/name': 'prometheus-adapter',
         'app.kubernetes.io/version': $._config.versions.prometheusAdapter,
         'app.kubernetes.io/component': 'metrics-adapter',
         'app.kubernetes.io/part-of': 'kube-prometheus',
@@ -58,6 +58,7 @@
       kind: 'APIService',
       metadata: {
         name: 'v1beta1.metrics.k8s.io',
+        labels: $._config.prometheusAdapter.labels,
       },
       spec: {
         service: {
@@ -78,6 +79,7 @@
       metadata: {
         name: 'adapter-config',
         namespace: $._config.prometheusAdapter.namespace,
+        labels: $._config.prometheusAdapter.labels,
       },
       data: { 'config.yaml': std.manifestYamlDoc($._config.prometheusAdapter.config) },
     },
@@ -150,6 +152,7 @@
         metadata: {
           name: $._config.prometheusAdapter.name,
           namespace: $._config.prometheusAdapter.namespace,
+          labels: $._config.prometheusAdapter.labels,
         },
         spec: {
           replicas: 1,
@@ -182,6 +185,7 @@
       metadata: {
         name: $._config.prometheusAdapter.name,
         namespace: $._config.prometheusAdapter.namespace,
+        labels: $._config.prometheusAdapter.labels,
       },
     },
 
@@ -190,6 +194,7 @@
       kind: 'ClusterRole',
       metadata: {
         name: $._config.prometheusAdapter.name,
+        labels: $._config.prometheusAdapter.labels,
       },
       rules: [{
         apiGroups: [''],
@@ -203,6 +208,7 @@
       kind: 'ClusterRoleBinding',
       metadata: {
         name: $._config.prometheusAdapter.name,
+        labels: $._config.prometheusAdapter.labels,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
@@ -221,6 +227,7 @@
       kind: 'ClusterRoleBinding',
       metadata: {
         name: 'resource-metrics:system:auth-delegator',
+        labels: $._config.prometheusAdapter.labels,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
@@ -239,6 +246,7 @@
       kind: 'ClusterRole',
       metadata: {
         name: 'resource-metrics-server-resources',
+        labels: $._config.prometheusAdapter.labels,
       },
       rules: [{
         apiGroups: ['metrics.k8s.io'],
@@ -256,7 +264,7 @@
           'rbac.authorization.k8s.io/aggregate-to-admin': 'true',
           'rbac.authorization.k8s.io/aggregate-to-edit': 'true',
           'rbac.authorization.k8s.io/aggregate-to-view': 'true',
-        },
+        } + $._config.prometheusAdapter.labels,
       },
       rules: [{
         apiGroups: ['metrics.k8s.io'],
@@ -271,6 +279,7 @@
       metadata: {
         name: 'resource-metrics-auth-reader',
         namespace: 'kube-system',
+        labels: $._config.prometheusAdapter.labels,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
