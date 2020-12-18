@@ -66,7 +66,6 @@
         image: $._config.imageRepos.nodeExporter + ':' + $._config.versions.nodeExporter,
         args: [
           '--web.listen-address=' + std.join(':', [$._config.nodeExporter.listenAddress, std.toString($._config.nodeExporter.port)]),
-          '--path.procfs=/host/proc',
           '--path.sysfs=/host/sys',
           '--path.rootfs=/host/root',
           '--no-collector.wifi',
@@ -74,7 +73,6 @@
           '--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
         ],
         volumeMounts: [
-          { name: 'proc', mountPath: '/host/proc', mountPropagation: 'HostToContainer', readOnly: true },
           { name: 'sys', mountPath: '/host/sys', mountPropagation: 'HostToContainer', readOnly: true },
           { name: 'root', mountPath: '/host/root', mountPropagation: 'HostToContainer', readOnly: true },
         ],
@@ -135,7 +133,6 @@
               }],
               containers: [nodeExporter, proxy],
               volumes: [
-                { name: 'proc', hostPath: { path: '/proc' } },
                 { name: 'sys', hostPath: { path: '/sys' } },
                 { name: 'root', hostPath: { path: '/' } },
               ],
