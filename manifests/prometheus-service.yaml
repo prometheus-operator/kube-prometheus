@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: prometheus
-    app.kubernetes.io/name: prometheus-k8s
+    app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: v2.22.1
     prometheus: k8s
@@ -17,7 +17,7 @@ spec:
   selector:
     app: prometheus
     app.kubernetes.io/component: prometheus
-    app.kubernetes.io/name: prometheus-k8s
+    app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     prometheus: k8s
   sessionAffinity: ClientIP

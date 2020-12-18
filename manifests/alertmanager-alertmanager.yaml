@@ -3,8 +3,8 @@ kind: Alertmanager
 metadata:
   labels:
     alertmanager: main
-    app.kubernetes.io/component: router
-    app.kubernetes.io/name: alertmanager-main
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: v0.21.0
   name: main
@@ -15,8 +15,8 @@ spec:
     kubernetes.io/os: linux
   podMetadata:
     labels:
-      app.kubernetes.io/component: router
-      app.kubernetes.io/name: alertmanager-main
+      app.kubernetes.io/component: alert-router
+      app.kubernetes.io/name: alertmanager
       app.kubernetes.io/part-of: kube-prometheus
       app.kubernetes.io/version: v0.21.0
   replicas: 3
