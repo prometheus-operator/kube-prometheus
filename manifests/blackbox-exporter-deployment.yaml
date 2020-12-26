@@ -18,10 +18,13 @@ spec:
         app.kubernetes.io/version: v0.18.0
     spec:
       containers:
-      - image: quay.io/prometheus/blackbox-exporter:v0.18.0
+      - args:
+        - --config.file=/etc/blackbox_exporter/config.yml
+        - --web.listen-address=:19115
+        image: quay.io/prometheus/blackbox-exporter:v0.18.0
         name: blackbox-exporter
         ports:
-        - containerPort: 9115
+        - containerPort: 19115
           name: http
         resources:
           limits:
@@ -38,7 +41,7 @@ spec:
           name: config
           readOnly: true
       - args:
-        - --webhook-url=http://localhost:9115/-/reload
+        - --webhook-url=http://localhost:19115/-/reload
         - --volume-dir=/etc/blackbox_exporter/
         image: jimmidyson/configmap-reload:v0.4.0
         name: module-configmap-reloader
@@ -58,6 +61,18 @@ spec:
         - mountPath: /etc/blackbox_exporter/
           name: config
           readOnly: true
+      - args:
+        - --logtostderr
+        - --secure-listen-address=:9115
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - --upstream=http://127.0.0.1:19115/
+        image: quay.io/brancz/kube-rbac-proxy:v0.8.0
+        name: kube-rbac-proxy
+        ports:
+        - containerPort: 9115
+          name: https
+        securityContext:
+          runAsUser: 65534
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: blackbox-exporter

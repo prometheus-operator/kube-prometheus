@@ -1,3 +1,5 @@
+local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
+
 {
   _config+:: {
     namespace: 'default',
@@ -21,6 +23,7 @@
 
     blackboxExporter: {
       port: 9115,
+      internalPort: 19115,
       replicas: 1,
       matchLabels: {
         'app.kubernetes.io/name': 'blackbox-exporter',
@@ -121,9 +124,13 @@
                 {
                   name: 'blackbox-exporter',
                   image: $._config.imageRepos.blackboxExporter + ':' + $._config.versions.blackboxExporter,
+                  args: [
+                    '--config.file=/etc/blackbox_exporter/config.yml',
+                    '--web.listen-address=:%d' % bb.internalPort,
+                  ],
                   ports: [{
                     name: 'http',
-                    containerPort: bb.port,
+                    containerPort: bb.internalPort,
                   }],
                   resources: {
                     requests: $._config.resources['blackbox-exporter'].requests,
@@ -146,7 +153,7 @@
                   name: 'module-configmap-reloader',
                   image: $._config.imageRepos.configmapReloader + ':' + $._config.versions.configmapReloader,
                   args: [
-                    '--webhook-url=http://localhost:' + bb.port + '/-/reload',
+                    '--webhook-url=http://localhost:%d/-/reload' % bb.internalPort,
                     '--volume-dir=/etc/blackbox_exporter/',
                   ],
                   resources: {
@@ -208,5 +215,18 @@
             },
           },
         },
-    },
+    } +
+    (kubeRbacProxyContainer {
+       config+:: {
+         kubeRbacProxy: {
+           image: $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy,
+           name: 'kube-rbac-proxy',
+           securePortName: 'https',
+           securePort: bb.port,
+           secureListenAddress: ':%d' % self.securePort,
+           upstream: 'http://127.0.0.1:%d/' % bb.internalPort,
+           tlsCipherSuites: $._config.tlsCipherSuites,
+         },
+       },
+     }).deploymentMixin,
 }
