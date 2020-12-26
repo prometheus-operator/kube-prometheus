@@ -11,6 +11,9 @@ spec:
   - interval: 30s
     path: /metrics
     port: http
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
   selector:
     matchLabels:
       app.kubernetes.io/name: blackbox-exporter

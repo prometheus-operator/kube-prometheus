@@ -10,6 +10,6 @@ spec:
   ports:
   - name: http
     port: 9115
-    targetPort: http
+    targetPort: https
   selector:
     app.kubernetes.io/name: blackbox-exporter
