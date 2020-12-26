@@ -6,6 +6,8 @@ resources:
 - ./manifests/alertmanager-service.yaml
 - ./manifests/alertmanager-serviceAccount.yaml
 - ./manifests/alertmanager-serviceMonitor.yaml
+- ./manifests/blackbox-exporter-clusterRole.yaml
+- ./manifests/blackbox-exporter-clusterRoleBinding.yaml
 - ./manifests/blackbox-exporter-configuration.yaml
 - ./manifests/blackbox-exporter-deployment.yaml
 - ./manifests/blackbox-exporter-service.yaml

@@ -106,6 +106,44 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
         },
       },
 
+      clusterRole: {
+        apiVersion: 'rbac.authorization.k8s.io/v1',
+        kind: 'ClusterRole',
+        metadata: {
+          name: 'blackbox-exporter',
+        },
+        rules: [
+          {
+            apiGroups: ['authentication.k8s.io'],
+            resources: ['tokenreviews'],
+            verbs: ['create'],
+          },
+          {
+            apiGroups: ['authorization.k8s.io'],
+            resources: ['subjectaccessreviews'],
+            verbs: ['create'],
+          },
+        ],
+      },
+
+      clusterRoleBinding: {
+        apiVersion: 'rbac.authorization.k8s.io/v1',
+        kind: 'ClusterRoleBinding',
+        metadata: {
+          name: 'blackbox-exporter',
+        },
+        roleRef: {
+          apiGroup: 'rbac.authorization.k8s.io',
+          kind: 'ClusterRole',
+          name: 'blackbox-exporter',
+        },
+        subjects: [{
+          kind: 'ServiceAccount',
+          name: 'blackbox-exporter',
+          namespace: $._config.namespace,
+        }],
+      },
+
       deployment: {
         apiVersion: 'apps/v1',
         kind: 'Deployment',
@@ -206,6 +244,7 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
           },
           spec: {
             endpoints: [{
+              bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               interval: '30s',
               path: '/metrics',
               port: 'http',

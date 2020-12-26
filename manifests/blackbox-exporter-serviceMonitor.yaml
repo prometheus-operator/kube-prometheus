@@ -8,7 +8,8 @@ metadata:
   namespace: monitoring
 spec:
   endpoints:
-  - interval: 30s
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 30s
     path: /metrics
     port: http
     scheme: https
