@@ -72,7 +72,9 @@ spec:
         - containerPort: 9115
           name: https
         securityContext:
-          runAsUser: 65534
+          runAsGroup: 65532
+          runAsNonRoot: true
+          runAsUser: 65532
       nodeSelector:
         kubernetes.io/os: linux
       serviceAccountName: blackbox-exporter
