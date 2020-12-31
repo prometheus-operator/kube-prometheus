@@ -87,6 +87,7 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
 
   grafana+:: {
     local dashboardDefinitions = super.dashboardDefinitions,
+
     dashboardDefinitions: {
       apiVersion: 'v1',
       kind: 'ConfigMapList',
@@ -98,6 +99,7 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
       metadata: {
         name: 'grafana',
         namespace: $._config.namespace,
+        labels: $._config.grafana.labels,
       },
       spec: {
         selector: {
@@ -201,6 +203,14 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
       },
     },
     prometheus+:: { rules: $.prometheusRules + $.prometheusAlerts },
-    grafana+:: { dashboards: $.grafanaDashboards },
+    grafana+:: {
+      labels: {
+        'app.kubernetes.io/name': 'grafana',
+        'app.kubernetes.io/version': $._config.versions.grafana,
+        'app.kubernetes.io/component': 'grafana',
+        'app.kubernetes.io/part-of': 'kube-prometheus',
+      },
+      dashboards: $.grafanaDashboards,
+    },
   },
 }

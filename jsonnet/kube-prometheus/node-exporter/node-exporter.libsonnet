@@ -27,6 +27,7 @@
       kind: 'ClusterRoleBinding',
       metadata: {
         name: 'node-exporter',
+        labels: $._config.nodeExporter.labels,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
@@ -45,6 +46,7 @@
       kind: 'ClusterRole',
       metadata: {
         name: 'node-exporter',
+        labels: $._config.nodeExporter.labels,
       },
       rules: [
         {
@@ -157,6 +159,7 @@
       metadata: {
         name: 'node-exporter',
         namespace: $._config.namespace,
+        labels: $._config.nodeExporter.labels,
       },
     },
 

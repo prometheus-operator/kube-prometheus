@@ -3,8 +3,8 @@ kind: Service
 metadata:
   labels:
     alertmanager: main
-    app.kubernetes.io/component: router
-    app.kubernetes.io/name: alertmanager-main
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: v0.21.0
   name: alertmanager-main
@@ -17,7 +17,7 @@ spec:
   selector:
     alertmanager: main
     app: alertmanager
-    app.kubernetes.io/component: router
-    app.kubernetes.io/name: alertmanager-main
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
   sessionAffinity: ClientIP

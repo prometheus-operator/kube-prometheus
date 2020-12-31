@@ -14,7 +14,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       rules: {},
       namespaces: ['default', 'kube-system', $._config.namespace],
       labels: {
-        'app.kubernetes.io/name': 'prometheus-' + $._config.prometheus.name,
+        'app.kubernetes.io/name': 'prometheus',
         'app.kubernetes.io/version': $._config.versions.prometheus,
         'app.kubernetes.io/component': 'prometheus',
         'app.kubernetes.io/part-of': 'kube-prometheus',
@@ -43,6 +43,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'prometheus-' + p.name,
         namespace: p.namespace,
+        labels: $._config.prometheus.labels,
       },
     },
 
@@ -70,7 +71,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
         labels: {
           prometheus: p.name,
           role: 'alert-rules',
-        },
+        } + $._config.prometheus.labels,
         name: 'prometheus-' + p.name + '-rules',
         namespace: p.namespace,
       },
@@ -86,6 +87,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
         metadata: {
           name: 'prometheus-' + p.name,
           namespace: namespace,
+          labels: $._config.prometheus.labels,
         },
         roleRef: {
           apiGroup: 'rbac.authorization.k8s.io',
@@ -107,7 +109,10 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
     clusterRole: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
       kind: 'ClusterRole',
-      metadata: { name: 'prometheus-' + p.name },
+      metadata: {
+        name: 'prometheus-' + p.name,
+        labels: $._config.prometheus.labels,
+      },
       rules: [
         {
           apiGroups: [''],
@@ -127,6 +132,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'prometheus-' + p.name + '-config',
         namespace: p.namespace,
+        labels: $._config.prometheus.labels,
       },
       rules: [{
         apiGroups: [''],
@@ -141,6 +147,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
       metadata: {
         name: 'prometheus-' + p.name + '-config',
         namespace: p.namespace,
+        labels: $._config.prometheus.labels,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
@@ -157,7 +164,10 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
     clusterRoleBinding: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
       kind: 'ClusterRoleBinding',
-      metadata: { name: 'prometheus-' + p.name },
+      metadata: {
+        name: 'prometheus-' + p.name,
+        labels: $._config.prometheus.labels,
+      },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
         kind: 'ClusterRole',
@@ -177,6 +187,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
         metadata: {
           name: 'prometheus-' + p.name,
           namespace: namespace,
+          labels: $._config.prometheus.labels,
         },
         rules: [
           {
@@ -210,7 +221,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
         version: $._config.versions.prometheus,
         image: $._config.imageRepos.prometheus + ':' + $._config.versions.prometheus,
         podMetadata: {
-          labels: $._config.prometheus.labels
+          labels: $._config.prometheus.labels,
         },
         serviceAccountName: 'prometheus-' + p.name,
         serviceMonitorSelector: {},

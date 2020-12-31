@@ -52,9 +52,9 @@
       },
       replicas: 3,
       labels: {
-        'app.kubernetes.io/name': 'alertmanager-' + $._config.alertmanager.name,
+        'app.kubernetes.io/name': 'alertmanager',
         'app.kubernetes.io/version': $._config.versions.alertmanager,
-        'app.kubernetes.io/component': 'router',
+        'app.kubernetes.io/component': 'alert-router',
         'app.kubernetes.io/part-of': 'kube-prometheus',
       },
       selectorLabels: {
@@ -73,6 +73,7 @@
       metadata: {
         name: 'alertmanager-' + $._config.alertmanager.name,
         namespace: $._config.namespace,
+        labels: { alertmanager: $._config.alertmanager.name } + $._config.alertmanager.labels,
       },
       stringData: {
         'alertmanager.yaml': if std.type($._config.alertmanager.config) == 'object'
@@ -89,6 +90,7 @@
       metadata: {
         name: 'alertmanager-' + $._config.alertmanager.name,
         namespace: $._config.namespace,
+        labels: { alertmanager: $._config.alertmanager.name } + $._config.alertmanager.labels,
       },
     },
 
@@ -106,7 +108,7 @@
         ],
         selector: {
           app: 'alertmanager',
-          alertmanager: $._config.alertmanager.name
+          alertmanager: $._config.alertmanager.name,
         } + $._config.alertmanager.selectorLabels,
         sessionAffinity: 'ClientIP',
       },
