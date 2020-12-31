@@ -11,7 +11,7 @@ spec:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     interval: 30s
     path: /metrics
-    port: http
+    port: https
     scheme: https
     tlsConfig:
       insecureSkipVerify: true

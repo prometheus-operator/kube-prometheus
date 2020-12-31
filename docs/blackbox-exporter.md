@@ -19,8 +19,8 @@ The `prometheus-operator` defines a `Probe` resource type that can be used to de
 * `_config.versions.configmapReloader`: the tag of the ConfigMap reloader image to deploy. Defaults to the version `kube-prometheus` was tested with.
 * `_config.resources.blackbox-exporter.requests`: the requested resources; this is used for each container. Defaults to `10m` CPU and `20Mi` RAM. See https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ for details.
 * `_config.resources.blackbox-exporter.limits`: the resource limits; this is used for each container. Defaults to `20m` CPU and `40Mi` RAM. See https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ for details.
-* `_config.blackboxExporter.port`: the exposed HTTPS port of the exporter. This is where Prometheus should send the probe requests. Defaults to `9115`.
-* `_config.blackboxExporter.internalPort`: the internal plaintext port of the exporter. Not accessible from outside the pod. Defaults to `19115`.
+* `_config.blackboxExporter.port`: the exposed HTTPS port of the exporter. This is what Prometheus can scrape for metrics related to the blackbox exporter itself. Defaults to `9115`.
+* `_config.blackboxExporter.internalPort`: the internal plaintext port of the exporter. Prometheus scrapes configured via `Probe` objects cannot access the HTTPS port right now, so you have to specify this port in the `url` field. Defaults to `19115`.
 * `_config.blackboxExporter.replicas`: the number of exporter replicas to be deployed. Defaults to `1`.
 * `_config.blackboxExporter.matchLabels`: map of the labels to be used to select resources belonging to the instance deployed. Defaults to `{ 'app.kubernetes.io/name': 'blackbox-exporter' }`
 * `_config.blackboxExporter.assignLabels`: map of the labels applied to components of the instance deployed. Defaults to all the labels included in the `matchLabels` option, and additionally `app.kubernetes.io/version` is set to the version of the blackbox exporter.
@@ -73,7 +73,7 @@ spec:
   interval: 60s
   module: http_2xx
   prober:
-    url: blackbox-exporter.monitoring.svc.cluster.local:9115
+    url: blackbox-exporter.monitoring.svc.cluster.local:19115
   targets:
     staticConfig:
       static:
