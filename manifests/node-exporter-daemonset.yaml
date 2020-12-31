@@ -25,7 +25,6 @@ spec:
       containers:
       - args:
         - --web.listen-address=127.0.0.1:9100
-        - --path.procfs=/host/proc
         - --path.sysfs=/host/sys
         - --path.rootfs=/host/root
         - --no-collector.wifi
@@ -41,10 +40,6 @@ spec:
             cpu: 102m
             memory: 180Mi
         volumeMounts:
-        - mountPath: /host/proc
-          mountPropagation: HostToContainer
-          name: proc
-          readOnly: true
         - mountPath: /host/sys
           mountPropagation: HostToContainer
           name: sys
@@ -91,9 +86,6 @@ spec:
       tolerations:
       - operator: Exists
       volumes:
-      - hostPath:
-          path: /proc
-        name: proc
       - hostPath:
           path: /sys
         name: sys
