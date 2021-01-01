@@ -34,15 +34,22 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
       modules: {
         http_2xx: {
           prober: 'http',
+          http: {
+            preferred_ip_protocol: 'ip4',
+          },
         },
         http_post_2xx: {
           prober: 'http',
           http: {
             method: 'POST',
+            preferred_ip_protocol: 'ip4',
           },
         },
         tcp_connect: {
           prober: 'tcp',
+          tcp: {
+            preferred_ip_protocol: 'ip4',
+          },
         },
         pop3s_banner: {
           prober: 'tcp',
@@ -54,6 +61,7 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
             tls_config: {
               insecure_skip_verify: false,
             },
+            preferred_ip_protocol: 'ip4',
           },
         },
         ssh_banner: {
@@ -62,6 +70,7 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
             query_response: [
               { expect: '^SSH-2.0-' },
             ],
+            preferred_ip_protocol: 'ip4',
           },
         },
         irc_banner: {
@@ -73,6 +82,7 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
               { expect: 'PING :([^ ]+)', send: 'PONG ${1}' },
               { expect: '^:[^ ]+ 001' },
             ],
+            preferred_ip_protocol: 'ip4',
           },
         },
       },
