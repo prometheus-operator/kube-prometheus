@@ -228,7 +228,15 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
           labels: bb.assignLabels,
         },
         spec: {
-          ports: [{ name: 'http', port: bb.port, targetPort: 'https' }],
+          ports: [{
+            name: 'https',
+            port: bb.port,
+            targetPort: 'https',
+          }, {
+            name: 'probe',
+            port: bb.internalPort,
+            targetPort: 'http',
+          }],
           selector: bb.matchLabels,
         },
       },
@@ -247,7 +255,7 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
               interval: '30s',
               path: '/metrics',
-              port: 'http',
+              port: 'https',
               scheme: 'https',
               tlsConfig: {
                 insecureSkipVerify: true,

@@ -8,8 +8,11 @@ metadata:
   namespace: monitoring
 spec:
   ports:
-  - name: http
+  - name: https
     port: 9115
     targetPort: https
+  - name: probe
+    port: 19115
+    targetPort: http
   selector:
     app.kubernetes.io/name: blackbox-exporter
