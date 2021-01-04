@@ -1419,8 +1419,8 @@ spec:
         (kube_hpa_status_current_replicas{job="kube-state-metrics"}
           ==
         kube_hpa_spec_max_replicas{job="kube-state-metrics"})
-        and 
-        (kube_hpa_spec_min_replicas{job="kube-state-metrics"})
+          and
+        (kube_hpa_spec_min_replicas{job="kube-state-metrics"}
           !=
         kube_hpa_spec_max_replicas{job="kube-state-metrics"})
       for: 15m
