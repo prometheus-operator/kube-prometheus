@@ -87,4 +87,4 @@ spec:
     - kube-system
   selector:
     matchLabels:
-      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
