@@ -364,7 +364,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
           },
         ],
         selector: {
-          matchLabels: { 'app.kubernetes.io/name': 'kubelet' },
+          matchLabels: { 'k8s-app': 'kubelet' },
         },
         namespaceSelector: {
           matchNames: ['kube-system'],
