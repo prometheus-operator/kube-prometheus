@@ -309,7 +309,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
         labels: { 'app.kubernetes.io/name': 'kubelet' },
       },
       spec: {
-        jobLabel: 'app.kubernetes.io/name',
+        jobLabel: 'k8s-app',
         endpoints: [
           {
             port: 'https-metrics',
@@ -364,7 +364,7 @@ local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabeli
           },
         ],
         selector: {
-          matchLabels: { 'app.kubernetes.io/name': 'kubelet' },
+          matchLabels: { 'k8s-app': 'kubelet' },
         },
         namespaceSelector: {
           matchNames: ['kube-system'],

@@ -81,10 +81,10 @@ spec:
     scheme: https
     tlsConfig:
       insecureSkipVerify: true
-  jobLabel: app.kubernetes.io/name
+  jobLabel: k8s-app
   namespaceSelector:
     matchNames:
     - kube-system
   selector:
     matchLabels:
-      app.kubernetes.io/name: kubelet
+      k8s-app: kubelet
