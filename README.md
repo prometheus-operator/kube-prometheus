@@ -18,9 +18,14 @@ Components included in this package:
 
 This stack is meant for cluster monitoring, so it is pre-configured to collect metrics from all Kubernetes components. In addition to that it delivers a default set of dashboards and alerting rules. Many of the useful dashboards and alerts come from the [kubernetes-mixin project](https://github.com/kubernetes-monitoring/kubernetes-mixin), similar to this project it provides composable jsonnet as a library for users to customize to their needs.
 
+## Warning
+
+`master` branch is under heavy refactoring work. Please use `release-0.7` branch until code refactoring is complete and this information is removed.
+
 ## Table of contents
 
 - [kube-prometheus](#kube-prometheus)
+  - [Warning](#warning)
   - [Table of contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
     - [minikube](#minikube)
@@ -53,8 +58,9 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
     - [Stripping container resource limits](#stripping-container-resource-limits)
     - [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
     - [Exposing Prometheus/Alermanager/Grafana via Ingress](#exposing-prometheusalermanagergrafana-via-ingress)
-    - [Setting up a blackbox exporter](#setting-up-a-blackbox exporter)
+    - [Setting up a blackbox exporter](#setting-up-a-blackbox-exporter)
   - [Minikube Example](#minikube-example)
+  - [Continuous Delivery](#continuous-delivery)
   - [Troubleshooting](#troubleshooting)
     - [Error retrieving kubelet metrics](#error-retrieving-kubelet-metrics)
       - [Authentication problem](#authentication-problem)
