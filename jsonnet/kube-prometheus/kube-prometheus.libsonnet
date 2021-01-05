@@ -1,5 +1,7 @@
 local kubeRbacProxyContainer = import './kube-rbac-proxy/containerMixin.libsonnet';
 
+local nodeExporter = import './node-exporter/node-exporter.libsonnet';
+
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 (import './kube-state-metrics/kube-state-metrics.libsonnet') +
 (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
@@ -16,6 +18,11 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/containerMixin.libsonne
 (import './alerts/alerts.libsonnet') +
 (import './rules/rules.libsonnet') +
 {
+  nodeExporter: nodeExporter({
+    namespace: $._config.namespace,
+    version: '1.0.1',
+    imageRepo: 'quay.io/prometheus/node-exporter',
+  }),
   kubePrometheus+:: {
     namespace: {
       apiVersion: 'v1',
@@ -82,7 +89,6 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/containerMixin.libsonne
          },
        },
      }).deploymentMixin,
-
 
   grafana+:: {
     local dashboardDefinitions = super.dashboardDefinitions,
@@ -195,10 +201,6 @@ local kubeRbacProxyContainer = import './kube-rbac-proxy/containerMixin.libsonne
       'kube-state-metrics': {
         requests: { cpu: '100m', memory: '150Mi' },
         limits: { cpu: '100m', memory: '150Mi' },
-      },
-      'node-exporter': {
-        requests: { cpu: '102m', memory: '180Mi' },
-        limits: { cpu: '250m', memory: '180Mi' },
       },
     },
     prometheus+:: { rules: $.prometheusRules + $.prometheusAlerts },
