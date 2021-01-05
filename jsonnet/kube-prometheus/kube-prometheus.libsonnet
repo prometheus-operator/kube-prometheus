@@ -1,9 +1,8 @@
-local kubeRbacProxyContainer = import './kube-rbac-proxy/container.libsonnet';
+local kubeRbacProxyContainer = import './kube-rbac-proxy/containerMixin.libsonnet';
 
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 (import './kube-state-metrics/kube-state-metrics.libsonnet') +
 (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
-(import './node-exporter/node-exporter.libsonnet') +
 (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
 (import './blackbox-exporter/blackbox-exporter.libsonnet') +
 (import './alertmanager/alertmanager.libsonnet') +

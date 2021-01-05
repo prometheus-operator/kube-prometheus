@@ -1,4 +1,4 @@
-local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
+local kubeRbacProxyContainer = import '../kube-rbac-proxy/containerMixin.libsonnet';
 local ksm = import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics/kube-state-metrics.libsonnet';
 
 {

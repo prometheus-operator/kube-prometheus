@@ -1,4 +1,4 @@
-local kubeRbacProxyContainer = import '../kube-rbac-proxy/container.libsonnet';
+local kubeRbacProxyContainer = import '../kube-rbac-proxy/containerMixin.libsonnet';
 
 {
   _config+:: {
