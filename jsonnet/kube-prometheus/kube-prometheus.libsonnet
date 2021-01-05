@@ -1,13 +1,13 @@
 local kubeRbacProxyContainer = import './kube-rbac-proxy/containerMixin.libsonnet';
 
 local nodeExporter = import './node-exporter/node-exporter.libsonnet';
+local alertmanager = import './alertmanager/alertmanager.libsonnet';
 
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 (import './kube-state-metrics/kube-state-metrics.libsonnet') +
 (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
 (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
 (import './blackbox-exporter/blackbox-exporter.libsonnet') +
-(import './alertmanager/alertmanager.libsonnet') +
 (import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') +
@@ -22,6 +22,12 @@ local nodeExporter = import './node-exporter/node-exporter.libsonnet';
     namespace: $._config.namespace,
     version: '1.0.1',
     image: 'quay.io/prometheus/node-exporter:v1.0.1',
+  }),
+  alertmanager: alertmanager({
+    name: 'main',
+    namespace: $._config.namespace,
+    version: '0.21.0',
+    image: 'quay.io/prometheus/alertmanager:v0.21.0',
   }),
   kubePrometheus+:: {
     namespace: {
