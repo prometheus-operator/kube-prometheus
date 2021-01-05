@@ -4,8 +4,7 @@ local defaults = {
   local defaults = self,
   namespace: error 'must provide namespace',
   version: error 'must provide version',
-  imageRepo: error 'must provide version',
-  // image: "",
+  image: error 'must provide version',
   resources: {
     requests: { cpu: '102m', memory: '180Mi' },
     limits: { cpu: '250m', memory: '180Mi' },
@@ -135,7 +134,7 @@ function(params) {
   daemonset:
     local nodeExporter = {
       name: 'node-exporter',
-      image: ne.config.imageRepo + ':v' + ne.config.version,
+      image: ne.config.image,
       args: [
         '--web.listen-address=' + std.join(':', [ne.config.listenAddress, std.toString(ne.config.port)]),
         '--path.sysfs=/host/sys',

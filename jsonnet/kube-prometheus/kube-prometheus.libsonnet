@@ -21,7 +21,7 @@ local nodeExporter = import './node-exporter/node-exporter.libsonnet';
   nodeExporter: nodeExporter({
     namespace: $._config.namespace,
     version: '1.0.1',
-    imageRepo: 'quay.io/prometheus/node-exporter',
+    image: 'quay.io/prometheus/node-exporter:v1.0.1',
   }),
   kubePrometheus+:: {
     namespace: {
