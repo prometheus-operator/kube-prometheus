@@ -2,8 +2,10 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
+    app.kubernetes.io/component: exporter
     app.kubernetes.io/name: blackbox-exporter
-    app.kubernetes.io/version: v0.18.0
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.18.0
   name: blackbox-exporter
   namespace: monitoring
 spec:
@@ -17,4 +19,6 @@ spec:
       insecureSkipVerify: true
   selector:
     matchLabels:
+      app.kubernetes.io/component: exporter
       app.kubernetes.io/name: blackbox-exporter
+      app.kubernetes.io/part-of: kube-prometheus

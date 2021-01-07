@@ -5,11 +5,12 @@ local alertmanager = import './alertmanager/alertmanager.libsonnet';
 
 local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
 
+local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet';
+
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 (import './kube-state-metrics/kube-state-metrics.libsonnet') +
 (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
 (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
-(import './blackbox-exporter/blackbox-exporter.libsonnet') +
 (import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') +
@@ -35,6 +36,11 @@ local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libson
     version: '0.8.2',
     image: 'directxman12/k8s-prometheus-adapter:v0.8.2',
     prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc.cluster.local:9090/',
+  }),
+  blackboxExporter: blackboxExporter({
+    namespace: $._config.namespace,
+    version: '0.18.0',
+    image: 'quay.io/prometheus/blackbox-exporter:v0.18.0',
   }),
   kubePrometheus+:: {
     namespace: {

@@ -1,109 +1,107 @@
-local kubeRbacProxyContainer = import '../kube-rbac-proxy/containerMixin.libsonnet';
+local krp = import '../kube-rbac-proxy/container.libsonnet';
 
-{
-  _config+:: {
-    namespace: 'default',
+local defaults = {
+  local defaults = self,
+  namespace: error 'must provide namespace',
+  version: error 'must provide version',
+  image: error 'must provide version',
+  resources: {
+    requests: { cpu: '10m', memory: '20Mi' },
+    limits: { cpu: '20m', memory: '40Mi' },
+  },
+  commonLabels:: {
+    'app.kubernetes.io/name': 'blackbox-exporter',
+    'app.kubernetes.io/version': defaults.version,
+    'app.kubernetes.io/component': 'exporter',
+    'app.kubernetes.io/part-of': 'kube-prometheus',
+  },
+  selectorLabels:: {
+    [labelName]: defaults.commonLabels[labelName]
+    for labelName in std.objectFields(defaults.commonLabels)
+    if !std.setMember(labelName, ['app.kubernetes.io/version'])
+  },
+  configmapReloaderImage: 'jimmidyson/configmap-reload:v0.4.0',
 
-    versions+:: {
-      blackboxExporter: 'v0.18.0',
-      configmapReloader: 'v0.4.0',
-    },
-
-    imageRepos+:: {
-      blackboxExporter: 'quay.io/prometheus/blackbox-exporter',
-      configmapReloader: 'jimmidyson/configmap-reload',
-    },
-
-    resources+:: {
-      'blackbox-exporter': {
-        requests: { cpu: '10m', memory: '20Mi' },
-        limits: { cpu: '20m', memory: '40Mi' },
+  port: 9115,
+  internalPort: 19115,
+  replicas: 1,
+  modules: {
+    http_2xx: {
+      prober: 'http',
+      http: {
+        preferred_ip_protocol: 'ip4',
       },
     },
-
-    blackboxExporter: {
-      port: 9115,
-      internalPort: 19115,
-      replicas: 1,
-      matchLabels: {
-        'app.kubernetes.io/name': 'blackbox-exporter',
+    http_post_2xx: {
+      prober: 'http',
+      http: {
+        method: 'POST',
+        preferred_ip_protocol: 'ip4',
       },
-      assignLabels: self.matchLabels {
-        'app.kubernetes.io/version': $._config.versions.blackboxExporter,
+    },
+    tcp_connect: {
+      prober: 'tcp',
+      tcp: {
+        preferred_ip_protocol: 'ip4',
       },
-      modules: {
-        http_2xx: {
-          prober: 'http',
-          http: {
-            preferred_ip_protocol: 'ip4',
-          },
+    },
+    pop3s_banner: {
+      prober: 'tcp',
+      tcp: {
+        query_response: [
+          { expect: '^+OK' },
+        ],
+        tls: true,
+        tls_config: {
+          insecure_skip_verify: false,
         },
-        http_post_2xx: {
-          prober: 'http',
-          http: {
-            method: 'POST',
-            preferred_ip_protocol: 'ip4',
-          },
-        },
-        tcp_connect: {
-          prober: 'tcp',
-          tcp: {
-            preferred_ip_protocol: 'ip4',
-          },
-        },
-        pop3s_banner: {
-          prober: 'tcp',
-          tcp: {
-            query_response: [
-              { expect: '^+OK' },
-            ],
-            tls: true,
-            tls_config: {
-              insecure_skip_verify: false,
-            },
-            preferred_ip_protocol: 'ip4',
-          },
-        },
-        ssh_banner: {
-          prober: 'tcp',
-          tcp: {
-            query_response: [
-              { expect: '^SSH-2.0-' },
-            ],
-            preferred_ip_protocol: 'ip4',
-          },
-        },
-        irc_banner: {
-          prober: 'tcp',
-          tcp: {
-            query_response: [
-              { send: 'NICK prober' },
-              { send: 'USER prober prober prober :prober' },
-              { expect: 'PING :([^ ]+)', send: 'PONG ${1}' },
-              { expect: '^:[^ ]+ 001' },
-            ],
-            preferred_ip_protocol: 'ip4',
-          },
-        },
+        preferred_ip_protocol: 'ip4',
       },
-      privileged:
-        local icmpModules = [self.modules[m] for m in std.objectFields(self.modules) if self.modules[m].prober == 'icmp'];
-        std.length(icmpModules) > 0,
+    },
+    ssh_banner: {
+      prober: 'tcp',
+      tcp: {
+        query_response: [
+          { expect: '^SSH-2.0-' },
+        ],
+        preferred_ip_protocol: 'ip4',
+      },
+    },
+    irc_banner: {
+      prober: 'tcp',
+      tcp: {
+        query_response: [
+          { send: 'NICK prober' },
+          { send: 'USER prober prober prober :prober' },
+          { expect: 'PING :([^ ]+)', send: 'PONG ${1}' },
+          { expect: '^:[^ ]+ 001' },
+        ],
+        preferred_ip_protocol: 'ip4',
+      },
     },
   },
+  privileged:
+    local icmpModules = [self.modules[m] for m in std.objectFields(self.modules) if self.modules[m].prober == 'icmp'];
+    std.length(icmpModules) > 0,
+};
 
-  blackboxExporter+::
-    local bb = $._config.blackboxExporter;
-    {
+
+function(params) {
+  local bb = self,
+  config:: defaults + params,
+  // Safety check
+  assert std.isObject(bb.config.resources),
+
       configuration: {
         apiVersion: 'v1',
         kind: 'ConfigMap',
         metadata: {
           name: 'blackbox-exporter-configuration',
-          namespace: $._config.namespace,
+          namespace: bb.config.namespace,
+          labels: bb.config.commonLabels,
         },
         data: {
-          'config.yml': std.manifestYamlDoc({ modules: bb.modules }),
+          'config.yml': std.manifestYamlDoc({ modules: bb.config.modules }),
         },
       },
 
@@ -112,7 +110,7 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/containerMixin.libsonn
         kind: 'ServiceAccount',
         metadata: {
           name: 'blackbox-exporter',
-          namespace: $._config.namespace,
+          namespace: bb.config.namespace,
         },
       },
 
@@ -150,104 +148,109 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/containerMixin.libsonn
         subjects: [{
           kind: 'ServiceAccount',
           name: 'blackbox-exporter',
-          namespace: $._config.namespace,
+          namespace: bb.config.namespace,
         }],
       },
 
-      deployment: {
-        apiVersion: 'apps/v1',
-        kind: 'Deployment',
-        metadata: {
+      deployment:
+        local blackboxExporter = {
           name: 'blackbox-exporter',
-          namespace: $._config.namespace,
-          labels: bb.assignLabels,
-        },
-        spec: {
-          replicas: bb.replicas,
-          selector: { matchLabels: bb.matchLabels },
-          template: {
-            metadata: { labels: bb.assignLabels },
-            spec: {
-              containers: [
-                {
-                  name: 'blackbox-exporter',
-                  image: $._config.imageRepos.blackboxExporter + ':' + $._config.versions.blackboxExporter,
-                  args: [
-                    '--config.file=/etc/blackbox_exporter/config.yml',
-                    '--web.listen-address=:%d' % bb.internalPort,
-                  ],
-                  ports: [{
-                    name: 'http',
-                    containerPort: bb.internalPort,
-                  }],
-                  resources: {
-                    requests: $._config.resources['blackbox-exporter'].requests,
-                    limits: $._config.resources['blackbox-exporter'].limits,
-                  },
-                  securityContext: if bb.privileged then {
-                    runAsNonRoot: false,
-                    capabilities: { drop: ['ALL'], add: ['NET_RAW'] },
-                  } else {
-                    runAsNonRoot: true,
-                    runAsUser: 65534,
-                  },
-                  volumeMounts: [{
-                    mountPath: '/etc/blackbox_exporter/',
-                    name: 'config',
-                    readOnly: true,
-                  }],
-                },
-                {
-                  name: 'module-configmap-reloader',
-                  image: $._config.imageRepos.configmapReloader + ':' + $._config.versions.configmapReloader,
-                  args: [
-                    '--webhook-url=http://localhost:%d/-/reload' % bb.internalPort,
-                    '--volume-dir=/etc/blackbox_exporter/',
-                  ],
-                  resources: {
-                    requests: $._config.resources['blackbox-exporter'].requests,
-                    limits: $._config.resources['blackbox-exporter'].limits,
-                  },
-                  securityContext: { runAsNonRoot: true, runAsUser: 65534 },
-                  terminationMessagePath: '/dev/termination-log',
-                  terminationMessagePolicy: 'FallbackToLogsOnError',
-                  volumeMounts: [{
-                    mountPath: '/etc/blackbox_exporter/',
-                    name: 'config',
-                    readOnly: true,
-                  }],
-                },
-              ],
-              nodeSelector: { 'kubernetes.io/os': 'linux' },
-              serviceAccountName: 'blackbox-exporter',
-              volumes: [{
-                name: 'config',
-                configMap: { name: 'blackbox-exporter-configuration' },
-              }],
+          image: bb.config.image,
+          args: [
+            '--config.file=/etc/blackbox_exporter/config.yml',
+            '--web.listen-address=:%d' % bb.config.internalPort,
+          ],
+          ports: [{
+            name: 'http',
+            containerPort: bb.config.internalPort,
+          }],
+          resources: bb.config.resources,
+          securityContext: if bb.config.privileged then {
+            runAsNonRoot: false,
+            capabilities: { drop: ['ALL'], add: ['NET_RAW'] },
+          } else {
+            runAsNonRoot: true,
+            runAsUser: 65534,
+          },
+          volumeMounts: [{
+            mountPath: '/etc/blackbox_exporter/',
+            name: 'config',
+            readOnly: true,
+          }],
+        };
+
+        local reloader = {
+          name: 'module-configmap-reloader',
+          image: bb.config.configmapReloaderImage,
+          args: [
+            '--webhook-url=http://localhost:%d/-/reload' % bb.config.internalPort,
+            '--volume-dir=/etc/blackbox_exporter/',
+          ],
+          resources: bb.config.resources,
+          securityContext: { runAsNonRoot: true, runAsUser: 65534 },
+          terminationMessagePath: '/dev/termination-log',
+          terminationMessagePolicy: 'FallbackToLogsOnError',
+          volumeMounts: [{
+            mountPath: '/etc/blackbox_exporter/',
+            name: 'config',
+            readOnly: true,
+          }],
+        };
+
+        local kubeRbacProxy = krp({
+          name: 'kube-rbac-proxy',
+          upstream: 'http://127.0.0.1:' + bb.config.internalPort + '/',
+          secureListenAddress: ':' + bb.config.port,
+          ports: [
+            { name: 'https', containerPort: bb.config.port },
+          ],
+        });
+
+        {
+          apiVersion: 'apps/v1',
+          kind: 'Deployment',
+          metadata: {
+            name: 'blackbox-exporter',
+            namespace: bb.config.namespace,
+            labels: bb.config.commonLabels,
+          },
+          spec: {
+            replicas: bb.config.replicas,
+            selector: { matchLabels: bb.config.selectorLabels },
+            template: {
+              metadata: { labels: bb.config.commonLabels },
+              spec: {
+                containers: [blackboxExporter, reloader, kubeRbacProxy],
+                nodeSelector: { 'kubernetes.io/os': 'linux' },
+                serviceAccountName: 'blackbox-exporter',
+                volumes: [{
+                  name: 'config',
+                  configMap: { name: 'blackbox-exporter-configuration' },
+                }],
+              },
             },
           },
         },
-      },
 
       service: {
         apiVersion: 'v1',
         kind: 'Service',
         metadata: {
           name: 'blackbox-exporter',
-          namespace: $._config.namespace,
-          labels: bb.assignLabels,
+          namespace: bb.config.namespace,
+          labels: bb.config.commonLabels,
         },
         spec: {
           ports: [{
             name: 'https',
-            port: bb.port,
+            port: bb.config.port,
             targetPort: 'https',
           }, {
             name: 'probe',
-            port: bb.internalPort,
+            port: bb.config.internalPort,
             targetPort: 'http',
           }],
-          selector: bb.matchLabels,
+          selector: bb.config.selectorLabels,
         },
       },
 
@@ -257,8 +260,8 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/containerMixin.libsonn
           kind: 'ServiceMonitor',
           metadata: {
             name: 'blackbox-exporter',
-            namespace: $._config.namespace,
-            labels: bb.assignLabels,
+            namespace: bb.config.namespace,
+            labels: bb.config.commonLabels,
           },
           spec: {
             endpoints: [{
@@ -272,22 +275,8 @@ local kubeRbacProxyContainer = import '../kube-rbac-proxy/containerMixin.libsonn
               },
             }],
             selector: {
-              matchLabels: bb.matchLabels,
+              matchLabels: bb.config.selectorLabels,
             },
           },
         },
-    } +
-    (kubeRbacProxyContainer {
-       config+:: {
-         kubeRbacProxy: {
-           image: $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy,
-           name: 'kube-rbac-proxy',
-           securePortName: 'https',
-           securePort: bb.port,
-           secureListenAddress: ':%d' % self.securePort,
-           upstream: 'http://127.0.0.1:%d/' % bb.internalPort,
-           tlsCipherSuites: $._config.tlsCipherSuites,
-         },
-       },
-     }).deploymentMixin,
-}
+    }
