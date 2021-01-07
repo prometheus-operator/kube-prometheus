@@ -1,14 +1,12 @@
 local kubeRbacProxyContainer = import './kube-rbac-proxy/containerMixin.libsonnet';
 
-local nodeExporter = import './node-exporter/node-exporter.libsonnet';
 local alertmanager = import './alertmanager/alertmanager.libsonnet';
-
+local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet';
+local kubeStateMetrics = import './kube-state-metrics/kube-state-metrics.libsonnet';
+local nodeExporter = import './node-exporter/node-exporter.libsonnet';
 local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
 
-local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet';
-
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
-(import './kube-state-metrics/kube-state-metrics.libsonnet') +
 (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
 (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
 (import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') +
@@ -20,27 +18,32 @@ local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet
 (import './alerts/alerts.libsonnet') +
 (import './rules/rules.libsonnet') +
 {
-  nodeExporter: nodeExporter({
-    namespace: $._config.namespace,
-    version: '1.0.1',
-    image: 'quay.io/prometheus/node-exporter:v1.0.1',
-  }),
   alertmanager: alertmanager({
     name: 'main',
     namespace: $._config.namespace,
     version: '0.21.0',
     image: 'quay.io/prometheus/alertmanager:v0.21.0',
   }),
+  blackboxExporter: blackboxExporter({
+    namespace: $._config.namespace,
+    version: '0.18.0',
+    image: 'quay.io/prometheus/blackbox-exporter:v0.18.0',
+  }),
+  kubeStateMetrics: kubeStateMetrics({
+    namespace: $._config.namespace,
+    version: '1.9.7',
+    image: 'quay.io/coreos/kube-state-metrics:v1.9.7',
+  }),
+  nodeExporter: nodeExporter({
+    namespace: $._config.namespace,
+    version: '1.0.1',
+    image: 'quay.io/prometheus/node-exporter:v1.0.1',
+  }),
   prometheusAdapter: prometheusAdapter({
     namespace: $._config.namespace,
     version: '0.8.2',
     image: 'directxman12/k8s-prometheus-adapter:v0.8.2',
     prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc.cluster.local:9090/',
-  }),
-  blackboxExporter: blackboxExporter({
-    namespace: $._config.namespace,
-    version: '0.18.0',
-    image: 'quay.io/prometheus/blackbox-exporter:v0.18.0',
   }),
   kubePrometheus+:: {
     namespace: {
@@ -216,10 +219,6 @@ local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet
       'kube-rbac-proxy': {
         requests: { cpu: '10m', memory: '20Mi' },
         limits: { cpu: '20m', memory: '40Mi' },
-      },
-      'kube-state-metrics': {
-        requests: { cpu: '100m', memory: '150Mi' },
-        limits: { cpu: '100m', memory: '150Mi' },
       },
     },
     prometheus+:: { rules: $.prometheusRules + $.prometheusAlerts },
