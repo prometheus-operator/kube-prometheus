@@ -31,6 +31,13 @@ spec:
         - --telemetry-port=8082
         image: quay.io/coreos/kube-state-metrics:v1.9.7
         name: kube-state-metrics
+        resources:
+          limits:
+            cpu: 100m
+            memory: 250Mi
+          requests:
+            cpu: 10m
+            memory: 190Mi
       - args:
         - --logtostderr
         - --secure-listen-address=:8443
@@ -41,6 +48,13 @@ spec:
         ports:
         - containerPort: 8443
           name: https-main
+        resources:
+          limits:
+            cpu: 20m
+            memory: 40Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
         securityContext:
           runAsGroup: 65532
           runAsNonRoot: true
@@ -55,6 +69,13 @@ spec:
         ports:
         - containerPort: 9443
           name: https-self
+        resources:
+          limits:
+            cpu: 20m
+            memory: 40Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
         securityContext:
           runAsGroup: 65532
           runAsNonRoot: true
