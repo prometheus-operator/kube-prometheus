@@ -171,41 +171,6 @@ local mixins = import './mixins/monitoring-mixins.libsonnet';
       'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305',
     ],
 
-    //runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
-
-    cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
-    kubeletSelector: 'job="kubelet", metrics_path="/metrics"',
-    kubeStateMetricsSelector: 'job="kube-state-metrics"',
-    nodeExporterSelector: 'job="node-exporter"',
-    //fsSpaceFillingUpCriticalThreshold: 15,
-    kubeSchedulerSelector: 'job="kube-scheduler"',
-    kubeControllerManagerSelector: 'job="kube-controller-manager"',
-    kubeApiserverSelector: 'job="apiserver"',
-    coreDNSSelector: 'job="kube-dns"',
-    //podLabel: 'pod',
-
-    prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + $._config.namespace + '"',
-
-    //alertmanagerName: '{{ $labels.namespace }}/{{ $labels.pod}}',
-    //alertmanagerClusterLabels: 'namespace,service',
-    alertmanagerSelector: 'job="alertmanager-' + $._config.alertmanager.name + '",namespace="' + $._config.namespace + '"',
-    prometheusSelector: 'job="prometheus-' + $._config.prometheus.name + '",namespace="' + $._config.namespace + '"',
-    //prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
-    
-
-    /*jobs: {
-      Kubelet: $._config.kubeletSelector,
-      KubeScheduler: $._config.kubeSchedulerSelector,
-      KubeControllerManager: $._config.kubeControllerManagerSelector,
-      KubeAPI: $._config.kubeApiserverSelector,
-      KubeStateMetrics: $._config.kubeStateMetricsSelector,
-      NodeExporter: $._config.nodeExporterSelector,
-      Alertmanager: $._config.alertmanagerSelector,
-      Prometheus: $._config.prometheusSelector,
-      PrometheusOperator: $._config.prometheusOperatorSelector,
-      CoreDNS: $._config.coreDNSSelector,
-    },*/
-
     resources+:: {
       'addon-resizer': {
         requests: { cpu: '10m', memory: '30Mi' },
@@ -242,7 +207,6 @@ local mixins = import './mixins/monitoring-mixins.libsonnet';
         'app.kubernetes.io/component': 'grafana',
         'app.kubernetes.io/part-of': 'kube-prometheus',
       },
-      //dashboards: $.grafanaDashboards,
       dashboards: allDashboards,
     },
   },
