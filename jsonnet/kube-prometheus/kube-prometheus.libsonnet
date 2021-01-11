@@ -6,7 +6,7 @@ local kubeStateMetrics = import './kube-state-metrics/kube-state-metrics.libsonn
 local nodeExporter = import './node-exporter/node-exporter.libsonnet';
 local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
 
-local mixins = import './mixins/monitoring-mixins.libsonnet';
+local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
 
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
@@ -39,6 +39,11 @@ local mixins = import './mixins/monitoring-mixins.libsonnet';
     version: '0.8.2',
     image: 'directxman12/k8s-prometheus-adapter:v0.8.2',
     prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc.cluster.local:9090/',
+  }),
+  mixins+:: monitoringMixins({
+    namespace: $._config.namespace,
+    alertmanagerName: 'main',
+    prometheusName: 'k8s',
   }),
   kubePrometheus+:: {
     namespace: {
@@ -183,21 +188,21 @@ local mixins = import './mixins/monitoring-mixins.libsonnet';
     },
     
     local allRules =
-      mixins.mixins.nodeExporter.prometheusRules +
-      mixins.mixins.kubernetes.prometheusRules +
-      mixins.mixins.base.prometheusRules +
-      mixins.mixins.kubeStateMetrics.prometheusAlerts +
-      mixins.mixins.nodeExporter.prometheusAlerts +
-      mixins.mixins.alertmanager.prometheusAlerts +
-      mixins.mixins.prometheusOperator.prometheusAlerts +
-      mixins.mixins.kubernetes.prometheusAlerts +
-      mixins.mixins.prometheus.prometheusAlerts +
-      mixins.mixins.base.prometheusAlerts,
+      $.mixins.nodeExporter.prometheusRules +
+      $.mixins.kubernetes.prometheusRules +
+      $.mixins.base.prometheusRules +
+      $.mixins.kubeStateMetrics.prometheusAlerts +
+      $.mixins.nodeExporter.prometheusAlerts +
+      $.mixins.alertmanager.prometheusAlerts +
+      $.mixins.prometheusOperator.prometheusAlerts +
+      $.mixins.kubernetes.prometheusAlerts +
+      $.mixins.prometheus.prometheusAlerts +
+      $.mixins.base.prometheusAlerts,
 
     local allDashboards =
-      mixins.mixins.nodeExporter.grafanaDashboards +
-      mixins.mixins.kubernetes.grafanaDashboards +
-      mixins.mixins.prometheus.grafanaDashboards,
+      $.mixins.nodeExporter.grafanaDashboards +
+      $.mixins.kubernetes.grafanaDashboards +
+      $.mixins.prometheus.grafanaDashboards,
 
     prometheus+:: { rules: allRules },
     grafana+:: {

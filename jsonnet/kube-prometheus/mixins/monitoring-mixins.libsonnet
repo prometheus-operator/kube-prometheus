@@ -1,11 +1,13 @@
-{
-  // Add you mixins here.
-  mixins+:: {
-    _config:: {  // TODO(paulfantom): figure out how to pass this from higher up
-      prometheusName: 'k8s',
-      alertmanagerName: 'main',
-      namespace: 'default',
-    },
+local defaults = {
+  local defaults = self,
+  namespace: error 'must provide namespace',
+  prometheusName: error 'must provide namespace',
+  alertmanagerName: error 'must provide namespace',
+};
+
+function(params) {
+  local m = self,
+  config:: defaults + params,
     base+:
       (import '../alerts/general.libsonnet') +
       (import '../alerts/node.libsonnet') +
@@ -44,16 +46,14 @@
     prometheusOperator:
       (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') {
         _config+:: {
-          //prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + $._config.namespace + '"',
-          prometheusOperatorSelector: 'job="prometheus-operator",namespace="monitoring"',
+          prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + m.config.namespace + '"',
         },
       },
 
     prometheus:
       (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') {
         _config+:: {
-          //prometheusSelector: 'job="prometheus-' + $._config.prometheusName + '",namespace="' + $._config.namespace + '"',
-          prometheusSelector: 'job="prometheus-k8s",namespace="monitoring"',
+          prometheusSelector: 'job="prometheus-' + m.config.prometheusName + '",namespace="' + m.config.namespace + '"',
           prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
         },
       },
@@ -63,8 +63,7 @@
         _config+:: {
           alertmanagerName: '{{ $labels.namespace }}/{{ $labels.pod}}',
           alertmanagerClusterLabels: 'namespace,service',
-          //alertmanagerSelector: 'job="alertmanager-' + $._config.alertmanagerName + '",namespace="' + $._config.namespace + '"',
-          alertmanagerSelector: 'job="alertmanager-main",namespace="monitoring"',
+          alertmanagerSelector: 'job="alertmanager-' + m.config.alertmanagerName + '",namespace="' + m.config.namespace + '"',
         },
       },
 
@@ -76,6 +75,4 @@
           diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
         },
       },
-
-  },
 }
