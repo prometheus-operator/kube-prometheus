@@ -1,5 +1,4 @@
 local defaults = {
-  local defaults = self,
   namespace: error 'must provide namespace',
   image: 'quay.io/brancz/kube-rbac-proxy:v0.8.0',
   ports: error 'must provide ports',
