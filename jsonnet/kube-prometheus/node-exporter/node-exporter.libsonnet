@@ -67,8 +67,9 @@ function(params) {
         apiGroups: ['authorization.k8s.io'],
         resources: ['subjectaccessreviews'],
         verbs: ['create'],
-      }],
-    },
+      },
+    ],
+  },
 
   serviceAccount: {
     apiVersion: 'v1',
@@ -169,7 +170,7 @@ function(params) {
     }) + {
       env: [
         { name: 'IP', valueFrom: { fieldRef: { fieldPath: 'status.podIP' } } },
-      ]
+      ],
     };
 
     {
