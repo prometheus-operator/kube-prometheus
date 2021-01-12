@@ -16,7 +16,6 @@
   },
 
   specMixin:: {
-    local sm = self,
     config+:: {
       kubeRbacProxy: {
         image: error 'must provide image',

@@ -58,8 +58,6 @@ local defaults = {
 };
 
 
-
-
 function(params) {
   local am = self,
   config:: defaults + params,

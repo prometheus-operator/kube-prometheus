@@ -100,7 +100,6 @@ local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libson
     (kubeRbacProxyContainer {
        config+:: {
          kubeRbacProxy: {
-           local cfg = self,
            image: $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy,
            name: 'kube-rbac-proxy',
            securePortName: 'https',

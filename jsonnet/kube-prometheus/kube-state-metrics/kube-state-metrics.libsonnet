@@ -60,7 +60,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     upstream: 'http://127.0.0.1:8081/',
     secureListenAddress: ':8443',
     ports: [
-      { name: 'https-main', containerPort: 8443,  },
+      { name: 'https-main', containerPort: 8443 },
     ],
   }),
 
@@ -69,7 +69,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     upstream: 'http://127.0.0.1:8082/',
     secureListenAddress: ':9443',
     ports: [
-      { name: 'https-self', containerPort: 9443,  },
+      { name: 'https-self', containerPort: 9443 },
     ],
   }),
 

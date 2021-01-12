@@ -186,117 +186,117 @@ function(params) {
       },
     },
 
-    serviceAccount: {
-      apiVersion: 'v1',
+  serviceAccount: {
+    apiVersion: 'v1',
+    kind: 'ServiceAccount',
+    metadata: {
+      name: pa.config.name,
+      namespace: pa.config.namespace,
+      labels: pa.config.commonLabels,
+    },
+  },
+
+  clusterRole: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRole',
+    metadata: {
+      name: pa.config.name,
+      labels: pa.config.commonLabels,
+    },
+    rules: [{
+      apiGroups: [''],
+      resources: ['nodes', 'namespaces', 'pods', 'services'],
+      verbs: ['get', 'list', 'watch'],
+    }],
+  },
+
+  clusterRoleBinding: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRoleBinding',
+    metadata: {
+      name: pa.config.name,
+      labels: pa.config.commonLabels,
+    },
+    roleRef: {
+      apiGroup: 'rbac.authorization.k8s.io',
+      kind: 'ClusterRole',
+      name: $.clusterRole.metadata.name,
+    },
+    subjects: [{
       kind: 'ServiceAccount',
-      metadata: {
-        name: pa.config.name,
-        namespace: pa.config.namespace,
-        labels: pa.config.commonLabels,
-      },
-    },
+      name: $.serviceAccount.metadata.name,
+      namespace: pa.config.namespace,
+    }],
+  },
 
-    clusterRole: {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
+  clusterRoleBindingDelegator: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRoleBinding',
+    metadata: {
+      name: 'resource-metrics:system:auth-delegator',
+      labels: pa.config.commonLabels,
+    },
+    roleRef: {
+      apiGroup: 'rbac.authorization.k8s.io',
       kind: 'ClusterRole',
-      metadata: {
-        name: pa.config.name,
-        labels: pa.config.commonLabels,
-      },
-      rules: [{
-        apiGroups: [''],
-        resources: ['nodes', 'namespaces', 'pods', 'services'],
-        verbs: ['get', 'list', 'watch'],
-      }],
+      name: 'system:auth-delegator',
     },
+    subjects: [{
+      kind: 'ServiceAccount',
+      name: $.serviceAccount.metadata.name,
+      namespace: pa.config.namespace,
+    }],
+  },
 
-    clusterRoleBinding: {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRoleBinding',
-      metadata: {
-        name: pa.config.name,
-        labels: pa.config.commonLabels,
-      },
-      roleRef: {
-        apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'ClusterRole',
-        name: $.clusterRole.metadata.name,
-      },
-      subjects: [{
-        kind: 'ServiceAccount',
-        name: $.serviceAccount.metadata.name,
-        namespace: pa.config.namespace,
-      }],
+  clusterRoleServerResources: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRole',
+    metadata: {
+      name: 'resource-metrics-server-resources',
+      labels: pa.config.commonLabels,
     },
+    rules: [{
+      apiGroups: ['metrics.k8s.io'],
+      resources: ['*'],
+      verbs: ['*'],
+    }],
+  },
 
-    clusterRoleBindingDelegator: {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRoleBinding',
-      metadata: {
-        name: 'resource-metrics:system:auth-delegator',
-        labels: pa.config.commonLabels,
-      },
-      roleRef: {
-        apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'ClusterRole',
-        name: 'system:auth-delegator',
-      },
-      subjects: [{
-        kind: 'ServiceAccount',
-        name: $.serviceAccount.metadata.name,
-        namespace: pa.config.namespace,
-      }],
+  clusterRoleAggregatedMetricsReader: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRole',
+    metadata: {
+      name: 'system:aggregated-metrics-reader',
+      labels: {
+        'rbac.authorization.k8s.io/aggregate-to-admin': 'true',
+        'rbac.authorization.k8s.io/aggregate-to-edit': 'true',
+        'rbac.authorization.k8s.io/aggregate-to-view': 'true',
+      } + pa.config.commonLabels,
     },
+    rules: [{
+      apiGroups: ['metrics.k8s.io'],
+      resources: ['pods', 'nodes'],
+      verbs: ['get', 'list', 'watch'],
+    }],
+  },
 
-    clusterRoleServerResources: {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRole',
-      metadata: {
-        name: 'resource-metrics-server-resources',
-        labels: pa.config.commonLabels,
-      },
-      rules: [{
-        apiGroups: ['metrics.k8s.io'],
-        resources: ['*'],
-        verbs: ['*'],
-      }],
+  roleBindingAuthReader: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'RoleBinding',
+    metadata: {
+      name: 'resource-metrics-auth-reader',
+      namespace: 'kube-system',
+      labels: pa.config.commonLabels,
     },
-
-    clusterRoleAggregatedMetricsReader: {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRole',
-      metadata: {
-        name: 'system:aggregated-metrics-reader',
-        labels: {
-          'rbac.authorization.k8s.io/aggregate-to-admin': 'true',
-          'rbac.authorization.k8s.io/aggregate-to-edit': 'true',
-          'rbac.authorization.k8s.io/aggregate-to-view': 'true',
-        } + pa.config.commonLabels,
-      },
-      rules: [{
-        apiGroups: ['metrics.k8s.io'],
-        resources: ['pods', 'nodes'],
-        verbs: ['get', 'list', 'watch'],
-      }],
+    roleRef: {
+      apiGroup: 'rbac.authorization.k8s.io',
+      kind: 'Role',
+      name: 'extension-apiserver-authentication-reader',
     },
-
-    roleBindingAuthReader: {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'RoleBinding',
-      metadata: {
-        name: 'resource-metrics-auth-reader',
-        namespace: 'kube-system',
-        labels: pa.config.commonLabels,
-      },
-      roleRef: {
-        apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'Role',
-        name: 'extension-apiserver-authentication-reader',
-      },
-      subjects: [{
-        kind: 'ServiceAccount',
-        name: $.serviceAccount.metadata.name,
-        namespace: pa.config.namespace,
-      }],
-    },
+    subjects: [{
+      kind: 'ServiceAccount',
+      name: $.serviceAccount.metadata.name,
+      namespace: pa.config.namespace,
+    }],
+  },
 }

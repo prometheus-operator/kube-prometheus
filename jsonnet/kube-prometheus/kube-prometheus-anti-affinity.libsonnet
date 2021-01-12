@@ -30,8 +30,6 @@
   },
 
   prometheus+:: {
-    local p = self,
-
     prometheus+: {
       spec+:
         antiaffinity('prometheus', [$._config.prometheus.name], $._config.namespace),

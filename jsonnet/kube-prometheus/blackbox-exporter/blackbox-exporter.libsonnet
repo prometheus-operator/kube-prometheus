@@ -92,191 +92,191 @@ function(params) {
   // Safety check
   assert std.isObject(bb.config.resources),
 
-      configuration: {
-        apiVersion: 'v1',
-        kind: 'ConfigMap',
-        metadata: {
-          name: 'blackbox-exporter-configuration',
-          namespace: bb.config.namespace,
-          labels: bb.config.commonLabels,
-        },
-        data: {
-          'config.yml': std.manifestYamlDoc({ modules: bb.config.modules }),
-        },
+  configuration: {
+    apiVersion: 'v1',
+    kind: 'ConfigMap',
+    metadata: {
+      name: 'blackbox-exporter-configuration',
+      namespace: bb.config.namespace,
+      labels: bb.config.commonLabels,
+    },
+    data: {
+      'config.yml': std.manifestYamlDoc({ modules: bb.config.modules }),
+    },
+  },
+
+  serviceAccount: {
+    apiVersion: 'v1',
+    kind: 'ServiceAccount',
+    metadata: {
+      name: 'blackbox-exporter',
+      namespace: bb.config.namespace,
+    },
+  },
+
+  clusterRole: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRole',
+    metadata: {
+      name: 'blackbox-exporter',
+    },
+    rules: [
+      {
+        apiGroups: ['authentication.k8s.io'],
+        resources: ['tokenreviews'],
+        verbs: ['create'],
       },
-
-      serviceAccount: {
-        apiVersion: 'v1',
-        kind: 'ServiceAccount',
-        metadata: {
-          name: 'blackbox-exporter',
-          namespace: bb.config.namespace,
-        },
+      {
+        apiGroups: ['authorization.k8s.io'],
+        resources: ['subjectaccessreviews'],
+        verbs: ['create'],
       },
+    ],
+  },
 
-      clusterRole: {
-        apiVersion: 'rbac.authorization.k8s.io/v1',
-        kind: 'ClusterRole',
-        metadata: {
-          name: 'blackbox-exporter',
-        },
-        rules: [
-          {
-            apiGroups: ['authentication.k8s.io'],
-            resources: ['tokenreviews'],
-            verbs: ['create'],
-          },
-          {
-            apiGroups: ['authorization.k8s.io'],
-            resources: ['subjectaccessreviews'],
-            verbs: ['create'],
-          },
-        ],
+  clusterRoleBinding: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'ClusterRoleBinding',
+    metadata: {
+      name: 'blackbox-exporter',
+    },
+    roleRef: {
+      apiGroup: 'rbac.authorization.k8s.io',
+      kind: 'ClusterRole',
+      name: 'blackbox-exporter',
+    },
+    subjects: [{
+      kind: 'ServiceAccount',
+      name: 'blackbox-exporter',
+      namespace: bb.config.namespace,
+    }],
+  },
+
+  deployment:
+    local blackboxExporter = {
+      name: 'blackbox-exporter',
+      image: bb.config.image,
+      args: [
+        '--config.file=/etc/blackbox_exporter/config.yml',
+        '--web.listen-address=:%d' % bb.config.internalPort,
+      ],
+      ports: [{
+        name: 'http',
+        containerPort: bb.config.internalPort,
+      }],
+      resources: bb.config.resources,
+      securityContext: if bb.config.privileged then {
+        runAsNonRoot: false,
+        capabilities: { drop: ['ALL'], add: ['NET_RAW'] },
+      } else {
+        runAsNonRoot: true,
+        runAsUser: 65534,
       },
+      volumeMounts: [{
+        mountPath: '/etc/blackbox_exporter/',
+        name: 'config',
+        readOnly: true,
+      }],
+    };
 
-      clusterRoleBinding: {
-        apiVersion: 'rbac.authorization.k8s.io/v1',
-        kind: 'ClusterRoleBinding',
-        metadata: {
-          name: 'blackbox-exporter',
-        },
-        roleRef: {
-          apiGroup: 'rbac.authorization.k8s.io',
-          kind: 'ClusterRole',
-          name: 'blackbox-exporter',
-        },
-        subjects: [{
-          kind: 'ServiceAccount',
-          name: 'blackbox-exporter',
-          namespace: bb.config.namespace,
-        }],
+    local reloader = {
+      name: 'module-configmap-reloader',
+      image: bb.config.configmapReloaderImage,
+      args: [
+        '--webhook-url=http://localhost:%d/-/reload' % bb.config.internalPort,
+        '--volume-dir=/etc/blackbox_exporter/',
+      ],
+      resources: bb.config.resources,
+      securityContext: { runAsNonRoot: true, runAsUser: 65534 },
+      terminationMessagePath: '/dev/termination-log',
+      terminationMessagePolicy: 'FallbackToLogsOnError',
+      volumeMounts: [{
+        mountPath: '/etc/blackbox_exporter/',
+        name: 'config',
+        readOnly: true,
+      }],
+    };
+
+    local kubeRbacProxy = krp({
+      name: 'kube-rbac-proxy',
+      upstream: 'http://127.0.0.1:' + bb.config.internalPort + '/',
+      secureListenAddress: ':' + bb.config.port,
+      ports: [
+        { name: 'https', containerPort: bb.config.port },
+      ],
+    });
+
+    {
+      apiVersion: 'apps/v1',
+      kind: 'Deployment',
+      metadata: {
+        name: 'blackbox-exporter',
+        namespace: bb.config.namespace,
+        labels: bb.config.commonLabels,
       },
-
-      deployment:
-        local blackboxExporter = {
-          name: 'blackbox-exporter',
-          image: bb.config.image,
-          args: [
-            '--config.file=/etc/blackbox_exporter/config.yml',
-            '--web.listen-address=:%d' % bb.config.internalPort,
-          ],
-          ports: [{
-            name: 'http',
-            containerPort: bb.config.internalPort,
-          }],
-          resources: bb.config.resources,
-          securityContext: if bb.config.privileged then {
-            runAsNonRoot: false,
-            capabilities: { drop: ['ALL'], add: ['NET_RAW'] },
-          } else {
-            runAsNonRoot: true,
-            runAsUser: 65534,
-          },
-          volumeMounts: [{
-            mountPath: '/etc/blackbox_exporter/',
-            name: 'config',
-            readOnly: true,
-          }],
-        };
-
-        local reloader = {
-          name: 'module-configmap-reloader',
-          image: bb.config.configmapReloaderImage,
-          args: [
-            '--webhook-url=http://localhost:%d/-/reload' % bb.config.internalPort,
-            '--volume-dir=/etc/blackbox_exporter/',
-          ],
-          resources: bb.config.resources,
-          securityContext: { runAsNonRoot: true, runAsUser: 65534 },
-          terminationMessagePath: '/dev/termination-log',
-          terminationMessagePolicy: 'FallbackToLogsOnError',
-          volumeMounts: [{
-            mountPath: '/etc/blackbox_exporter/',
-            name: 'config',
-            readOnly: true,
-          }],
-        };
-
-        local kubeRbacProxy = krp({
-          name: 'kube-rbac-proxy',
-          upstream: 'http://127.0.0.1:' + bb.config.internalPort + '/',
-          secureListenAddress: ':' + bb.config.port,
-          ports: [
-            { name: 'https', containerPort: bb.config.port },
-          ],
-        });
-
-        {
-          apiVersion: 'apps/v1',
-          kind: 'Deployment',
-          metadata: {
-            name: 'blackbox-exporter',
-            namespace: bb.config.namespace,
-            labels: bb.config.commonLabels,
-          },
+      spec: {
+        replicas: bb.config.replicas,
+        selector: { matchLabels: bb.config.selectorLabels },
+        template: {
+          metadata: { labels: bb.config.commonLabels },
           spec: {
-            replicas: bb.config.replicas,
-            selector: { matchLabels: bb.config.selectorLabels },
-            template: {
-              metadata: { labels: bb.config.commonLabels },
-              spec: {
-                containers: [blackboxExporter, reloader, kubeRbacProxy],
-                nodeSelector: { 'kubernetes.io/os': 'linux' },
-                serviceAccountName: 'blackbox-exporter',
-                volumes: [{
-                  name: 'config',
-                  configMap: { name: 'blackbox-exporter-configuration' },
-                }],
-              },
-            },
-          },
-        },
-
-      service: {
-        apiVersion: 'v1',
-        kind: 'Service',
-        metadata: {
-          name: 'blackbox-exporter',
-          namespace: bb.config.namespace,
-          labels: bb.config.commonLabels,
-        },
-        spec: {
-          ports: [{
-            name: 'https',
-            port: bb.config.port,
-            targetPort: 'https',
-          }, {
-            name: 'probe',
-            port: bb.config.internalPort,
-            targetPort: 'http',
-          }],
-          selector: bb.config.selectorLabels,
-        },
-      },
-
-      serviceMonitor:
-        {
-          apiVersion: 'monitoring.coreos.com/v1',
-          kind: 'ServiceMonitor',
-          metadata: {
-            name: 'blackbox-exporter',
-            namespace: bb.config.namespace,
-            labels: bb.config.commonLabels,
-          },
-          spec: {
-            endpoints: [{
-              bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-              interval: '30s',
-              path: '/metrics',
-              port: 'https',
-              scheme: 'https',
-              tlsConfig: {
-                insecureSkipVerify: true,
-              },
+            containers: [blackboxExporter, reloader, kubeRbacProxy],
+            nodeSelector: { 'kubernetes.io/os': 'linux' },
+            serviceAccountName: 'blackbox-exporter',
+            volumes: [{
+              name: 'config',
+              configMap: { name: 'blackbox-exporter-configuration' },
             }],
-            selector: {
-              matchLabels: bb.config.selectorLabels,
-            },
           },
         },
-    }
+      },
+    },
+
+  service: {
+    apiVersion: 'v1',
+    kind: 'Service',
+    metadata: {
+      name: 'blackbox-exporter',
+      namespace: bb.config.namespace,
+      labels: bb.config.commonLabels,
+    },
+    spec: {
+      ports: [{
+        name: 'https',
+        port: bb.config.port,
+        targetPort: 'https',
+      }, {
+        name: 'probe',
+        port: bb.config.internalPort,
+        targetPort: 'http',
+      }],
+      selector: bb.config.selectorLabels,
+    },
+  },
+
+  serviceMonitor:
+    {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'ServiceMonitor',
+      metadata: {
+        name: 'blackbox-exporter',
+        namespace: bb.config.namespace,
+        labels: bb.config.commonLabels,
+      },
+      spec: {
+        endpoints: [{
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          interval: '30s',
+          path: '/metrics',
+          port: 'https',
+          scheme: 'https',
+          tlsConfig: {
+            insecureSkipVerify: true,
+          },
+        }],
+        selector: {
+          matchLabels: bb.config.selectorLabels,
+        },
+      },
+    },
+}
