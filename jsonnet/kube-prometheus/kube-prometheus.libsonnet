@@ -186,7 +186,7 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
         limits: { cpu: '20m', memory: '40Mi' },
       },
     },
-    
+
     local allRules =
       $.mixins.nodeExporter.prometheusRules +
       $.mixins.kubernetes.prometheusRules +
