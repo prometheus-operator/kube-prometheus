@@ -2255,7 +2255,7 @@ spec:
                     type: string
                 type: object
               podMonitorNamespaceSelector:
-                description: Namespaces to be selected for PodMonitor discovery. If nil, only check own namespace.
+                description: Namespace's labels to match for PodMonitor discovery. If nil, only check own namespace.
                 properties:
                   matchExpressions:
                     description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
@@ -2846,7 +2846,7 @@ spec:
                 description: Time duration Prometheus shall retain data for. Default is '24h', and must match the regular expression `[0-9]+(ms|s|m|h|d|w|y)` (milliseconds seconds minutes hours days weeks years).
                 type: string
               retentionSize:
-                description: Maximum amount of disk space used by blocks.
+                description: 'Maximum amount of disk space used by blocks. Supported units: B, KB, MB, GB, TB, PB, EB. Ex: `512MB`.'
                 type: string
               routePrefix:
                 description: The route prefix Prometheus registers HTTP handlers for. This is useful, if using ExternalURL and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true, but the server serves requests under a different route prefix. For example for use with `kubectl proxy`.
@@ -3016,7 +3016,7 @@ spec:
                 description: ServiceAccountName is the name of the ServiceAccount to use to run the Prometheus Pods.
                 type: string
               serviceMonitorNamespaceSelector:
-                description: Namespaces to be selected for ServiceMonitor discovery. If nil, only check own namespace.
+                description: Namespace's labels to match for ServiceMonitor discovery. If nil, only check own namespace.
                 properties:
                   matchExpressions:
                     description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
@@ -3453,6 +3453,9 @@ spec:
                     required:
                     - key
                     type: object
+                  tracingConfigFile:
+                    description: TracingConfig specifies the path of the tracing configuration file. When used alongside with TracingConfig, TracingConfigFile takes precedence.
+                    type: string
                   version:
                     description: Version describes the version of Thanos to use.
                     type: string
