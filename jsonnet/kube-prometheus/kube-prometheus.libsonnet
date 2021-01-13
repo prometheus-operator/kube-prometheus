@@ -5,16 +5,15 @@ local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet
 local kubeStateMetrics = import './kube-state-metrics/kube-state-metrics.libsonnet';
 local nodeExporter = import './node-exporter/node-exporter.libsonnet';
 local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
+local prometheus = import './prometheus/prometheus.libsonnet';
 
 local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
 
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
-(import './prometheus/prometheus.libsonnet') +
-
 {
   alertmanager: alertmanager({
-    name: 'main',
+    name: $._config.alertmanagerName,
     namespace: $._config.namespace,
     version: '0.21.0',
     image: 'quay.io/prometheus/alertmanager:v0.21.0',
@@ -34,6 +33,14 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
     version: '1.0.1',
     image: 'quay.io/prometheus/node-exporter:v1.0.1',
   }),
+  prometheus: prometheus({
+    namespace: $._config.namespace,
+    version: '2.24.0',
+    image: 'quay.io/prometheus/prometheus:v2.24.0',
+    name: $._config.prometheusName,
+    alertmanagerName: $._config.alertmanagerName,
+    rules: $.allRules,
+  }),
   prometheusAdapter: prometheusAdapter({
     namespace: $._config.namespace,
     version: '0.8.2',
@@ -42,9 +49,24 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
   }),
   mixins+:: monitoringMixins({
     namespace: $._config.namespace,
-    alertmanagerName: 'main',
-    prometheusName: 'k8s',
+    alertmanagerName: $._config.alertmanagerName,
+    prometheusName: $._config.prometheusName,
   }),
+
+  // FIXME(paulfantom) Remove this variable by moving each mixin to its own component
+  // Example: node_exporter mixin could be added in ./node-exporter/node-exporter.libsonnet
+  allRules::
+    $.mixins.nodeExporter.prometheusRules +
+    $.mixins.kubernetes.prometheusRules +
+    $.mixins.base.prometheusRules +
+    $.mixins.kubeStateMetrics.prometheusAlerts +
+    $.mixins.nodeExporter.prometheusAlerts +
+    $.mixins.alertmanager.prometheusAlerts +
+    $.mixins.prometheusOperator.prometheusAlerts +
+    $.mixins.kubernetes.prometheusAlerts +
+    $.mixins.prometheus.prometheusAlerts +
+    $.mixins.base.prometheusAlerts,
+
   kubePrometheus+:: {
     namespace: {
       apiVersion: 'v1',
@@ -143,6 +165,8 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
 } + {
   _config+:: {
     namespace: 'default',
+    prometheusName: 'k8s',
+    alertmanagerName: 'main',
 
     versions+:: { grafana: '7.3.5', kubeRbacProxy: 'v0.8.0' },
     imageRepos+:: { kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy' },
@@ -187,24 +211,6 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
       },
     },
 
-    local allRules =
-      $.mixins.nodeExporter.prometheusRules +
-      $.mixins.kubernetes.prometheusRules +
-      $.mixins.base.prometheusRules +
-      $.mixins.kubeStateMetrics.prometheusAlerts +
-      $.mixins.nodeExporter.prometheusAlerts +
-      $.mixins.alertmanager.prometheusAlerts +
-      $.mixins.prometheusOperator.prometheusAlerts +
-      $.mixins.kubernetes.prometheusAlerts +
-      $.mixins.prometheus.prometheusAlerts +
-      $.mixins.base.prometheusAlerts,
-
-    local allDashboards =
-      $.mixins.nodeExporter.grafanaDashboards +
-      $.mixins.kubernetes.grafanaDashboards +
-      $.mixins.prometheus.grafanaDashboards,
-
-    prometheus+:: { rules: allRules },
     grafana+:: {
       labels: {
         'app.kubernetes.io/name': 'grafana',
@@ -212,7 +218,12 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
         'app.kubernetes.io/component': 'grafana',
         'app.kubernetes.io/part-of': 'kube-prometheus',
       },
-      dashboards: allDashboards,
+      // FIXME(paulfantom): Same as with rules and alerts.
+      // This should be gathering all dashboards from components without having to enumerate all dashboards.
+      dashboards:
+        $.mixins.nodeExporter.grafanaDashboards +
+        $.mixins.kubernetes.grafanaDashboards +
+        $.mixins.prometheus.grafanaDashboards,
     },
   },
 }
