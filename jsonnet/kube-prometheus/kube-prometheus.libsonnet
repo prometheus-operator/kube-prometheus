@@ -6,17 +6,12 @@ local kubeStateMetrics = import './kube-state-metrics/kube-state-metrics.libsonn
 local nodeExporter = import './node-exporter/node-exporter.libsonnet';
 local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
 
+local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
+
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
-(import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
-(import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
-(import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') +
 (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet') +
-(import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') +
 (import './prometheus/prometheus.libsonnet') +
-(import 'github.com/kubernetes-monitoring/kubernetes-mixin/mixin.libsonnet') +
-(import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') +
-(import './alerts/alerts.libsonnet') +
-(import './rules/rules.libsonnet') +
+
 {
   alertmanager: alertmanager({
     name: 'main',
@@ -44,6 +39,11 @@ local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libson
     version: '0.8.2',
     image: 'directxman12/k8s-prometheus-adapter:v0.8.2',
     prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc.cluster.local:9090/',
+  }),
+  mixins+:: monitoringMixins({
+    namespace: $._config.namespace,
+    alertmanagerName: 'main',
+    prometheusName: 'k8s',
   }),
   kubePrometheus+:: {
     namespace: {
@@ -176,40 +176,6 @@ local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libson
       'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305',
     ],
 
-    runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
-
-    cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
-    kubeletSelector: 'job="kubelet", metrics_path="/metrics"',
-    kubeStateMetricsSelector: 'job="kube-state-metrics"',
-    nodeExporterSelector: 'job="node-exporter"',
-    fsSpaceFillingUpCriticalThreshold: 15,
-    notKubeDnsSelector: 'job!="kube-dns"',
-    kubeSchedulerSelector: 'job="kube-scheduler"',
-    kubeControllerManagerSelector: 'job="kube-controller-manager"',
-    kubeApiserverSelector: 'job="apiserver"',
-    coreDNSSelector: 'job="kube-dns"',
-    podLabel: 'pod',
-
-    alertmanagerName: '{{ $labels.namespace }}/{{ $labels.pod}}',
-    alertmanagerClusterLabels: 'namespace,service',
-    alertmanagerSelector: 'job="alertmanager-' + $._config.alertmanager.name + '",namespace="' + $._config.namespace + '"',
-    prometheusSelector: 'job="prometheus-' + $._config.prometheus.name + '",namespace="' + $._config.namespace + '"',
-    prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
-    prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + $._config.namespace + '"',
-
-    jobs: {
-      Kubelet: $._config.kubeletSelector,
-      KubeScheduler: $._config.kubeSchedulerSelector,
-      KubeControllerManager: $._config.kubeControllerManagerSelector,
-      KubeAPI: $._config.kubeApiserverSelector,
-      KubeStateMetrics: $._config.kubeStateMetricsSelector,
-      NodeExporter: $._config.nodeExporterSelector,
-      Alertmanager: $._config.alertmanagerSelector,
-      Prometheus: $._config.prometheusSelector,
-      PrometheusOperator: $._config.prometheusOperatorSelector,
-      CoreDNS: $._config.coreDNSSelector,
-    },
-
     resources+:: {
       'addon-resizer': {
         requests: { cpu: '10m', memory: '30Mi' },
@@ -220,7 +186,25 @@ local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libson
         limits: { cpu: '20m', memory: '40Mi' },
       },
     },
-    prometheus+:: { rules: $.prometheusRules + $.prometheusAlerts },
+
+    local allRules =
+      $.mixins.nodeExporter.prometheusRules +
+      $.mixins.kubernetes.prometheusRules +
+      $.mixins.base.prometheusRules +
+      $.mixins.kubeStateMetrics.prometheusAlerts +
+      $.mixins.nodeExporter.prometheusAlerts +
+      $.mixins.alertmanager.prometheusAlerts +
+      $.mixins.prometheusOperator.prometheusAlerts +
+      $.mixins.kubernetes.prometheusAlerts +
+      $.mixins.prometheus.prometheusAlerts +
+      $.mixins.base.prometheusAlerts,
+
+    local allDashboards =
+      $.mixins.nodeExporter.grafanaDashboards +
+      $.mixins.kubernetes.grafanaDashboards +
+      $.mixins.prometheus.grafanaDashboards,
+
+    prometheus+:: { rules: allRules },
     grafana+:: {
       labels: {
         'app.kubernetes.io/name': 'grafana',
@@ -228,7 +212,7 @@ local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libson
         'app.kubernetes.io/component': 'grafana',
         'app.kubernetes.io/part-of': 'kube-prometheus',
       },
-      dashboards: $.grafanaDashboards,
+      dashboards: allDashboards,
     },
   },
 }

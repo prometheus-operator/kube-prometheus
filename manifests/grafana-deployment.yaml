@@ -13,7 +13,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-dashboards: ce13f0b50d04c73fb01da858eb1fb608
+        checksum/grafana-dashboards: a9e19e1ab605dc374f30edda771e6917
         checksum/grafana-datasources: 48faab41f579fc8efde6034391496f6a
       labels:
         app: grafana

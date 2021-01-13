@@ -22243,7 +22243,7 @@ items:
                           "timeShift": null,
                           "title": "CPU Utilisation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -22329,7 +22329,7 @@ items:
                           "timeShift": null,
                           "title": "CPU Saturation (load1 per CPU)",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -22427,7 +22427,7 @@ items:
                           "timeShift": null,
                           "title": "Memory Utilisation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -22513,7 +22513,7 @@ items:
                           "timeShift": null,
                           "title": "Memory Saturation (Major Page Faults)",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -22627,7 +22627,7 @@ items:
                           "timeShift": null,
                           "title": "Net Utilisation (Bytes Receive/Transmit)",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -22729,7 +22729,7 @@ items:
                           "timeShift": null,
                           "title": "Net Saturation (Drops Receive/Transmit)",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -22827,7 +22827,7 @@ items:
                           "timeShift": null,
                           "title": "Disk IO Utilisation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -22913,7 +22913,7 @@ items:
                           "timeShift": null,
                           "title": "Disk IO Saturation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23011,7 +23011,7 @@ items:
                           "timeShift": null,
                           "title": "Disk Space Utilisation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23107,9 +23107,9 @@ items:
                   "30d"
               ]
           },
-          "timezone": "UTC",
+          "timezone": "utc",
           "title": "USE Method / Cluster",
-          "uid": "3e97d1d02672cdd0861f4c97c64f89b2",
+          "uid": "",
           "version": 0
       }
   kind: ConfigMap
@@ -23191,7 +23191,7 @@ items:
                           "timeShift": null,
                           "title": "CPU Utilisation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23277,7 +23277,7 @@ items:
                           "timeShift": null,
                           "title": "CPU Saturation (Load1 per CPU)",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23375,7 +23375,7 @@ items:
                           "timeShift": null,
                           "title": "Memory Utilisation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23461,7 +23461,7 @@ items:
                           "timeShift": null,
                           "title": "Memory Saturation (Major Page Faults)",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23575,7 +23575,7 @@ items:
                           "timeShift": null,
                           "title": "Net Utilisation (Bytes Receive/Transmit)",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23677,7 +23677,7 @@ items:
                           "timeShift": null,
                           "title": "Net Saturation (Drops Receive/Transmit)",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23775,7 +23775,7 @@ items:
                           "timeShift": null,
                           "title": "Disk IO Utilisation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23861,7 +23861,7 @@ items:
                           "timeShift": null,
                           "title": "Disk IO Saturation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -23959,7 +23959,7 @@ items:
                           "timeShift": null,
                           "title": "Disk Space Utilisation",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -24082,9 +24082,9 @@ items:
                   "30d"
               ]
           },
-          "timezone": "UTC",
+          "timezone": "utc",
           "title": "USE Method / Node",
-          "uid": "fac67cfbe174d3ef53eb473d73d9212f",
+          "uid": "",
           "version": 0
       }
   kind: ConfigMap
@@ -24181,7 +24181,7 @@ items:
                           "timeShift": null,
                           "title": "CPU Usage",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -24295,7 +24295,7 @@ items:
                           "timeShift": null,
                           "title": "Load Average",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -24422,7 +24422,7 @@ items:
                           "timeShift": null,
                           "title": "Memory Usage",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -24525,9 +24525,6 @@ items:
                           ],
                           "thresholds": "80, 90",
                           "title": "Memory Usage",
-                          "tooltip": {
-                              "shared": false
-                          },
                           "type": "singlestat",
                           "valueFontSize": "80%",
                           "valueMaps": [
@@ -24636,7 +24633,7 @@ items:
                           "timeShift": null,
                           "title": "Disk I/O",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -24743,7 +24740,7 @@ items:
                           "timeShift": null,
                           "title": "Disk Space Usage",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -24850,7 +24847,7 @@ items:
                           "timeShift": null,
                           "title": "Network Received",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -24944,7 +24941,7 @@ items:
                           "timeShift": null,
                           "title": "Network Transmitted",
                           "tooltip": {
-                              "shared": false,
+                              "shared": true,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -25067,9 +25064,8 @@ items:
                   "30d"
               ]
           },
-          "timezone": "UTC",
+          "timezone": "browser",
           "title": "Nodes",
-          "uid": "fa49a4706d07a042595b664c87fb33ea",
           "version": 0
       }
   kind: ConfigMap
