@@ -5,6 +5,7 @@ local nodeExporter = import './node-exporter/node-exporter.libsonnet';
 local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
 local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
 local prometheus = import './prometheus/prometheus.libsonnet';
+local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
 
 local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
 
@@ -15,6 +16,9 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
     namespace: $._config.namespace,
     version: '0.21.0',
     image: 'quay.io/prometheus/alertmanager:v0.21.0',
+    mixin+: {
+      ruleLabels: $._config.ruleLabels,
+    },
   }),
   blackboxExporter: blackboxExporter({
     namespace: $._config.namespace,
@@ -25,11 +29,17 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
     namespace: $._config.namespace,
     version: '1.9.7',
     image: 'quay.io/coreos/kube-state-metrics:v1.9.7',
+    mixin+: {
+      ruleLabels: $._config.ruleLabels,
+    },
   }),
   nodeExporter: nodeExporter({
     namespace: $._config.namespace,
     version: '1.0.1',
     image: 'quay.io/prometheus/node-exporter:v1.0.1',
+    mixin+: {
+      ruleLabels: $._config.ruleLabels,
+    },
   }),
   prometheus: prometheus({
     namespace: $._config.namespace,
@@ -37,7 +47,9 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
     image: 'quay.io/prometheus/prometheus:v2.24.0',
     name: $._config.prometheusName,
     alertmanagerName: $._config.alertmanagerName,
-    rules: $.allRules,
+    mixin+: {
+      ruleLabels: $._config.ruleLabels,
+    },
   }),
   prometheusAdapter: prometheusAdapter({
     namespace: $._config.namespace,
@@ -53,25 +65,26 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
     commonLabels+: {
       'app.kubernetes.io/part-of': 'kube-prometheus',
     },
+    mixin+: {
+      ruleLabels: $._config.ruleLabels,
+    },
   }),
   mixins+:: monitoringMixins({
     namespace: $._config.namespace,
-    alertmanagerName: $._config.alertmanagerName,
-    prometheusName: $._config.prometheusName,
   }),
 
   // FIXME(paulfantom) Remove this variable by moving each mixin to its own component
   // Example: node_exporter mixin could be added in ./node-exporter/node-exporter.libsonnet
   allRules::
-    $.mixins.nodeExporter.prometheusRules +
+    //$.mixins.nodeExporter.prometheusRules +
     $.mixins.kubernetes.prometheusRules +
     $.mixins.base.prometheusRules +
-    $.mixins.kubeStateMetrics.prometheusAlerts +
-    $.mixins.nodeExporter.prometheusAlerts +
-    $.mixins.alertmanager.prometheusAlerts +
-    $.mixins.prometheusOperator.prometheusAlerts +
+    //$.mixins.kubeStateMetrics.prometheusAlerts +
+    //$.mixins.nodeExporter.prometheusAlerts +
+    //$.mixins.alertmanager.prometheusAlerts +
+    //$.mixins.prometheusOperator.prometheusAlerts +
     $.mixins.kubernetes.prometheusAlerts +
-    $.mixins.prometheus.prometheusAlerts +
+    //$.mixins.prometheus.prometheusAlerts +
     $.mixins.base.prometheusAlerts,
 
   kubePrometheus+:: {
@@ -118,6 +131,10 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
     namespace: 'default',
     prometheusName: 'k8s',
     alertmanagerName: 'main',
+    ruleLabels: {
+      role: 'alert-rules',
+      prometheus: $._config.prometheusName,
+    },
 
     versions+:: { grafana: '7.3.5' },
 
@@ -131,9 +148,9 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
       // FIXME(paulfantom): Same as with rules and alerts.
       // This should be gathering all dashboards from components without having to enumerate all dashboards.
       dashboards:
-        $.mixins.nodeExporter.grafanaDashboards +
-        $.mixins.kubernetes.grafanaDashboards +
-        $.mixins.prometheus.grafanaDashboards,
+        //$.mixins.nodeExporter.grafanaDashboards +
+        $.mixins.kubernetes.grafanaDashboards,
+      //$.mixins.prometheus.grafanaDashboards,
     },
   },
 }

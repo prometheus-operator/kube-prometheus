@@ -23,6 +23,15 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
+  mixin: {
+    ruleLabels: {
+      role: 'alert-rules',
+      prometheus: defaults.name,
+    },
+    _config: {
+      prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + defaults.namespace + '"',
+    },
+  },
 };
 
 function(params)
@@ -31,6 +40,26 @@ function(params)
   assert std.isObject(config.resources);
 
   prometheusOperator(config) {
+    local po = self,
+    mixin:: (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') {
+      _config+:: config.mixin._config,
+    },
+
+    prometheusRule: {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'PrometheusRule',
+      metadata: {
+        labels: config.commonLabels + config.mixin.ruleLabels,
+        name: config.name + '-rules',
+        namespace: config.namespace,
+      },
+      spec: {
+        local r = if std.objectHasAll(po.mixin, 'prometheusRules') then po.mixin.prometheusRules else {},
+        local a = if std.objectHasAll(po.mixin, 'prometheusAlerts') then po.mixin.prometheusAlerts else {},
+        groups: a + r,
+      },
+    },
+
     service+: {
       spec+: {
         ports: [
