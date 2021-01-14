@@ -1,13 +1,14 @@
 local alertmanager = import './alertmanager/alertmanager.libsonnet';
 local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet';
+local customMixin = import './mixin/custom.libsonnet';
 local kubeStateMetrics = import './kube-state-metrics/kube-state-metrics.libsonnet';
+local kubernetesMixin = import './mixin/kubernetes.libsonnet';
 local nodeExporter = import './node-exporter/node-exporter.libsonnet';
 local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
 local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
 local prometheus = import './prometheus/prometheus.libsonnet';
 local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
 
-local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
 
 (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 {
@@ -69,25 +70,18 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
       ruleLabels: $._config.ruleLabels,
     },
   }),
-  mixins+:: monitoringMixins({
+  kubernetesMixin: kubernetesMixin({
     namespace: $._config.namespace,
+    mixin+: {
+      ruleLabels: $._config.ruleLabels,
+    },
   }),
-
-  // FIXME(paulfantom) Remove this variable by moving each mixin to its own component
-  // Example: node_exporter mixin could be added in ./node-exporter/node-exporter.libsonnet
-  allRules::
-    //$.mixins.nodeExporter.prometheusRules +
-    $.mixins.kubernetes.prometheusRules +
-    $.mixins.base.prometheusRules +
-    //$.mixins.kubeStateMetrics.prometheusAlerts +
-    //$.mixins.nodeExporter.prometheusAlerts +
-    //$.mixins.alertmanager.prometheusAlerts +
-    //$.mixins.prometheusOperator.prometheusAlerts +
-    $.mixins.kubernetes.prometheusAlerts +
-    //$.mixins.prometheus.prometheusAlerts +
-    $.mixins.base.prometheusAlerts,
-
-  kubePrometheus+:: {
+  kubePrometheus: customMixin({
+    namespace: $._config.namespace,
+    mixin+: {
+      ruleLabels: $._config.ruleLabels,
+    },
+  }) + {
     namespace: {
       apiVersion: 'v1',
       kind: 'Namespace',
@@ -147,9 +141,9 @@ local monitoringMixins = import './mixins/monitoring-mixins.libsonnet';
       },
       // FIXME(paulfantom): Same as with rules and alerts.
       // This should be gathering all dashboards from components without having to enumerate all dashboards.
-      dashboards:
+      dashboards: {},
         //$.mixins.nodeExporter.grafanaDashboards +
-        $.mixins.kubernetes.grafanaDashboards,
+        //$.mixins.kubernetes.grafanaDashboards,
       //$.mixins.prometheus.grafanaDashboards,
     },
   },
