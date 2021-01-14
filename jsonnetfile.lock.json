@@ -99,7 +99,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "22aaf848a27f6e45702131e22a596778686068d5",
+      "version": "5555f492df250168657b72bb8cb60bec071de71f",
       "sum": "6reUygVmQrLEWQzTKcH8ceDbvM+2ztK3z2VBR2K2l+U="
     },
     {
@@ -109,8 +109,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "d8b7d3766225908d0239fd0d78258892cd0fc384",
-      "sum": "Nl+N/h76bzD9tZ8tx7tuNIKHwCIJ9zyOsAWplH8HvAE="
+      "version": "5555f492df250168657b72bb8cb60bec071de71f",
+      "sum": "quzK9/gITldAfVGBkFUsLjQ3Y2F4NOJ2GQUjPSD8HHQ="
     },
     {
       "source": {
