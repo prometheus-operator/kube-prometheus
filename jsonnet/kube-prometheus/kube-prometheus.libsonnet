@@ -1,6 +1,7 @@
 local alertmanager = import './alertmanager/alertmanager.libsonnet';
 local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet';
 local customMixin = import './mixin/custom.libsonnet';
+local grafana = import './grafana/grafana.libsonnet';
 local kubeStateMetrics = import './kube-state-metrics/kube-state-metrics.libsonnet';
 local kubernetesMixin = import './mixin/kubernetes.libsonnet';
 local nodeExporter = import './node-exporter/node-exporter.libsonnet';
@@ -9,8 +10,6 @@ local prometheusOperator = import './prometheus-operator/prometheus-operator.lib
 local prometheus = import './prometheus/prometheus.libsonnet';
 local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
 
-
-(import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') +
 {
   alertmanager: alertmanager({
     name: $._config.alertmanagerName,
@@ -25,6 +24,13 @@ local prometheusOperator = import './prometheus-operator/prometheus-operator.lib
     namespace: $._config.namespace,
     version: '0.18.0',
     image: 'quay.io/prometheus/blackbox-exporter:v0.18.0',
+  }),
+  grafana: grafana({
+    namespace: $._config.namespace,
+    version: '7.3.5',
+    image: 'grafana/grafana:v7.3.7',
+    dashboards: {},
+    prometheusName: $._config.prometheusName,
   }),
   kubeStateMetrics: kubeStateMetrics({
     namespace: $._config.namespace,
@@ -56,7 +62,7 @@ local prometheusOperator = import './prometheus-operator/prometheus-operator.lib
     namespace: $._config.namespace,
     version: '0.8.2',
     image: 'directxman12/k8s-prometheus-adapter:v0.8.2',
-    prometheusURL: 'http://prometheus-' + $._config.prometheus.name + '.' + $._config.namespace + '.svc.cluster.local:9090/',
+    prometheusURL: 'http://prometheus-' + $._config.prometheusName + '.' + $._config.namespace + '.svc.cluster.local:9090/',
   }),
   prometheusOperator: prometheusOperator({
     namespace: $._config.namespace,
@@ -90,36 +96,6 @@ local prometheusOperator = import './prometheus-operator/prometheus-operator.lib
       },
     },
   },
-
-  grafana+:: {
-    local dashboardDefinitions = super.dashboardDefinitions,
-
-    dashboardDefinitions: {
-      apiVersion: 'v1',
-      kind: 'ConfigMapList',
-      items: dashboardDefinitions,
-    },
-    serviceMonitor: {
-      apiVersion: 'monitoring.coreos.com/v1',
-      kind: 'ServiceMonitor',
-      metadata: {
-        name: 'grafana',
-        namespace: $._config.namespace,
-        labels: $._config.grafana.labels,
-      },
-      spec: {
-        selector: {
-          matchLabels: {
-            app: 'grafana',
-          },
-        },
-        endpoints: [{
-          port: 'http',
-          interval: '15s',
-        }],
-      },
-    },
-  },
 } + {
   _config+:: {
     namespace: 'default',
@@ -128,23 +104,6 @@ local prometheusOperator = import './prometheus-operator/prometheus-operator.lib
     ruleLabels: {
       role: 'alert-rules',
       prometheus: $._config.prometheusName,
-    },
-
-    versions+:: { grafana: '7.3.5' },
-
-    grafana+:: {
-      labels: {
-        'app.kubernetes.io/name': 'grafana',
-        'app.kubernetes.io/version': $._config.versions.grafana,
-        'app.kubernetes.io/component': 'grafana',
-        'app.kubernetes.io/part-of': 'kube-prometheus',
-      },
-      // FIXME(paulfantom): Same as with rules and alerts.
-      // This should be gathering all dashboards from components without having to enumerate all dashboards.
-      dashboards: {},
-        //$.mixins.nodeExporter.grafanaDashboards +
-        //$.mixins.kubernetes.grafanaDashboards,
-      //$.mixins.prometheus.grafanaDashboards,
     },
   },
 }
