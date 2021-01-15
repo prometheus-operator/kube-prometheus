@@ -59,8 +59,8 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       namespace: ksm.config.namespace,
     },
     spec: {
-      local r = if std.objectHasAll(ksm.mixin, 'prometheusRules') then ksm.mixin.prometheusRules else {},
-      local a = if std.objectHasAll(ksm.mixin, 'prometheusAlerts') then ksm.mixin.prometheusAlerts else {},
+      local r = if std.objectHasAll(ksm.mixin, 'prometheusRules') then ksm.mixin.prometheusRules.groups else [],
+      local a = if std.objectHasAll(ksm.mixin, 'prometheusAlerts') then ksm.mixin.prometheusAlerts.groups else [],
       groups: a + r,
     },
   },

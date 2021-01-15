@@ -54,8 +54,8 @@ function(params) {
       namespace: ne.config.namespace,
     },
     spec: {
-      local r = if std.objectHasAll(ne.mixin, 'prometheusRules') then ne.mixin.prometheusRules else {},
-      local a = if std.objectHasAll(ne.mixin, 'prometheusAlerts') then ne.mixin.prometheusAlerts else {},
+      local r = if std.objectHasAll(ne.mixin, 'prometheusRules') then ne.mixin.prometheusRules.groups else [],
+      local a = if std.objectHasAll(ne.mixin, 'prometheusAlerts') then ne.mixin.prometheusAlerts.groups else [],
       groups: a + r,
     },
   },

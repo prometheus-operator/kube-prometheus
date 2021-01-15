@@ -60,8 +60,8 @@ function(params) {
       namespace: p.config.namespace,
     },
     spec: {
-      local r = if std.objectHasAll(p.mixin, 'prometheusRules') then p.mixin.prometheusRules else {},
-      local a = if std.objectHasAll(p.mixin, 'prometheusAlerts') then p.mixin.prometheusAlerts else {},
+      local r = if std.objectHasAll(p.mixin, 'prometheusRules') then p.mixin.prometheusRules.groups else [],
+      local a = if std.objectHasAll(p.mixin, 'prometheusAlerts') then p.mixin.prometheusAlerts.groups else [],
       groups: a + r,
     },
   },
