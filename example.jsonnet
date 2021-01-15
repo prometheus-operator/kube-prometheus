@@ -9,8 +9,10 @@ local kp =
   // (import 'kube-prometheus/kube-prometheus-custom-metrics.libsonnet') +
   // (import 'kube-prometheus/kube-prometheus-external-metrics.libsonnet') +
   {
-    _config+:: {
-      namespace: 'monitoring',
+    values+:: {
+      common+: {
+        namespace: 'monitoring',
+      },
     },
   };
 

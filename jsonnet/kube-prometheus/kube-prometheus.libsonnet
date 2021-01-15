@@ -1,114 +1,108 @@
 local alertmanager = import './alertmanager/alertmanager.libsonnet';
 local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet';
-local customMixin = import './mixin/custom.libsonnet';
 local grafana = import './grafana/grafana.libsonnet';
 local kubeStateMetrics = import './kube-state-metrics/kube-state-metrics.libsonnet';
+local customMixin = import './mixin/custom.libsonnet';
 local kubernetesMixin = import './mixin/kubernetes.libsonnet';
 local nodeExporter = import './node-exporter/node-exporter.libsonnet';
 local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
 local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
 local prometheus = import './prometheus/prometheus.libsonnet';
-local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
 
 {
-  local all = self,
-  alertmanager: alertmanager({
-    name: $._config.alertmanagerName,
-    namespace: $._config.namespace,
-    version: '0.21.0',
-    image: 'quay.io/prometheus/alertmanager:v0.21.0',
-    mixin+: {
-      ruleLabels: $._config.ruleLabels,
+  // using `values` as this is similar to helm
+  values:: {
+    common: {
+      namespace: 'default',
+      ruleLabels: {
+        role: 'alert-rules',
+        prometheus: $.values.prometheus.name,
+      },
     },
-  }),
-  blackboxExporter: blackboxExporter({
-    namespace: $._config.namespace,
-    version: '0.18.0',
-    image: 'quay.io/prometheus/blackbox-exporter:v0.18.0',
-  }),
-  // TODO(paulfantom) This should be done by iterating over all objects and looking for object.mixin.grafanaDashboards
-  local allDashboards = $.nodeExporter.mixin.grafanaDashboards +
-                        $.prometheus.mixin.grafanaDashboards +
-                        $.kubernetesMixin.mixin.grafanaDashboards,
-  grafana: grafana({
-    namespace: $._config.namespace,
-    version: '7.3.5',
-    image: 'grafana/grafana:v7.3.7',
-    prometheusName: $._config.prometheusName,
-    dashboards: allDashboards,
-  }),
-  kubeStateMetrics: kubeStateMetrics({
-    namespace: $._config.namespace,
-    version: '1.9.7',
-    image: 'quay.io/coreos/kube-state-metrics:v1.9.7',
-    mixin+: {
-      ruleLabels: $._config.ruleLabels,
+    alertmanager: {
+      name: 'main',
+      namespace: $.values.common.namespace,
+      version: '0.21.0',
+      image: 'quay.io/prometheus/alertmanager:v0.21.0',
+      mixin+: {
+        ruleLabels: $.values.common.ruleLabels,
+      },
     },
-  }),
-  nodeExporter: nodeExporter({
-    namespace: $._config.namespace,
-    version: '1.0.1',
-    image: 'quay.io/prometheus/node-exporter:v1.0.1',
-    mixin+: {
-      ruleLabels: $._config.ruleLabels,
+    blackboxExporter: {
+      namespace: $.values.common.namespace,
+      version: '0.18.0',
+      image: 'quay.io/prometheus/blackbox-exporter:v0.18.0',
     },
-  }),
-  prometheus: prometheus({
-    namespace: $._config.namespace,
-    version: '2.24.0',
-    image: 'quay.io/prometheus/prometheus:v2.24.0',
-    name: $._config.prometheusName,
-    alertmanagerName: $._config.alertmanagerName,
-    mixin+: {
-      ruleLabels: $._config.ruleLabels,
+    grafana: {
+      namespace: $.values.common.namespace,
+      version: '7.3.5',
+      image: 'grafana/grafana:v7.3.7',
+      prometheusName: $.values.prometheus.name,
+      // TODO(paulfantom) This should be done by iterating over all objects and looking for object.mixin.grafanaDashboards
+      dashboards: $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards + $.kubernetesMixin.mixin.grafanaDashboards,
     },
-  }),
-  prometheusAdapter: prometheusAdapter({
-    namespace: $._config.namespace,
-    version: '0.8.2',
-    image: 'directxman12/k8s-prometheus-adapter:v0.8.2',
-    prometheusURL: 'http://prometheus-' + $._config.prometheusName + '.' + $._config.namespace + '.svc.cluster.local:9090/',
-  }),
-  prometheusOperator: prometheusOperator({
-    namespace: $._config.namespace,
-    version: '0.45.0',
-    image: 'quay.io/prometheus-operator/prometheus-operator:v0.45.0',
-    configReloaderImage: 'quay.io/prometheus-operator/prometheus-config-reloader:v0.45.0',
-    commonLabels+: {
-      'app.kubernetes.io/part-of': 'kube-prometheus',
+    kubeStateMetrics: {
+      namespace: $.values.common.namespace,
+      version: '1.9.7',
+      image: 'quay.io/coreos/kube-state-metrics:v1.9.7',
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
-    mixin+: {
-      ruleLabels: $._config.ruleLabels,
+    nodeExporter: {
+      namespace: $.values.common.namespace,
+      version: '1.0.1',
+      image: 'quay.io/prometheus/node-exporter:v1.0.1',
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
-  }),
-  kubernetesMixin: kubernetesMixin({
-    namespace: $._config.namespace,
-    mixin+: {
-      ruleLabels: $._config.ruleLabels,
+    prometheus: {
+      namespace: $.values.common.namespace,
+      version: '2.24.0',
+      image: 'quay.io/prometheus/prometheus:v2.24.0',
+      name: 'k8s',
+      alertmanagerName: $.values.alertmanager.name,
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
-  }),
-  kubePrometheus: customMixin({
-    namespace: $._config.namespace,
-    mixin+: {
-      ruleLabels: $._config.ruleLabels,
+    prometheusAdapter: {
+      namespace: $.values.common.namespace,
+      version: '0.8.2',
+      image: 'directxman12/k8s-prometheus-adapter:v0.8.2',
+      prometheusURL: 'http://prometheus-' + $.values.prometheus.name + '.' + $.values.common.namespace + '.svc.cluster.local:9090/',
     },
-  }) + {
+    prometheusOperator: {
+      namespace: $.values.common.namespace,
+      version: '0.45.0',
+      image: 'quay.io/prometheus-operator/prometheus-operator:v0.45.0',
+      configReloaderImage: 'quay.io/prometheus-operator/prometheus-config-reloader:v0.45.0',
+      commonLabels+: {
+        'app.kubernetes.io/part-of': 'kube-prometheus',
+      },
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
+    },
+    kubernetesMixin: {
+      namespace: $.values.common.namespace,
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
+    },
+    kubePrometheus: {
+      namespace: $.values.common.namespace,
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
+    },
+  },
+
+  alertmanager: alertmanager($.values.alertmanager),
+  blackboxExporter: blackboxExporter($.values.blackboxExporter),
+  grafana: grafana($.values.grafana),
+  kubeStateMetrics: kubeStateMetrics($.values.kubeStateMetrics),
+  nodeExporter: nodeExporter($.values.nodeExporter),
+  prometheus: prometheus($.values.prometheus),
+  prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
+  prometheusOperator: prometheusOperator($.values.prometheusOperator),
+  kubernetesMixin: kubernetesMixin($.values.kubernetesMixin),
+  kubePrometheus: customMixin($.values.kubePrometheus) + {
     namespace: {
       apiVersion: 'v1',
       kind: 'Namespace',
       metadata: {
-        name: $._config.namespace,
+        name: $.values.kubePrometheus.namespace,
       },
-    },
-  },
-} + {
-  _config+:: {
-    namespace: 'default',
-    prometheusName: 'k8s',
-    alertmanagerName: 'main',
-    ruleLabels: {
-      role: 'alert-rules',
-      prometheus: $._config.prometheusName,
     },
   },
 }
