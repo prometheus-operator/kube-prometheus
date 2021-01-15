@@ -1,13 +1,13 @@
 local kp =
-  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/main.libsonnet') +
   // Uncomment the following imports to enable its patches
-  // (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-managed-cluster.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-node-ports.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-thanos-sidecar.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-custom-metrics.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-external-metrics.libsonnet') +
+  // (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
+  // (import 'kube-prometheus/addons/managed-cluster.libsonnet') +
+  // (import 'kube-prometheus/addons/node-ports.libsonnet') +
+  // (import 'kube-prometheus/addons/static-etcd.libsonnet') +
+  // (import 'kube-prometheus/addons/thanos-sidecar.libsonnet') +
+  // (import 'kube-prometheus/addons/custom-metrics.libsonnet') +
+  // (import 'kube-prometheus/addons/external-metrics.libsonnet') +
   {
     values+:: {
       common+: {

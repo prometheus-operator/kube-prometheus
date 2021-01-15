@@ -1,4 +1,4 @@
-local krp = (import '../kube-rbac-proxy/container.libsonnet');
+local krp = import './kube-rbac-proxy.libsonnet';
 local prometheusOperator = import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet';
 
 local defaults = {

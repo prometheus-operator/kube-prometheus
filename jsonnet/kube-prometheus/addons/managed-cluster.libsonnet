@@ -1,5 +1,5 @@
 // On managed Kubernetes clusters some of the control plane components are not exposed to customers.
-// Disable scrape jobs, service monitors, and alert groups for these components by overwriting 'kube-prometheus.libsonnet' defaults
+// Disable scrape jobs, service monitors, and alert groups for these components by overwriting 'main.libsonnet' defaults
 
 {
   _config+:: {

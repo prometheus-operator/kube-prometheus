@@ -1,4 +1,4 @@
-(import './kube-prometheus-managed-cluster.libsonnet') + {
+(import '../addons/managed-cluster.libsonnet') + {
   _config+:: {
     prometheusAdapter+:: {
       config+: {
