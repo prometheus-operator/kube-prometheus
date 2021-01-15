@@ -207,15 +207,15 @@ Here's [example.jsonnet](example.jsonnet):
 [embedmd]:# (example.jsonnet)
 ```jsonnet
 local kp =
-  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/main.libsonnet') +
   // Uncomment the following imports to enable its patches
-  // (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-managed-cluster.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-node-ports.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-thanos-sidecar.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-custom-metrics.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-external-metrics.libsonnet') +
+  // (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
+  // (import 'kube-prometheus/addons/managed-cluster.libsonnet') +
+  // (import 'kube-prometheus/addons/node-ports.libsonnet') +
+  // (import 'kube-prometheus/addons/static-etcd.libsonnet') +
+  // (import 'kube-prometheus/addons/thanos-sidecar.libsonnet') +
+  // (import 'kube-prometheus/addons/custom-metrics.libsonnet') +
+  // (import 'kube-prometheus/addons/external-metrics.libsonnet') +
   {
     values+:: {
       common+: {
@@ -413,24 +413,24 @@ kubeadm:
 
 [embedmd]:# (examples/jsonnet-snippets/kubeadm.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kubeadm.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/platforms/kubeadm.libsonnet')
 ```
 
 bootkube:
 
 [embedmd]:# (examples/jsonnet-snippets/bootkube.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-bootkube.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/platforms/bootkube.libsonnet')
 ```
 
 kops:
 
 [embedmd]:# (examples/jsonnet-snippets/kops.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kops.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/platforms/kops.libsonnet')
 ```
 
 kops with CoreDNS:
@@ -439,25 +439,25 @@ If your kops cluster is using CoreDNS, there is an additional mixin to import.
 
 [embedmd]:# (examples/jsonnet-snippets/kops-coredns.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kops.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kops-coredns.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/platforms/kops.libsonnet') +
+(import 'kube-prometheus/platforms/kops-coredns.libsonnet')
 ```
 
 kubespray:
 
 [embedmd]:# (examples/jsonnet-snippets/kubespray.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kubespray.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/platforms/kubespray.libsonnet')
 ```
 
-kube-aws:
+aws:
 
-[embedmd]:# (examples/jsonnet-snippets/kube-aws.jsonnet)
+[embedmd]:# (examples/jsonnet-snippets/aws.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kube-aws.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/platforms/aws.libsonnet')
 ```
 
 ### Internal Registry
@@ -505,8 +505,8 @@ Another mixin that may be useful for exploring the stack is to expose the UIs of
 
 [embedmd]:# (examples/jsonnet-snippets/node-ports.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-node-ports.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/addons/node-ports.libsonnet')
 ```
 
 ### Prometheus Object Name
