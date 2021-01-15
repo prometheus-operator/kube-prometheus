@@ -11,6 +11,7 @@ local prometheus = import './prometheus/prometheus.libsonnet';
 local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
 
 {
+  local all = self,
   alertmanager: alertmanager({
     name: $._config.alertmanagerName,
     namespace: $._config.namespace,
@@ -25,12 +26,16 @@ local prometheusOperator = import './prometheus-operator/prometheus-operator.lib
     version: '0.18.0',
     image: 'quay.io/prometheus/blackbox-exporter:v0.18.0',
   }),
+  // TODO(paulfantom) This should be done by iterating over all objects and looking for object.mixin.grafanaDashboards
+  local allDashboards = $.nodeExporter.mixin.grafanaDashboards +
+                        $.prometheus.mixin.grafanaDashboards +
+                        $.kubernetesMixin.mixin.grafanaDashboards,
   grafana: grafana({
     namespace: $._config.namespace,
     version: '7.3.5',
     image: 'grafana/grafana:v7.3.7',
-    dashboards: {},
     prometheusName: $._config.prometheusName,
+    dashboards: allDashboards,
   }),
   kubeStateMetrics: kubeStateMetrics({
     namespace: $._config.namespace,

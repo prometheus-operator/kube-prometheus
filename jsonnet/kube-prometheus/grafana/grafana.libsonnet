@@ -60,7 +60,7 @@ function(params) {
   dashboardDefinitions: if std.length(g.config.dashboards) > 0 then {
     apiVersion: 'v1',
     kind: 'ConfigMapList',
-    items: g.dashboardDefinitions,
+    items: glib.grafana.dashboardDefinitions,
   },
   serviceMonitor: {
     apiVersion: 'monitoring.coreos.com/v1',

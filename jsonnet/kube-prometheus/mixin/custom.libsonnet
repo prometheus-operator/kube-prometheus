@@ -9,9 +9,9 @@ local defaults = {
   mixin: {
     ruleLabels: {},
     _config: {
-        nodeExporterSelector: 'job="node-exporter"',
-        hostNetworkInterfaceSelector: 'device!~"veth.+"',
-      },
+      nodeExporterSelector: 'job="node-exporter"',
+      hostNetworkInterfaceSelector: 'device!~"veth.+"',
+    },
   },
 };
 
