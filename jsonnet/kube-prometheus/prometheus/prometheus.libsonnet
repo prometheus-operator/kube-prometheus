@@ -13,9 +13,6 @@ local defaults = {
   alertmanagerName: error 'must provide alertmanagerName',
   namespaces: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
-  rules: {
-    groups: [],
-  },
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
     'app.kubernetes.io/version': defaults.version,
@@ -27,6 +24,19 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   } + { prometheus: defaults.name },
+  ruleSelector: {
+    matchLabels: defaults.mixin.ruleLabels,
+  },
+  mixin: {
+    ruleLabels: {
+      role: 'alert-rules',
+      prometheus: defaults.name,
+    },
+    _config: {
+      prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
+      prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
+    },
+  },
 };
 
 
@@ -35,6 +45,26 @@ function(params) {
   config:: defaults + params,
   // Safety check
   assert std.isObject(p.config.resources),
+  assert std.isObject(p.config.mixin._config),
+
+  mixin:: (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') {
+    _config+:: p.config.mixin._config,
+  },
+
+  prometheusRule: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'PrometheusRule',
+    metadata: {
+      labels: p.config.commonLabels + p.config.mixin.ruleLabels,
+      name: p.config.name + '-rules',
+      namespace: p.config.namespace,
+    },
+    spec: {
+      local r = if std.objectHasAll(p.mixin, 'prometheusRules') then p.mixin.prometheusRules.groups else [],
+      local a = if std.objectHasAll(p.mixin, 'prometheusAlerts') then p.mixin.prometheusAlerts.groups else [],
+      groups: a + r,
+    },
+  },
 
   serviceAccount: {
     apiVersion: 'v1',
@@ -60,22 +90,6 @@ function(params) {
       ],
       selector: { app: 'prometheus' } + p.config.selectorLabels,
       sessionAffinity: 'ClientIP',
-    },
-  },
-
-  rules: {
-    apiVersion: 'monitoring.coreos.com/v1',
-    kind: 'PrometheusRule',
-    metadata: {
-      labels: {
-        prometheus: p.config.name,
-        role: 'alert-rules',
-      } + p.config.commonLabels,
-      name: 'prometheus-' + p.config.name + '-rules',
-      namespace: p.config.namespace,
-    },
-    spec: {
-      groups: p.config.rules.groups,
     },
   },
 
@@ -230,12 +244,7 @@ function(params) {
       podMonitorNamespaceSelector: {},
       probeNamespaceSelector: {},
       nodeSelector: { 'kubernetes.io/os': 'linux' },
-      ruleSelector: {
-        matchLabels: {
-          role: 'alert-rules',
-          prometheus: p.config.name,
-        },
-      },
+      ruleSelector: p.config.ruleSelector,
       resources: p.config.resources,
       alerting: {
         alertmanagers: [{

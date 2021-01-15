@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ./manifests/alertmanager-alertmanager.yaml
+- ./manifests/alertmanager-prometheusRule.yaml
 - ./manifests/alertmanager-secret.yaml
 - ./manifests/alertmanager-service.yaml
 - ./manifests/alertmanager-serviceAccount.yaml
@@ -20,15 +21,19 @@ resources:
 - ./manifests/grafana-service.yaml
 - ./manifests/grafana-serviceAccount.yaml
 - ./manifests/grafana-serviceMonitor.yaml
+- ./manifests/kube-prometheus-prometheusRule.yaml
 - ./manifests/kube-state-metrics-clusterRole.yaml
 - ./manifests/kube-state-metrics-clusterRoleBinding.yaml
 - ./manifests/kube-state-metrics-deployment.yaml
+- ./manifests/kube-state-metrics-prometheusRule.yaml
 - ./manifests/kube-state-metrics-service.yaml
 - ./manifests/kube-state-metrics-serviceAccount.yaml
 - ./manifests/kube-state-metrics-serviceMonitor.yaml
+- ./manifests/kubernetes-prometheusRule.yaml
 - ./manifests/node-exporter-clusterRole.yaml
 - ./manifests/node-exporter-clusterRoleBinding.yaml
 - ./manifests/node-exporter-daemonset.yaml
+- ./manifests/node-exporter-prometheusRule.yaml
 - ./manifests/node-exporter-service.yaml
 - ./manifests/node-exporter-serviceAccount.yaml
 - ./manifests/node-exporter-serviceMonitor.yaml
@@ -46,13 +51,14 @@ resources:
 - ./manifests/prometheus-adapter-serviceMonitor.yaml
 - ./manifests/prometheus-clusterRole.yaml
 - ./manifests/prometheus-clusterRoleBinding.yaml
+- ./manifests/prometheus-operator-prometheusRule.yaml
 - ./manifests/prometheus-operator-serviceMonitor.yaml
 - ./manifests/prometheus-prometheus.yaml
+- ./manifests/prometheus-prometheusRule.yaml
 - ./manifests/prometheus-roleBindingConfig.yaml
 - ./manifests/prometheus-roleBindingSpecificNamespaces.yaml
 - ./manifests/prometheus-roleConfig.yaml
 - ./manifests/prometheus-roleSpecificNamespaces.yaml
-- ./manifests/prometheus-rules.yaml
 - ./manifests/prometheus-service.yaml
 - ./manifests/prometheus-serviceAccount.yaml
 - ./manifests/prometheus-serviceMonitor.yaml

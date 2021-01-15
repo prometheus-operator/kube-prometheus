@@ -2,6 +2,7 @@ local krp = (import '../kube-rbac-proxy/container.libsonnet');
 
 local defaults = {
   local defaults = self,
+  name: 'node-exporter',
   namespace: error 'must provide namespace',
   version: error 'must provide version',
   image: error 'must provide version',
@@ -12,7 +13,7 @@ local defaults = {
   listenAddress: '127.0.0.1',
   port: 9100,
   commonLabels:: {
-    'app.kubernetes.io/name': 'node-exporter',
+    'app.kubernetes.io/name': defaults.name,
     'app.kubernetes.io/version': defaults.version,
     'app.kubernetes.io/component': 'exporter',
     'app.kubernetes.io/part-of': 'kube-prometheus',
@@ -22,6 +23,14 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
+  mixin: {
+    ruleLabels: {},
+    _config: {
+      nodeExporterSelector: 'job="' + defaults.name + '"',
+      fsSpaceFillingUpCriticalThreshold: 15,
+      diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
+    },
+  },
 };
 
 
@@ -30,22 +39,42 @@ function(params) {
   config:: defaults + params,
   // Safety check
   assert std.isObject(ne.config.resources),
+  assert std.isObject(ne.config.mixin._config),
+
+  mixin:: (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') {
+    _config+:: ne.config.mixin._config,
+  },
+
+  prometheusRule: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'PrometheusRule',
+    metadata: {
+      labels: ne.config.commonLabels + ne.config.mixin.ruleLabels,
+      name: ne.config.name + '-rules',
+      namespace: ne.config.namespace,
+    },
+    spec: {
+      local r = if std.objectHasAll(ne.mixin, 'prometheusRules') then ne.mixin.prometheusRules.groups else [],
+      local a = if std.objectHasAll(ne.mixin, 'prometheusAlerts') then ne.mixin.prometheusAlerts.groups else [],
+      groups: a + r,
+    },
+  },
 
   clusterRoleBinding: {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRoleBinding',
     metadata: {
-      name: 'node-exporter',
+      name: ne.config.name,
       labels: ne.config.commonLabels,
     },
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
       kind: 'ClusterRole',
-      name: 'node-exporter',
+      name: ne.config.name,
     },
     subjects: [{
       kind: 'ServiceAccount',
-      name: 'node-exporter',
+      name: ne.config.name,
       namespace: ne.config.namespace,
     }],
   },
@@ -54,7 +83,7 @@ function(params) {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRole',
     metadata: {
-      name: 'node-exporter',
+      name: ne.config.name,
       labels: ne.config.commonLabels,
     },
     rules: [
@@ -75,7 +104,7 @@ function(params) {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     metadata: {
-      name: 'node-exporter',
+      name: ne.config.name,
       namespace: ne.config.namespace,
       labels: ne.config.commonLabels,
     },
@@ -85,7 +114,7 @@ function(params) {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
-      name: 'node-exporter',
+      name: ne.config.name,
       namespace: ne.config.namespace,
       labels: ne.config.commonLabels,
     },
@@ -102,7 +131,7 @@ function(params) {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'ServiceMonitor',
     metadata: {
-      name: 'node-exporter',
+      name: ne.config.name,
       namespace: ne.config.namespace,
       labels: ne.config.commonLabels,
     },
@@ -134,7 +163,7 @@ function(params) {
 
   daemonset:
     local nodeExporter = {
-      name: 'node-exporter',
+      name: ne.config.name,
       image: ne.config.image,
       args: [
         '--web.listen-address=' + std.join(':', [ne.config.listenAddress, std.toString(ne.config.port)]),
@@ -177,7 +206,7 @@ function(params) {
       apiVersion: 'apps/v1',
       kind: 'DaemonSet',
       metadata: {
-        name: 'node-exporter',
+        name: ne.config.name,
         namespace: ne.config.namespace,
         labels: ne.config.commonLabels,
       },
@@ -199,7 +228,7 @@ function(params) {
               { name: 'sys', hostPath: { path: '/sys' } },
               { name: 'root', hostPath: { path: '/' } },
             ],
-            serviceAccountName: 'node-exporter',
+            serviceAccountName: ne.config.name,
             securityContext: {
               runAsUser: 65534,
               runAsNonRoot: true,
@@ -210,4 +239,6 @@ function(params) {
         },
       },
     },
+
+
 }

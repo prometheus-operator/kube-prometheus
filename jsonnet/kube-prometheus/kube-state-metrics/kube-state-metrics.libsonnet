@@ -2,6 +2,7 @@ local krp = (import '../kube-rbac-proxy/container.libsonnet');
 
 local defaults = {
   local defaults = self,
+  name: 'kube-state-metrics',
   namespace: error 'must provide namespace',
   version: error 'must provide version',
   image: error 'must provide version',
@@ -13,7 +14,7 @@ local defaults = {
   scrapeInterval: '30s',
   scrapeTimeout: '30s',
   commonLabels:: {
-    'app.kubernetes.io/name': 'kube-state-metrics',
+    'app.kubernetes.io/name': defaults.name,
     'app.kubernetes.io/version': defaults.version,
     'app.kubernetes.io/component': 'exporter',
     'app.kubernetes.io/part-of': 'kube-prometheus',
@@ -23,6 +24,12 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
+  mixin: {
+    ruleLabels: {},
+    _config: {
+      kubeStateMetricsSelector: 'job="' + defaults.name + '"',
+    },
+  },
 };
 
 function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics/kube-state-metrics.libsonnet') {
@@ -30,13 +37,33 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
   config:: defaults + params,
   // Safety check
   assert std.isObject(ksm.config.resources),
+  assert std.isObject(ksm.config.mixin._config),
 
-  name:: 'kube-state-metrics',
+  name:: ksm.config.name,
   namespace:: ksm.config.namespace,
   version:: ksm.config.version,
   image:: ksm.config.image,
   commonLabels:: ksm.config.commonLabels,
   podLabels:: ksm.config.selectorLabels,
+
+  mixin:: (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') {
+    _config+:: ksm.config.mixin._config,
+  },
+
+  prometheusRule: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'PrometheusRule',
+    metadata: {
+      labels: ksm.config.commonLabels + ksm.config.mixin.ruleLabels,
+      name: ksm.config.name + '-rules',
+      namespace: ksm.config.namespace,
+    },
+    spec: {
+      local r = if std.objectHasAll(ksm.mixin, 'prometheusRules') then ksm.mixin.prometheusRules.groups else [],
+      local a = if std.objectHasAll(ksm.mixin, 'prometheusAlerts') then ksm.mixin.prometheusAlerts.groups else [],
+      groups: a + r,
+    },
+  },
 
   service+: {
     spec+: {

@@ -55,6 +55,14 @@ local defaults = {
     ],
   },
   replicas: 3,
+  mixin: {
+    ruleLabels: {},
+    _config: {
+      alertmanagerName: '{{ $labels.namespace }}/{{ $labels.pod}}',
+      alertmanagerClusterLabels: 'namespace,service',
+      alertmanagerSelector: 'job="alertmanager-' + defaults.name + '",namespace="' + defaults.namespace + '"',
+    },
+  },
 };
 
 
@@ -63,6 +71,26 @@ function(params) {
   config:: defaults + params,
   // Safety check
   assert std.isObject(am.config.resources),
+  assert std.isObject(am.config.mixin._config),
+
+  mixin:: (import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') {
+    _config+:: am.config.mixin._config,
+  },
+
+  prometheusRule: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'PrometheusRule',
+    metadata: {
+      labels: am.config.commonLabels + am.config.mixin.ruleLabels,
+      name: am.config.name + '-rules',
+      namespace: am.config.namespace,
+    },
+    spec: {
+      local r = if std.objectHasAll(am.mixin, 'prometheusRules') then am.mixin.prometheusRules.groups else [],
+      local a = if std.objectHasAll(am.mixin, 'prometheusAlerts') then am.mixin.prometheusAlerts.groups else [],
+      groups: a + r,
+    },
+  },
 
   secret: {
     apiVersion: 'v1',
