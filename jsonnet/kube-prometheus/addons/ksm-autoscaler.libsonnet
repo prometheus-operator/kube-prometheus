@@ -1,14 +1,15 @@
 {
   values+:: {
-    versions+:: { clusterVerticalAutoscaler: '0.8.1' },
-    imageRepos+:: { clusterVerticalAutoscaler: 'gcr.io/google_containers/cpvpa-amd64' },
-
-    kubeStateMetrics+:: {
+    clusterVerticalAutoscaler: {
+      version: '0.8.1',
+      image: 'gcr.io/google_containers/cpvpa-amd64:v0.8.1',
+      baseCPU: '1m',
       stepCPU: '1m',
+      baseMemory: '1Mi',
       stepMemory: '2Mi',
     },
   },
-  ksmAutoscaler+:: {
+  ksmAutoscaler+: {
     clusterRole: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
       kind: 'ClusterRole',
@@ -83,14 +84,21 @@
       local podLabels = { app: 'ksm-autoscaler' };
       local c = {
         name: 'ksm-autoscaler',
-        image: $.values.imageRepos.clusterVerticalAutoscaler + ':v' + $.values.versions.clusterVerticalAutoscaler,
+        image: $.values.clusterVerticalAutoscaler.image,
         args: [
           '/cpvpa',
           '--target=deployment/kube-state-metrics',
           '--namespace=' + $.values.common.namespace,
           '--logtostderr=true',
           '--poll-period-seconds=10',
-          '--default-config={"kube-state-metrics":{"requests":{"cpu":{"base":"' + $.values.kubeStateMetrics.baseCPU + '","step":"' + $.values.kubeStateMetrics.stepCPU + '","nodesPerStep":1},"memory":{"base":"' + $.values.kubeStateMetrics.baseMemory + '","step":"' + $.values.kubeStateMetrics.stepMemory + '","nodesPerStep":1}},"limits":{"cpu":{"base":"' + $.values.kubeStateMetrics.baseCPU + '","step":"' + $.values.kubeStateMetrics.stepCPU + '","nodesPerStep":1},"memory":{"base":"' + $.values.kubeStateMetrics.baseMemory + '","step":"' + $.values.kubeStateMetrics.stepMemory + '","nodesPerStep":1}}}}',
+          '--default-config={"kube-state-metrics":{"requests":{"cpu":{"base":"' + $.values.clusterVerticalAutoscaler.baseCPU +
+          '","step":"' + $.values.clusterVerticalAutoscaler.stepCPU +
+          '","nodesPerStep":1},"memory":{"base":"' + $.values.clusterVerticalAutoscaler.baseMemory +
+          '","step":"' + $.values.clusterVerticalAutoscaler.stepMemory +
+          '","nodesPerStep":1}},"limits":{"cpu":{"base":"' + $.values.clusterVerticalAutoscaler.baseCPU +
+          '","step":"' + $.values.clusterVerticalAutoscaler.stepCPU +
+          '","nodesPerStep":1},"memory":{"base":"' + $.values.clusterVerticalAutoscaler.baseMemory +
+          '","step":"' + $.values.clusterVerticalAutoscaler.stepMemory + '","nodesPerStep":1}}}}',
         ],
         resources: {
           requests: { cpu: '20m', memory: '10Mi' },
