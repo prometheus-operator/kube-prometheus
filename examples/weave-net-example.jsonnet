@@ -1,12 +1,12 @@
 local kp = (import 'kube-prometheus/main.libsonnet') +
-           (import 'kube-prometheus/addons/weave-net.libsonnet') + {
+           (import 'kube-prometheus/addons/weave-net/weave-net.libsonnet') + {
   values+:: {
     common+: {
       namespace: 'monitoring',
     },
   },
   prometheus+: {
-    prometheusRule+: {
+    prometheusRuleWeaveNet+: {
       spec+: {
         groups: std.map(
           function(group)
