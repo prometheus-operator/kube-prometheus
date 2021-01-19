@@ -10,7 +10,7 @@ You can monitor the `awscni` using kube-promethus with :
 local kp = (import 'kube-prometheus/main.libsonnet') +
            (import 'kube-prometheus/platforms/eks.libsonnet') + {
   values+:: {
-    common+: { 
+    common+: {
       namespace: 'monitoring',
     },
   },

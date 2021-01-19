@@ -240,7 +240,7 @@ local kp =
 { ['kubernetes-' + name]: kp.kubernetesMixin[name] for name in std.objectFields(kp.kubernetesMixin) }
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
+{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) }
 ```
 
 And here's the [build.sh](build.sh) script (which uses `vendor/` to render all manifests in a json structure of `{filename: manifest-content}`):
@@ -596,7 +596,7 @@ In order to monitor additional namespaces, the Prometheus server requires the ap
 ```jsonnet
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
-    common+: { 
+    common+: {
       namespace: 'monitoring',
     },
 

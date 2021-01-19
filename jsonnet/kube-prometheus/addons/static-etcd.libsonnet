@@ -9,7 +9,7 @@
       insecureSkipVerify: null,
     },
   },
-  prometheus+:: {
+  prometheus+: {
     serviceEtcd: {
       apiVersion: 'v1',
       kind: 'Service',
