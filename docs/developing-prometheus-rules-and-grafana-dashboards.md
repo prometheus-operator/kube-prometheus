@@ -37,14 +37,14 @@ local kp =
 { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
 { 'prometheus-operator-prometheusRule': kp.prometheusOperator.prometheusRule } +
 { 'kube-prometheus-prometheusRule': kp.kubePrometheus.prometheusRule } +
-{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
-{ ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
-{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
+{ ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
+{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['kubernetes-' + name]: kp.kubernetesMixin[name] for name in std.objectFields(kp.kubernetesMixin) }
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
-{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
-{ ['kubernetes-' + name]: kp.kubernetesMixin[name] for name in std.objectFields(kp.kubernetesMixin) }
 ```
 
 ## Prometheus rules
@@ -59,28 +59,34 @@ The format is exactly the Prometheus format, so there should be no changes neces
 
 [embedmd]:# (../examples/prometheus-additional-alert-rule-example.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
-  prometheusAlerts+:: {
-    groups+: [
-      {
-        name: 'example-group',
-        rules: [
+  prometheus+: {
+    prometheusRule+: {
+      spec+: {
+        groups+: [
           {
-            alert: 'Watchdog',
-            expr: 'vector(1)',
-            labels: {
-              severity: 'none',
-            },
-            annotations: {
-              description: 'This is a Watchdog meant to ensure that the entire alerting pipeline is functional.',
-            },
+            name: 'example-group',
+            rules: [
+              {
+                alert: 'Watchdog',
+                expr: 'vector(1)',
+                labels: {
+                  severity: 'none',
+                },
+                annotations: {
+                  description: 'This is a Watchdog meant to ensure that the entire alerting pipeline is functional.',
+                },
+              },
+            ],
           },
         ],
       },
-    ],
+    },
   },
 };
 
@@ -102,22 +108,28 @@ In order to add a recording rule, simply do the same with the `prometheusRules` 
 
 [embedmd]:# (../examples/prometheus-additional-recording-rule-example.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
-  prometheusRules+:: {
-    groups+: [
-      {
-        name: 'example-group',
-        rules: [
+  prometheus+: {
+    prometheusRule+: {
+      spec+: {
+        groups+: [
           {
-            record: 'some_recording_rule_name',
-            expr: 'vector(1)',
+            name: 'example-group',
+            rules: [
+              {
+                record: 'some_recording_rule_name',
+                expr: 'vector(1)',
+              },
+            ],
           },
         ],
       },
-    ],
+    },
   },
 };
 
@@ -149,12 +161,18 @@ Then import it in jsonnet:
 
 [embedmd]:# (../examples/prometheus-additional-rendered-rule-example.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
-  prometheusAlerts+:: {
-    groups+: (import 'existingrule.json').groups,
+  prometheus+: {
+    prometheusRule+: {
+      spec+: {
+        groups+: (import 'existingrule.json').groups,
+      },
+    },
   },
 };
 
@@ -255,7 +273,7 @@ local prometheus = grafana.prometheus;
 local template = grafana.template;
 local graphPanel = grafana.graphPanel;
 
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+local kp = (import 'kube-prometheus/main.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
@@ -303,7 +321,7 @@ As jsonnet is a superset of json, the jsonnet `import` function can be used to i
 
 [embedmd]:# (../examples/grafana-additional-rendered-dashboard-example.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+local kp = (import 'kube-prometheus/main.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },
@@ -329,7 +347,7 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 In case you have lots of json dashboard exported out from grafana UI the above approach is going to take lots of time to improve performance we can use `rawDashboards` field and provide it's value as json string by using `importstr`
 [embedmd]:# (../examples/grafana-additional-rendered-dashboard-example-2.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+local kp = (import 'kube-prometheus/main.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },

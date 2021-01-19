@@ -233,14 +233,14 @@ local kp =
 { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
 { 'prometheus-operator-prometheusRule': kp.prometheusOperator.prometheusRule } +
 { 'kube-prometheus-prometheusRule': kp.kubePrometheus.prometheusRule } +
-{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
-{ ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
-{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
+{ ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
+{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['kubernetes-' + name]: kp.kubernetesMixin[name] for name in std.objectFields(kp.kubernetesMixin) }
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
-{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
-{ ['kubernetes-' + name]: kp.kubernetesMixin[name] for name in std.objectFields(kp.kubernetesMixin) }
 ```
 
 And here's the [build.sh](build.sh) script (which uses `vendor/` to render all manifests in a json structure of `{filename: manifest-content}`):
@@ -483,10 +483,12 @@ Then to generate manifests with `internal-registry.com/organization`, use the `w
 
 [embedmd]:# (examples/internal-registry.jsonnet)
 ```jsonnet
-local mixin = import 'kube-prometheus/kube-prometheus-config-mixins.libsonnet';
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local mixin = import 'kube-prometheus/addons/config-mixins.libsonnet';
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
 } + mixin.withImageRepository('internal-registry.com/organization');
 
@@ -515,7 +517,7 @@ To give another customization example, the name of the `Prometheus` object provi
 
 [embedmd]:# (examples/prometheus-name-override.jsonnet)
 ```jsonnet
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
+((import 'kube-prometheus/main.libsonnet') + {
    prometheus+: {
      prometheus+: {
        metadata+: {
@@ -532,7 +534,7 @@ Standard Kubernetes manifests are all written using [ksonnet-lib](https://github
 
 [embedmd]:# (examples/ksonnet-example.jsonnet)
 ```jsonnet
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
+((import 'kube-prometheus/main.libsonnet') + {
    nodeExporter+: {
      daemonset+: {
        metadata+: {
@@ -549,8 +551,8 @@ The Alertmanager configuration is located in the `_config.alertmanager.config` c
 
 [embedmd]:# (examples/alertmanager-config.jsonnet)
 ```jsonnet
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
-   _config+:: {
+((import 'kube-prometheus/main.libsonnet') + {
+   values+:: {
      alertmanager+: {
        config: |||
          global:
@@ -577,7 +579,7 @@ In the above example the configuration has been inlined, but can just as well be
 
 [embedmd]:# (examples/alertmanager-config-external.jsonnet)
 ```jsonnet
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
+((import 'kube-prometheus/main.libsonnet') + {
    _config+:: {
      alertmanager+: {
        config: importstr 'alertmanager-config.yaml',
@@ -592,9 +594,11 @@ In order to monitor additional namespaces, the Prometheus server requires the ap
 
 [embedmd]:# (examples/additional-namespaces.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: { 
+      namespace: 'monitoring',
+    },
 
     prometheus+:: {
       namespaces+: ['my-namespace', 'my-second-namespace'],
@@ -621,14 +625,16 @@ You can define ServiceMonitor resources in your `jsonnet` spec. See the snippet 
 
 [embedmd]:# (examples/additional-namespaces-servicemonitor.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
     prometheus+:: {
       namespaces+: ['my-namespace', 'my-second-namespace'],
     },
   },
-  prometheus+:: {
+  prometheus+: {
     serviceMonitorMyNamespace: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
@@ -671,12 +677,13 @@ In case you want to monitor all namespaces in a cluster, you can add the followi
 
 [embedmd]:# (examples/all-namespaces.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           (import 'kube-prometheus/kube-prometheus-all-namespaces.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
-
-    prometheus+:: {
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/addons/all-namespaces.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
+    prometheus+: {
       namespaces: [],
     },
   },
@@ -718,10 +725,12 @@ To do that, one can import the following mixin
 
 [embedmd]:# (examples/strip-limits.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           (import 'kube-prometheus/kube-prometheus-strip-limits.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/addons/strip-limits.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
 };
 
