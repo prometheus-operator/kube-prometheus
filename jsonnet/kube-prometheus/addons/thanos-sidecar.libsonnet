@@ -1,6 +1,6 @@
 (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') +
 {
-  _config+:: {
+  values+:: {
     versions+:: { thanos: 'v0.14.0' },
     imageRepos+:: { thanos: 'quay.io/thanos/thanos' },
     thanos+:: {
@@ -10,7 +10,7 @@
       },
     },
   },
-  prometheus+:: {
+  prometheus+: {
     local p = self,
 
     // Add the grpc port to the Prometheus service to be able to query it with the Thanos Querier

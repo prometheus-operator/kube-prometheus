@@ -2,9 +2,9 @@
 // For more details on usage visit https://github.com/DirectXMan12/k8s-prometheus-adapter#quick-links
 
 {
-  _config+:: {
-    prometheusAdapter+:: {
-      namespace: $._config.namespace,
+  values+:: {
+    prometheusAdapter+: {
+      namespace: $.values.common.namespace,
       // Rules for external-metrics
       config+:: {
         externalRules+: [
@@ -24,7 +24,7 @@
     },
   },
 
-  prometheusAdapter+:: {
+  prometheusAdapter+: {
     externalMetricsApiService: {
       apiVersion: 'apiregistration.k8s.io/v1',
       kind: 'APIService',
@@ -34,7 +34,7 @@
       spec: {
         service: {
           name: $.prometheusAdapter.service.metadata.name,
-          namespace: $._config.prometheusAdapter.namespace,
+          namespace: $.values.prometheusAdapter.namespace,
         },
         group: 'external.metrics.k8s.io',
         version: 'v1beta1',
@@ -70,7 +70,7 @@
       subjects: [{
         kind: 'ServiceAccount',
         name: $.prometheusAdapter.serviceAccount.metadata.name,
-        namespace: $._config.prometheusAdapter.namespace,
+        namespace: $.values.prometheusAdapter.namespace,
       }],
     },
     externalMetricsClusterRoleBindingHPA: {

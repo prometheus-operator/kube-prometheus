@@ -1,7 +1,9 @@
-local mixin = import 'kube-prometheus/kube-prometheus-config-mixins.libsonnet';
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local mixin = import 'kube-prometheus/addons/config-mixins.libsonnet';
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
 } + mixin.withImageRepository('internal-registry.com/organization');
 

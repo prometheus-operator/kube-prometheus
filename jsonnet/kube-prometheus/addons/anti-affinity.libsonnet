@@ -25,14 +25,14 @@
   alertmanager+:: {
     alertmanager+: {
       spec+:
-        antiaffinity('alertmanager', [$._config.alertmanager.name], $._config.namespace),
+        antiaffinity('alertmanager', [$.values.alertmanager.name], $.values.common.namespace),
     },
   },
 
   prometheus+:: {
     prometheus+: {
       spec+:
-        antiaffinity('prometheus', [$._config.prometheus.name], $._config.namespace),
+        antiaffinity('prometheus', [$.values.prometheus.name], $.values.common.namespace),
     },
   },
 }

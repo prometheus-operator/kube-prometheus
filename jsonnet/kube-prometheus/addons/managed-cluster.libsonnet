@@ -2,7 +2,7 @@
 // Disable scrape jobs, service monitors, and alert groups for these components by overwriting 'main.libsonnet' defaults
 
 {
-  _config+:: {
+  values+:: {
     // This snippet walks the original object (super.jobs, set as temp var j) and creates a replacement jobs object
     //     excluding any members of the set specified (eg: controller and scheduler).
     local j = super.jobs,
@@ -13,7 +13,7 @@
     },
 
     // Skip alerting rules too
-    prometheus+:: {
+    prometheus+: {
       rules+:: {
         local g = super.groups,
         groups: [

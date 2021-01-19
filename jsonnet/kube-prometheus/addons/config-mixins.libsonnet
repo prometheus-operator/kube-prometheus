@@ -1,4 +1,4 @@
-local l = import 'image.libsonnet';
+local l = import 'lib/lib.libsonnet';
 
 // withImageRepository is a mixin that replaces all images prefixes by repository. eg.
 // quay.io/coreos/addon-resizer -> $repository/addon-resizer

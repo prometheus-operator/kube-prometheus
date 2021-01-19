@@ -5,7 +5,7 @@ local prometheus = grafana.prometheus;
 local template = grafana.template;
 local graphPanel = grafana.graphPanel;
 
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+local kp = (import 'kube-prometheus/main.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
   },

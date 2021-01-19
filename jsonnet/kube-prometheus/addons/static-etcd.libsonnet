@@ -1,5 +1,5 @@
 (import 'github.com/etcd-io/etcd/Documentation/etcd-mixin/mixin.libsonnet') + {
-  _config+:: {
+  values+:: {
     etcd: {
       ips: [],
       clientCA: null,
@@ -36,7 +36,7 @@
       subsets: [{
         addresses: [
           { ip: etcdIP }
-          for etcdIP in $._config.etcd.ips
+          for etcdIP in $.values.etcd.ips
         ],
         ports: [
           { name: 'metrics', port: 2379, protocol: 'TCP' },
@@ -65,8 +65,8 @@
               caFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client-ca.crt',
               keyFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client.key',
               certFile: '/etc/prometheus/secrets/kube-etcd-client-certs/etcd-client.crt',
-              [if $._config.etcd.serverName != null then 'serverName']: $._config.etcd.serverName,
-              [if $._config.etcd.insecureSkipVerify != null then 'insecureSkipVerify']: $._config.etcd.insecureSkipVerify,
+              [if $.values.etcd.serverName != null then 'serverName']: $.values.etcd.serverName,
+              [if $.values.etcd.insecureSkipVerify != null then 'insecureSkipVerify']: $.values.etcd.insecureSkipVerify,
             },
           },
         ],
@@ -84,12 +84,12 @@
       type: 'Opaque',
       metadata: {
         name: 'kube-etcd-client-certs',
-        namespace: $._config.namespace,
+        namespace: $.values.common.namespace,
       },
       data: {
-        'etcd-client-ca.crt': std.base64($._config.etcd.clientCA),
-        'etcd-client.key': std.base64($._config.etcd.clientKey),
-        'etcd-client.crt': std.base64($._config.etcd.clientCert),
+        'etcd-client-ca.crt': std.base64($.values.etcd.clientCA),
+        'etcd-client.key': std.base64($.values.etcd.clientKey),
+        'etcd-client.crt': std.base64($.values.etcd.clientCert),
       },
     },
     prometheus+: {
