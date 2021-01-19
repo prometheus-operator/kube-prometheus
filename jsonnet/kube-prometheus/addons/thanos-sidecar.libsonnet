@@ -1,9 +1,9 @@
 (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') +
 {
   values+:: {
-    versions+:: { thanos: 'v0.14.0' },
-    imageRepos+:: { thanos: 'quay.io/thanos/thanos' },
     thanos+:: {
+      version: '0.14.0',
+      image: 'quay.io/thanos/thanos:v0.14.0',
       objectStorageConfig: {
         key: 'thanos.yaml',  // How the file inside the secret is called
         name: 'thanos-objectstorage',  // This is the name of your Kubernetes secret with the config
@@ -26,9 +26,9 @@
       apiVersion: 'v1',
       kind: 'Service',
       metadata: {
-        name: 'prometheus-' + p.name + '-thanos-sidecar',
-        namespace: p.namespace,
-        labels: { prometheus: p.name, app: 'thanos-sidecar' },
+        name: 'prometheus-' + p.config.name + '-thanos-sidecar',
+        namespace: p.config.namespace,
+        labels: { prometheus: p.config.name, app: 'thanos-sidecar' },
       },
       spec: {
         ports: [
@@ -42,9 +42,9 @@
     prometheus+: {
       spec+: {
         thanos+: {
-          version: $._config.versions.thanos,
-          image: $._config.imageRepos.thanos + ':' + $._config.versions.thanos,
-          objectStorageConfig: $._config.thanos.objectStorageConfig,
+          version: $.values.thanos.version,
+          image: $.values.thanos.image,
+          objectStorageConfig: $.values.thanos.objectStorageConfig,
         },
       },
     },
@@ -54,7 +54,7 @@
         kind: 'ServiceMonitor',
         metadata: {
           name: 'thanos-sidecar',
-          namespace: p.namespace,
+          namespace: p.config.namespace,
           labels: {
             'app.kubernetes.io/name': 'prometheus',
           },
@@ -64,7 +64,7 @@
           jobLabel: 'app',
           selector: {
             matchLabels: {
-              prometheus: p.name,
+              prometheus: p.config.name,
               app: 'thanos-sidecar',
             },
           },
