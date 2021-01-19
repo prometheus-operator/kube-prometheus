@@ -1,19 +1,32 @@
 // Strips spec.containers[].limits for certain containers
 // https://github.com/prometheus-operator/kube-prometheus/issues/72
+
 {
-  _config+:: {
-    resources+:: {
-      'addon-resizer'+: {
-        limits: {},
+  local noLimit(c) =
+    //if std.objectHas(c, 'resources') && c.name != 'kube-state-metrics'
+    if c.name != 'kube-state-metrics'
+    then c { resources+: { limits: {} } }
+    else c,
+
+  nodeExporter+: {
+    daemonset+: {
+      spec+: {
+        template+: {
+          spec+: {
+            containers: std.map(noLimit, super.containers),
+          },
+        },
       },
-      'kube-rbac-proxy'+: {
-        limits: {},
-      },
-      'kube-state-metrics'+: {
-        limits: {},
-      },
-      'node-exporter'+: {
-        limits: {},
+    },
+  },
+  kubeStateMetrics+: {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+: {
+            containers: std.map(noLimit, super.containers),
+          },
+        },
       },
     },
   },
