@@ -55,17 +55,31 @@ spec:
     - alert: AlertmanagerClusterFailedToSendAlerts
       annotations:
         description: The minimum notification failure rate to {{ $labels.integration }} sent from any instance in the {{$labels.job}} cluster is {{ $value | humanizePercentage }}.
-        summary: All Alertmanager instances in a cluster failed to send notifications.
+        summary: All Alertmanager instances in a cluster failed to send notifications to a critical integration.
       expr: |
-        min by (namespace,service) (
-          rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring"}[5m])
+        min by (namespace,service, integration) (
+          rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[5m])
         /
-          rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring"}[5m])
+          rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration=~`.*`}[5m])
         )
         > 0.01
       for: 5m
       labels:
         severity: critical
+    - alert: AlertmanagerClusterFailedToSendAlerts
+      annotations:
+        description: The minimum notification failure rate to {{ $labels.integration }} sent from any instance in the {{$labels.job}} cluster is {{ $value | humanizePercentage }}.
+        summary: All Alertmanager instances in a cluster failed to send notifications to a non-critical integration.
+      expr: |
+        min by (namespace,service, integration) (
+          rate(alertmanager_notifications_failed_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[5m])
+        /
+          rate(alertmanager_notifications_total{job="alertmanager-main",namespace="monitoring", integration!~`.*`}[5m])
+        )
+        > 0.01
+      for: 5m
+      labels:
+        severity: warning
     - alert: AlertmanagerConfigInconsistent
       annotations:
         description: Alertmanager instances within the {{$labels.job}} cluster have different configurations.
