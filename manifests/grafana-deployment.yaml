@@ -2,21 +2,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: grafana
+    app.kubernetes.io/component: grafana
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 7.3.5
   name: grafana
   namespace: monitoring
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: grafana
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
   template:
     metadata:
       annotations:
-        checksum/grafana-dashboards: b02ae450c84445cbaca8c685eefaec6c
-        checksum/grafana-datasources: 48faab41f579fc8efde6034391496f6a
+        checksum/grafana-datasources: a77789e5440a1e51e204e99e2f0f480a
       labels:
-        app: grafana
+        app.kubernetes.io/component: grafana
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 7.3.5
     spec:
       containers:
       - env: []

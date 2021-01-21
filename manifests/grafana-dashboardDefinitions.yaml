@@ -1729,6 +1729,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -3595,6 +3600,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -4730,6 +4740,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -7296,6 +7311,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -9566,6 +9586,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -10528,6 +10553,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -12284,6 +12314,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-k8s-resources-pod
     namespace: monitoring
 - apiVersion: v1
@@ -14302,6 +14337,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -16481,6 +16521,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-k8s-resources-workloads-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -18998,6 +19043,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -20446,6 +20496,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -22166,6 +22221,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -23114,6 +23174,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -24089,6 +24154,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -25070,6 +25140,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -25262,7 +25337,7 @@ items:
                           "tableColumn": "",
                           "targets": [
                               {
-                                  "expr": "(\n  kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n  -\n  kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n)\n/\nkubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n* 100\n",
+                                  "expr": "max without(instance,node) (\n(\n  kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n  -\n  kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n)\n/\nkubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n* 100)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "",
@@ -25459,7 +25534,7 @@ items:
                           "tableColumn": "",
                           "targets": [
                               {
-                                  "expr": "kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n/\nkubelet_volume_stats_inodes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n* 100\n",
+                                  "expr": "max without(instance,node) (\nkubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n/\nkubelet_volume_stats_inodes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"}\n* 100)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "",
@@ -25631,6 +25706,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -26843,6 +26923,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -26868,7 +26953,7 @@ items:
           "links": [
 
           ],
-          "refresh": "",
+          "refresh": "60s",
           "rows": [
               {
                   "collapse": false,
@@ -27119,7 +27204,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(\n  prometheus_remote_storage_samples_in_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])\n- \n  ignoring(remote_name, url) group_right(instance) rate(prometheus_remote_storage_succeeded_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])\n- \n  rate(prometheus_remote_storage_dropped_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])\n",
+                                  "expr": "rate(\n  prometheus_remote_storage_samples_in_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])\n- \n  ignoring(remote_name, url) group_right(instance) (rate(prometheus_remote_storage_succeeded_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]))\n- \n  (rate(prometheus_remote_storage_dropped_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_dropped_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{cluster}}:{{instance}} {{remote_name}}:{{url}}",
@@ -27704,7 +27789,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "prometheus_remote_storage_pending_samples{cluster=~\"$cluster\", instance=~\"$instance\"}",
+                                  "expr": "prometheus_remote_storage_pending_samples{cluster=~\"$cluster\", instance=~\"$instance\"} or prometheus_remote_storage_samples_pending{cluster=~\"$cluster\", instance=~\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{cluster}}:{{instance}} {{remote_name}}:{{url}}",
@@ -28009,7 +28094,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(prometheus_remote_storage_dropped_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
+                                  "expr": "rate(prometheus_remote_storage_dropped_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_dropped_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{cluster}}:{{instance}} {{remote_name}}:{{url}}",
@@ -28102,7 +28187,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(prometheus_remote_storage_failed_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
+                                  "expr": "rate(prometheus_remote_storage_failed_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_failed_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{cluster}}:{{instance}} {{remote_name}}:{{url}}",
@@ -28195,7 +28280,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(prometheus_remote_storage_retried_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
+                                  "expr": "rate(prometheus_remote_storage_retried_samples_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m]) or rate(prometheus_remote_storage_samples_retried_total{cluster=~\"$cluster\", instance=~\"$instance\"}[5m])",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{cluster}}:{{instance}} {{remote_name}}:{{url}}",
@@ -28348,7 +28433,7 @@ items:
           "schemaVersion": 14,
           "style": "dark",
           "tags": [
-
+              "prometheus-mixin"
           ],
           "templating": {
               "list": [
@@ -28492,11 +28577,16 @@ items:
               ]
           },
           "timezone": "browser",
-          "title": "Prometheus Remote Write",
+          "title": "Prometheus / Remote Write",
           "version": 0
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -28515,7 +28605,7 @@ items:
           "links": [
 
           ],
-          "refresh": "10s",
+          "refresh": "60s",
           "rows": [
               {
                   "collapse": false,
@@ -29594,7 +29684,7 @@ items:
           "schemaVersion": 14,
           "style": "dark",
           "tags": [
-
+              "prometheus-mixin"
           ],
           "templating": {
               "list": [
@@ -29702,12 +29792,17 @@ items:
               ]
           },
           "timezone": "utc",
-          "title": "Prometheus Overview",
+          "title": "Prometheus / Overview",
           "uid": "",
           "version": 0
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -30923,6 +31018,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -31981,6 +32081,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -32893,6 +32998,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-statefulset
     namespace: monitoring
 - apiVersion: v1
@@ -34315,6 +34425,11 @@ items:
       }
   kind: ConfigMap
   metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 7.3.5
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList

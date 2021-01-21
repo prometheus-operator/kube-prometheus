@@ -15,11 +15,11 @@ spec:
     rules:
     - alert: KubePodCrashLooping
       annotations:
-        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is restarting {{ printf "%.2f" $value }} times / 5 minutes.
+        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is restarting {{ printf "%.2f" $value }} times / 10 minutes.
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubepodcrashlooping
         summary: Pod is crash looping.
       expr: |
-        rate(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[5m]) * 60 * 5 > 0
+        rate(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[10m]) * 60 * 5 > 0
       for: 15m
       labels:
         severity: warning
@@ -499,11 +499,11 @@ spec:
         severity: critical
     - alert: AggregatedAPIErrors
       annotations:
-        description: An aggregated API {{ $labels.name }}/{{ $labels.namespace }} has reported errors. The number of errors have increased for it in the past five minutes. High values indicate that the availability of the service changes too often.
+        description: An aggregated API {{ $labels.name }}/{{ $labels.namespace }} has reported errors. It has appeared unavailable {{ $value | humanize }} times averaged over the past 10m.
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/aggregatedapierrors
         summary: An aggregated API has reported errors.
       expr: |
-        sum by(name, namespace)(increase(aggregator_unavailable_apiservice_count[5m])) > 2
+        sum by(name, namespace)(increase(aggregator_unavailable_apiservice_count[10m])) > 4
       labels:
         severity: warning
     - alert: AggregatedAPIDown
@@ -526,6 +526,16 @@ spec:
       for: 15m
       labels:
         severity: critical
+    - alert: KubeAPITerminatedRequests
+      annotations:
+        description: The apiserver has terminated {{ $value | humanizePercentage }} of its incoming requests.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeapiterminatedrequests
+        summary: The apiserver has terminated {{ $value | humanizePercentage }} of its incoming requests.
+      expr: |
+        sum(rate(apiserver_request_terminations_total{job="apiserver"}[10m]))  / (  sum(rate(apiserver_request_total{job="apiserver"}[10m])) + sum(rate(apiserver_request_terminations_total{job="apiserver"}[10m])) ) > 0.20
+      for: 5m
+      labels:
+        severity: warning
   - name: kubernetes-system-kubelet
     rules:
     - alert: KubeNodeNotReady
@@ -1102,77 +1112,80 @@ spec:
         verb: write
       record: apiserver_request:availability30d
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"2.."}[30d]))
+        avg_over_time(code_verb:apiserver_request_total:increase1h[30d]) * 24 * 30
       record: code_verb:apiserver_request_total:increase30d
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"2.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"2.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"2.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"2.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"2.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"2.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"2.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"2.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"2.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"2.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"3.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"2.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"3.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"3.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"3.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"3.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"3.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"3.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"3.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"3.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"3.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"3.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"4.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"3.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"4.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"4.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"4.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"4.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"4.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"4.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"4.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"4.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"4.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"4.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"5.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"4.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"5.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="LIST",code=~"5.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"5.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="GET",code=~"5.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"5.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="POST",code=~"5.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"5.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PUT",code=~"5.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
-        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"5.."}[30d]))
-      record: code_verb:apiserver_request_total:increase30d
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="PATCH",code=~"5.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
+    - expr: |
+        sum by (code, verb) (increase(apiserver_request_total{job="apiserver",verb="DELETE",code=~"5.."}[1h]))
+      record: code_verb:apiserver_request_total:increase1h
     - expr: |
         sum by (code) (code_verb:apiserver_request_total:increase30d{verb=~"LIST|GET"})
       labels:
