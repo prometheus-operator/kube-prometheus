@@ -1,4 +1,4 @@
-local krp = (import '../kube-rbac-proxy/container.libsonnet');
+local krp = import './kube-rbac-proxy.libsonnet';
 
 local defaults = {
   local defaults = self,

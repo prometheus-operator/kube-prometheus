@@ -1,7 +1,9 @@
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           (import 'kube-prometheus/kube-prometheus-strip-limits.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/addons/strip-limits.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
 };
 

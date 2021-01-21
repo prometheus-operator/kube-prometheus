@@ -1,13 +1,13 @@
-local alertmanager = import './alertmanager/alertmanager.libsonnet';
-local blackboxExporter = import './blackbox-exporter/blackbox-exporter.libsonnet';
-local grafana = import './grafana/grafana.libsonnet';
-local kubeStateMetrics = import './kube-state-metrics/kube-state-metrics.libsonnet';
-local customMixin = import './mixin/custom.libsonnet';
-local kubernetesMixin = import './mixin/kubernetes.libsonnet';
-local nodeExporter = import './node-exporter/node-exporter.libsonnet';
-local prometheusAdapter = import './prometheus-adapter/prometheus-adapter.libsonnet';
-local prometheusOperator = import './prometheus-operator/prometheus-operator.libsonnet';
-local prometheus = import './prometheus/prometheus.libsonnet';
+local alertmanager = import './components/alertmanager.libsonnet';
+local blackboxExporter = import './components/blackbox-exporter.libsonnet';
+local grafana = import './components/grafana.libsonnet';
+local kubeStateMetrics = import './components/kube-state-metrics.libsonnet';
+local customMixin = import './components/mixin/custom.libsonnet';
+local kubernetesMixin = import './components/mixin/kubernetes.libsonnet';
+local nodeExporter = import './components/node-exporter.libsonnet';
+local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
+local prometheusOperator = import './components/prometheus-operator.libsonnet';
+local prometheus = import './components/prometheus.libsonnet';
 
 {
   // using `values` as this is similar to helm

@@ -2,9 +2,9 @@
 // For more details on usage visit https://github.com/DirectXMan12/k8s-prometheus-adapter#quick-links
 
 {
-  _config+:: {
-    prometheusAdapter+:: {
-      namespace: $._config.namespace,
+  values+:: {
+    prometheusAdapter+: {
+      namespace: $.values.common.namespace,
       // Rules for custom-metrics
       config+:: {
         rules+: [
@@ -78,7 +78,7 @@
     },
   },
 
-  prometheusAdapter+:: {
+  prometheusAdapter+: {
     customMetricsApiService: {
       apiVersion: 'apiregistration.k8s.io/v1',
       kind: 'APIService',
@@ -88,7 +88,7 @@
       spec: {
         service: {
           name: $.prometheusAdapter.service.metadata.name,
-          namespace: $._config.prometheusAdapter.namespace,
+          namespace: $.values.prometheusAdapter.namespace,
         },
         group: 'custom.metrics.k8s.io',
         version: 'v1beta1',
@@ -106,7 +106,7 @@
       spec: {
         service: {
           name: $.prometheusAdapter.service.metadata.name,
-          namespace: $._config.prometheusAdapter.namespace,
+          namespace: $.values.prometheusAdapter.namespace,
         },
         group: 'custom.metrics.k8s.io',
         version: 'v1beta2',
@@ -141,7 +141,7 @@
       subjects: [{
         kind: 'ServiceAccount',
         name: $.prometheusAdapter.serviceAccount.metadata.name,
-        namespace: $._config.prometheusAdapter.namespace,
+        namespace: $.values.prometheusAdapter.namespace,
       }],
     },
     customMetricsClusterRoleBindingHPA: {

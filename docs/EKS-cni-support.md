@@ -7,23 +7,29 @@ One fatal issue that can occur is that you run out of IP addresses in your eks c
 You can monitor the `awscni` using kube-promethus with : 
 [embedmd]:# (../examples/eks-cni-example.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           (import 'kube-prometheus/kube-prometheus-eks.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/platforms/eks.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
-  prometheusRules+:: {
-    groups+: [
-      {
-        name: 'example-group',
-        rules: [
+  prometheus+: {
+    prometheusRuleEksCNI+: {
+      spec+: {
+        groups+: [
           {
-            record: 'aws_eks_available_ip',
-            expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < 10',
+            name: 'example-group',
+            rules: [
+              {
+                record: 'aws_eks_available_ip',
+                expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < 10',
+              },
+            ],
           },
         ],
       },
-    ],
+    },
   },
 };
 

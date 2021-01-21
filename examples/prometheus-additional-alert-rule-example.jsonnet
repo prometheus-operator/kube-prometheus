@@ -1,25 +1,31 @@
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
-  prometheusAlerts+:: {
-    groups+: [
-      {
-        name: 'example-group',
-        rules: [
+  prometheus+: {
+    prometheusRule+: {
+      spec+: {
+        groups+: [
           {
-            alert: 'Watchdog',
-            expr: 'vector(1)',
-            labels: {
-              severity: 'none',
-            },
-            annotations: {
-              description: 'This is a Watchdog meant to ensure that the entire alerting pipeline is functional.',
-            },
+            name: 'example-group',
+            rules: [
+              {
+                alert: 'Watchdog',
+                expr: 'vector(1)',
+                labels: {
+                  severity: 'none',
+                },
+                annotations: {
+                  description: 'This is a Watchdog meant to ensure that the entire alerting pipeline is functional.',
+                },
+              },
+            ],
           },
         ],
       },
-    ],
+    },
   },
 };
 

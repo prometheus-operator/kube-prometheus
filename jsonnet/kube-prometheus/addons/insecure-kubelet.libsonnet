@@ -1,5 +1,5 @@
 {
-  prometheus+:: {
+  prometheus+: {
     serviceMonitorKubelet+:
       {
         spec+: {

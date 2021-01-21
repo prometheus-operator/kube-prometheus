@@ -1,4 +1,4 @@
-local relabelings = import 'kube-prometheus/dropping-deprecated-metrics-relabelings.libsonnet';
+local relabelings = import '../addons/dropping-deprecated-metrics-relabelings.libsonnet';
 
 local defaults = {
   local defaults = self,

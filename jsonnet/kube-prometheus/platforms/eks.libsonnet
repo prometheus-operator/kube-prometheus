@@ -1,5 +1,5 @@
 {
-  _config+:: {
+  values+:: {
     eks: {
       minimumAvailableIPs: 10,
       minimumAvailableIPsTime: '10m',
@@ -39,7 +39,7 @@
       kind: 'ServiceMonitor',
       metadata: {
         name: 'awsekscni',
-        namespace: $._config.namespace,
+        namespace: $.values.common.namespace,
         labels: {
           'app.kubernetes.io/name': 'eks-cni',
         },
@@ -65,25 +65,34 @@
         ],
       },
     },
-  },
-  prometheusRules+: {
-    groups+: [
-      {
-        name: 'kube-prometheus-eks.rules',
-        rules: [
+    prometheusRuleEksCNI: {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'PrometheusRule',
+      metadata: {
+        labels: $.prometheus.config.commonLabels + $.prometheus.config.mixin.ruleLabels,
+        name: 'eks-rules',
+        namespace: $.prometheus.config.namespace,
+      },
+      spec: {
+        groups: [
           {
-            expr: 'sum by(instance) (awscni_ip_max) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % $._config.eks.minimumAvailableIPs,
-            labels: {
-              severity: 'critical',
-            },
-            annotations: {
-              message: 'Instance {{ $labels.instance }} has less than 10 IPs available.',
-            },
-            'for': $._config.eks.minimumAvailableIPsTime,
-            alert: 'EksAvailableIPs',
+            name: 'kube-prometheus-eks.rules',
+            rules: [
+              {
+                expr: 'sum by(instance) (awscni_ip_max) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % $.values.eks.minimumAvailableIPs,
+                labels: {
+                  severity: 'critical',
+                },
+                annotations: {
+                  message: 'Instance {{ $labels.instance }} has less than 10 IPs available.',
+                },
+                'for': $.values.eks.minimumAvailableIPsTime,
+                alert: 'EksAvailableIPs',
+              },
+            ],
           },
         ],
       },
-    ],
+    },
   },
 }
