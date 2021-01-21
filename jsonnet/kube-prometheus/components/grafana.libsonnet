@@ -73,7 +73,7 @@ function(params) {
     spec: {
       selector: {
         matchLabels: {
-          app: 'grafana',
+          app.kubernetes.io/name: 'grafana',
         },
       },
       endpoints: [{
