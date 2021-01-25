@@ -172,6 +172,9 @@ function(params) {
         '--no-collector.wifi',
         '--no-collector.hwmon',
         '--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
+        '--collector.netclass.ignored-devices=^(veth.*)$',
+        '--collector.netdev.device-blacklist=^(veth.*)$',
+        // '--collector.netdev.device-exclude=^(veth.*)$', // TODO(paulfantom): change with next version of node_exporter (post 1.0.1)
       ],
       volumeMounts: [
         { name: 'sys', mountPath: '/host/sys', mountPropagation: 'HostToContainer', readOnly: true },
