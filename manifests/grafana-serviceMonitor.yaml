@@ -14,4 +14,4 @@ spec:
     port: http
   selector:
     matchLabels:
-      app: grafana
+      app.kubernetes.io/name: grafana
