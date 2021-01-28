@@ -20,7 +20,7 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
-  configmapReloaderImage: 'jimmidyson/configmap-reload:v0.4.0',
+  configmapReloaderImage: 'jimmidyson/configmap-reload:v0.5.0',
 
   port: 9115,
   internalPort: 19115,
