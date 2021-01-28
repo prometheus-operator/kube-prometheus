@@ -25,7 +25,7 @@ local prometheus = import './components/prometheus.libsonnet';
         kubeStateMetrics: '1.9.7',
         nodeExporter: '1.0.1',
         prometheus: '2.24.0',
-        prometheusAdapter: '0.8.2',
+        prometheusAdapter: '0.8.3',
         prometheusOperator: '0.45.0',
       },
       images: {
