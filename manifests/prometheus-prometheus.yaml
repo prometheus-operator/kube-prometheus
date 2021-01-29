@@ -12,7 +12,8 @@ metadata:
 spec:
   alerting:
     alertmanagers:
-    - name: alertmanager-main
+    - apiVersion: v2
+      name: alertmanager-main
       namespace: monitoring
       port: web
   image: quay.io/prometheus/prometheus:v2.24.0
