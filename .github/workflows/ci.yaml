@@ -19,7 +19,7 @@ jobs:
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ env.golang-version }}
-    - run: make --always-make generate && git diff --exit-code
+    - run: make --always-make generate validate && git diff --exit-code
   lint:
     runs-on: ubuntu-latest
     name: Jsonnet linter
