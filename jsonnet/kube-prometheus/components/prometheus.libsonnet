@@ -251,6 +251,7 @@ function(params) {
           namespace: p.config.namespace,
           name: 'alertmanager-' + p.config.alertmanagerName,
           port: 'web',
+          apiVersion: 'v2',
         }],
       },
       securityContext: {
