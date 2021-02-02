@@ -22,6 +22,10 @@ local defaults = {
   },
   prometheusName: error 'must provide prometheus name',
   dashboards: {},
+  // TODO(paulfantom): expose those to have a stable API. After kubernetes-grafana refactor those could probably be removed.
+  rawDashboards: {},
+  folderDashboards: {},
+  containers: [],
 };
 
 function(params) {
@@ -47,6 +51,9 @@ function(params) {
         labels: g.config.commonLabels,
         dashboards: g.config.dashboards,
         resources: g.config.resources,
+        rawDashboards: g.config.rawDashboards,
+        folderDashboards: g.config.folderDashboards,
+        containers: g.config.containers,
       },
     },
   },
