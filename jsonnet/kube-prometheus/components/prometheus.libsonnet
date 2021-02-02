@@ -35,8 +35,10 @@ local defaults = {
     _config: {
       prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
       prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
+      thanosSelector: 'job="thanos-sidecar"',
     },
   },
+  thanos: {},
 };
 
 
@@ -47,7 +49,15 @@ function(params) {
   assert std.isObject(p.config.resources),
   assert std.isObject(p.config.mixin._config),
 
-  mixin:: (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') {
+  mixin:: (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') + (
+    if p.config.thanos != {} then
+      (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') + {
+        sidecar: {
+          selector: p.config.mixin._config.thanosSelector,
+        },
+      }
+    else {}
+  ) {
     _config+:: p.config.mixin._config,
   },
 
@@ -86,8 +96,13 @@ function(params) {
     },
     spec: {
       ports: [
-        { name: 'web', targetPort: 'web', port: 9090 },
-      ],
+               { name: 'web', targetPort: 'web', port: 9090 },
+             ] +
+             (
+               if p.config.thanos != {} then
+                 [{ name: 'grpc', port: 10901, targetPort: 10901 }]
+               else []
+             ),
       selector: { app: 'prometheus' } + p.config.selectorLabels,
       sessionAffinity: 'ClientIP',
     },
@@ -259,6 +274,7 @@ function(params) {
         runAsNonRoot: true,
         fsGroup: 2000,
       },
+      thanos: p.config.thanos,
     },
   },
 
@@ -488,6 +504,58 @@ function(params) {
         port: 'metrics',
         interval: '15s',
         bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+      }],
+    },
+  },
+
+  // Include thanos sidecar Service only if thanos config was passed by user
+  [if std.objectHas(params, 'thanos') && std.length(params.thanos) > 0 then 'serviceThanosSidecar']: {
+    apiVersion: 'v1',
+    kind: 'Service',
+    metadata+: {
+      name: 'prometheus-' + p.config.name + '-thanos-sidecar',
+      namespace: p.config.namespace,
+      labels+: p.config.commonLabels {
+        prometheus: p.config.name,
+        'app.kubernetes.io/component': 'thanos-sidecar',
+      },
+    },
+    spec+: {
+      ports: [
+        { name: 'grpc', port: 10901, targetPort: 10901 },
+        { name: 'http', port: 10902, targetPort: 10902 },
+      ],
+      selector: p.config.selectorLabels {
+        prometheus: p.config.name,
+        'app.kubernetes.io/component': 'prometheus',
+      },
+      clusterIP: 'None',
+    },
+  },
+
+  // Include thanos sidecar ServiceMonitor only if thanos config was passed by user
+  [if std.objectHas(params, 'thanos') && std.length(params.thanos) > 0 then 'serviceMonitorThanosSidecar']: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'ServiceMonitor',
+    metadata+: {
+      name: 'thanos-sidecar',
+      namespace: p.config.namespace,
+      labels: p.config.commonLabels {
+        prometheus: p.config.name,
+        'app.kubernetes.io/component': 'thanos-sidecar',
+      },
+    },
+    spec+: {
+      jobLabel: 'app.kubernetes.io/component',
+      selector: {
+        matchLabels: {
+          prometheus: p.config.name,
+          'app.kubernetes.io/component': 'thanos-sidecar',
+        },
+      },
+      endpoints: [{
+        port: 'http',
+        interval: '30s',
       }],
     },
   },

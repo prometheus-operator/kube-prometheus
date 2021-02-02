@@ -1,17 +1,18 @@
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
-  (import 'kube-prometheus/addons/thanos-sidecar.libsonnet') +
   {
     values+:: {
       common+: {
         namespace: 'monitoring',
       },
-      thanos: {
-        version: '0.17.2',
-        image: 'quay.io/thanos-io/thanos:v' + $.values.thanos.version,
-        objectStorageConfig: {
-          key: 'thanos.yaml',  // How the file inside the secret is called
-          name: 'thanos-objectstorage',  // This is the name of your Kubernetes secret with the config
+      prometheus+: {
+        thanos: {
+          version: '0.17.2',
+          image: 'quay.io/thanos-io/thanos:v0.17.2',
+          objectStorageConfig: {
+            key: 'thanos.yaml',  // How the file inside the secret is called
+            name: 'thanos-objectstorage',  // This is the name of your Kubernetes secret with the config
+          },
         },
       },
     },
