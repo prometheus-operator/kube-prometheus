@@ -1,13 +1,10 @@
 (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') +
 {
   values+:: {
-    thanos+:: {
-      version: '0.14.0',
-      image: 'quay.io/thanos/thanos:v0.14.0',
-      objectStorageConfig: {
-        key: 'thanos.yaml',  // How the file inside the secret is called
-        name: 'thanos-objectstorage',  // This is the name of your Kubernetes secret with the config
-      },
+    thanos: {
+      version: error 'must provide thanos version',
+      image: error 'must provide thanos image',
+      objectStorageConfig: error 'must provide thanos object storage configuration',
     },
   },
   prometheus+: {
@@ -35,7 +32,7 @@
           { name: 'grpc', port: 10901, targetPort: 10901 },
           { name: 'http', port: 10902, targetPort: 10902 },
         ],
-        selector: { app: 'prometheus', prometheus: p.name },
+        selector: { app: 'prometheus', prometheus: p.config.name },
         clusterIP: 'None',
       },
     },
