@@ -1,10 +1,12 @@
 local kp = (import 'kube-prometheus/main.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
-  },
-  grafana+:: {
-    rawDashboards+:: {
-      'my-dashboard.json': (importstr 'example-grafana-dashboard.json'),
+  values+:: {
+    common+:: {
+      namespace: 'monitoring',
+    },
+    grafana+: {
+      rawDashboards+:: {
+        'my-dashboard.json': (importstr 'example-grafana-dashboard.json'),
+      },
     },
   },
 };
