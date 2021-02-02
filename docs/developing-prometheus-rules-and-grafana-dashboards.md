@@ -274,34 +274,36 @@ local template = grafana.template;
 local graphPanel = grafana.graphPanel;
 
 local kp = (import 'kube-prometheus/main.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
-  },
-  grafana+:: {
-    dashboards+:: {
-      'my-dashboard.json':
-        dashboard.new('My Dashboard')
-        .addTemplate(
-          {
-            current: {
-              text: 'Prometheus',
-              value: 'Prometheus',
+  values+:: {
+    common+:: {
+      namespace: 'monitoring',
+    },
+    grafana+: {
+      dashboards+:: {
+        'my-dashboard.json':
+          dashboard.new('My Dashboard')
+          .addTemplate(
+            {
+              current: {
+                text: 'Prometheus',
+                value: 'Prometheus',
+              },
+              hide: 0,
+              label: null,
+              name: 'datasource',
+              options: [],
+              query: 'prometheus',
+              refresh: 1,
+              regex: '',
+              type: 'datasource',
             },
-            hide: 0,
-            label: null,
-            name: 'datasource',
-            options: [],
-            query: 'prometheus',
-            refresh: 1,
-            regex: '',
-            type: 'datasource',
-          },
-        )
-        .addRow(
-          row.new()
-          .addPanel(graphPanel.new('My Panel', span=6, datasource='$datasource')
-                    .addTarget(prometheus.target('vector(1)')))
-        ),
+          )
+          .addRow(
+            row.new()
+            .addPanel(graphPanel.new('My Panel', span=6, datasource='$datasource')
+                      .addTarget(prometheus.target('vector(1)')))
+          ),
+      },
     },
   },
 };
@@ -322,15 +324,14 @@ As jsonnet is a superset of json, the jsonnet `import` function can be used to i
 [embedmd]:# (../examples/grafana-additional-rendered-dashboard-example.jsonnet)
 ```jsonnet
 local kp = (import 'kube-prometheus/main.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
-  },
-  grafanaDashboards+:: {  //  monitoring-mixin compatibility
-    'my-dashboard.json': (import 'example-grafana-dashboard.json'),
-  },
-  grafana+:: {
-    dashboards+:: {  // use this method to import your dashboards to Grafana
-      'my-dashboard.json': (import 'example-grafana-dashboard.json'),
+  values+:: {
+    common+:: {
+      namespace: 'monitoring',
+    },
+    grafana+: {
+      dashboards+:: {  // use this method to import your dashboards to Grafana
+        'my-dashboard.json': (import 'example-grafana-dashboard.json'),
+      },
     },
   },
 };
@@ -348,12 +349,14 @@ In case you have lots of json dashboard exported out from grafana UI the above a
 [embedmd]:# (../examples/grafana-additional-rendered-dashboard-example-2.jsonnet)
 ```jsonnet
 local kp = (import 'kube-prometheus/main.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
-  },
-  grafana+:: {
-    rawDashboards+:: {
-      'my-dashboard.json': (importstr 'example-grafana-dashboard.json'),
+  values+:: {
+    common+:: {
+      namespace: 'monitoring',
+    },
+    grafana+: {
+      rawDashboards+:: {
+        'my-dashboard.json': (importstr 'example-grafana-dashboard.json'),
+      },
     },
   },
 };
