@@ -183,6 +183,9 @@ $ mkdir my-kube-prometheus; cd my-kube-prometheus
 $ jb init  # Creates the initial/empty `jsonnetfile.json`
 # Install the kube-prometheus dependency
 $ jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.4 # Creates `vendor/` & `jsonnetfile.lock.json`, and fills in `jsonnetfile.json`
+
+$ wget https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/release-0.4/example.jsonnet -O example.jsonnet
+$ wget https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/release-0.4/build.sh -O build.sh
 ```
 
 > `jb` can be installed with `go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb`
