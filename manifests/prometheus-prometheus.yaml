@@ -44,4 +44,5 @@ spec:
   serviceAccountName: prometheus-k8s
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
+  thanos: {}
   version: 2.24.0
