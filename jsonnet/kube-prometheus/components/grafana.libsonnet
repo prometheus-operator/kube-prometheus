@@ -26,45 +26,54 @@ local defaults = {
   rawDashboards: {},
   folderDashboards: {},
   containers: [],
+  datasources: [],
+  config: {},
 };
 
 function(params) {
   local g = self,
-  config:: defaults + params,
-  //local g.config = defaults + params,
+  cfg:: defaults + params,
   // Safety check
-  assert std.isObject(g.config.resources),
+  assert std.isObject(g.cfg.resources),
 
   local glib = (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') + {
     _config+:: {
-      namespace: g.config.namespace,
+      namespace: g.cfg.namespace,
       versions+:: {
-        grafana: g.config.version,
+        grafana: g.cfg.version,
       },
       imageRepos+:: {
-        grafana: g.config.imageRepos,
+        grafana: g.cfg.imageRepos,
       },
       prometheus+:: {
-        name: g.config.prometheusName,
+        name: g.cfg.prometheusName,
       },
       grafana+:: {
-        labels: g.config.commonLabels,
-        dashboards: g.config.dashboards,
-        resources: g.config.resources,
-        rawDashboards: g.config.rawDashboards,
-        folderDashboards: g.config.folderDashboards,
-        containers: g.config.containers,
-      },
+        labels: g.cfg.commonLabels,
+        dashboards: g.cfg.dashboards,
+        resources: g.cfg.resources,
+        rawDashboards: g.cfg.rawDashboards,
+        folderDashboards: g.cfg.folderDashboards,
+        containers: g.cfg.containers,
+        config+: g.cfg.config,
+      } + (
+        // Conditionally overwrite default setting.
+        if std.length(g.cfg.datasources) > 0 then
+          { datasources: g.cfg.datasources }
+        else {}
+      ),
     },
   },
 
+  // Add object only if user passes config and config is not empty
+  [if std.objectHas(params, 'config') && std.length(params.config) > 0 then 'config']: glib.grafana.config,
   service: glib.grafana.service,
   serviceAccount: glib.grafana.serviceAccount,
   deployment: glib.grafana.deployment,
   dashboardDatasources: glib.grafana.dashboardDatasources,
   dashboardSources: glib.grafana.dashboardSources,
 
-  dashboardDefinitions: if std.length(g.config.dashboards) > 0 then {
+  dashboardDefinitions: if std.length(g.cfg.dashboards) > 0 then {
     apiVersion: 'v1',
     kind: 'ConfigMapList',
     items: glib.grafana.dashboardDefinitions,
@@ -74,8 +83,8 @@ function(params) {
     kind: 'ServiceMonitor',
     metadata: {
       name: 'grafana',
-      namespace: g.config.namespace,
-      labels: g.config.commonLabels,
+      namespace: g.cfg.namespace,
+      labels: g.cfg.commonLabels,
     },
     spec: {
       selector: {
