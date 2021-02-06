@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.0.1
+    app.kubernetes.io/version: 1.1.0
   name: node-exporter
   namespace: monitoring
 spec:
@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/component: exporter
         app.kubernetes.io/name: node-exporter
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 1.0.1
+        app.kubernetes.io/version: 1.1.0
     spec:
       containers:
       - args:
@@ -31,8 +31,8 @@ spec:
         - --no-collector.hwmon
         - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)
         - --collector.netclass.ignored-devices=^(veth.*)$
-        - --collector.netdev.device-blacklist=^(veth.*)$
-        image: quay.io/prometheus/node-exporter:v1.0.1
+        - --collector.netdev.device-exclude=^(veth.*)$
+        image: quay.io/prometheus/node-exporter:v1.1.0
         name: node-exporter
         resources:
           limits:
