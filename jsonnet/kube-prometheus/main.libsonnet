@@ -23,7 +23,7 @@ local prometheus = import './components/prometheus.libsonnet';
         blackboxExporter: '0.18.0',
         grafana: '7.3.7',
         kubeStateMetrics: '1.9.7',
-        nodeExporter: '1.0.1',
+        nodeExporter: '1.1.0',
         prometheus: '2.24.0',
         prometheusAdapter: '0.8.3',
         prometheusOperator: '0.45.0',
