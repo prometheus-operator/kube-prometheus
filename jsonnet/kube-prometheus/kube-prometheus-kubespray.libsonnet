@@ -20,7 +20,7 @@ local service(name, namespace, labels, selector, ports) = {
       'kube-controller-manager-prometheus-discovery',
       'kube-system',
       { 'k8s-app': 'kube-controller-manager' },
-      { 'k8s-app': 'kube-controller-manager' },
+      { 'component': 'kube-controller-manager' },
       [{ name: 'https-metrics', port: 10257, targetPort: 10257 }]
     ),
 
@@ -28,7 +28,7 @@ local service(name, namespace, labels, selector, ports) = {
       'kube-scheduler-prometheus-discovery',
       'kube-system',
       { 'k8s-app': 'kube-scheduler' },
-      { 'k8s-app': 'kube-scheduler' },
+      { 'component': 'kube-scheduler' },
       [{ name: 'https-metrics', port: 10259, targetPort: 10259 }],
     ),
 
