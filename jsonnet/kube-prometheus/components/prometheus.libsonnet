@@ -274,7 +274,7 @@ function(params) {
         runAsNonRoot: true,
         fsGroup: 2000,
       },
-      thanos: p.config.thanos,
+      [if std.objectHas(params, 'thanos') then 'thanos']: p.config.thanos,
     },
   },
 
