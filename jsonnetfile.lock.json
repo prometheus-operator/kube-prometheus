@@ -15,11 +15,11 @@
       "source": {
         "git": {
           "remote": "https://github.com/etcd-io/etcd.git",
-          "subdir": "Documentation/etcd-mixin"
+          "subdir": "contrib/mixin"
         }
       },
-      "version": "5dcd459ae9c7948f5620002f5b0bb9cf0b8f1502",
-      "sum": "bLqTqEr0jky9zz5MV/7ucn6H5mph2NlXas0TVnGNB1Y="
+      "version": "63cb3c97b7b1f09b09f6a62a65bb0fca821113ae",
+      "sum": "EgKKzxcW3ttt7gjPMX//DNTqNcn/0o2VAIaWJ/HSLEc="
     },
     {
       "source": {
