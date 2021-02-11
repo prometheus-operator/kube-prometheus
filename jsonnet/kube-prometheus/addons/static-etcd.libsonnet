@@ -1,4 +1,4 @@
-(import 'github.com/etcd-io/etcd/Documentation/etcd-mixin/mixin.libsonnet') + {
+(import 'github.com/etcd-io/etcd/contrib/mixin/mixin.libsonnet') + {
   values+:: {
     etcd: {
       ips: [],
