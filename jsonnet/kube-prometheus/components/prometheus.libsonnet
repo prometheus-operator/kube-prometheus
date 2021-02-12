@@ -66,7 +66,7 @@ function(params) {
     kind: 'PrometheusRule',
     metadata: {
       labels: p.config.commonLabels + p.config.mixin.ruleLabels,
-      name: p.config.name + '-rules',
+      name: 'prometheus-' + p.config.name + '-prometheus-rules',
       namespace: p.config.namespace,
     },
     spec: {
