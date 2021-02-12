@@ -89,6 +89,10 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     ports: [
       { name: 'https-main', containerPort: 8443 },
     ],
+    resources+: {
+      limits+: { cpu: '40m' },
+      requests+: { cpu: '20m' },
+    },
   }),
 
   local kubeRbacProxySelf = krp({
