@@ -332,7 +332,7 @@ function(params) {
       labels: { 'app.kubernetes.io/name': 'kubelet' },
     },
     spec: {
-      jobLabel: 'k8s-app',
+      jobLabel: 'app.kubernetes.io/name',
       endpoints: [
         {
           port: 'https-metrics',
@@ -387,7 +387,7 @@ function(params) {
         },
       ],
       selector: {
-        matchLabels: { 'k8s-app': 'kubelet' },
+        matchLabels: { 'app.kubernetes.io/name': 'kubelet' },
       },
       namespaceSelector: {
         matchNames: ['kube-system'],
