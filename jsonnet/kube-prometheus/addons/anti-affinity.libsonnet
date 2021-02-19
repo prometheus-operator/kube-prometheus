@@ -22,17 +22,29 @@
     },
   },
 
-  alertmanager+:: {
+  alertmanager+: {
     alertmanager+: {
       spec+:
         antiaffinity('alertmanager', [$.values.alertmanager.name], $.values.common.namespace),
     },
   },
 
-  prometheus+:: {
+  prometheus+: {
     prometheus+: {
       spec+:
         antiaffinity('prometheus', [$.values.prometheus.name], $.values.common.namespace),
     },
   },
+
+  blackboxExporter+: {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+:
+            antiaffinity('app.kubernetes.io/name', ['blackbox-exporter'], $.values.common.namespace),
+        },
+      },
+    },
+  },
+
 }
