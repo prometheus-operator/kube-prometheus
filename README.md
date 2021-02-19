@@ -204,7 +204,7 @@ $ jb update
 
 e.g. of how to compile the manifests: `./build.sh example.jsonnet`
 
-> before compiling, install `gojsontoyaml` tool with `go get github.com/brancz/gojsontoyaml`
+> before compiling, install `gojsontoyaml` tool with `go get github.com/brancz/gojsontoyaml` and `jsonnet` with `go get github.com/google/go-jsonnet/cmd/jsonnet`
 
 Here's [example.jsonnet](example.jsonnet):
 
