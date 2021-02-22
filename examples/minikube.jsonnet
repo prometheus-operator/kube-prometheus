@@ -8,10 +8,10 @@ local kp =
       common+: {
         namespace: 'monitoring',
       },
-      alertmanager+:: {
+      alertmanager+: {
         config: importstr 'alertmanager-config.yaml',
       },
-      grafana+:: {
+      grafana+: {
         config: {  // http://docs.grafana.org/installation/configuration/
           sections: {
             // Do not require grafana users to login/authenticate
@@ -40,7 +40,7 @@ local kp =
         },
       },
     },
-    alertmanager+:: {
+    alertmanager+: {
       alertmanager+: {
         // Reference info: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#alertmanagerspec
         spec+: {
