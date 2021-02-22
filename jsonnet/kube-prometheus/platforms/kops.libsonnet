@@ -14,7 +14,7 @@ local service(name, namespace, labels, selector, ports) = {
 };
 
 {
-  prometheus+:: {
+  kubernetesControlPlane+: {
     kubeControllerManagerPrometheusDiscoveryService: service(
       'kube-controller-manager-prometheus-discovery',
       'kube-system',
