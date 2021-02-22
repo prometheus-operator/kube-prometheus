@@ -282,7 +282,7 @@ function(params) {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'ServiceMonitor',
     metadata: {
-      name: 'prometheus',
+      name: 'prometheus-' + p.config.name,
       namespace: p.config.namespace,
       labels: p.config.commonLabels,
     },
