@@ -1,9 +1,9 @@
 local alertmanager = import './components/alertmanager.libsonnet';
 local blackboxExporter = import './components/blackbox-exporter.libsonnet';
 local grafana = import './components/grafana.libsonnet';
+local kubernetesControlPlane = import './components/k8s-control-plane.libsonnet';
 local kubeStateMetrics = import './components/kube-state-metrics.libsonnet';
 local customMixin = import './components/mixin/custom.libsonnet';
-local kubernetesMixin = import './components/mixin/kubernetes.libsonnet';
 local nodeExporter = import './components/node-exporter.libsonnet';
 local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
 local prometheusOperator = import './components/prometheus-operator.libsonnet';
@@ -58,7 +58,7 @@ local prometheus = import './components/prometheus.libsonnet';
       image: $.values.common.images.grafana,
       prometheusName: $.values.prometheus.name,
       // TODO(paulfantom) This should be done by iterating over all objects and looking for object.mixin.grafanaDashboards
-      dashboards: $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards + $.kubernetesMixin.mixin.grafanaDashboards,
+      dashboards: $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards + $.kubernetesControlPlane.mixin.grafanaDashboards,
     },
     kubeStateMetrics: {
       namespace: $.values.common.namespace,
@@ -96,7 +96,7 @@ local prometheus = import './components/prometheus.libsonnet';
       },
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
-    kubernetesMixin: {
+    kubernetesControlPlane: {
       namespace: $.values.common.namespace,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
@@ -114,7 +114,7 @@ local prometheus = import './components/prometheus.libsonnet';
   prometheus: prometheus($.values.prometheus),
   prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
   prometheusOperator: prometheusOperator($.values.prometheusOperator),
-  kubernetesMixin: kubernetesMixin($.values.kubernetesMixin),
+  kubernetesControlPlane: kubernetesControlPlane($.values.kubernetesControlPlane),
   kubePrometheus: customMixin($.values.kubePrometheus) + {
     namespace: {
       apiVersion: 'v1',
