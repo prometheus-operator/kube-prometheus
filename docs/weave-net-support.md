@@ -24,7 +24,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
       namespace: 'monitoring',
     },
   },
-  prometheus+: {
+  kubernetesControlPlane+: {
     prometheusRuleWeaveNet+: {
       spec+: {
         groups: std.map(

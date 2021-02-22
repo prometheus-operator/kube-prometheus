@@ -30,6 +30,11 @@ resources:
 - ./manifests/kube-state-metrics-serviceAccount.yaml
 - ./manifests/kube-state-metrics-serviceMonitor.yaml
 - ./manifests/kubernetes-prometheusRule.yaml
+- ./manifests/kubernetes-serviceMonitorApiserver.yaml
+- ./manifests/kubernetes-serviceMonitorCoreDNS.yaml
+- ./manifests/kubernetes-serviceMonitorKubeControllerManager.yaml
+- ./manifests/kubernetes-serviceMonitorKubeScheduler.yaml
+- ./manifests/kubernetes-serviceMonitorKubelet.yaml
 - ./manifests/node-exporter-clusterRole.yaml
 - ./manifests/node-exporter-clusterRoleBinding.yaml
 - ./manifests/node-exporter-daemonset.yaml
@@ -62,11 +67,6 @@ resources:
 - ./manifests/prometheus-service.yaml
 - ./manifests/prometheus-serviceAccount.yaml
 - ./manifests/prometheus-serviceMonitor.yaml
-- ./manifests/prometheus-serviceMonitorApiserver.yaml
-- ./manifests/prometheus-serviceMonitorCoreDNS.yaml
-- ./manifests/prometheus-serviceMonitorKubeControllerManager.yaml
-- ./manifests/prometheus-serviceMonitorKubeScheduler.yaml
-- ./manifests/prometheus-serviceMonitorKubelet.yaml
 - ./manifests/setup/0namespace-namespace.yaml
 - ./manifests/setup/prometheus-operator-0alertmanagerConfigCustomResourceDefinition.yaml
 - ./manifests/setup/prometheus-operator-0alertmanagerCustomResourceDefinition.yaml
