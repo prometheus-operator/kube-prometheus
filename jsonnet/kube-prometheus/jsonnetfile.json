@@ -48,7 +48,7 @@
                     "subdir": "Documentation/etcd-mixin"
                 }
             },
-            "version": "master"
+            "version": "release-3.4"
         },
         {
             "name": "prometheus",
