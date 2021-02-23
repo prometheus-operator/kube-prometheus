@@ -4,10 +4,16 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
       namespace: 'monitoring',
     },
   },
-  prometheus+: {
-    prometheusRule+: {
-      spec+: {
-        groups+: (import 'existingrule.json').groups,
+  exampleApplication: {
+    prometheusRuleExample: {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'PrometheusRule',
+      metadata: {
+        name: 'my-prometheus-rule',
+        namespace: $.values.common.namespace,
+      },
+      spec: {
+        groups: (import 'existingrule.json').groups,
       },
     },
   },
@@ -20,4 +26,5 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
-{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
+{ ['example-application-' + name]: kp.exampleApplication[name] for name in std.objectFields(kp.exampleApplication) }

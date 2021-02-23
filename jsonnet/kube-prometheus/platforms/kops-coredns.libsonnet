@@ -1,5 +1,5 @@
 {
-  prometheus+:: {
+  kubernetesControlPlane+: {
     kubeDnsPrometheusDiscoveryService: {
       apiVersion: 'v1',
       kind: 'Service',

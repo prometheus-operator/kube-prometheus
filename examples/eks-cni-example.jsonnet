@@ -5,7 +5,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
       namespace: 'monitoring',
     },
   },
-  prometheus+: {
+  kubernetesControlPlane+: {
     prometheusRuleEksCNI+: {
       spec+: {
         groups+: [

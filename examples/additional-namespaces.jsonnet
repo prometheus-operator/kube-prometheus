@@ -4,7 +4,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
       namespace: 'monitoring',
     },
 
-    prometheus+:: {
+    prometheus+: {
       namespaces+: ['my-namespace', 'my-second-namespace'],
     },
   },

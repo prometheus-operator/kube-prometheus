@@ -1,6 +1,6 @@
 (import '../addons/managed-cluster.libsonnet') + {
-  _config+:: {
-    prometheusAdapter+:: {
+  values+:: {
+    prometheusAdapter+: {
       config+: {
         resourceRules:: null,
       },

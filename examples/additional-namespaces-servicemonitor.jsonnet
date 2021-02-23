@@ -7,7 +7,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
       namespaces+: ['my-namespace', 'my-second-namespace'],
     },
   },
-  prometheus+: {
+  exampleApplication: {
     serviceMonitorMyNamespace: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
@@ -39,4 +39,5 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
+{ ['example-application-' + name]: kp.exampleApplication[name] for name in std.objectFields(kp.exampleApplication) }

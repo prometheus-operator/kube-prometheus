@@ -5,7 +5,7 @@
       minimumAvailableIPsTime: '10m',
     },
   },
-  prometheus+: {
+  kubernetesControlPlane+: {
     serviceMonitorCoreDNS+: {
       spec+: {
         endpoints: [

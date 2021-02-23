@@ -243,7 +243,7 @@ local kp =
 { ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
-{ ['kubernetes-' + name]: kp.kubernetesMixin[name] for name in std.objectFields(kp.kubernetesMixin) }
+{ ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) }
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) }
@@ -586,7 +586,7 @@ In the above example the configuration has been inlined, but can just as well be
 [embedmd]:# (examples/alertmanager-config-external.jsonnet)
 ```jsonnet
 ((import 'kube-prometheus/main.libsonnet') + {
-   _config+:: {
+   values+:: {
      alertmanager+: {
        config: importstr 'alertmanager-config.yaml',
      },
@@ -606,7 +606,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
       namespace: 'monitoring',
     },
 
-    prometheus+:: {
+    prometheus+: {
       namespaces+: ['my-namespace', 'my-second-namespace'],
     },
   },
@@ -640,7 +640,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
       namespaces+: ['my-namespace', 'my-second-namespace'],
     },
   },
-  prometheus+: {
+  exampleApplication: {
     serviceMonitorMyNamespace: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
@@ -672,7 +672,8 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
+{ ['example-application-' + name]: kp.exampleApplication[name] for name in std.objectFields(kp.exampleApplication) }
 ```
 
 > NOTE: make sure your service resources have the right labels (eg. `'app': 'myapp'`) applied. Prometheus uses kubernetes labels to discover resources inside the namespaces.

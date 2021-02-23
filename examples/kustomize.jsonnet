@@ -26,7 +26,7 @@ local manifests =
   { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
   { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
   { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
-  { ['kubernetes-' + name]: kp.kubernetesMixin[name] for name in std.objectFields(kp.kubernetesMixin) };
+  { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) };
 
 local kustomizationResourceFile(name) = './manifests/' + name + '.yaml';
 local kustomization = {
