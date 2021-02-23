@@ -1,0 +1,15 @@
+name: Pull request labeler
+on:
+  schedule:
+    - cron: '18 8 * * *'
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v2
+    - uses: romoh/dependencies-autoupdate@v1.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        update-command: './scripts/generate-versions.sh > jsonnet/kube-prometheus/versions.json'
+        on-changes-command: 'make --always-make generate'
