@@ -35,7 +35,7 @@
           "subdir": ""
         }
       },
-      "version": "master",
+      "version": "0d2f82676817bbf9e4acf6495b2090205f323b9f",
       "name": "ksonnet"
     },
     {
@@ -72,7 +72,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "master"
+      "version": "ff2ff3410f4ea8195e51f5fb8d84151684f91b3f"
     },
     {
       "source": {

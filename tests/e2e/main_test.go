@@ -87,7 +87,7 @@ func TestQueryPrometheus(t *testing.T) {
 	}
 
 	// Wait for pod to respond at queries at all. Then start verifying their results.
-	err := wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
+	err := wait.Poll(5*time.Second, 5*time.Minute, func() (bool, error) {
 		_, err := promClient.query("up")
 		return err == nil, nil
 	})
