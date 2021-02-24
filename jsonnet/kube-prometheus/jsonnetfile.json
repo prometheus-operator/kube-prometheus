@@ -8,7 +8,7 @@
                     "subdir": ""
                 }
             },
-            "version": "master"
+            "version": "0d2f82676817bbf9e4acf6495b2090205f323b9f"
         },
         {
             "name": "kubernetes-mixin",
@@ -28,7 +28,7 @@
                     "subdir": "grafana"
                 }
             },
-            "version": "master"
+            "version": "539a90dbf63c812ad0194d8078dd776868a11c81"
         },
         {
             "name": "prometheus-operator",
@@ -58,7 +58,7 @@
                     "subdir": "documentation/prometheus-mixin"
                 }
             },
-            "version": "master"
+            "version": "31700a05df64c2b4e32bb0ecd8baa25279144778"
         },
         {
             "name": "node-mixin",
@@ -68,7 +68,7 @@
                     "subdir": "docs/node-mixin"
                 }
             },
-            "version": "master"
+            "version": "2cae917bb7e0b6379221e8a24da012b16e63d661"
         }
     ]
 }
