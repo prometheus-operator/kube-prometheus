@@ -23,7 +23,7 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
 
 ## Warning
 
-`master` branch is under heavy refactoring work. Please use `release-0.7` branch until code refactoring is complete and this information is removed.
+If you are migrating from `release-0.7` branch or earlier please read [what changed and how to migrate in our guide](https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/migration-guide.md).
 
 ## Table of contents
 
@@ -825,7 +825,7 @@ resources. One driver for more resource needs, is a high number of
 namespaces. There may be others.
 
 kube-state-metrics resource allocation is managed by
-[addon-resizer](https://github.com/kubernetes/autoscaler/tree/master/addon-resizer/nanny)
+[addon-resizer](https://github.com/kubernetes/autoscaler/tree/main/addon-resizer/nanny)
 You can control it's parameters by setting variables in the
 config. They default to:
 
@@ -853,4 +853,4 @@ the following process:
 
 ## License
 
-Apache License 2.0, see [LICENSE](https://github.com/prometheus-operator/kube-prometheus/blob/master/LICENSE).
+Apache License 2.0, see [LICENSE](https://github.com/prometheus-operator/kube-prometheus/blob/main/LICENSE).
