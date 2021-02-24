@@ -71,7 +71,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "master"
+      "version": "8b466360a35581e0301bd22918be7011cf4203c3"
     },
     {
       "source": {
@@ -90,7 +90,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "master",
+      "version": "193ebba04d1e70d971047e983a0b489112610460",
       "name": "alertmanager"
     },
     {
