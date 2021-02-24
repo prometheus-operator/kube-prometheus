@@ -1,4 +1,5 @@
-name: Pull request labeler
+name: Sync component versions
+
 on:
   schedule:
     - cron: '18 8 * * *'
