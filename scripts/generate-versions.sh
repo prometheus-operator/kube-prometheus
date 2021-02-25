@@ -1,20 +1,23 @@
 #!/bin/bash
 
+set -euo pipefail
+
 get_latest_version() {
-  curl --retry 5 --silent -H "Authorization: token $token" "https://api.github.com/repos/${1}/releases/latest" | jq '.tag_name' | tr -d '"v'
+  echo >&2 "Checking release version for ${1}"
+  curl --retry 5 --silent --fail -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/${1}/releases/latest" | jq '.tag_name' | tr -d '"v'
 }
 
-# token can be passed as `GITHUB_TOKEN` or `token` variable
-token=${token:-${GITHUB_TOKEN}}
+# token can be passed as `GITHUB_TOKEN` variable or passed as first argument
+GITHUB_TOKEN=${GITHUB_TOKEN:-${1}}
 
-if [ -z "$token" ]; then
-	echo "GITHUB_TOKEN not set. Exiting"
+if [ -z "$GITHUB_TOKEN" ]; then
+	echo >&2 "GITHUB_TOKEN not set. Exiting"
 	exit 1
 fi
 
 cat <<-EOF
 {
-  "alertmanager": "$(get_latest_version "prometheus/alertmanager")"
+  "alertmanager": "$(get_latest_version "prometheus/alertmanager")",
   "blackboxExporter": "$(get_latest_version "prometheus/blackbox_exporter")",
   "grafana": "$(get_latest_version "grafana/grafana")",
   "nodeExporter": "$(get_latest_version "prometheus/node_exporter")",
