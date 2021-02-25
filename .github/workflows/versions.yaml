@@ -3,8 +3,9 @@ name: Sync component versions
 on:
   schedule:
     - cron: '18 8 * * *'
+
 jobs:
-  labeler:
+  versions:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -12,5 +13,5 @@ jobs:
     - uses: romoh/dependencies-autoupdate@v1.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        update-command: './scripts/generate-versions.sh > jsonnet/kube-prometheus/versions.json'
-        on-changes-command: 'make --always-make generate'
+        update-command: "'scripts/generate-versions.sh $token > jsonnet/kube-prometheus/versions.json'"
+        on-changes-command: "'make --always-make generate'"
