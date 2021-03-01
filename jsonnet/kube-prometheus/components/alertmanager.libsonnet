@@ -82,7 +82,7 @@ function(params) {
     kind: 'PrometheusRule',
     metadata: {
       labels: am.config.commonLabels + am.config.mixin.ruleLabels,
-      name: am.config.name + '-rules',
+      name: 'alertmanager-' + am.config.name + '-rules',
       namespace: am.config.namespace,
     },
     spec: {
