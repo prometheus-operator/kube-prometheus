@@ -16,6 +16,8 @@ jobs:
     name: Generate
     steps:
     - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
     - uses: actions/setup-go@v2
       with:
         go-version: ${{ env.golang-version }}
@@ -25,18 +27,24 @@ jobs:
     name: Jsonnet linter
     steps:
     - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
     - run: make --always-make lint
   fmt:
     runs-on: ubuntu-latest
     name: Jsonnet formatter
     steps:
     - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
     - run: make --always-make fmt && git diff --exit-code
   unit-tests:
     runs-on: ubuntu-latest
     name: Unit tests
     steps:
     - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
     - run: make --always-make test
   e2e-tests:
     name: E2E tests
@@ -48,6 +56,8 @@ jobs:
           - 'kindest/node:v1.20.0'
     steps:
     - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
     - name: Start KinD
       uses: engineerd/setup-kind@v0.5.0
       with:
