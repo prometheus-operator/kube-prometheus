@@ -29,6 +29,7 @@ local defaults = {
       nodeExporterSelector: 'job="' + defaults.name + '"',
       fsSpaceFillingUpCriticalThreshold: 15,
       diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
+      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
     },
   },
 };
@@ -41,9 +42,10 @@ function(params) {
   assert std.isObject(ne.config.resources),
   assert std.isObject(ne.config.mixin._config),
 
-  mixin:: (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') {
-    _config+:: ne.config.mixin._config,
-  },
+  mixin:: (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
+          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
+            _config+:: ne.config.mixin._config,
+          },
 
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',

@@ -34,6 +34,7 @@ local defaults = {
       prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
       prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
       thanosSelector: 'job="thanos-sidecar"',
+      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
     },
   },
   thanos: {},
@@ -47,7 +48,8 @@ function(params) {
   assert std.isObject(p.config.resources),
   assert std.isObject(p.config.mixin._config),
 
-  mixin:: (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') + (
+  mixin:: (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') +
+          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') + (
     if p.config.thanos != {} then
       (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') + {
         sidecar: {

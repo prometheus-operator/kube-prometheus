@@ -61,6 +61,7 @@ local defaults = {
       alertmanagerName: '{{ $labels.namespace }}/{{ $labels.pod}}',
       alertmanagerClusterLabels: 'namespace,service',
       alertmanagerSelector: 'job="alertmanager-' + defaults.name + '",namespace="' + defaults.namespace + '"',
+      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
     },
   },
 };
@@ -73,9 +74,10 @@ function(params) {
   assert std.isObject(am.config.resources),
   assert std.isObject(am.config.mixin._config),
 
-  mixin:: (import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') {
-    _config+:: am.config.mixin._config,
-  },
+  mixin:: (import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') +
+          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
+            _config+:: am.config.mixin._config,
+          },
 
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',

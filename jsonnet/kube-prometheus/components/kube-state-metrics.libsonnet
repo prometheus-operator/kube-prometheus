@@ -28,6 +28,7 @@ local defaults = {
     ruleLabels: {},
     _config: {
       kubeStateMetricsSelector: 'job="' + defaults.name + '"',
+      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
     },
   },
 };
@@ -46,9 +47,10 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
   commonLabels:: ksm.config.commonLabels,
   podLabels:: ksm.config.selectorLabels,
 
-  mixin:: (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') {
-    _config+:: ksm.config.mixin._config,
-  },
+  mixin:: (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
+          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
+            _config+:: ksm.config.mixin._config,
+          },
 
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',
