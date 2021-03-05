@@ -17,6 +17,7 @@ spec:
     - alert: KubeStateMetricsListErrors
       annotations:
         description: kube-state-metrics is experiencing errors at an elevated rate in list operations. This is likely causing it to not be able to expose metrics about Kubernetes objects correctly or at all.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubestatemetricslisterrors
         summary: kube-state-metrics is experiencing errors in list operations.
       expr: |
         (sum(rate(kube_state_metrics_list_total{job="kube-state-metrics",result="error"}[5m]))
@@ -29,6 +30,7 @@ spec:
     - alert: KubeStateMetricsWatchErrors
       annotations:
         description: kube-state-metrics is experiencing errors at an elevated rate in watch operations. This is likely causing it to not be able to expose metrics about Kubernetes objects correctly or at all.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubestatemetricswatcherrors
         summary: kube-state-metrics is experiencing errors in watch operations.
       expr: |
         (sum(rate(kube_state_metrics_watch_total{job="kube-state-metrics",result="error"}[5m]))

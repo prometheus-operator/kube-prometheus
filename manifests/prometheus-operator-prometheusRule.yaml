@@ -17,6 +17,7 @@ spec:
     - alert: PrometheusOperatorListErrors
       annotations:
         description: Errors while performing List operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheusoperatorlisterrors
         summary: Errors while performing list operations in controller.
       expr: |
         (sum by (controller,namespace) (rate(prometheus_operator_list_operations_failed_total{job="prometheus-operator",namespace="monitoring"}[10m])) / sum by (controller,namespace) (rate(prometheus_operator_list_operations_total{job="prometheus-operator",namespace="monitoring"}[10m]))) > 0.4
@@ -26,6 +27,7 @@ spec:
     - alert: PrometheusOperatorWatchErrors
       annotations:
         description: Errors while performing watch operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheusoperatorwatcherrors
         summary: Errors while performing watch operations in controller.
       expr: |
         (sum by (controller,namespace) (rate(prometheus_operator_watch_operations_failed_total{job="prometheus-operator",namespace="monitoring"}[10m])) / sum by (controller,namespace) (rate(prometheus_operator_watch_operations_total{job="prometheus-operator",namespace="monitoring"}[10m]))) > 0.4
@@ -35,6 +37,7 @@ spec:
     - alert: PrometheusOperatorSyncFailed
       annotations:
         description: Controller {{ $labels.controller }} in {{ $labels.namespace }} namespace fails to reconcile {{ $value }} objects.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheusoperatorsyncfailed
         summary: Last controller reconciliation failed
       expr: |
         min_over_time(prometheus_operator_syncs{status="failed",job="prometheus-operator",namespace="monitoring"}[5m]) > 0
@@ -44,6 +47,7 @@ spec:
     - alert: PrometheusOperatorReconcileErrors
       annotations:
         description: '{{ $value | humanizePercentage }} of reconciling operations failed for {{ $labels.controller }} controller in {{ $labels.namespace }} namespace.'
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheusoperatorreconcileerrors
         summary: Errors while reconciling controller.
       expr: |
         (sum by (controller,namespace) (rate(prometheus_operator_reconcile_errors_total{job="prometheus-operator",namespace="monitoring"}[5m]))) / (sum by (controller,namespace) (rate(prometheus_operator_reconcile_operations_total{job="prometheus-operator",namespace="monitoring"}[5m]))) > 0.1
@@ -53,6 +57,7 @@ spec:
     - alert: PrometheusOperatorNodeLookupErrors
       annotations:
         description: Errors while reconciling Prometheus in {{ $labels.namespace }} Namespace.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheusoperatornodelookuperrors
         summary: Errors while reconciling Prometheus.
       expr: |
         rate(prometheus_operator_node_address_lookup_errors_total{job="prometheus-operator",namespace="monitoring"}[5m]) > 0.1
@@ -62,6 +67,7 @@ spec:
     - alert: PrometheusOperatorNotReady
       annotations:
         description: Prometheus operator in {{ $labels.namespace }} namespace isn't ready to reconcile {{ $labels.controller }} resources.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheusoperatornotready
         summary: Prometheus operator not ready
       expr: |
         min by(namespace, controller) (max_over_time(prometheus_operator_ready{job="prometheus-operator",namespace="monitoring"}[5m]) == 0)
@@ -71,6 +77,7 @@ spec:
     - alert: PrometheusOperatorRejectedResources
       annotations:
         description: Prometheus operator in {{ $labels.namespace }} namespace rejected {{ printf "%0.0f" $value }} {{ $labels.controller }}/{{ $labels.resource }} resources.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheusoperatorrejectedresources
         summary: Resources rejected by Prometheus operator
       expr: |
         min_over_time(prometheus_operator_managed_resources{state="rejected",job="prometheus-operator",namespace="monitoring"}[5m]) > 0

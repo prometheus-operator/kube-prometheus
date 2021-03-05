@@ -30,6 +30,7 @@ local defaults = {
     },
     _config: {
       prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + defaults.namespace + '"',
+      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
     },
   },
 };
@@ -41,9 +42,10 @@ function(params)
 
   prometheusOperator(config) {
     local po = self,
-    mixin:: (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') {
-      _config+:: config.mixin._config,
-    },
+    mixin:: (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') +
+            (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
+              _config+:: config.mixin._config,
+            },
 
     prometheusRule: {
       apiVersion: 'monitoring.coreos.com/v1',
