@@ -20,7 +20,13 @@ spec:
       app.kubernetes.io/part-of: kube-prometheus
       app.kubernetes.io/version: 0.21.0
   replicas: 3
-  resources: {}
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 4m
+      memory: 100Mi
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true

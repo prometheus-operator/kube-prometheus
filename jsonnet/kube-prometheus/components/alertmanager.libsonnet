@@ -3,7 +3,10 @@ local defaults = {
   namespace: error 'must provide namespace',
   image: error 'must provide image',
   version: error 'must provide version',
-  resources: {},
+  resources: {
+    limits: { cpu: '100m', memory: '100Mi' },
+    requests: { cpu: '4m', memory: '100Mi' },
+  },
   commonLabels:: {
     'app.kubernetes.io/name': 'alertmanager',
     'app.kubernetes.io/version': defaults.version,
