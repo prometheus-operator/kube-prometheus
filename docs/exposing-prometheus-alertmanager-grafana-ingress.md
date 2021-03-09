@@ -1,12 +1,24 @@
-# Exposing Prometheus, Alertmanager and Grafana UIs via Ingress
+---
+title: "Expose via Ingress"
+description: "How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana."
+lead: "How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana."
+date: 2021-03-08T23:04:32+01:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "kube"
+weight: 500
+toc: true
+---
 
-In order to access the web interfaces via the Internet [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) is a popular option. This guide explains, how Kubernetes Ingress can be setup, in order to expose the Prometheus, Alertmanager and Grafana UIs, that are included in the [kube-prometheus](https://github.com/coreos/kube-prometheus) project.
+In order to access the web interfaces via the Internet [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) is a popular option. This guide explains, how Kubernetes Ingress can be setup, in order to expose the Prometheus, Alertmanager and Grafana UIs, that are included in the [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) project.
 
-Note: before continuing, it is recommended to first get familiar with the [kube-prometheus](https://github.com/coreos/kube-prometheus) stack by itself.
+Note: before continuing, it is recommended to first get familiar with the [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) stack by itself.
 
 ## Prerequisites
 
-Apart from a running Kubernetes cluster with a running [kube-prometheus](https://github.com/coreos/kube-prometheus) stack, a Kubernetes Ingress controller must be installed and functional. This guide was tested with the [nginx-ingress-controller](https://github.com/kubernetes/ingress-nginx). If you wish to reproduce the exact result in as depicted in this guide we recommend using the nginx-ingress-controller.
+Apart from a running Kubernetes cluster with a running [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) stack, a Kubernetes Ingress controller must be installed and functional. This guide was tested with the [nginx-ingress-controller](https://github.com/kubernetes/ingress-nginx). If you wish to reproduce the exact result in as depicted in this guide we recommend using the nginx-ingress-controller.
 
 ## Setting up Ingress
 

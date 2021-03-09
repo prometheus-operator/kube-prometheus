@@ -1,3 +1,18 @@
+---
+title: "Blackbox Exporter"
+description: "Generated API docs for the Prometheus Operator"
+lead: "This Document documents the types introduced by the Prometheus Operator to be consumed by users."
+date: 2021-03-08T08:49:31+00:00
+lastmod: 2021-03-08T08:49:31+00:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "kube"
+weight: 630
+toc: true
+---
+
 # Setting up a blackbox exporter
 
 The `prometheus-operator` defines a `Probe` resource type that can be used to describe blackbox checks. To execute these, a separate component called [`blackbox_exporter`](https://github.com/prometheus/blackbox_exporter) has to be deployed, which can be scraped to retrieve the results of these checks. You can use `kube-prometheus` to set up such a blackbox exporter within your Kubernetes cluster.

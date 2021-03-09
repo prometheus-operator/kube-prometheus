@@ -1,4 +1,17 @@
-# Monitoring other Kubernetes Namespaces
+---
+title: "Monitoring other Namespaces"
+description: "This guide will help you monitor applications in other Namespaces."
+lead: "This guide will help you monitor applications in other Namespaces."
+date: 2021-03-08T23:04:32+01:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "kube"
+weight: 640
+toc: true
+---
+
 This guide will help you monitor applications in other Namespaces. By default the RBAC rules are only enabled for the `Default` and `kube-system` Namespace during Install.
 
 # Setup
