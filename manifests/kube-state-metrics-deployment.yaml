@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.9.8
+    app.kubernetes.io/version: ""
   name: kube-state-metrics
   namespace: monitoring
 spec:
@@ -21,7 +21,7 @@ spec:
         app.kubernetes.io/component: exporter
         app.kubernetes.io/name: kube-state-metrics
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 1.9.8
+        app.kubernetes.io/version: ""
     spec:
       containers:
       - args:
@@ -29,7 +29,7 @@ spec:
         - --port=8081
         - --telemetry-host=127.0.0.1
         - --telemetry-port=8082
-        image: k8s.gcr.io/kube-state-metrics/kube-state-metrics:v1.9.8
+        image: k8s.gcr.io/kube-state-metrics/kube-state-metrics:v
         name: kube-state-metrics
         resources:
           limits:
