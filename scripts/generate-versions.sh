@@ -37,7 +37,7 @@ convert_to_camel_case() {
 }
 
 # File is used to read current versions
-VERSION_FILE="jsonnet/kube-prometheus/versions.json"
+VERSION_FILE="$(pwd)/jsonnet/kube-prometheus/versions.json"
 
 # token can be passed as `GITHUB_TOKEN` variable or passed as first argument
 GITHUB_TOKEN=${GITHUB_TOKEN:-${1}}
