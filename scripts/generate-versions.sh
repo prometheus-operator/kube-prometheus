@@ -11,7 +11,12 @@ get_latest_version() {
 # Get component version from version file
 get_current_version() {
   echo >&2 "Reading currently used version of ${1}"
-  jq -r ".${1}" "$VERSION_FILE"
+  v=$(jq -r ".${1}" "$VERSION_FILE")
+  if [ "${v}" == "" ]; then
+    echo >&2 "Couldn't read version of ${1} from $VERSION_FILE"
+    exit 1
+  fi
+  echo "$v"
 }
 
 # Get version from online source and filter out unstable releases. In case of unstable release use what is set in version file
