@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- configRole.yaml
+- configRoleBinding.yaml
+- prometheus.yaml
+- prometheusRule.yaml
+- service.yaml
+- serviceAccount.yaml
+- serviceMonitor.yaml
+- cluster
+- namespaced

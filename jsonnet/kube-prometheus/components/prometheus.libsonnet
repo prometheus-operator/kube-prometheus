@@ -86,6 +86,41 @@ function(params) {
     },
   },
 
+  configRole: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'Role',
+    metadata: {
+      name: 'prometheus-' + p.config.name + '-config',
+      namespace: p.config.namespace,
+      labels: p.config.commonLabels,
+    },
+    rules: [{
+      apiGroups: [''],
+      resources: ['configmaps'],
+      verbs: ['get'],
+    }],
+  },
+
+  configRoleBinding: {
+    apiVersion: 'rbac.authorization.k8s.io/v1',
+    kind: 'RoleBinding',
+    metadata: {
+      name: 'prometheus-' + p.config.name + '-config',
+      namespace: p.config.namespace,
+      labels: p.config.commonLabels,
+    },
+    roleRef: {
+      apiGroup: 'rbac.authorization.k8s.io',
+      kind: 'Role',
+      name: 'prometheus-' + p.config.name + '-config',
+    },
+    subjects: [{
+      kind: 'ServiceAccount',
+      name: 'prometheus-' + p.config.name,
+      namespace: p.config.namespace,
+    }],
+  },
+
   service: {
     apiVersion: 'v1',
     kind: 'Service',
@@ -107,134 +142,6 @@ function(params) {
       sessionAffinity: 'ClientIP',
     },
   },
-
-  roleBindingSpecificNamespaces:
-    local newSpecificRoleBinding(namespace) = {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'RoleBinding',
-      metadata: {
-        name: 'prometheus-' + p.config.name,
-        namespace: namespace,
-        labels: p.config.commonLabels,
-      },
-      roleRef: {
-        apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'Role',
-        name: 'prometheus-' + p.config.name,
-      },
-      subjects: [{
-        kind: 'ServiceAccount',
-        name: 'prometheus-' + p.config.name,
-        namespace: p.config.namespace,
-      }],
-    };
-    {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'RoleBindingList',
-      items: [newSpecificRoleBinding(x) for x in p.config.namespaces],
-    },
-
-  clusterRole: {
-    apiVersion: 'rbac.authorization.k8s.io/v1',
-    kind: 'ClusterRole',
-    metadata: {
-      name: 'prometheus-' + p.config.name,
-      labels: p.config.commonLabels,
-    },
-    rules: [
-      {
-        apiGroups: [''],
-        resources: ['nodes/metrics'],
-        verbs: ['get'],
-      },
-      {
-        nonResourceURLs: ['/metrics'],
-        verbs: ['get'],
-      },
-    ],
-  },
-
-  roleConfig: {
-    apiVersion: 'rbac.authorization.k8s.io/v1',
-    kind: 'Role',
-    metadata: {
-      name: 'prometheus-' + p.config.name + '-config',
-      namespace: p.config.namespace,
-      labels: p.config.commonLabels,
-    },
-    rules: [{
-      apiGroups: [''],
-      resources: ['configmaps'],
-      verbs: ['get'],
-    }],
-  },
-
-  roleBindingConfig: {
-    apiVersion: 'rbac.authorization.k8s.io/v1',
-    kind: 'RoleBinding',
-    metadata: {
-      name: 'prometheus-' + p.config.name + '-config',
-      namespace: p.config.namespace,
-      labels: p.config.commonLabels,
-    },
-    roleRef: {
-      apiGroup: 'rbac.authorization.k8s.io',
-      kind: 'Role',
-      name: 'prometheus-' + p.config.name + '-config',
-    },
-    subjects: [{
-      kind: 'ServiceAccount',
-      name: 'prometheus-' + p.config.name,
-      namespace: p.config.namespace,
-    }],
-  },
-
-  clusterRoleBinding: {
-    apiVersion: 'rbac.authorization.k8s.io/v1',
-    kind: 'ClusterRoleBinding',
-    metadata: {
-      name: 'prometheus-' + p.config.name,
-      labels: p.config.commonLabels,
-    },
-    roleRef: {
-      apiGroup: 'rbac.authorization.k8s.io',
-      kind: 'ClusterRole',
-      name: 'prometheus-' + p.config.name,
-    },
-    subjects: [{
-      kind: 'ServiceAccount',
-      name: 'prometheus-' + p.config.name,
-      namespace: p.config.namespace,
-    }],
-  },
-
-  roleSpecificNamespaces:
-    local newSpecificRole(namespace) = {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'Role',
-      metadata: {
-        name: 'prometheus-' + p.config.name,
-        namespace: namespace,
-        labels: p.config.commonLabels,
-      },
-      rules: [
-        {
-          apiGroups: [''],
-          resources: ['services', 'endpoints', 'pods'],
-          verbs: ['get', 'list', 'watch'],
-        },
-        {
-          apiGroups: ['extensions'],
-          resources: ['ingresses'],
-          verbs: ['get', 'list', 'watch'],
-        },
-      ],
-    };
-    {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'RoleList',
-      items: [newSpecificRole(x) for x in p.config.namespaces],
-    },
 
   prometheus: {
     apiVersion: 'monitoring.coreos.com/v1',

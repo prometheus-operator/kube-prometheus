@@ -8,6 +8,7 @@ local nodeExporter = import './components/node-exporter.libsonnet';
 local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
 local prometheusOperator = import './components/prometheus-operator.libsonnet';
 local prometheus = import './components/prometheus.libsonnet';
+local rbac = import './components/rbac.libsonnet';
 
 {
   // using `values` as this is similar to helm
@@ -113,6 +114,7 @@ local prometheus = import './components/prometheus.libsonnet';
   kubeStateMetrics: kubeStateMetrics($.values.kubeStateMetrics),
   nodeExporter: nodeExporter($.values.nodeExporter),
   prometheus: prometheus($.values.prometheus),
+  rbac: rbac($.values.prometheus),
   prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
   prometheusOperator: prometheusOperator($.values.prometheusOperator),
   kubernetesControlPlane: kubernetesControlPlane($.values.kubernetesControlPlane),
