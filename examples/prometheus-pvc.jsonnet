@@ -5,7 +5,6 @@ local kp =
   // (import 'kube-prometheus/addons/managed-cluster.libsonnet') +
   // (import 'kube-prometheus/addons/node-ports.libsonnet') +
   // (import 'kube-prometheus/addons/static-etcd.libsonnet') +
-  // (import 'kube-prometheus/addons/thanos-sidecar.libsonnet') +
   {
     values+:: {
       common+: {
