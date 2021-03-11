@@ -80,7 +80,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "release-2.24",
+      "version": "release-2.25",
       "name": "prometheus"
     },
     {
