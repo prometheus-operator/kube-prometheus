@@ -23,9 +23,9 @@ local manifests =
   { ['blackbox-exporter/' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
   { ['kube-state-metrics/' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
   { ['alertmanager/' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
-  { ['prometheus/' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-  { ['prometheus/namespaced/' + name]: kp.rbac.namespaced[name], for name in std.objectFields(kp.rbac.namespaced) } +
-  { ['prometheus/cluster/' + name]: kp.rbac.cluster[name], for name in std.objectFields(kp.rbac.cluster) } +
+  { ['prometheus/' + name]: kp.prometheus[name] for name in std.setDiff(std.objectFields(kp.prometheus), ['rbac']) } +
+  { ['prometheus/namespaced/' + name]: kp.prometheus.rbac.namespaced[name], for name in std.objectFields(kp.prometheus.rbac.namespaced) } +
+  { ['prometheus/cluster/' + name]: kp.prometheus.rbac.cluster[name], for name in std.objectFields(kp.prometheus.rbac.cluster) } +
   { ['prometheus-adapter/' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
   { ['grafana/' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
   { ['control-plane/' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) };
