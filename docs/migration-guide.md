@@ -17,6 +17,7 @@ Thanks to our community we identified a lot of short-commings of previous design
 - all component libraries are now function- and not object-based
 - monitoring-mixins are included inside each component and not globally. `prometheusRules`, `prometheusAlerts`, and `grafanaDashboards` are accessible only per component via `mixin` object (ex. `$.alertmanager.mixin.prometheusAlerts`)
 - default repository branch changed from `master` to `main`
+- labels on resources have changes, `kubectl apply` will not work correctly due to those field being immutable. Deleting the resource first before applying is a workaround if you are using the kubectl CLI. (This only applies to `Deployments` and `DaemonSets`.)
 
 ### New Features
 
