@@ -214,6 +214,9 @@ local restrictedPodSecurityPolicy = {
           },
         ],
         readOnlyRootFilesystem: true,
+        volumes+: [
+          'hostPath',
+        ],
       },
     },
   },
