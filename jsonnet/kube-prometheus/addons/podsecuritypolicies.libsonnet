@@ -160,8 +160,19 @@ local restrictedPodSecurityPolicy = {
         apiGroups: ['policy'],
         resources: ['podsecuritypolicies'],
         verbs: ['use'],
-        resourceNames: [restrictedPodSecurityPolicy.metadata.name],
+        resourceNames: ['kube-state-metrics-psp'],
       }],
+    },
+
+    podSecurityPolicy: restrictedPodSecurityPolicy {
+      metadata+: {
+        name: 'kube-state-metrics-psp',
+      },
+      spec+: {
+        runAsUser: {
+          rule: 'RunAsAny',
+        },
+      },
     },
   },
 
