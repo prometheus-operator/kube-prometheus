@@ -54,9 +54,9 @@ local restrictedPodSecurityPolicy = {
   restrictedPodSecurityPolicy: restrictedPodSecurityPolicy,
 
   alertmanager+: {
-    role: {
+    clusterRole: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'Role',
+      kind: 'ClusterRole',
       metadata: {
         name: 'alertmanager-' + $.values.alertmanager.name,
       },
@@ -68,15 +68,15 @@ local restrictedPodSecurityPolicy = {
       }],
     },
 
-    roleBinding: {
+    clusterRoleBinding: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'RoleBinding',
+      kind: 'ClusterRoleBinding',
       metadata: {
         name: 'alertmanager-' + $.values.alertmanager.name,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'Role',
+        kind: 'ClusterRole',
         name: 'alertmanager-' + $.values.alertmanager.name,
       },
       subjects: [{
@@ -121,9 +121,9 @@ local restrictedPodSecurityPolicy = {
   },
 
   grafana+: {
-    role: {
+    clusterRole: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'Role',
+      kind: 'ClusterRole',
       metadata: {
         name: 'grafana',
       },
@@ -135,15 +135,15 @@ local restrictedPodSecurityPolicy = {
       }],
     },
 
-    roleBinding: {
+    clusterRoleBinding: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'RoleBinding',
+      kind: 'ClusterRoleBinding',
       metadata: {
         name: 'grafana',
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'Role',
+        kind: 'ClusterRole',
         name: 'grafana',
       },
       subjects: [{
