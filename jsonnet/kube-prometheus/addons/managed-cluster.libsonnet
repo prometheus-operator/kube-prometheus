@@ -2,17 +2,6 @@
 // Disable scrape jobs, service monitors, and alert groups for these components by overwriting 'main.libsonnet' defaults
 
 {
-  values+:: {
-    // This snippet walks the original object (super.jobs, set as temp var j) and creates a replacement jobs object
-    //     excluding any members of the set specified (eg: controller and scheduler).
-    local j = super.jobs,
-    jobs: {
-      [k]: j[k]
-      for k in std.objectFields(j)
-      if !std.setMember(k, ['KubeControllerManager', 'KubeScheduler'])
-    },
-  },
-
   local k = super.kubernetesControlPlane,
 
   kubernetesControlPlane+: {
