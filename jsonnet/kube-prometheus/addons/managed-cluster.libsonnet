@@ -11,10 +11,17 @@
       for k in std.objectFields(j)
       if !std.setMember(k, ['KubeControllerManager', 'KubeScheduler'])
     },
+  },
 
-    // Skip alerting rules too
-    prometheus+: {
-      rules+:: {
+  local k = super.kubernetesControlPlane,
+
+  kubernetesControlPlane+: {
+    [q]: null
+    for q in std.objectFields(k)
+    if std.setMember(q, ['serviceMonitorKubeControllerManager', 'serviceMonitorKubeScheduler'])
+  } + {
+    prometheusRule+: {
+      spec+: {
         local g = super.groups,
         groups: [
           h
@@ -23,13 +30,5 @@
         ],
       },
     },
-  },
-
-  // Same as above but for ServiceMonitor's
-  local p = super.prometheus,
-  prometheus+: {
-    [q]: p[q]
-    for q in std.objectFields(p)
-    if !std.setMember(q, ['serviceMonitorKubeControllerManager', 'serviceMonitorKubeScheduler'])
   },
 }
