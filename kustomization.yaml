@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ./manifests/alertmanager-alertmanager.yaml
+- ./manifests/alertmanager-podDisruptionBudget.yaml
 - ./manifests/alertmanager-prometheusRule.yaml
 - ./manifests/alertmanager-secret.yaml
 - ./manifests/alertmanager-service.yaml
@@ -58,6 +59,7 @@ resources:
 - ./manifests/prometheus-clusterRoleBinding.yaml
 - ./manifests/prometheus-operator-prometheusRule.yaml
 - ./manifests/prometheus-operator-serviceMonitor.yaml
+- ./manifests/prometheus-podDisruptionBudget.yaml
 - ./manifests/prometheus-prometheus.yaml
 - ./manifests/prometheus-prometheusRule.yaml
 - ./manifests/prometheus-roleBindingConfig.yaml

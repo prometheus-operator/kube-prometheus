@@ -236,6 +236,24 @@ function(params) {
       items: [newSpecificRole(x) for x in p.config.namespaces],
     },
 
+  podDisruptionBudget: {
+    apiVersion: 'policy/v1beta1',
+    kind: 'PodDisruptionBudget',
+    metadata: {
+      name: 'prometheus-' + p.config.name,
+      namespace: p.config.namespace,
+      labels: p.config.commonLabels,
+    },
+    spec: {
+      minAvailable: 1,
+      selector: {
+        matchLabels: {
+          prometheus: p.config.name,
+        } + p.config.selectorLabels,
+      },
+    },
+  },
+
   prometheus: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'Prometheus',
