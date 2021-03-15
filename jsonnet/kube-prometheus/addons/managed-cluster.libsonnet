@@ -27,7 +27,7 @@
 
   // Same as above but for ServiceMonitor's
   local p = super.prometheus,
-  prometheus: {
+  prometheus+: {
     [q]: p[q]
     for q in std.objectFields(p)
     if !std.setMember(q, ['serviceMonitorKubeControllerManager', 'serviceMonitorKubeScheduler'])
