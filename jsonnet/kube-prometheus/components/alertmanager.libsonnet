@@ -165,6 +165,24 @@ function(params) {
     },
   },
 
+  podDisruptionBudget: {
+    apiVersion: 'policy/v1beta1',
+    kind: 'PodDisruptionBudget',
+    metadata: {
+      name: 'alertmanager-' + am.config.name,
+      namespace: am.config.namespace,
+      labels: am.config.commonLabels,
+    },
+    spec: {
+      maxUnavailable: 1,
+      selector: {
+        matchLabels: {
+          alertmanager: am.config.name,
+        } + am.config.selectorLabels,
+      },
+    },
+  },
+
   alertmanager: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'Alertmanager',
