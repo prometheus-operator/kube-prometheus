@@ -23,7 +23,7 @@ local prometheus = import './components/prometheus.libsonnet';
         alertmanager: error 'must provide version',
         blackboxExporter: error 'must provide version',
         grafana: error 'must provide version',
-        kubeStateMetrics: '1.9.8',  // FIXME(paulfantom): needs https://github.com/kubernetes/kube-state-metrics/issues/1392
+        kubeStateMetrics: error 'must provide version',
         nodeExporter: error 'must provide version',
         prometheus: error 'must provide version',
         prometheusAdapter: error 'must provide version',
