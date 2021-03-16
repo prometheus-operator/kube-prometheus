@@ -18,22 +18,22 @@ local defaults = {
 
 function(params) {
   local m = self,
-  config:: defaults + params,
+  _config:: defaults + params,
 
   local alertsandrules = (import './alerts/alerts.libsonnet') + (import './rules/rules.libsonnet'),
 
   mixin:: alertsandrules +
           (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
-            _config+:: m.config.mixin._config,
+            _config+:: m._config.mixin._config,
           },
 
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'PrometheusRule',
     metadata: {
-      labels: m.config.commonLabels + m.config.mixin.ruleLabels,
-      name: m.config.name + '-rules',
-      namespace: m.config.namespace,
+      labels: m._config.commonLabels + m._config.mixin.ruleLabels,
+      name: m._config.name + '-rules',
+      namespace: m._config.namespace,
     },
     spec: {
       local r = if std.objectHasAll(m.mixin, 'prometheusRules') then m.mixin.prometheusRules.groups else [],

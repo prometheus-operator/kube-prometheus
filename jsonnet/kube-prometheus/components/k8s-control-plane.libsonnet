@@ -26,19 +26,19 @@ local defaults = {
 
 function(params) {
   local k8s = self,
-  config:: defaults + params,
+  _config:: defaults + params,
 
   mixin:: (import 'github.com/kubernetes-monitoring/kubernetes-mixin/mixin.libsonnet') {
-    _config+:: k8s.config.mixin._config,
+    _config+:: k8s._config.mixin._config,
   },
 
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'PrometheusRule',
     metadata: {
-      labels: k8s.config.commonLabels + k8s.config.mixin.ruleLabels,
+      labels: k8s._config.commonLabels + k8s._config.mixin.ruleLabels,
       name: 'kubernetes-monitoring-rules',
-      namespace: k8s.config.namespace,
+      namespace: k8s._config.namespace,
     },
     spec: {
       local r = if std.objectHasAll(k8s.mixin, 'prometheusRules') then k8s.mixin.prometheusRules.groups else {},
@@ -52,7 +52,7 @@ function(params) {
     kind: 'ServiceMonitor',
     metadata: {
       name: 'kube-scheduler',
-      namespace: k8s.config.namespace,
+      namespace: k8s._config.namespace,
       labels: { 'app.kubernetes.io/name': 'kube-scheduler' },
     },
     spec: {
@@ -78,7 +78,7 @@ function(params) {
     kind: 'ServiceMonitor',
     metadata: {
       name: 'kubelet',
-      namespace: k8s.config.namespace,
+      namespace: k8s._config.namespace,
       labels: { 'app.kubernetes.io/name': 'kubelet' },
     },
     spec: {
@@ -150,7 +150,7 @@ function(params) {
     kind: 'ServiceMonitor',
     metadata: {
       name: 'kube-controller-manager',
-      namespace: k8s.config.namespace,
+      namespace: k8s._config.namespace,
       labels: { 'app.kubernetes.io/name': 'kube-controller-manager' },
     },
     spec: {
@@ -185,7 +185,7 @@ function(params) {
     kind: 'ServiceMonitor',
     metadata: {
       name: 'kube-apiserver',
-      namespace: k8s.config.namespace,
+      namespace: k8s._config.namespace,
       labels: { 'app.kubernetes.io/name': 'apiserver' },
     },
     spec: {
@@ -239,7 +239,7 @@ function(params) {
     kind: 'ServiceMonitor',
     metadata: {
       name: 'coredns',
-      namespace: k8s.config.namespace,
+      namespace: k8s._config.namespace,
       labels: { 'app.kubernetes.io/name': 'coredns' },
     },
     spec: {

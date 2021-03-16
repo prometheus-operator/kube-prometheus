@@ -42,18 +42,20 @@ function(params)
 
   prometheusOperator(config) {
     local po = self,
+    // declare variable as a field to allow overriding options and to have unified API across all components
+    _config:: config,
     mixin:: (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') +
             (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
-              _config+:: config.mixin._config,
+              _config+:: po._config.mixin._config,
             },
 
     prometheusRule: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'PrometheusRule',
       metadata: {
-        labels: config.commonLabels + config.mixin.ruleLabels,
-        name: config.name + '-rules',
-        namespace: config.namespace,
+        labels: po._config.commonLabels + po._config.mixin.ruleLabels,
+        name: po._config.name + '-rules',
+        namespace: po._config.namespace,
       },
       spec: {
         local r = if std.objectHasAll(po.mixin, 'prometheusRules') then po.mixin.prometheusRules.groups else [],

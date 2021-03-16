@@ -56,21 +56,21 @@ local defaults = {
 
 function(params) {
   local pa = self,
-  config:: defaults + params,
+  _config:: defaults + params,
   // Safety check
-  assert std.isObject(pa.config.resources),
+  assert std.isObject(pa._config.resources),
 
   apiService: {
     apiVersion: 'apiregistration.k8s.io/v1',
     kind: 'APIService',
     metadata: {
       name: 'v1beta1.metrics.k8s.io',
-      labels: pa.config.commonLabels,
+      labels: pa._config.commonLabels,
     },
     spec: {
       service: {
         name: $.service.metadata.name,
-        namespace: pa.config.namespace,
+        namespace: pa._config.namespace,
       },
       group: 'metrics.k8s.io',
       version: 'v1beta1',
@@ -85,23 +85,23 @@ function(params) {
     kind: 'ConfigMap',
     metadata: {
       name: 'adapter-config',
-      namespace: pa.config.namespace,
-      labels: pa.config.commonLabels,
+      namespace: pa._config.namespace,
+      labels: pa._config.commonLabels,
     },
-    data: { 'config.yaml': std.manifestYamlDoc(pa.config.config) },
+    data: { 'config.yaml': std.manifestYamlDoc(pa._config.config) },
   },
 
   serviceMonitor: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'ServiceMonitor',
     metadata: {
-      name: pa.config.name,
-      namespace: pa.config.namespace,
-      labels: pa.config.commonLabels,
+      name: pa._config.name,
+      namespace: pa._config.namespace,
+      labels: pa._config.commonLabels,
     },
     spec: {
       selector: {
-        matchLabels: pa.config.selectorLabels,
+        matchLabels: pa._config.selectorLabels,
       },
       endpoints: [
         {
@@ -121,28 +121,28 @@ function(params) {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
-      name: pa.config.name,
-      namespace: pa.config.namespace,
-      labels: pa.config.commonLabels,
+      name: pa._config.name,
+      namespace: pa._config.namespace,
+      labels: pa._config.commonLabels,
     },
     spec: {
       ports: [
         { name: 'https', targetPort: 6443, port: 443 },
       ],
-      selector: pa.config.selectorLabels,
+      selector: pa._config.selectorLabels,
     },
   },
 
   deployment:
     local c = {
-      name: pa.config.name,
-      image: pa.config.image,
+      name: pa._config.name,
+      image: pa._config.image,
       args: [
         '--cert-dir=/var/run/serving-cert',
         '--config=/etc/adapter/config.yaml',
         '--logtostderr=true',
         '--metrics-relist-interval=1m',
-        '--prometheus-url=' + pa.config.prometheusURL,
+        '--prometheus-url=' + pa._config.prometheusURL,
         '--secure-port=6443',
       ],
       ports: [{ containerPort: 6443 }],
@@ -157,13 +157,13 @@ function(params) {
       apiVersion: 'apps/v1',
       kind: 'Deployment',
       metadata: {
-        name: pa.config.name,
-        namespace: pa.config.namespace,
-        labels: pa.config.commonLabels,
+        name: pa._config.name,
+        namespace: pa._config.namespace,
+        labels: pa._config.commonLabels,
       },
       spec: {
         replicas: 1,
-        selector: { matchLabels: pa.config.selectorLabels },
+        selector: { matchLabels: pa._config.selectorLabels },
         strategy: {
           rollingUpdate: {
             maxSurge: 1,
@@ -171,7 +171,7 @@ function(params) {
           },
         },
         template: {
-          metadata: { labels: pa.config.commonLabels },
+          metadata: { labels: pa._config.commonLabels },
           spec: {
             containers: [c],
             serviceAccountName: $.serviceAccount.metadata.name,
@@ -190,9 +190,9 @@ function(params) {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     metadata: {
-      name: pa.config.name,
-      namespace: pa.config.namespace,
-      labels: pa.config.commonLabels,
+      name: pa._config.name,
+      namespace: pa._config.namespace,
+      labels: pa._config.commonLabels,
     },
   },
 
@@ -200,8 +200,8 @@ function(params) {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRole',
     metadata: {
-      name: pa.config.name,
-      labels: pa.config.commonLabels,
+      name: pa._config.name,
+      labels: pa._config.commonLabels,
     },
     rules: [{
       apiGroups: [''],
@@ -214,8 +214,8 @@ function(params) {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRoleBinding',
     metadata: {
-      name: pa.config.name,
-      labels: pa.config.commonLabels,
+      name: pa._config.name,
+      labels: pa._config.commonLabels,
     },
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
@@ -225,7 +225,7 @@ function(params) {
     subjects: [{
       kind: 'ServiceAccount',
       name: $.serviceAccount.metadata.name,
-      namespace: pa.config.namespace,
+      namespace: pa._config.namespace,
     }],
   },
 
@@ -234,7 +234,7 @@ function(params) {
     kind: 'ClusterRoleBinding',
     metadata: {
       name: 'resource-metrics:system:auth-delegator',
-      labels: pa.config.commonLabels,
+      labels: pa._config.commonLabels,
     },
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
@@ -244,7 +244,7 @@ function(params) {
     subjects: [{
       kind: 'ServiceAccount',
       name: $.serviceAccount.metadata.name,
-      namespace: pa.config.namespace,
+      namespace: pa._config.namespace,
     }],
   },
 
@@ -253,7 +253,7 @@ function(params) {
     kind: 'ClusterRole',
     metadata: {
       name: 'resource-metrics-server-resources',
-      labels: pa.config.commonLabels,
+      labels: pa._config.commonLabels,
     },
     rules: [{
       apiGroups: ['metrics.k8s.io'],
@@ -271,7 +271,7 @@ function(params) {
         'rbac.authorization.k8s.io/aggregate-to-admin': 'true',
         'rbac.authorization.k8s.io/aggregate-to-edit': 'true',
         'rbac.authorization.k8s.io/aggregate-to-view': 'true',
-      } + pa.config.commonLabels,
+      } + pa._config.commonLabels,
     },
     rules: [{
       apiGroups: ['metrics.k8s.io'],
@@ -286,7 +286,7 @@ function(params) {
     metadata: {
       name: 'resource-metrics-auth-reader',
       namespace: 'kube-system',
-      labels: pa.config.commonLabels,
+      labels: pa._config.commonLabels,
     },
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
@@ -296,7 +296,7 @@ function(params) {
     subjects: [{
       kind: 'ServiceAccount',
       name: $.serviceAccount.metadata.name,
-      namespace: pa.config.namespace,
+      namespace: pa._config.namespace,
     }],
   },
 }

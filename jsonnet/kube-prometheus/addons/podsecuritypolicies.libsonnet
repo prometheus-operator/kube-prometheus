@@ -101,7 +101,7 @@ local restrictedPodSecurityPolicy = {
 
     podSecurityPolicy:
       local blackboxExporterPspPrivileged =
-        if $.blackboxExporter.config.privileged then
+        if $.blackboxExporter._config.privileged then
           {
             metadata+: {
               name: 'blackbox-exporter-psp',
@@ -209,8 +209,8 @@ local restrictedPodSecurityPolicy = {
         hostPID: true,
         hostPorts: [
           {
-            max: $.nodeExporter.config.port,
-            min: $.nodeExporter.config.port,
+            max: $.nodeExporter._config.port,
+            min: $.nodeExporter._config.port,
           },
         ],
         readOnlyRootFilesystem: true,

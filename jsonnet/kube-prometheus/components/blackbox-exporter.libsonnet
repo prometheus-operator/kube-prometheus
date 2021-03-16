@@ -88,20 +88,20 @@ local defaults = {
 
 function(params) {
   local bb = self,
-  config:: defaults + params,
+  _config:: defaults + params,
   // Safety check
-  assert std.isObject(bb.config.resources),
+  assert std.isObject(bb._config.resources),
 
   configuration: {
     apiVersion: 'v1',
     kind: 'ConfigMap',
     metadata: {
       name: 'blackbox-exporter-configuration',
-      namespace: bb.config.namespace,
-      labels: bb.config.commonLabels,
+      namespace: bb._config.namespace,
+      labels: bb._config.commonLabels,
     },
     data: {
-      'config.yml': std.manifestYamlDoc({ modules: bb.config.modules }),
+      'config.yml': std.manifestYamlDoc({ modules: bb._config.modules }),
     },
   },
 
@@ -110,7 +110,7 @@ function(params) {
     kind: 'ServiceAccount',
     metadata: {
       name: 'blackbox-exporter',
-      namespace: bb.config.namespace,
+      namespace: bb._config.namespace,
     },
   },
 
@@ -148,24 +148,24 @@ function(params) {
     subjects: [{
       kind: 'ServiceAccount',
       name: 'blackbox-exporter',
-      namespace: bb.config.namespace,
+      namespace: bb._config.namespace,
     }],
   },
 
   deployment:
     local blackboxExporter = {
       name: 'blackbox-exporter',
-      image: bb.config.image,
+      image: bb._config.image,
       args: [
         '--config.file=/etc/blackbox_exporter/config.yml',
-        '--web.listen-address=:%d' % bb.config.internalPort,
+        '--web.listen-address=:%d' % bb._config.internalPort,
       ],
       ports: [{
         name: 'http',
-        containerPort: bb.config.internalPort,
+        containerPort: bb._config.internalPort,
       }],
-      resources: bb.config.resources,
-      securityContext: if bb.config.privileged then {
+      resources: bb._config.resources,
+      securityContext: if bb._config.privileged then {
         runAsNonRoot: false,
         capabilities: { drop: ['ALL'], add: ['NET_RAW'] },
       } else {
@@ -181,12 +181,12 @@ function(params) {
 
     local reloader = {
       name: 'module-configmap-reloader',
-      image: bb.config.configmapReloaderImage,
+      image: bb._config.configmapReloaderImage,
       args: [
-        '--webhook-url=http://localhost:%d/-/reload' % bb.config.internalPort,
+        '--webhook-url=http://localhost:%d/-/reload' % bb._config.internalPort,
         '--volume-dir=/etc/blackbox_exporter/',
       ],
-      resources: bb.config.resources,
+      resources: bb._config.resources,
       securityContext: { runAsNonRoot: true, runAsUser: 65534 },
       terminationMessagePath: '/dev/termination-log',
       terminationMessagePolicy: 'FallbackToLogsOnError',
@@ -199,10 +199,10 @@ function(params) {
 
     local kubeRbacProxy = krp({
       name: 'kube-rbac-proxy',
-      upstream: 'http://127.0.0.1:' + bb.config.internalPort + '/',
-      secureListenAddress: ':' + bb.config.port,
+      upstream: 'http://127.0.0.1:' + bb._config.internalPort + '/',
+      secureListenAddress: ':' + bb._config.port,
       ports: [
-        { name: 'https', containerPort: bb.config.port },
+        { name: 'https', containerPort: bb._config.port },
       ],
     });
 
@@ -211,14 +211,14 @@ function(params) {
       kind: 'Deployment',
       metadata: {
         name: 'blackbox-exporter',
-        namespace: bb.config.namespace,
-        labels: bb.config.commonLabels,
+        namespace: bb._config.namespace,
+        labels: bb._config.commonLabels,
       },
       spec: {
-        replicas: bb.config.replicas,
-        selector: { matchLabels: bb.config.selectorLabels },
+        replicas: bb._config.replicas,
+        selector: { matchLabels: bb._config.selectorLabels },
         template: {
-          metadata: { labels: bb.config.commonLabels },
+          metadata: { labels: bb._config.commonLabels },
           spec: {
             containers: [blackboxExporter, reloader, kubeRbacProxy],
             nodeSelector: { 'kubernetes.io/os': 'linux' },
@@ -237,20 +237,20 @@ function(params) {
     kind: 'Service',
     metadata: {
       name: 'blackbox-exporter',
-      namespace: bb.config.namespace,
-      labels: bb.config.commonLabels,
+      namespace: bb._config.namespace,
+      labels: bb._config.commonLabels,
     },
     spec: {
       ports: [{
         name: 'https',
-        port: bb.config.port,
+        port: bb._config.port,
         targetPort: 'https',
       }, {
         name: 'probe',
-        port: bb.config.internalPort,
+        port: bb._config.internalPort,
         targetPort: 'http',
       }],
-      selector: bb.config.selectorLabels,
+      selector: bb._config.selectorLabels,
     },
   },
 
@@ -260,8 +260,8 @@ function(params) {
       kind: 'ServiceMonitor',
       metadata: {
         name: 'blackbox-exporter',
-        namespace: bb.config.namespace,
-        labels: bb.config.commonLabels,
+        namespace: bb._config.namespace,
+        labels: bb._config.commonLabels,
       },
       spec: {
         endpoints: [{
@@ -275,7 +275,7 @@ function(params) {
           },
         }],
         selector: {
-          matchLabels: bb.config.selectorLabels,
+          matchLabels: bb._config.selectorLabels,
         },
       },
     },
