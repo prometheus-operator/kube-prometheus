@@ -14,6 +14,6 @@ toc: true
 
 ---
 
-Time to explain why!
+Time to explain how!
 
 Your chance of [**contributing**](https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/deploy-kind.md)!
