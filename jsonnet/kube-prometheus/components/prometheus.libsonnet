@@ -236,7 +236,7 @@ function(params) {
       items: [newSpecificRole(x) for x in p.config.namespaces],
     },
 
-  podDisruptionBudget: {
+  [if (defaults + params).replicas > 1 then 'podDisruptionBudget']: {
     apiVersion: 'policy/v1beta1',
     kind: 'PodDisruptionBudget',
     metadata: {
