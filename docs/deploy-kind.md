@@ -16,4 +16,4 @@ toc: true
 
 Time to explain why!
 
-Your chance of **contributing**!
+Your chance of [**contributing**](https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/deploy-kind.md)!
