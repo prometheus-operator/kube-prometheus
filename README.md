@@ -108,7 +108,7 @@ The following versions are supported and work as we test against these versions 
 |-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
 | `release-0.4`         | ✔ (v1.16.5+)    | ✔               | ✗               | ✗               | ✗               |
 | `release-0.5`         | ✗               | ✗               | ✔               | ✗               | ✗               |
-| `release-0.6`         | ✗               | ✗               | ✔               | ✔               | ✗               |
+| `release-0.6`         | ✗               | ✗               | ✗               | ✔               | ✗               |
 | `release-0.7`         | ✗               | ✗               | ✗               | ✔               | ✔               |
 | `HEAD`                | ✗               | ✗               | ✗               | ✔               | ✔               |
 
