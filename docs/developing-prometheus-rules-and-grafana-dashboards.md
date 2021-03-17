@@ -1,4 +1,16 @@
-# Developing Prometheus Rules and Grafana Dashboards
+---
+title: "Prometheus Rules and Grafana Dashboards"
+description: "Create Prometheus Rules and Grafana Dashboards on top of kube-prometheus"
+lead: "Create Prometheus Rules and Grafana Dashboards on top of kube-prometheus"
+date: 2021-03-08T23:04:32+01:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "kube"
+weight: 650
+toc: true
+---
 
 `kube-prometheus` ships with a set of default [Prometheus rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [Grafana](http://grafana.com/) dashboards. At some point one might like to extend them, the purpose of this document is to explain how to do this.
 
