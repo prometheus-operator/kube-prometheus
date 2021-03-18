@@ -209,8 +209,8 @@ local restrictedPodSecurityPolicy = {
         hostPID: true,
         hostPorts: [
           {
-            max: 9100,
-            min: 9100,
+            max: $.nodeExporter.config.port,
+            min: $.nodeExporter.config.port,
           },
         ],
         readOnlyRootFilesystem: true,
