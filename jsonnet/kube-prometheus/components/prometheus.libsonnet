@@ -11,6 +11,7 @@ local defaults = {
   alertmanagerName: error 'must provide alertmanagerName',
   namespaces: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
+  externalLabels: {},
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
     'app.kubernetes.io/version': defaults.version,
@@ -269,6 +270,7 @@ function(params) {
       podMetadata: {
         labels: p.config.commonLabels,
       },
+      externalLabels: p.config.externalLabels,
       serviceAccountName: 'prometheus-' + p.config.name,
       serviceMonitorSelector: {},
       podMonitorSelector: {},

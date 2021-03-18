@@ -16,6 +16,7 @@ spec:
       name: alertmanager-main
       namespace: monitoring
       port: web
+  externalLabels: {}
   image: quay.io/prometheus/prometheus:v2.25.0
   nodeSelector:
     kubernetes.io/os: linux
