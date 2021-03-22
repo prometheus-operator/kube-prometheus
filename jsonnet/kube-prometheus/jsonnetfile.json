@@ -35,7 +35,8 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "master"
+      "version": "master",
+      "name": "prometheus-operator-mixin"
     },
     {
       "source": {
@@ -100,7 +101,8 @@
           "subdir": "mixin"
         }
       },
-      "version": "release-0.19"
+      "version": "release-0.19",
+      "name": "thanos-mixin"
     }
   ],
   "legacyImports": true
