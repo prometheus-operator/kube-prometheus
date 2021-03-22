@@ -28,6 +28,7 @@ local defaults = {
   containers: [],
   datasources: [],
   config: {},
+  plugins: [],
 };
 
 function(params) {
@@ -56,6 +57,7 @@ function(params) {
         folderDashboards: g.cfg.folderDashboards,
         containers: g.cfg.containers,
         config+: g.cfg.config,
+        plugins+: g.cfg.plugins,
       } + (
         // Conditionally overwrite default setting.
         if std.length(g.cfg.datasources) > 0 then
