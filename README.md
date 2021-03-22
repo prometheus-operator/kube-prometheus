@@ -124,7 +124,7 @@ Though for a quickstart a compiled version of the Kubernetes [manifests](manifes
  * Create the monitoring stack using the config in the `manifests` directory:
 
 ```shell
-# Create the namespace and CRDs, and then wait for them to be availble before creating the remaining resources
+# Create the namespace and CRDs, and then wait for them to be available before creating the remaining resources
 kubectl create -f manifests/setup
 until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
 kubectl create -f manifests/
@@ -286,7 +286,7 @@ The previous steps (compilation) has created a bunch of manifest files in the ma
 Now simply use `kubectl` to install Prometheus and Grafana as per your configuration:
 
 ```shell
-# Update the namespace and CRDs, and then wait for them to be availble before creating the remaining resources
+# Update the namespace and CRDs, and then wait for them to be available before creating the remaining resources
 $ kubectl apply -f manifests/setup
 $ kubectl apply -f manifests/
 ```
@@ -328,74 +328,22 @@ Once updated, just follow the instructions under "Compiling" and "Apply the kube
 
 Jsonnet has the concept of hidden fields. These are fields, that are not going to be rendered in a result. This is used to configure the kube-prometheus components in jsonnet. In the example jsonnet code of the above [Customizing Kube-Prometheus section](#customizing-kube-prometheus), you can see an example of this, where the `namespace` is being configured to be `monitoring`. In order to not override the whole object, use the `+::` construct of jsonnet, to merge objects, this way you can override individual settings, but retain all other settings and defaults.
 
-These are the available fields with their respective default values:
+The available fields and their default values can be seen in [main.libsonnet](jsonnet/kube-prometheus/main.libsonnet). Note that many of the fields get their default values from variables, and for example the version numbers are imported from [versions.json](jsonnet/kube-prometheus/versions.json).
+
+Configuration is mainly done in the `values` map. You can see this being used in the `example.jsonnet` to set the namespace to `monitoring`. This is done in the `common` field, which all other components take their default value from. See for example how Alertmanager is configured in `main.libsonnet`:
+
 ```
-{
-	_config+:: {
-    namespace: "default",
-
-    versions+:: {
-        alertmanager: "v0.17.0",
-        nodeExporter: "v0.18.1",
-        kubeStateMetrics: "v1.5.0",
-        kubeRbacProxy: "v0.4.1",
-        prometheusOperator: "v0.30.0",
-        prometheus: "v2.10.0",
-    },
-
-    imageRepos+:: {
-        prometheus: "quay.io/prometheus/prometheus",
-        alertmanager: "quay.io/prometheus/alertmanager",
-        kubeStateMetrics: "quay.io/coreos/kube-state-metrics",
-        kubeRbacProxy: "quay.io/brancz/kube-rbac-proxy",
-        nodeExporter: "quay.io/prometheus/node-exporter",
-        prometheusOperator: "quay.io/prometheus-operator/prometheus-operator",
-    },
-
-    prometheus+:: {
-        names: 'k8s',
-        replicas: 2,
-        rules: {},
-    },
-
-    alertmanager+:: {
+    alertmanager: {
       name: 'main',
-      config: |||
-        global:
-          resolve_timeout: 5m
-        route:
-          group_by: ['job']
-          group_wait: 30s
-          group_interval: 5m
-          repeat_interval: 12h
-          receiver: 'null'
-          routes:
-          - match:
-              alertname: Watchdog
-            receiver: 'null'
-        receivers:
-        - name: 'null'
-      |||,
-      replicas: 3,
+      // Use the namespace specified under values.common by default.
+      namespace: $.values.common.namespace,
+      version: $.values.common.versions.alertmanager,
+      image: $.values.common.images.alertmanager,
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
-
-    kubeStateMetrics+:: {
-      collectors: '',  // empty string gets a default set
-      scrapeInterval: '30s',
-      scrapeTimeout: '30s',
-
-      baseCPU: '100m',
-      baseMemory: '150Mi',
-    },
-
-    nodeExporter+:: {
-      port: 9100,
-    },
-	},
-}
 ```
 
-The grafana definition is located in a different project (https://github.com/brancz/kubernetes-grafana), but needed configuration can be customized from the same top level `_config` field. For example to allow anonymous access to grafana, add the following `_config` section:
+The grafana definition is located in a different project (https://github.com/brancz/kubernetes-grafana), but needed configuration can be customized from the same top level `values` field. For example to allow anonymous access to grafana, add the following `values` section:
 ```
       grafana+:: {
         config: { // http://docs.grafana.org/installation/configuration/
@@ -552,7 +500,7 @@ Standard Kubernetes manifests are all written using [ksonnet-lib](https://github
 
 ### Alertmanager configuration
 
-The Alertmanager configuration is located in the `_config.alertmanager.config` configuration field. In order to set a custom Alertmanager configuration simply set this field.
+The Alertmanager configuration is located in the `values.alertmanager.config` configuration field. In order to set a custom Alertmanager configuration simply set this field.
 
 [embedmd]:# (examples/alertmanager-config.jsonnet)
 ```jsonnet
@@ -595,7 +543,7 @@ In the above example the configuration has been inlined, but can just as well be
 
 ### Adding additional namespaces to monitor
 
-In order to monitor additional namespaces, the Prometheus server requires the appropriate `Role` and `RoleBinding` to be able to discover targets from that namespace. By default the Prometheus server is limited to the three namespaces it requires: default, kube-system and the namespace you configure the stack to run in via `$._config.namespace`. This is specified in `$._config.prometheus.namespaces`, to add new namespaces to monitor, simply append the additional namespaces:
+In order to monitor additional namespaces, the Prometheus server requires the appropriate `Role` and `RoleBinding` to be able to discover targets from that namespace. By default the Prometheus server is limited to the three namespaces it requires: default, kube-system and the namespace you configure the stack to run in via `$.values.namespace`. This is specified in `$.values.prometheus.namespaces`, to add new namespaces to monitor, simply append the additional namespaces:
 
 [embedmd]:# (examples/additional-namespaces.jsonnet)
 ```jsonnet
@@ -763,7 +711,7 @@ See [exposing Prometheus/Alertmanager/Grafana](docs/exposing-prometheus-alertman
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
            // ... all necessary mixins ...
   {
-    _config+:: {
+    values+:: {
       // ... configuration for other features ...
       blackboxExporter+:: {
         modules+:: {
