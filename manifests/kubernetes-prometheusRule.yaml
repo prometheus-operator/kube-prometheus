@@ -61,7 +61,7 @@ spec:
             !=
           kube_deployment_status_replicas_available{job="kube-state-metrics"}
         ) and (
-          changes(kube_deployment_status_replicas_updated{job="kube-state-metrics"}[5m])
+          changes(kube_deployment_status_replicas_updated{job="kube-state-metrics"}[10m])
             ==
           0
         )
@@ -79,7 +79,7 @@ spec:
             !=
           kube_statefulset_status_replicas{job="kube-state-metrics"}
         ) and (
-          changes(kube_statefulset_status_replicas_updated{job="kube-state-metrics"}[5m])
+          changes(kube_statefulset_status_replicas_updated{job="kube-state-metrics"}[10m])
             ==
           0
         )
@@ -401,7 +401,7 @@ spec:
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubeversionmismatch
         summary: Different semantic versions of Kubernetes components running.
       expr: |
-        count(count by (gitVersion) (label_replace(kubernetes_build_info{job!~"kube-dns|coredns"},"gitVersion","$1","gitVersion","(v[0-9]*.[0-9]*).*"))) > 1
+        count(count by (git_version) (label_replace(kubernetes_build_info{job!~"kube-dns|coredns"},"git_version","$1","git_version","(v[0-9]*.[0-9]*).*"))) > 1
       for: 15m
       labels:
         severity: warning
@@ -1199,7 +1199,7 @@ spec:
     rules:
     - expr: |
         sum by (cluster, namespace, pod, container) (
-          rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!="", container!="POD"}[5m])
+          rate(container_cpu_usage_seconds_total{job="kubelet", metrics_path="/metrics/cadvisor", image!=""}[5m])
         ) * on (cluster, namespace, pod) group_left(node) topk by (cluster, namespace, pod) (
           1, max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
         )
@@ -1229,9 +1229,9 @@ spec:
         )
       record: node_namespace_pod_container:container_memory_swap
     - expr: |
-        sum by (namespace) (
-            sum by (namespace, pod) (
-                max by (namespace, pod, container) (
+        sum by (namespace, cluster) (
+            sum by (namespace, pod, cluster) (
+                max by (namespace, pod, container, cluster) (
                     kube_pod_container_resource_requests_memory_bytes{job="kube-state-metrics"}
                 ) * on(namespace, pod) group_left() max by (namespace, pod) (
                     kube_pod_status_phase{phase=~"Pending|Running"} == 1
@@ -1240,9 +1240,9 @@ spec:
         )
       record: namespace:kube_pod_container_resource_requests_memory_bytes:sum
     - expr: |
-        sum by (namespace) (
-            sum by (namespace, pod) (
-                max by (namespace, pod, container) (
+        sum by (namespace, cluster) (
+            sum by (namespace, pod, cluster) (
+                max by (namespace, pod, container, cluster) (
                     kube_pod_container_resource_requests_cpu_cores{job="kube-state-metrics"}
                 ) * on(namespace, pod) group_left() max by (namespace, pod) (
                   kube_pod_status_phase{phase=~"Pending|Running"} == 1
@@ -1346,7 +1346,7 @@ spec:
         count by (cluster, node) (sum by (node, cpu) (
           node_cpu_seconds_total{job="node-exporter"}
         * on (namespace, pod) group_left(node)
-          node_namespace_pod:kube_pod_info:
+          topk by(namespace, pod) (1, node_namespace_pod:kube_pod_info:)
         ))
       record: node:node_num_cpu:sum
     - expr: |
