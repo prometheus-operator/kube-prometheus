@@ -53,7 +53,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "release-1.9"
+      "version": "release-2.0"
     },
     {
       "source": {
@@ -62,7 +62,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "master"
+      "version": "release-2.0"
     },
     {
       "source": {

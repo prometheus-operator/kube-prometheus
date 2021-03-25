@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.9.8
+    app.kubernetes.io/version: 2.0.0-rc.0
   name: kube-state-metrics
 rules:
 - apiGroups:
@@ -32,7 +32,6 @@ rules:
   - daemonsets
   - deployments
   - replicasets
-  - ingresses
   verbs:
   - list
   - watch
@@ -107,6 +106,14 @@ rules:
   - networking.k8s.io
   resources:
   - networkpolicies
+  - ingresses
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
   verbs:
   - list
   - watch
