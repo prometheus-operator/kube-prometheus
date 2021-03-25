@@ -90,13 +90,13 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
             name: 'example-group',
             rules: [
               {
-                alert: 'Watchdog',
+                alert: 'ExampleAlert',
                 expr: 'vector(1)',
                 labels: {
-                  severity: 'none',
+                  severity: 'warning',
                 },
                 annotations: {
-                  description: 'This is a Watchdog meant to ensure that the entire alerting pipeline is functional.',
+                  description: 'This is an example alert.',
                 },
               },
             ],
