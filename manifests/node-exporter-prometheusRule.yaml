@@ -174,7 +174,7 @@ spec:
         severity: warning
     - alert: NodeClockSkewDetected
       annotations:
-        message: Clock on {{ $labels.instance }} is out of sync by more than 300s. Ensure NTP is configured correctly on this host.
+        description: Clock on {{ $labels.instance }} is out of sync by more than 300s. Ensure NTP is configured correctly on this host.
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodeclockskewdetected
         summary: Clock skew detected.
       expr: |
@@ -194,7 +194,7 @@ spec:
         severity: warning
     - alert: NodeClockNotSynchronising
       annotations:
-        message: Clock on {{ $labels.instance }} is not synchronising. Ensure NTP is configured on this host.
+        description: Clock on {{ $labels.instance }} is not synchronising. Ensure NTP is configured on this host.
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodeclocknotsynchronising
         summary: Clock not synchronising.
       expr: |
@@ -220,7 +220,7 @@ spec:
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/noderaiddiskfailure
         summary: Failed device in RAID array
       expr: |
-        node_md_disks{state="fail"} > 0
+        node_md_disks{state="failed"} > 0
       labels:
         severity: warning
   - name: node-exporter.rules
