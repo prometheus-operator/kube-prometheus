@@ -2,12 +2,9 @@
 // Disable scrape jobs, service monitors, and alert groups for these components by overwriting 'main.libsonnet' defaults
 
 {
-  local k = super.kubernetesControlPlane,
-
   kubernetesControlPlane+: {
-    [q]: null
-    for q in std.objectFields(k)
-    if std.setMember(q, ['serviceMonitorKubeControllerManager', 'serviceMonitorKubeScheduler'])
+    serviceMonitorKubeControllerManager:: null,
+    serviceMonitorKubeScheduler:: null,
   } + {
     prometheusRule+: {
       spec+: {
