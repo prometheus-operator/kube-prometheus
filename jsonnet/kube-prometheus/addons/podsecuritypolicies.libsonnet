@@ -2,7 +2,7 @@ local restrictedPodSecurityPolicy = {
   apiVersion: 'policy/v1beta1',
   kind: 'PodSecurityPolicy',
   metadata: {
-    name: 'restricted',
+    name: 'kube-prometheus-restricted',
   },
   spec: {
     privileged: false,
@@ -54,9 +54,9 @@ local restrictedPodSecurityPolicy = {
   restrictedPodSecurityPolicy: restrictedPodSecurityPolicy,
 
   alertmanager+: {
-    clusterRole: {
+    role: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRole',
+      kind: 'Role',
       metadata: {
         name: 'alertmanager-' + $.values.alertmanager.name,
       },
@@ -68,15 +68,15 @@ local restrictedPodSecurityPolicy = {
       }],
     },
 
-    clusterRoleBinding: {
+    roleBinding: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRoleBinding',
+      kind: 'RoleBinding',
       metadata: {
         name: 'alertmanager-' + $.values.alertmanager.name,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'ClusterRole',
+        kind: 'Role',
         name: 'alertmanager-' + $.values.alertmanager.name,
       },
       subjects: [{
@@ -121,9 +121,9 @@ local restrictedPodSecurityPolicy = {
   },
 
   grafana+: {
-    clusterRole: {
+    role: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRole',
+      kind: 'Role',
       metadata: {
         name: 'grafana',
       },
@@ -135,15 +135,15 @@ local restrictedPodSecurityPolicy = {
       }],
     },
 
-    clusterRoleBinding: {
+    roleBinding: {
       apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRoleBinding',
+      kind: 'RoleBinding',
       metadata: {
         name: 'grafana',
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'ClusterRole',
+        kind: 'Role',
         name: 'grafana',
       },
       subjects: [{
