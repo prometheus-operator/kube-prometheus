@@ -10,6 +10,17 @@ local windowsrules = import 'kubernetes-mixin/rules/windows.libsonnet';
           targets: [error 'must provide targets array'],
         },
       ],
+      relabel_configs: [
+        {
+          action: 'replace',
+          regex: '(.*)',
+          replacement: '$1',
+          sourceLabels: [
+            '__meta_kubernetes_endpoint_address_target_name',
+          ],
+          targetLabel: 'instance',
+        },
+      ],
     },
 
     grafana+:: {
