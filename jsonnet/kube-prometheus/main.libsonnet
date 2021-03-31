@@ -9,6 +9,8 @@ local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
 local prometheusOperator = import './components/prometheus-operator.libsonnet';
 local prometheus = import './components/prometheus.libsonnet';
 
+local platformPatch = (import './platforms/platforms.libsonnet').platformPatch;
+
 {
   // using `values` as this is similar to helm
   values:: {
@@ -104,6 +106,7 @@ local prometheus = import './components/prometheus.libsonnet';
     kubePrometheus: {
       namespace: $.values.common.namespace,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
+      platform: null,
     },
   },
 
@@ -124,5 +127,5 @@ local prometheus = import './components/prometheus.libsonnet';
         name: $.values.kubePrometheus.namespace,
       },
     },
-  },
+  } + platformPatch($.values.kubePrometheus.platform),
 }
