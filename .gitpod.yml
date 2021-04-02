@@ -1,0 +1,8 @@
+
+tasks: 
+  - init: |
+      make --always-make
+      export PATH="$(pwd)/tmp/bin:${PATH}"
+vscode:
+  extensions:
+    - heptio.jsonnet@0.1.0:woEDU5N62LRdgdz0g/I6sQ==
