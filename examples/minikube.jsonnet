@@ -1,6 +1,5 @@
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
-  (import 'kube-prometheus/platforms/kubeadm.libsonnet') +
   // Note that NodePort type services is likely not a good idea for your production use case, it is only used for demonstration purposes here.
   (import 'kube-prometheus/addons/node-ports.libsonnet') +
   {
@@ -18,6 +17,9 @@ local kp =
             'auth.anonymous': { enabled: true },
           },
         },
+      },
+      kubePrometheus+: {
+        platform: 'kubeadm',
       },
     },
 
