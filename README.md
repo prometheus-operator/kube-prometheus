@@ -361,57 +361,28 @@ Jsonnet is a turing complete language, any logic can be reflected in it. It also
 
 ### Cluster Creation Tools
 
-A common example is that not all Kubernetes clusters are created exactly the same way, meaning the configuration to monitor them may be slightly different. For [kubeadm](examples/jsonnet-snippets/kubeadm.jsonnet), [bootkube](examples/jsonnet-snippets/bootkube.jsonnet), [kops](examples/jsonnet-snippets/kops.jsonnet) and [kubespray](examples/jsonnet-snippets/kubespray.jsonnet) clusters there are mixins available to easily configure these:
+A common example is that not all Kubernetes clusters are created exactly the same way, meaning the configuration to monitor them may be slightly different. For the following clusters there are mixins available to easily configure them:
 
-kubeadm:
+* aws
+* bootkube
+* eks
+* gke
+* kops-coredns
+* kubeadm
+* kubespray
 
-[embedmd]:# (examples/jsonnet-snippets/kubeadm.jsonnet)
+These mixins are selectable via the `platform` field of kubePrometheus:
+
+[embedmd]:# (examples/jsonnet-snippets/platform.jsonnet)
 ```jsonnet
 (import 'kube-prometheus/main.libsonnet') +
-(import 'kube-prometheus/platforms/kubeadm.libsonnet')
-```
-
-bootkube:
-
-[embedmd]:# (examples/jsonnet-snippets/bootkube.jsonnet)
-```jsonnet
-(import 'kube-prometheus/main.libsonnet') +
-(import 'kube-prometheus/platforms/bootkube.libsonnet')
-```
-
-kops:
-
-[embedmd]:# (examples/jsonnet-snippets/kops.jsonnet)
-```jsonnet
-(import 'kube-prometheus/main.libsonnet') +
-(import 'kube-prometheus/platforms/kops.libsonnet')
-```
-
-kops with CoreDNS:
-
-If your kops cluster is using CoreDNS, there is an additional mixin to import.
-
-[embedmd]:# (examples/jsonnet-snippets/kops-coredns.jsonnet)
-```jsonnet
-(import 'kube-prometheus/main.libsonnet') +
-(import 'kube-prometheus/platforms/kops.libsonnet') +
-(import 'kube-prometheus/platforms/kops-coredns.libsonnet')
-```
-
-kubespray:
-
-[embedmd]:# (examples/jsonnet-snippets/kubespray.jsonnet)
-```jsonnet
-(import 'kube-prometheus/main.libsonnet') +
-(import 'kube-prometheus/platforms/kubespray.libsonnet')
-```
-
-aws:
-
-[embedmd]:# (examples/jsonnet-snippets/aws.jsonnet)
-```jsonnet
-(import 'kube-prometheus/main.libsonnet') +
-(import 'kube-prometheus/platforms/aws.libsonnet')
+{
+  values+:: {
+    kubePrometheus+: {
+      platform: 'example-platform',
+    },
+  },
+}
 ```
 
 ### Internal Registry
