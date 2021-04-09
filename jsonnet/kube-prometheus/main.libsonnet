@@ -9,7 +9,7 @@ local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
 local prometheusOperator = import './components/prometheus-operator.libsonnet';
 local prometheus = import './components/prometheus.libsonnet';
 
-local platformPatch = (import './platforms/platforms.libsonnet').platformPatch;
+local platformPatch = import './platforms/platforms.libsonnet';
 
 {
   // using `values` as this is similar to helm
@@ -127,5 +127,5 @@ local platformPatch = (import './platforms/platforms.libsonnet').platformPatch;
         name: $.values.kubePrometheus.namespace,
       },
     },
-  } + platformPatch($.values.kubePrometheus.platform),
-}
+  },
+} + platformPatch
