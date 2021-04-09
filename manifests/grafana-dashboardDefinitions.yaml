@@ -3551,7 +3551,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 0,
                       "tagValuesQuery": "",
@@ -4919,7 +4919,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(namespace:kube_pod_container_resource_requests_cpu_cores:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{resource=\"cpu\",cluster=\"$cluster\"})",
+                                  "expr": "sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{resource=\"cpu\",cluster=\"$cluster\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -5087,7 +5087,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "1 - sum(:node_memory_MemAvailable_bytes:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{resource=\"memory\",cluster=\"$cluster\"\"})",
+                                  "expr": "1 - sum(:node_memory_MemAvailable_bytes:sum{cluster=\"$cluster\"}) / sum(node_memory_MemTotal_bytes{resource=\"memory\",cluster=\"$cluster\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -5171,7 +5171,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(namespace:kube_pod_container_resource_requests_memory_bytes:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{resource=\"memory\",cluster=\"$cluster\"})",
+                                  "expr": "sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{resource=\"memory\",cluster=\"$cluster\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -5650,7 +5650,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(namespace:kube_pod_container_resource_requests_cpu_cores:sum{cluster=\"$cluster\"}) by (namespace)",
+                                  "expr": "sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -7357,7 +7357,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_requests{namespace=\"$namespace\", resource=\"cpu\"})",
+                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -7441,7 +7441,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_limits{namespace=\"$namespace\", resource=\"cpu\"})",
+                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) / sum(kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -7525,7 +7525,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_requests{namespace=\"$namespace\", resource=\"memory\"})",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -7609,7 +7609,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_limits{namespace=\"$namespace\", resource=\"memory\"})",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) / sum(kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -7985,7 +7985,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(kube_pod_container_resource_requests{namespace=\"$namespace\", resource=\"cpu\"}) by (pod)",
+                                  "expr": "sum(kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -7994,7 +7994,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(kube_pod_container_resource_requests{namespace=\"$namespace\", resource=\"cpu\"}) by (pod)",
+                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8003,7 +8003,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(kube_pod_container_resource_limits{namespace=\"$namespace\", resource=\"cpu\"}) by (pod)",
+                                  "expr": "sum(kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8012,7 +8012,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(kube_pod_container_resource_limits{namespace=\"$namespace\", resource=\"cpu\"}) by (pod)",
+                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"cpu\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8450,7 +8450,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(kube_pod_container_resource_requests{namespace=\"$namespace\", resource=\"memory\"}) by (pod)",
+                                  "expr": "sum(kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8459,7 +8459,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(kube_pod_container_resource_requests{namespace=\"$namespace\", resource=\"memory\"}) by (pod)",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8468,7 +8468,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(kube_pod_container_resource_limits{namespace=\"$namespace\", resource=\"memory\"}) by (pod)",
+                                  "expr": "sum(kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -8477,7 +8477,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(kube_pod_container_resource_limits{namespace=\"$namespace\", resource=\"memory\"}) by (pod)",
+                                  "expr": "sum(container_memory_working_set_bytes{cluster=\"$cluster\", namespace=\"$namespace\",container!=\"\", image!=\"\"}) by (pod) / sum(kube_pod_container_resource_limits{cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\"}) by (pod)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -9456,7 +9456,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -9483,7 +9483,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -10423,7 +10423,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -10450,7 +10450,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, node)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -12121,7 +12121,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -12148,7 +12148,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -14069,7 +14069,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -14096,7 +14096,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -14123,7 +14123,7 @@ items:
 
                       ],
                       "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\"}, workload)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -14150,7 +14150,7 @@ items:
 
                       ],
                       "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\"}, workload_type)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -16231,7 +16231,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -16262,7 +16262,7 @@ items:
 
                       ],
                       "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=~\"$namespace\", workload=~\".+\"}, workload_type)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 0,
@@ -16290,7 +16290,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 1,
                       "tagValuesQuery": "",
@@ -20153,7 +20153,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 0,
                       "tagValuesQuery": "",
@@ -20184,7 +20184,7 @@ items:
 
                       ],
                       "query": "label_values(container_network_receive_packets_total{cluster=\"$cluster\"}, namespace)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 1,
@@ -21846,7 +21846,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 0,
                       "tagValuesQuery": "",
@@ -21877,7 +21877,7 @@ items:
 
                       ],
                       "query": "label_values(container_network_receive_packets_total{cluster=\"$cluster\"}, namespace)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 1,
@@ -21909,7 +21909,7 @@ items:
 
                       ],
                       "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\".+\"}, workload_type)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 0,
@@ -26548,7 +26548,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 0,
                       "tagValuesQuery": "",
@@ -26579,7 +26579,7 @@ items:
 
                       ],
                       "query": "label_values(container_network_receive_packets_total{cluster=\"$cluster\"}, namespace)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 1,
@@ -26611,7 +26611,7 @@ items:
 
                       ],
                       "query": "label_values(container_network_receive_packets_total{cluster=\"$cluster\",namespace=~\"$namespace\"}, pod)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 1,
@@ -34070,7 +34070,7 @@ items:
 
                       ],
                       "query": "label_values(kube_pod_info, cluster)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "sort": 0,
                       "tagValuesQuery": "",
@@ -34101,7 +34101,7 @@ items:
 
                       ],
                       "query": "label_values(container_network_receive_packets_total{cluster=\"$cluster\"}, namespace)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 1,
@@ -34133,7 +34133,7 @@ items:
 
                       ],
                       "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\"}, workload)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 1,
@@ -34165,7 +34165,7 @@ items:
 
                       ],
                       "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\"}, workload_type)",
-                      "refresh": 1,
+                      "refresh": 2,
                       "regex": "",
                       "skipUrlSync": false,
                       "sort": 0,
