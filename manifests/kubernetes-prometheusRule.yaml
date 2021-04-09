@@ -226,7 +226,7 @@ spec:
           <
         kube_hpa_spec_max_replicas{job="kube-state-metrics"})
           and
-        changes(kube_hpa_status_current_replicas[15m]) == 0
+        changes(kube_hpa_status_current_replicas{job="kube-state-metrics"}[15m]) == 0
       for: 15m
       labels:
         severity: warning
@@ -264,7 +264,7 @@ spec:
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubememoryovercommit
         summary: Cluster has overcommitted memory resource requests.
       expr: |
-        sum(namespace_memory:kube_pod_container_resource_requests_bytes:sum{})
+        sum(namespace_memory:kube_pod_container_resource_requests:sum{})
           /
         sum(kube_node_status_allocatable{resource="memory"})
           >
@@ -498,7 +498,7 @@ spec:
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/aggregatedapierrors
         summary: An aggregated API has reported errors.
       expr: |
-        sum by(name, namespace)(increase(aggregator_unavailable_apiservice_count[10m])) > 4
+        sum by(name, namespace)(increase(aggregator_unavailable_apiservice_total[10m])) > 4
       labels:
         severity: warning
     - alert: AggregatedAPIDown
