@@ -401,3 +401,81 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
+
+### Mixins
+
+Kube-prometheus comes with a couple of default mixins as the Kubernetes-mixin and the Node-exporter mixin, however there [are many more mixins](https://monitoring.mixins.dev/). To use other mixins Kube-prometheus has a jsonnet library for creating a Kubernetes PrometheusRule CRD and Grafana dashboards from a mixin. Below is an example of creating a mixin object that has Prometheus rules and Grafana dashboards:
+
+```jsonnet
+// Import the library function for adding mixins
+local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
+
+// Create your mixin
+local myMixin = addMixin({
+  name: 'myMixin',
+  mixin: import 'my-mixin/mixin.libsonnet',
+});
+```
+
+The myMixin object will have two objects - `prometheusRules` and `grafanaDashboards`. The `grafanaDashboards` object will be needed to be added to the `dashboards` field as in the example below:
+
+```jsonnet
+values+:: {
+  grafana+:: {
+    dashboards+:: myMixin.grafanaDashboards
+```
+
+The `prometheusRules` object is a PrometheusRule Kubernetes CRD and it should be defined as its own jsonnet object. If you define multiple mixins in a single jsonnet object there is a possibility that they will overwrite each others' configuration and there will be unintended effects. Therefore, use the `prometheusRules` object as its own jsonnet object:
+
+```jsonnet
+...
+{ ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) }
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
+{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ 'external-mixins/my-mixin-prometheus-rules': myMixin.prometheusRules } // one object for each mixin
+```
+
+As mentioned above each mixin is configurable and you would configure the mixin as in the example below:
+
+```jsonnet
+local myMixin = addMixin({
+  name: 'myMixin',
+  mixin: (import 'my-mixin/mixin.libsonnet') + {
+    _config+:: {
+      myMixinSelector: 'my-selector',
+      interval: '30d', // example
+    },
+  },
+});
+```
+
+The library has also two optional parameters - the namespace for the `PrometheusRule` CRD and the dashboard folder for the Grafana dashboards. The below example shows how to use both:
+
+```jsonnet
+local myMixin = addMixin({
+  name: 'myMixin',
+  namespace: 'prometheus', // default is monitoring
+  dashboardFolder: 'Observability',
+  mixin: (import 'my-mixin/mixin.libsonnet') + {
+    _config+:: {
+      myMixinSelector: 'my-selector',
+      interval: '30d', // example
+    },
+  },
+});
+```
+
+The created `prometheusRules` object will have the metadata field `namespace` added and the usage will remain the same. However, the `grafanaDasboards` will be added to the `folderDashboards` field instead of the `dashboards` field as shown in the example below:
+
+```jsonnet
+values+:: {
+  grafana+:: {
+    folderDashboards+:: {
+        Kubernetes: {
+            ...
+        },
+        Misc: {
+            'grafana-home.json': import 'dashboards/misc/grafana-home.json',
+        },
+    } + myMixin.grafanaDashboards
+```
