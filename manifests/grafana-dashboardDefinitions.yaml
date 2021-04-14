@@ -1733,7 +1733,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -3604,7 +3604,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -4770,7 +4770,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -7293,7 +7293,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -9536,7 +9536,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -10503,7 +10503,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -12228,7 +12228,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-k8s-resources-pod
     namespace: monitoring
 - apiVersion: v1
@@ -14203,7 +14203,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -16343,7 +16343,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-k8s-resources-workloads-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -18865,7 +18865,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -20318,7 +20318,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -22043,7 +22043,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -22106,7 +22106,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  instance:node_cpu_utilisation:rate1m{job=\"node-exporter\"}\n*\n  instance:node_num_cpu:sum{job=\"node-exporter\"}\n)\n/ scalar(sum(instance:node_num_cpu:sum{job=\"node-exporter\"}))\n",
+                                  "expr": "(\n  instance:node_cpu_utilisation:rate5m{job=\"node-exporter\"}\n*\n  instance:node_num_cpu:sum{job=\"node-exporter\"}\n)\n/ scalar(sum(instance:node_num_cpu:sum{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -22376,7 +22376,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_vmstat_pgmajfault:rate1m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -22482,7 +22482,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_network_receive_bytes_excluding_lo:rate1m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Receive",
@@ -22490,7 +22490,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "instance:node_network_transmit_bytes_excluding_lo:rate1m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Transmit",
@@ -22584,7 +22584,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_network_receive_drop_excluding_lo:rate1m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Receive",
@@ -22592,7 +22592,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "instance:node_network_transmit_drop_excluding_lo:rate1m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Transmit",
@@ -22690,7 +22690,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\"}))\n",
+                                  "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{device}}",
@@ -22776,7 +22776,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\"}))\n",
+                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{device}}",
@@ -22996,7 +22996,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -23059,7 +23059,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_cpu_utilisation:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_cpu_utilisation:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Utilisation",
@@ -23329,7 +23329,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_vmstat_pgmajfault:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Major page faults",
@@ -23435,7 +23435,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_network_receive_bytes_excluding_lo:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Receive",
@@ -23443,7 +23443,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "instance:node_network_transmit_bytes_excluding_lo:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Transmit",
@@ -23537,7 +23537,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_network_receive_drop_excluding_lo:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Receive drops",
@@ -23545,7 +23545,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "instance:node_network_transmit_drop_excluding_lo:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Transmit drops",
@@ -23643,7 +23643,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}}",
@@ -23729,7 +23729,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}}",
@@ -23976,7 +23976,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -24056,7 +24056,7 @@ items:
                               {
                                   "expr": "(\n  (1 - rate(node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\"}[$__interval]))\n/ ignoring(cpu) group_left\n  count without (cpu)( node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\"})\n)\n",
                                   "format": "time_series",
-                                  "interval": "1m",
+                                  "interval": "$__rate_interval",
                                   "intervalFactor": 5,
                                   "legendFormat": "{{cpu}}",
                                   "refId": "A"
@@ -24492,7 +24492,7 @@ items:
                               {
                                   "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "1m",
+                                  "interval": "$__rate_interval",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}} read",
                                   "refId": "A"
@@ -24500,7 +24500,7 @@ items:
                               {
                                   "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "1m",
+                                  "interval": "$__rate_interval",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}} written",
                                   "refId": "B"
@@ -24508,7 +24508,7 @@ items:
                               {
                                   "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "1m",
+                                  "interval": "$__rate_interval",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}} io time",
                                   "refId": "C"
@@ -24722,7 +24722,7 @@ items:
                               {
                                   "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "1m",
+                                  "interval": "$__rate_interval",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}}",
                                   "refId": "A"
@@ -24816,7 +24816,7 @@ items:
                               {
                                   "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "1m",
+                                  "interval": "$__rate_interval",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}}",
                                   "refId": "A"
@@ -24962,7 +24962,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -25528,7 +25528,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -26745,7 +26745,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -28404,7 +28404,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -29620,7 +29620,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -30866,7 +30866,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -31955,7 +31955,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -32872,7 +32872,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-statefulset
     namespace: monitoring
 - apiVersion: v1
@@ -34299,7 +34299,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 7.4.3
+      app.kubernetes.io/version: 7.5.3
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList

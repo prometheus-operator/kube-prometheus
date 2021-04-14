@@ -26,7 +26,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "release-0.46"
+      "version": "release-0.47"
     },
     {
       "source": {
@@ -80,7 +80,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "release-2.25",
+      "version": "release-2.26",
       "name": "prometheus"
     },
     {
@@ -100,7 +100,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "release-0.17"
+      "version": "release-0.19"
     }
   ],
   "legacyImports": true
