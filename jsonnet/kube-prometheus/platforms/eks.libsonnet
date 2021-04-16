@@ -69,9 +69,9 @@
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'PrometheusRule',
       metadata: {
-        labels: $.prometheus.config.commonLabels + $.prometheus.config.mixin.ruleLabels,
+        labels: $.prometheus._config.commonLabels + $.prometheus._config.mixin.ruleLabels,
         name: 'eks-rules',
-        namespace: $.prometheus.config.namespace,
+        namespace: $.prometheus._config.namespace,
       },
       spec: {
         groups: [

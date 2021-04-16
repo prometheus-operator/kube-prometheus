@@ -41,20 +41,20 @@ local defaults = {
 
 function(params) {
   local krp = self,
-  config:: defaults + params,
+  _config:: defaults + params,
   // Safety check
-  assert std.isObject(krp.config.resources),
+  assert std.isObject(krp._config.resources),
 
-  name: krp.config.name,
-  image: krp.config.image,
+  name: krp._config.name,
+  image: krp._config.image,
   args: [
     '--logtostderr',
-    '--secure-listen-address=' + krp.config.secureListenAddress,
-    '--tls-cipher-suites=' + std.join(',', krp.config.tlsCipherSuites),
-    '--upstream=' + krp.config.upstream,
+    '--secure-listen-address=' + krp._config.secureListenAddress,
+    '--tls-cipher-suites=' + std.join(',', krp._config.tlsCipherSuites),
+    '--upstream=' + krp._config.upstream,
   ],
-  resources: krp.config.resources,
-  ports: krp.config.ports,
+  resources: krp._config.resources,
+  ports: krp._config.ports,
   securityContext: {
     runAsUser: 65532,
     runAsGroup: 65532,

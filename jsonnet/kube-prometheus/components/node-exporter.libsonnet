@@ -37,23 +37,23 @@ local defaults = {
 
 function(params) {
   local ne = self,
-  config:: defaults + params,
+  _config:: defaults + params,
   // Safety check
-  assert std.isObject(ne.config.resources),
-  assert std.isObject(ne.config.mixin._config),
+  assert std.isObject(ne._config.resources),
+  assert std.isObject(ne._config.mixin._config),
 
   mixin:: (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
           (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
-            _config+:: ne.config.mixin._config,
+            _config+:: ne._config.mixin._config,
           },
 
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'PrometheusRule',
     metadata: {
-      labels: ne.config.commonLabels + ne.config.mixin.ruleLabels,
-      name: ne.config.name + '-rules',
-      namespace: ne.config.namespace,
+      labels: ne._config.commonLabels + ne._config.mixin.ruleLabels,
+      name: ne._config.name + '-rules',
+      namespace: ne._config.namespace,
     },
     spec: {
       local r = if std.objectHasAll(ne.mixin, 'prometheusRules') then ne.mixin.prometheusRules.groups else [],
@@ -66,18 +66,18 @@ function(params) {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRoleBinding',
     metadata: {
-      name: ne.config.name,
-      labels: ne.config.commonLabels,
+      name: ne._config.name,
+      labels: ne._config.commonLabels,
     },
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
       kind: 'ClusterRole',
-      name: ne.config.name,
+      name: ne._config.name,
     },
     subjects: [{
       kind: 'ServiceAccount',
-      name: ne.config.name,
-      namespace: ne.config.namespace,
+      name: ne._config.name,
+      namespace: ne._config.namespace,
     }],
   },
 
@@ -85,8 +85,8 @@ function(params) {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRole',
     metadata: {
-      name: ne.config.name,
-      labels: ne.config.commonLabels,
+      name: ne._config.name,
+      labels: ne._config.commonLabels,
     },
     rules: [
       {
@@ -106,9 +106,9 @@ function(params) {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     metadata: {
-      name: ne.config.name,
-      namespace: ne.config.namespace,
-      labels: ne.config.commonLabels,
+      name: ne._config.name,
+      namespace: ne._config.namespace,
+      labels: ne._config.commonLabels,
     },
   },
 
@@ -116,15 +116,15 @@ function(params) {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
-      name: ne.config.name,
-      namespace: ne.config.namespace,
-      labels: ne.config.commonLabels,
+      name: ne._config.name,
+      namespace: ne._config.namespace,
+      labels: ne._config.commonLabels,
     },
     spec: {
       ports: [
-        { name: 'https', targetPort: 'https', port: ne.config.port },
+        { name: 'https', targetPort: 'https', port: ne._config.port },
       ],
-      selector: ne.config.selectorLabels,
+      selector: ne._config.selectorLabels,
       clusterIP: 'None',
     },
   },
@@ -133,14 +133,14 @@ function(params) {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'ServiceMonitor',
     metadata: {
-      name: ne.config.name,
-      namespace: ne.config.namespace,
-      labels: ne.config.commonLabels,
+      name: ne._config.name,
+      namespace: ne._config.namespace,
+      labels: ne._config.commonLabels,
     },
     spec: {
       jobLabel: 'app.kubernetes.io/name',
       selector: {
-        matchLabels: ne.config.selectorLabels,
+        matchLabels: ne._config.selectorLabels,
       },
       endpoints: [{
         port: 'https',
@@ -165,10 +165,10 @@ function(params) {
 
   daemonset:
     local nodeExporter = {
-      name: ne.config.name,
-      image: ne.config.image,
+      name: ne._config.name,
+      image: ne._config.image,
       args: [
-        '--web.listen-address=' + std.join(':', [ne.config.listenAddress, std.toString(ne.config.port)]),
+        '--web.listen-address=' + std.join(':', [ne._config.listenAddress, std.toString(ne._config.port)]),
         '--path.sysfs=/host/sys',
         '--path.rootfs=/host/root',
         '--no-collector.wifi',
@@ -181,14 +181,14 @@ function(params) {
         { name: 'sys', mountPath: '/host/sys', mountPropagation: 'HostToContainer', readOnly: true },
         { name: 'root', mountPath: '/host/root', mountPropagation: 'HostToContainer', readOnly: true },
       ],
-      resources: ne.config.resources,
+      resources: ne._config.resources,
     };
 
     local kubeRbacProxy = krp({
       name: 'kube-rbac-proxy',
       //image: krpImage,
-      upstream: 'http://127.0.0.1:' + ne.config.port + '/',
-      secureListenAddress: '[$(IP)]:' + ne.config.port,
+      upstream: 'http://127.0.0.1:' + ne._config.port + '/',
+      secureListenAddress: '[$(IP)]:' + ne._config.port,
       // Keep `hostPort` here, rather than in the node-exporter container
       // because Kubernetes mandates that if you define a `hostPort` then
       // `containerPort` must match. In our case, we are splitting the
@@ -198,7 +198,7 @@ function(params) {
       // forgo declaring the host port, however it is important to declare
       // it so that the scheduler can decide if the pod is schedulable.
       ports: [
-        { name: 'https', containerPort: ne.config.port, hostPort: ne.config.port },
+        { name: 'https', containerPort: ne._config.port, hostPort: ne._config.port },
       ],
     }) + {
       env: [
@@ -210,18 +210,18 @@ function(params) {
       apiVersion: 'apps/v1',
       kind: 'DaemonSet',
       metadata: {
-        name: ne.config.name,
-        namespace: ne.config.namespace,
-        labels: ne.config.commonLabels,
+        name: ne._config.name,
+        namespace: ne._config.namespace,
+        labels: ne._config.commonLabels,
       },
       spec: {
-        selector: { matchLabels: ne.config.selectorLabels },
+        selector: { matchLabels: ne._config.selectorLabels },
         updateStrategy: {
           type: 'RollingUpdate',
           rollingUpdate: { maxUnavailable: '10%' },
         },
         template: {
-          metadata: { labels: ne.config.commonLabels },
+          metadata: { labels: ne._config.commonLabels },
           spec: {
             nodeSelector: { 'kubernetes.io/os': 'linux' },
             tolerations: [{
@@ -232,7 +232,7 @@ function(params) {
               { name: 'sys', hostPath: { path: '/sys' } },
               { name: 'root', hostPath: { path: '/' } },
             ],
-            serviceAccountName: ne.config.name,
+            serviceAccountName: ne._config.name,
             securityContext: {
               runAsUser: 65534,
               runAsNonRoot: true,

@@ -35,30 +35,30 @@ local defaults = {
 
 function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics/kube-state-metrics.libsonnet') {
   local ksm = self,
-  config:: defaults + params,
+  _config:: defaults + params,
   // Safety check
-  assert std.isObject(ksm.config.resources),
-  assert std.isObject(ksm.config.mixin._config),
+  assert std.isObject(ksm._config.resources),
+  assert std.isObject(ksm._config.mixin._config),
 
-  name:: ksm.config.name,
-  namespace:: ksm.config.namespace,
-  version:: ksm.config.version,
-  image:: ksm.config.image,
-  commonLabels:: ksm.config.commonLabels,
-  podLabels:: ksm.config.selectorLabels,
+  name:: ksm._config.name,
+  namespace:: ksm._config.namespace,
+  version:: ksm._config.version,
+  image:: ksm._config.image,
+  commonLabels:: ksm._config.commonLabels,
+  podLabels:: ksm._config.selectorLabels,
 
   mixin:: (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
           (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
-            _config+:: ksm.config.mixin._config,
+            _config+:: ksm._config.mixin._config,
           },
 
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'PrometheusRule',
     metadata: {
-      labels: ksm.config.commonLabels + ksm.config.mixin.ruleLabels,
-      name: ksm.config.name + '-rules',
-      namespace: ksm.config.namespace,
+      labels: ksm._config.commonLabels + ksm._config.mixin.ruleLabels,
+      name: ksm._config.name + '-rules',
+      namespace: ksm._config.namespace,
     },
     spec: {
       local r = if std.objectHasAll(ksm.mixin, 'prometheusRules') then ksm.mixin.prometheusRules.groups else [],
@@ -115,7 +115,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
             livenessProbe:: null,
             readinessProbe:: null,
             args: ['--host=127.0.0.1', '--port=8081', '--telemetry-host=127.0.0.1', '--telemetry-port=8082'],
-            resources: ksm.config.resources,
+            resources: ksm._config.resources,
           }, super.containers) + [kubeRbacProxyMain, kubeRbacProxySelf],
         },
       },
@@ -127,18 +127,18 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       kind: 'ServiceMonitor',
       metadata: {
         name: ksm.name,
-        namespace: ksm.config.namespace,
-        labels: ksm.config.commonLabels,
+        namespace: ksm._config.namespace,
+        labels: ksm._config.commonLabels,
       },
       spec: {
         jobLabel: 'app.kubernetes.io/name',
-        selector: { matchLabels: ksm.config.selectorLabels },
+        selector: { matchLabels: ksm._config.selectorLabels },
         endpoints: [
           {
             port: 'https-main',
             scheme: 'https',
-            interval: ksm.config.scrapeInterval,
-            scrapeTimeout: ksm.config.scrapeTimeout,
+            interval: ksm._config.scrapeInterval,
+            scrapeTimeout: ksm._config.scrapeTimeout,
             honorLabels: true,
             bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
             relabelings: [
@@ -154,7 +154,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
           {
             port: 'https-self',
             scheme: 'https',
-            interval: ksm.config.scrapeInterval,
+            interval: ksm._config.scrapeInterval,
             bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
             tlsConfig: {
               insecureSkipVerify: true,

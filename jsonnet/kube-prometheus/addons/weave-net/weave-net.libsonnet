@@ -52,9 +52,9 @@
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'PrometheusRule',
       metadata: {
-        labels: p.config.mixin.ruleLabels,
+        labels: p._config.mixin.ruleLabels,
         name: 'weave-net-rules',
-        namespace: p.config.namespace,
+        namespace: p._config.namespace,
       },
       spec: {
         groups: [{
