@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.1.1
+    app.kubernetes.io/version: 1.1.2
     prometheus: k8s
     role: alert-rules
   name: node-exporter-rules
@@ -234,9 +234,9 @@ spec:
       record: instance:node_num_cpu:sum
     - expr: |
         1 - avg without (cpu, mode) (
-          rate(node_cpu_seconds_total{job="node-exporter", mode="idle"}[1m])
+          rate(node_cpu_seconds_total{job="node-exporter", mode="idle"}[5m])
         )
-      record: instance:node_cpu_utilisation:rate1m
+      record: instance:node_cpu_utilisation:rate5m
     - expr: |
         (
           node_load1{job="node-exporter"}
@@ -252,31 +252,31 @@ spec:
         )
       record: instance:node_memory_utilisation:ratio
     - expr: |
-        rate(node_vmstat_pgmajfault{job="node-exporter"}[1m])
-      record: instance:node_vmstat_pgmajfault:rate1m
+        rate(node_vmstat_pgmajfault{job="node-exporter"}[5m])
+      record: instance:node_vmstat_pgmajfault:rate5m
     - expr: |
-        rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
-      record: instance_device:node_disk_io_time_seconds:rate1m
+        rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[5m])
+      record: instance_device:node_disk_io_time_seconds:rate5m
     - expr: |
-        rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[1m])
-      record: instance_device:node_disk_io_time_weighted_seconds:rate1m
-    - expr: |
-        sum without (device) (
-          rate(node_network_receive_bytes_total{job="node-exporter", device!="lo"}[1m])
-        )
-      record: instance:node_network_receive_bytes_excluding_lo:rate1m
+        rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"}[5m])
+      record: instance_device:node_disk_io_time_weighted_seconds:rate5m
     - expr: |
         sum without (device) (
-          rate(node_network_transmit_bytes_total{job="node-exporter", device!="lo"}[1m])
+          rate(node_network_receive_bytes_total{job="node-exporter", device!="lo"}[5m])
         )
-      record: instance:node_network_transmit_bytes_excluding_lo:rate1m
+      record: instance:node_network_receive_bytes_excluding_lo:rate5m
     - expr: |
         sum without (device) (
-          rate(node_network_receive_drop_total{job="node-exporter", device!="lo"}[1m])
+          rate(node_network_transmit_bytes_total{job="node-exporter", device!="lo"}[5m])
         )
-      record: instance:node_network_receive_drop_excluding_lo:rate1m
+      record: instance:node_network_transmit_bytes_excluding_lo:rate5m
     - expr: |
         sum without (device) (
-          rate(node_network_transmit_drop_total{job="node-exporter", device!="lo"}[1m])
+          rate(node_network_receive_drop_total{job="node-exporter", device!="lo"}[5m])
         )
-      record: instance:node_network_transmit_drop_excluding_lo:rate1m
+      record: instance:node_network_receive_drop_excluding_lo:rate5m
+    - expr: |
+        sum without (device) (
+          rate(node_network_transmit_drop_total{job="node-exporter", device!="lo"}[5m])
+        )
+      record: instance:node_network_transmit_drop_excluding_lo:rate5m

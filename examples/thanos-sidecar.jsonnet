@@ -7,8 +7,8 @@ local kp =
       },
       prometheus+: {
         thanos: {
-          version: '0.17.2',
-          image: 'quay.io/thanos/thanos:v0.17.2',
+          version: '0.19.0',
+          image: 'quay.io/thanos/thanos:v0.19.0',
           objectStorageConfig: {
             key: 'thanos.yaml',  // How the file inside the secret is called
             name: 'thanos-objectstorage',  // This is the name of your Kubernetes secret with the config

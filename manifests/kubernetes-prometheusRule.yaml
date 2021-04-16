@@ -254,7 +254,7 @@ spec:
           /
         sum(kube_node_status_allocatable{resource="cpu"})
           >
-        (count(kube_node_status_allocatable{resource="cpu"}) -1) / count(kube_node_status_allocatable{resource="cpu"})
+        ((count(kube_node_status_allocatable{resource="cpu"}) > 1) - 1) / count(kube_node_status_allocatable{resource="cpu"})
       for: 5m
       labels:
         severity: warning
@@ -268,7 +268,7 @@ spec:
           /
         sum(kube_node_status_allocatable{resource="memory"})
           >
-        (count(kube_node_status_allocatable{resource="memory"})-1)
+        ((count(kube_node_status_allocatable{resource="memory"}) > 1) - 1)
           /
         count(kube_node_status_allocatable{resource="memory"})
       for: 5m
@@ -279,7 +279,11 @@ spec:
         description: Cluster has overcommitted CPU resource requests for Namespaces.
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubecpuquotaovercommit
         summary: Cluster has overcommitted CPU resource requests.
-      expr: "sum(kube_resourcequota{job=\"kube-state-metrics\", type=\"hard\", resource=\"cpu\"})\n  /\nsum(kube_node_status_allocatable{resource=\"cpu\"}) \n  > 1.5\n"
+      expr: |
+        sum(kube_resourcequota{job="kube-state-metrics", type="hard", resource="cpu"})
+          /
+        sum(kube_node_status_allocatable{resource="cpu"})
+          > 1.5
       for: 5m
       labels:
         severity: warning
