@@ -7,6 +7,7 @@
           {
             alert: 'TargetDown',
             annotations: {
+              summary: 'One or more targets are unreachable.',
               description: '{{ printf "%.4g" $value }}% of the {{ $labels.job }}/{{ $labels.service }} targets in {{ $labels.namespace }} namespace are down.',
             },
             expr: '100 * (count(up == 0) BY (job, namespace, service) / count(up) BY (job, namespace, service)) > 10',
@@ -18,6 +19,7 @@
           {
             alert: 'Watchdog',
             annotations: {
+              summary: 'An alert that should always be firing to certify that Alertmanager is working properly.',
               description: |||
                 This is an alert meant to ensure that the entire alerting pipeline is functional.
                 This alert is always firing, therefore it should always be firing in Alertmanager
