@@ -48,7 +48,7 @@ local windowsrules = import 'kubernetes-mixin/rules/windows.libsonnet';
     prometheus+: {
       spec+: {
         additionalScrapeConfigs: {
-          name: 'prometheus-' + p.config.name + '-additional-scrape-config',
+          name: 'prometheus-' + p._config.name + '-additional-scrape-config',
           key: 'prometheus-additional.yaml',
         },
       },
@@ -58,8 +58,8 @@ local windowsrules = import 'kubernetes-mixin/rules/windows.libsonnet';
       apiVersion: 'v1',
       kind: 'Secret',
       metadata: {
-        name: 'prometheus-' + p.config.name + '-additional-scrape-config',
-        namespace: p.config.namespace,
+        name: 'prometheus-' + p._config.name + '-additional-scrape-config',
+        namespace: p._config.namespace,
       },
       stringData: {
         'prometheus-additional.yaml': std.manifestYamlDoc(sc),
