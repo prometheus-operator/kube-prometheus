@@ -3,6 +3,24 @@ tasks:
   - init: |
       make --always-make
       export PATH="$(pwd)/tmp/bin:${PATH}"
+      cat > ${PWD}/.git/hooks/pre-commit <<EOF
+      #!/bin/bash
+      
+      echo "Checking jsonnet fmt"
+      make fmt > /dev/null 2>&1
+      echo "Checking if manifests are correct"
+      make generate > /dev/null 2>&1
+      
+      git diff --exit-code
+      if [[ \$? == 1 ]]; then
+        echo "
+      
+      This commit is being rejected because the YAML manifests are incorrect or jsonnet needs to be formatted."
+        echo "Please commit your changes again!"
+        exit 1
+      fi
+      EOF
+      chmod +x ${PWD}/.git/hooks/pre-commit
 vscode:
   extensions:
     - heptio.jsonnet@0.1.0:woEDU5N62LRdgdz0g/I6sQ==
