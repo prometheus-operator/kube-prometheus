@@ -105,15 +105,13 @@ $ minikube addons disable metrics-server
 
 The following versions are supported and work as we test against these versions in their respective branches. But note that other versions might work!
 
-| kube-prometheus stack | Kubernetes 1.16 | Kubernetes 1.17 | Kubernetes 1.18 | Kubernetes 1.19 | Kubernetes 1.20 |
-|-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| `release-0.4`         | ✔ (v1.16.5+)    | ✔               | ✗               | ✗               | ✗               |
-| `release-0.5`         | ✗               | ✗               | ✔               | ✗               | ✗               |
-| `release-0.6`         | ✗               | ✗               | ✗               | ✔               | ✗               |
-| `release-0.7`         | ✗               | ✗               | ✗               | ✔               | ✔               |
-| `HEAD`                | ✗               | ✗               | ✗               | ✔               | ✔               |
-
-Note: Due to [two](https://github.com/kubernetes/kubernetes/issues/83778) [bugs](https://github.com/kubernetes/kubernetes/issues/86359) in Kubernetes v1.16.1, and prior to Kubernetes v1.16.5 the kube-prometheus release-0.4 branch only supports v1.16.5 and higher.  The `extension-apiserver-authentication-reader` role in the kube-system namespace can be manually edited to include list and watch permissions in order to workaround the second issue with Kubernetes v1.16.2 through v1.16.4.
+| kube-prometheus stack | Kubernetes 1.18 | Kubernetes 1.19 | Kubernetes 1.20 | Kubernetes 1.21 |
+|-----------------------|-----------------|-----------------|-----------------|-----------------|
+| `release-0.5`         | ✔               | ✗               | ✗               | ✗               |
+| `release-0.6`         | ✗               | ✔               | ✗               | ✗               |
+| `release-0.7`         | ✗               | ✔               | ✔               | ✗               |
+| `release-0.8`         | ✗               | ✗               | ✔               | ✔               |
+| `HEAD`                | ✗               | ✗               | ✔               | ✔               |
 
 ## Quickstart
 
