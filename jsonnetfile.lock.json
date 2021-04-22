@@ -100,7 +100,8 @@
         }
       },
       "version": "a4f5928b074e75addb76a27c5ebfe78314fcd6d1",
-      "sum": "6reUygVmQrLEWQzTKcH8ceDbvM+2ztK3z2VBR2K2l+U="
+      "sum": "6reUygVmQrLEWQzTKcH8ceDbvM+2ztK3z2VBR2K2l+U=",
+      "name": "prometheus-operator-mixin"
     },
     {
       "source": {
@@ -152,7 +153,8 @@
         }
       },
       "version": "ba6c5c4726ff52807c7383c68f2159b1af7980bb",
-      "sum": "XP3uq7xcfKHsnWsz1v992csZhhZR3jQma6hFOfSViTs="
+      "sum": "XP3uq7xcfKHsnWsz1v992csZhhZR3jQma6hFOfSViTs=",
+      "name": "thanos-mixin"
     },
     {
       "source": {
