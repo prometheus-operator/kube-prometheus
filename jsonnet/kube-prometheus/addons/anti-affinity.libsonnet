@@ -12,18 +12,18 @@
       podAntiAffinity: 'soft',
       podAntiAffinityTopologyKey: 'kubernetes.io/hostname',
     },
+    prometheusAdapter+: {
+      podAntiAffinity: 'soft',
+      podAntiAffinityTopologyKey: 'kubernetes.io/hostname',
+    },
   },
 
-  local antiaffinity(key, values, namespace, type, topologyKey) = {
+  local antiaffinity(labelSelector, namespace, type, topologyKey) = {
     local podAffinityTerm = {
       namespaces: [namespace],
       topologyKey: topologyKey,
       labelSelector: {
-        matchExpressions: [{
-          key: key,
-          operator: 'In',
-          values: values,
-        }],
+        matchLabels: labelSelector,
       },
     },
 
@@ -45,8 +45,7 @@
     alertmanager+: {
       spec+:
         antiaffinity(
-          'alertmanager',
-          [$.values.alertmanager.name],
+          $.alertmanager.config.selectorLabels,
           $.values.common.namespace,
           $.values.alertmanager.podAntiAffinity,
           $.values.alertmanager.podAntiAffinityTopologyKey,
@@ -58,8 +57,7 @@
     prometheus+: {
       spec+:
         antiaffinity(
-          'prometheus',
-          [$.values.prometheus.name],
+          $.prometheus.config.selectorLabels,
           $.values.common.namespace,
           $.values.prometheus.podAntiAffinity,
           $.values.prometheus.podAntiAffinityTopologyKey,
@@ -73,8 +71,7 @@
         template+: {
           spec+:
             antiaffinity(
-              'app.kubernetes.io/name',
-              ['blackbox-exporter'],
+              $.blackboxExporter.config.selectorLabels,
               $.values.common.namespace,
               $.values.blackboxExporter.podAntiAffinity,
               $.values.blackboxExporter.podAntiAffinityTopologyKey,
@@ -84,4 +81,19 @@
     },
   },
 
+  prometheusAdapter+: {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+:
+            antiaffinity(
+              $.prometheusAdapter.config.selectorLabels,
+              $.values.common.namespace,
+              $.values.prometheusAdapter.podAntiAffinity,
+              $.values.prometheusAdapter.podAntiAffinityTopologyKey,
+            ),
+        },
+      },
+    },
+  },
 }
