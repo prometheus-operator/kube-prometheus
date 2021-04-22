@@ -109,6 +109,11 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
   deployment+: {
     spec+: {
       template+: {
+        metadata+: {
+          annotations+: {
+            'kubectl.kubernetes.io/default-container': 'kube-state-metrics',
+          },
+        },
         spec+: {
           containers: std.map(function(c) c {
             ports:: null,

@@ -218,7 +218,12 @@ function(params) {
         replicas: bb._config.replicas,
         selector: { matchLabels: bb._config.selectorLabels },
         template: {
-          metadata: { labels: bb._config.commonLabels },
+          metadata: {
+            labels: bb._config.commonLabels,
+            annotations: {
+              'kubectl.kubernetes.io/default-container': blackboxExporter.name,
+            },
+          },
           spec: {
             containers: [blackboxExporter, reloader, kubeRbacProxy],
             nodeSelector: { 'kubernetes.io/os': 'linux' },
