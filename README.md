@@ -637,11 +637,11 @@ In order to configure a static etcd cluster to scrape there is a simple [kube-pr
 ### Pod Anti-Affinity
 
 To prevent `Prometheus` and `Alertmanager` instances from being deployed onto the same node when
-possible, one can include the [kube-prometheus-anti-affinity.libsonnet](jsonnet/kube-prometheus/kube-prometheus-anti-affinity.libsonnet) mixin:
+possible, one can include the [kube-prometheus-anti-affinity.libsonnet](jsonnet/kube-prometheus/addons/anti-affinity.libsonnet) mixin:
 
 ```jsonnet
 (import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet')
+(import 'kube-prometheus/addons/anti-affinity.libsonnet')
 ```
 
 ### Stripping container resource limits
