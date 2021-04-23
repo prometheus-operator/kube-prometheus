@@ -45,7 +45,7 @@
     alertmanager+: {
       spec+:
         antiaffinity(
-          $.alertmanager.config.selectorLabels,
+          $.alertmanager._config.selectorLabels,
           $.values.common.namespace,
           $.values.alertmanager.podAntiAffinity,
           $.values.alertmanager.podAntiAffinityTopologyKey,
@@ -57,7 +57,7 @@
     prometheus+: {
       spec+:
         antiaffinity(
-          $.prometheus.config.selectorLabels,
+          $.prometheus._config.selectorLabels,
           $.values.common.namespace,
           $.values.prometheus.podAntiAffinity,
           $.values.prometheus.podAntiAffinityTopologyKey,
@@ -71,7 +71,7 @@
         template+: {
           spec+:
             antiaffinity(
-              $.blackboxExporter.config.selectorLabels,
+              $.blackboxExporter._config.selectorLabels,
               $.values.common.namespace,
               $.values.blackboxExporter.podAntiAffinity,
               $.values.blackboxExporter.podAntiAffinityTopologyKey,
@@ -87,7 +87,7 @@
         template+: {
           spec+:
             antiaffinity(
-              $.prometheusAdapter.config.selectorLabels,
+              $.prometheusAdapter._config.selectorLabels,
               $.values.common.namespace,
               $.values.prometheusAdapter.podAntiAffinity,
               $.values.prometheusAdapter.podAntiAffinityTopologyKey,
