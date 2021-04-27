@@ -3,6 +3,7 @@ local windowsrules = import 'kubernetes-mixin/rules/windows.libsonnet';
 
 {
   values+:: {
+    // This needs to follow prometheus naming convention and not prometheus-operator one
     windowsScrapeConfig+:: {
       job_name: 'windows-exporter',
       static_configs: [
@@ -15,10 +16,10 @@ local windowsrules = import 'kubernetes-mixin/rules/windows.libsonnet';
           action: 'replace',
           regex: '(.*)',
           replacement: '$1',
-          sourceLabels: [
+          source_labels: [
             '__meta_kubernetes_endpoint_address_target_name',
           ],
-          targetLabel: 'instance',
+          target_label: 'instance',
         },
       ],
     },
