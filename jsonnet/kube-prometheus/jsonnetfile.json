@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "master"
+      "version": "8ea4e7bc04b1bf5e9bd99918ca28c6271b42be0e"
     },
     {
       "source": {
@@ -17,7 +17,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "master"
+      "version": "562d645ac923388ff5b8d270b0536764d34b0e0f"
     },
     {
       "source": {
@@ -35,7 +35,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "master",
+      "version": "release-0.47",
       "name": "prometheus-operator-mixin"
     },
     {
@@ -45,7 +45,7 @@
           "subdir": ""
         }
       },
-      "version": "master"
+      "version": "release-0.8"
     },
     {
       "source": {
@@ -72,7 +72,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "master"
+      "version": "release-1.1"
     },
     {
       "source": {
@@ -91,7 +91,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "master",
+      "version": "release-0.21",
       "name": "alertmanager"
     },
     {
