@@ -7,9 +7,9 @@ local kp =
         namespace: 'monitoring',
       },
       windowsScrapeConfig+:: {
-        static_configs: {
+        static_configs: [{
           targets: ['10.240.0.65:5000', '10.240.0.63:5000'],
-        },
+        }],
       },
     },
   };
