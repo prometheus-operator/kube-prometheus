@@ -91,7 +91,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "release-0.21",
+      "version": "99f64e944b1043c790784cf5373c8fb349816fc4",
       "name": "alertmanager"
     },
     {
