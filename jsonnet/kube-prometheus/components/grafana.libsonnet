@@ -3,8 +3,7 @@ local defaults = {
   name: 'grafana',
   namespace: error 'must provide namespace',
   version: error 'must provide version',
-  // image: error 'must provide image',
-  imageRepos: 'grafana/grafana',
+  image: error 'must provide image',
   resources: {
     requests: { cpu: '100m', memory: '100Mi' },
     limits: { cpu: '200m', memory: '200Mi' },
@@ -44,7 +43,7 @@ function(params) {
         grafana: g._config.version,
       },
       imageRepos+:: {
-        grafana: g._config.imageRepos,
+        grafana: std.split(g._config.image, ":")[0],
       },
       prometheus+:: {
         name: g._config.prometheusName,
