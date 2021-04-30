@@ -31,6 +31,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
         prometheusAdapter: error 'must provide version',
         prometheusOperator: error 'must provide version',
         kubeRbacProxy: error 'must provide version',
+        configmapReload: error 'must provide version'
       } + (import 'versions.json'),
       images: {
         alertmanager: 'quay.io/prometheus/alertmanager:v' + $.values.common.versions.alertmanager,
@@ -43,6 +44,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
         prometheusOperator: 'quay.io/prometheus-operator/prometheus-operator:v' + $.values.common.versions.prometheusOperator,
         prometheusOperatorReloader: 'quay.io/prometheus-operator/prometheus-config-reloader:v' + $.values.common.versions.prometheusOperator,
         kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy:v' + $.values.common.versions.kubeRbacProxy,
+        configmapReload: 'jimmidyson/configmap-reload:v' + $.values.common.versions.configmapReload,
       },
     },
     alertmanager: {
@@ -57,6 +59,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
       version: $.values.common.versions.blackboxExporter,
       image: $.values.common.images.blackboxExporter,
       kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
+      configmapReloaderImage: $.values.common.images.configmapReload,
     },
     grafana: {
       namespace: $.values.common.namespace,
