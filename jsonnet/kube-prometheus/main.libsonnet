@@ -30,6 +30,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
         prometheus: error 'must provide version',
         prometheusAdapter: error 'must provide version',
         prometheusOperator: error 'must provide version',
+        kubeRbacProxy: error 'must provide version',
       } + (import 'versions.json'),
       images: {
         alertmanager: 'quay.io/prometheus/alertmanager:v' + $.values.common.versions.alertmanager,
@@ -41,6 +42,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
         prometheusAdapter: 'directxman12/k8s-prometheus-adapter:v' + $.values.common.versions.prometheusAdapter,
         prometheusOperator: 'quay.io/prometheus-operator/prometheus-operator:v' + $.values.common.versions.prometheusOperator,
         prometheusOperatorReloader: 'quay.io/prometheus-operator/prometheus-config-reloader:v' + $.values.common.versions.prometheusOperator,
+        kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy:v' + $.values.common.versions.kubeRbacProxy
       },
     },
     alertmanager: {
@@ -54,6 +56,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
       namespace: $.values.common.namespace,
       version: $.values.common.versions.blackboxExporter,
       image: $.values.common.images.blackboxExporter,
+      kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
     },
     grafana: {
       namespace: $.values.common.namespace,
@@ -68,12 +71,14 @@ local platformPatch = import './platforms/platforms.libsonnet';
       version: $.values.common.versions.kubeStateMetrics,
       image: $.values.common.images.kubeStateMetrics,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
+      kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
     },
     nodeExporter: {
       namespace: $.values.common.namespace,
       version: $.values.common.versions.nodeExporter,
       image: $.values.common.images.nodeExporter,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
+      kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
     },
     prometheus: {
       namespace: $.values.common.namespace,
@@ -98,6 +103,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
         'app.kubernetes.io/part-of': 'kube-prometheus',
       },
       mixin+: { ruleLabels: $.values.common.ruleLabels },
+      kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
     },
     kubernetesControlPlane: {
       namespace: $.values.common.namespace,
