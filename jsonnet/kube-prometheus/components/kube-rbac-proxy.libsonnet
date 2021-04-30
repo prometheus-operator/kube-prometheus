@@ -1,6 +1,6 @@
 local defaults = {
   namespace: error 'must provide namespace',
-  image: 'quay.io/brancz/kube-rbac-proxy:v0.8.0',
+  image: error 'must provide image',
   ports: error 'must provide ports',
   secureListenAddress: error 'must provide secureListenAddress',
   upstream: error 'must provide upstream',

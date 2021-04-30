@@ -6,6 +6,7 @@ local defaults = {
   namespace: error 'must provide namespace',
   version: error 'must provide version',
   image: error 'must provide version',
+  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage',
   resources: {
     requests: { cpu: '10m', memory: '190Mi' },
     limits: { cpu: '100m', memory: '250Mi' },
@@ -95,6 +96,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       limits+: { cpu: '40m' },
       requests+: { cpu: '20m' },
     },
+    image: ksm._config.kubeRbacProxyImage
   }),
 
   local kubeRbacProxySelf = krp({
@@ -104,6 +106,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     ports: [
       { name: 'https-self', containerPort: 9443 },
     ],
+    image: ksm._config.kubeRbacProxyImage,
   }),
 
   deployment+: {
