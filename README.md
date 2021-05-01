@@ -109,8 +109,8 @@ The following versions are supported and work as we test against these versions 
 |--------------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|
 | [`release-0.5`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.5)         | ✔               | ✗               | ✗               | ✗               |
 | [`release-0.6`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.6)         | ✗               | ✔               | ✗               | ✗               |
-| [`release-0.7`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.5)         | ✗               | ✔               | ✔               | ✗               |
-| [`release-0.8`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.5)         | ✗               | ✗               | ✔               | ✔               |
+| [`release-0.7`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.7)         | ✗               | ✔               | ✔               | ✗               |
+| [`release-0.8`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.8)         | ✗               | ✗               | ✔               | ✔               |
 | [`HEAD`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                       | ✗               | ✗               | ✔               | ✔               |
 
 ## Quickstart
