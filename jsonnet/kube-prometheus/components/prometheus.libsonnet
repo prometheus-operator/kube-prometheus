@@ -12,6 +12,7 @@ local defaults = {
   namespaces: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
   externalLabels: {},
+  enableFeatures: [],
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
     'app.kubernetes.io/version': defaults.version,
@@ -278,6 +279,7 @@ function(params) {
         labels: p._config.commonLabels,
       },
       externalLabels: p._config.externalLabels,
+      enableFeatures: p._config.enableFeatures,
       serviceAccountName: 'prometheus-' + p._config.name,
       podMonitorSelector: {},
       podMonitorNamespaceSelector: {},
