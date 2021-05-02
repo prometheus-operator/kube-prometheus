@@ -16,6 +16,7 @@ spec:
       name: alertmanager-main
       namespace: monitoring
       port: web
+  enableFeatures: []
   externalLabels: {}
   image: quay.io/prometheus/prometheus:v2.26.0
   nodeSelector:
