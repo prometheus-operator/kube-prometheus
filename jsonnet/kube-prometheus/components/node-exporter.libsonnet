@@ -6,6 +6,7 @@ local defaults = {
   namespace: error 'must provide namespace',
   version: error 'must provide version',
   image: error 'must provide version',
+  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage',
   resources: {
     requests: { cpu: '102m', memory: '180Mi' },
     limits: { cpu: '250m', memory: '180Mi' },
@@ -200,6 +201,7 @@ function(params) {
       ports: [
         { name: 'https', containerPort: ne._config.port, hostPort: ne._config.port },
       ],
+      image: ne._config.kubeRbacProxyImage,
     }) + {
       env: [
         { name: 'IP', valueFrom: { fieldRef: { fieldPath: 'status.podIP' } } },
