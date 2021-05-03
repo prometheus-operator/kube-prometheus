@@ -30,7 +30,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
         prometheus: error 'must provide version',
         prometheusAdapter: error 'must provide version',
         prometheusOperator: error 'must provide version',
-        configmapReload: error 'must provide version'
+        configmapReload: error 'must provide version',
       } + (import 'versions.json'),
       images: {
         alertmanager: 'quay.io/prometheus/alertmanager:v' + $.values.common.versions.alertmanager,
