@@ -42,7 +42,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
         prometheusAdapter: 'directxman12/k8s-prometheus-adapter:v' + $.values.common.versions.prometheusAdapter,
         prometheusOperator: 'quay.io/prometheus-operator/prometheus-operator:v' + $.values.common.versions.prometheusOperator,
         prometheusOperatorReloader: 'quay.io/prometheus-operator/prometheus-config-reloader:v' + $.values.common.versions.prometheusOperator,
-        kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy:v' + $.values.common.versions.kubeRbacProxy
+        kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy:v' + $.values.common.versions.kubeRbacProxy,
       },
     },
     alertmanager: {

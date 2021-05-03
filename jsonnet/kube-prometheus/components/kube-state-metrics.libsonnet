@@ -96,7 +96,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       limits+: { cpu: '40m' },
       requests+: { cpu: '20m' },
     },
-    image: ksm._config.kubeRbacProxyImage
+    image: ksm._config.kubeRbacProxyImage,
   }),
 
   local kubeRbacProxySelf = krp({
