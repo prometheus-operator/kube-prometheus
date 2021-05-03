@@ -18,7 +18,7 @@
     },
   },
 
-  antiaffinity(labelSelector, namespace, type, topologyKey): {
+  antiaffinity(labelSelector, namespace, type, topologyKey):: {
     local podAffinityTerm = {
       namespaces: [namespace],
       topologyKey: topologyKey,
