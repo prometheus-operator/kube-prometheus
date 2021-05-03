@@ -21,7 +21,7 @@ local defaults = {
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
   configmapReloaderImage: error 'must provide version',
-  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage', 
+  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage',
 
   port: 9115,
   internalPort: 19115,
