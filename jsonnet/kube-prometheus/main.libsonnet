@@ -31,7 +31,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
         prometheusAdapter: error 'must provide version',
         prometheusOperator: error 'must provide version',
         kubeRbacProxy: error 'must provide version',
-        configmapReload: error 'must provide version'
+        configmapReload: error 'must provide version',
       } + (import 'versions.json'),
       images: {
         alertmanager: 'quay.io/prometheus/alertmanager:v' + $.values.common.versions.alertmanager,
