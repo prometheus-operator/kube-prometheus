@@ -43,7 +43,7 @@ function(params) {
         grafana: g._config.version,
       },
       imageRepos+:: {
-        grafana: std.split(g._config.image, ":")[0],
+        grafana: std.split(g._config.image, ':')[0],
       },
       prometheus+:: {
         name: g._config.prometheusName,
