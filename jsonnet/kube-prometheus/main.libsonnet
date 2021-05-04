@@ -16,6 +16,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
   values:: {
     common: {
       namespace: 'default',
+      platform: null,
       ruleLabels: {
         role: 'alert-rules',
         prometheus: $.values.prometheus.name,
@@ -102,20 +103,12 @@ local platformPatch = import './platforms/platforms.libsonnet';
       version: $.values.common.versions.prometheusOperator,
       image: $.values.common.images.prometheusOperator,
       configReloaderImage: $.values.common.images.prometheusOperatorReloader,
-      commonLabels+: {
-        'app.kubernetes.io/part-of': 'kube-prometheus',
-      },
       mixin+: { ruleLabels: $.values.common.ruleLabels },
       kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
     },
     kubernetesControlPlane: {
       namespace: $.values.common.namespace,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
-    },
-    kubePrometheus: {
-      namespace: $.values.common.namespace,
-      mixin+: { ruleLabels: $.values.common.ruleLabels },
-      platform: null,
     },
   },
 
@@ -128,12 +121,17 @@ local platformPatch = import './platforms/platforms.libsonnet';
   prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
   prometheusOperator: prometheusOperator($.values.prometheusOperator),
   kubernetesControlPlane: kubernetesControlPlane($.values.kubernetesControlPlane),
-  kubePrometheus: customMixin($.values.kubePrometheus) + {
+  kubePrometheus: customMixin(
+    {
+      namespace: $.values.common.namespace,
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
+    }
+  ) + {
     namespace: {
       apiVersion: 'v1',
       kind: 'Namespace',
       metadata: {
-        name: $.values.kubePrometheus.namespace,
+        name: $.values.common.namespace,
       },
     },
   },

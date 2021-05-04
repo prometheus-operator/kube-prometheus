@@ -1,7 +1,7 @@
 (import 'kube-prometheus/main.libsonnet') +
 {
   values+:: {
-    kubePrometheus+: {
+    common+: {
       platform: 'example-platform',
     },
   },
