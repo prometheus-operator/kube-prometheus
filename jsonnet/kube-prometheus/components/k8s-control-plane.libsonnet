@@ -117,7 +117,7 @@ function(params) {
             // https://github.com/google/cadvisor/issues/1925.
             {
               sourceLabels: ['__name__'],
-              regex: 'container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)',
+              regex: 'container_(cpu_usage_seconds_total|memory_working_set_bytes|network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)',
               action: 'drop',
             },
           ],
@@ -134,6 +134,27 @@ function(params) {
             sourceLabels: ['__metrics_path__'],
             targetLabel: 'metrics_path',
           }],
+        },
+        {
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          honorLabels: true,
+          interval: '30s',
+          // TODO(paulfantom): Ideally we should collect all metrics from this endpoint
+          metricRelabelings: [{
+            action: 'drop',
+            regex: 'container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)',
+            sourceLabels: ['__name__'],
+          }],
+          path: '/metrics/resource',
+          port: 'https-metrics',
+          relabelings: [{
+            sourceLabels: ['__metrics_path__'],
+            targetLabel: 'metrics_path',
+          }],
+          scheme: 'https',
+          tlsConfig: {
+            insecureSkipVerify: true,
+          },
         },
       ],
       selector: {
