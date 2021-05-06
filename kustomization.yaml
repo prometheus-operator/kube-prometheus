@@ -51,6 +51,7 @@ resources:
 - ./manifests/prometheus-adapter-clusterRoleServerResources.yaml
 - ./manifests/prometheus-adapter-configMap.yaml
 - ./manifests/prometheus-adapter-deployment.yaml
+- ./manifests/prometheus-adapter-podDisruptionBudget.yaml
 - ./manifests/prometheus-adapter-roleBindingAuthReader.yaml
 - ./manifests/prometheus-adapter-service.yaml
 - ./manifests/prometheus-adapter-serviceAccount.yaml
