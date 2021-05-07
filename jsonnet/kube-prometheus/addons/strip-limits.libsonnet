@@ -37,7 +37,7 @@
           spec+: {
             local addArgs(c) =
               if c.name == 'prometheus-operator'
-              then c { args+: ['--config-reloader-cpu=0'] }
+              then c { args+: ['--config-reloader-cpu-limit=0', '--config-reloader-memory-limit=0'] }
               else c,
             containers: std.map(addArgs, super.containers),
           },
