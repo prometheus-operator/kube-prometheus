@@ -27,6 +27,7 @@ local defaults = {
   containers: [],
   datasources: [],
   config: {},
+  ldap: null,
   plugins: [],
 };
 
@@ -56,6 +57,7 @@ function(params) {
         folderDashboards: g._config.folderDashboards,
         containers: g._config.containers,
         config+: g._config.config,
+        ldap: g._config.ldap,
         plugins+: g._config.plugins,
       } + (
         // Conditionally overwrite default setting.
