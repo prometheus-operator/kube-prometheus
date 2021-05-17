@@ -201,6 +201,7 @@ function(params) {
     local kubeRbacProxy = krp({
       name: 'kube-rbac-proxy',
       upstream: 'http://127.0.0.1:' + bb._config.internalPort + '/',
+      resources: bb._config.resources,
       secureListenAddress: ':' + bb._config.port,
       ports: [
         { name: 'https', containerPort: bb._config.port },
