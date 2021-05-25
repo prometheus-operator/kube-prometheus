@@ -7,5 +7,5 @@ require (
 	github.com/campoy/embedmd v1.0.0
 	github.com/google/go-jsonnet v0.17.1-0.20210101181740-31d71aaccda6 // 7 commits after 0.17.0. Needed by jsonnet linter
 	github.com/jsonnet-bundler/jsonnet-bundler v0.4.0
-	github.com/yannh/kubeconform v0.4.2 // indirect
+	github.com/yannh/kubeconform v0.4.7
 )
