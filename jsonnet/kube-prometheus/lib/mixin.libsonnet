@@ -8,29 +8,29 @@ local defaults = {
 };
 
 function(params) {
-  config:: defaults + params,
+  _config:: defaults + params,
 
   local m = self,
 
-  local prometheusRules = if std.objectHasAll(m.config.mixin, 'prometheusRules') || std.objectHasAll(m.config.mixin, 'prometheusAlerts') then {
+  local prometheusRules = if std.objectHasAll(m._config.mixin, 'prometheusRules') || std.objectHasAll(m._config.mixin, 'prometheusAlerts') then {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'PrometheusRule',
     metadata: {
-      labels: m.config.labels,
-      name: m.config.name,
-      namespace: m.config.namespace,
+      labels: m._config.labels,
+      name: m._config.name,
+      namespace: m._config.namespace,
     },
     spec: {
-      local r = if std.objectHasAll(m.config.mixin, 'prometheusRules') then m.config.mixin.prometheusRules.groups else [],
-      local a = if std.objectHasAll(m.config.mixin, 'prometheusAlerts') then m.config.mixin.prometheusAlerts.groups else [],
+      local r = if std.objectHasAll(m._config.mixin, 'prometheusRules') then m._config.mixin.prometheusRules.groups else [],
+      local a = if std.objectHasAll(m._config.mixin, 'prometheusAlerts') then m._config.mixin.prometheusAlerts.groups else [],
       groups: a + r,
     },
   },
 
-  local grafanaDashboards = if std.objectHasAll(m.config.mixin, 'grafanaDashboards') then (
-    if std.objectHas(m.config, 'dashboardFolder') then {
-      [m.config.dashboardFolder]+: m.config.mixin.grafanaDashboards,
-    } else (m.config.mixin.grafanaDashboards)
+  local grafanaDashboards = if std.objectHasAll(m._config.mixin, 'grafanaDashboards') then (
+    if std.objectHas(m._config, 'dashboardFolder') then {
+      [m._config.dashboardFolder]+: m._config.mixin.grafanaDashboards,
+    } else (m._config.mixin.grafanaDashboards)
   ),
 
   prometheusRules: prometheusRules,
