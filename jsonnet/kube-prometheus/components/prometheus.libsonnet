@@ -53,8 +53,10 @@ function(params) {
           (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') + (
     if p._config.thanos != {} then
       (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') + {
+        targetGroups: {},
         sidecar: {
           selector: p._config.mixin._config.thanosSelector,
+          dimensions: std.join(', ', ['job', 'instance']),
         },
       }
     else {}

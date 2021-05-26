@@ -116,9 +116,6 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/scheduler
           name: grafana-dashboard-scheduler
           readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/statefulset
-          name: grafana-dashboard-statefulset
-          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/workload-total
           name: grafana-dashboard-workload-total
           readOnly: false
@@ -201,9 +198,6 @@ spec:
       - configMap:
           name: grafana-dashboard-scheduler
         name: grafana-dashboard-scheduler
-      - configMap:
-          name: grafana-dashboard-statefulset
-        name: grafana-dashboard-statefulset
       - configMap:
           name: grafana-dashboard-workload-total
         name: grafana-dashboard-workload-total

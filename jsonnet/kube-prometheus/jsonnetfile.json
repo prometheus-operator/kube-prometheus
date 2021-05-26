@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "8ea4e7bc04b1bf5e9bd99918ca28c6271b42be0e"
+      "version": "master"
     },
     {
       "source": {
@@ -17,7 +17,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "562d645ac923388ff5b8d270b0536764d34b0e0f"
+      "version": "main"
     },
     {
       "source": {
@@ -26,7 +26,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "release-0.47"
+      "version": "master"
     },
     {
       "source": {
@@ -35,7 +35,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "release-0.47",
+      "version": "master",
       "name": "prometheus-operator-mixin"
     },
     {
@@ -45,7 +45,7 @@
           "subdir": ""
         }
       },
-      "version": "release-0.8"
+      "version": "master"
     },
     {
       "source": {
@@ -54,7 +54,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "release-2.0"
+      "version": "master"
     },
     {
       "source": {
@@ -63,7 +63,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "release-2.0"
+      "version": "master"
     },
     {
       "source": {
@@ -72,7 +72,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "release-1.1"
+      "version": "master"
     },
     {
       "source": {
@@ -81,7 +81,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "release-2.26",
+      "version": "main",
       "name": "prometheus"
     },
     {
@@ -91,7 +91,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "99f64e944b1043c790784cf5373c8fb349816fc4",
+      "version": "master",
       "name": "alertmanager"
     },
     {
@@ -101,7 +101,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "release-0.19",
+      "version": "main",
       "name": "thanos-mixin"
     }
   ],
