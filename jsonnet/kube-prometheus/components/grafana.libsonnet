@@ -28,6 +28,7 @@ local defaults = {
   datasources: [],
   config: {},
   plugins: [],
+  env: [],
 };
 
 function(params) {
@@ -57,6 +58,7 @@ function(params) {
         containers: g._config.containers,
         config+: g._config.config,
         plugins+: g._config.plugins,
+        env: g._config.env,
       } + (
         // Conditionally overwrite default setting.
         if std.length(g._config.datasources) > 0 then
