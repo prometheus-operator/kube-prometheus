@@ -1,0 +1,35 @@
+name: Upgrade to latest versions
+
+on:
+  schedule:
+    - cron: '37 13 * * *'
+jobs:
+  versions:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+    - name: Upgrade versions
+      run: |
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+        scripts/generate-versions.sh > jsonnet/kube-prometheus/versions.json
+        make --always-make generate
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: "[bot] Automated version update"
+        title: "[bot] Automated version update"
+        body: |
+          This is an automated version update performed from CI on behalf of @paulfantom.
+
+          Configuration of the workflow is located in `.github/workflows/versions.yaml`
+        team-reviewers: kube-prometheus-reviewers
+        labels: kind/enhancement
+        branch: automated-updates
+        delete-branch: true
+        # GITHUB_TOKEN cannot be used as it won't trigger CI in a created PR
+        # More in https://github.com/peter-evans/create-pull-request/issues/155
+        # TODO(paulfantom) Consider running this from a special bot account.
+        token: ${{ secrets.PAT }}
