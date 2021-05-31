@@ -14,7 +14,9 @@ jobs:
     - name: Upgrade versions
       run: |
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        scripts/generate-versions.sh > jsonnet/kube-prometheus/versions.json
+        # Write to temporary file to make update atomic
+        scripts/generate-versions.sh > tmp/versions.json
+        mv tmp/versions.json jsonnet/kube-prometheus/versions.json
         make --always-make generate
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
