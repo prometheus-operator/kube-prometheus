@@ -20,7 +20,8 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
-  configmapReloaderImage: 'jimmidyson/configmap-reload:v0.5.0',
+  configmapReloaderImage: error 'must provide version',
+  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage',
 
   port: 9115,
   internalPort: 19115,
@@ -200,10 +201,12 @@ function(params) {
     local kubeRbacProxy = krp({
       name: 'kube-rbac-proxy',
       upstream: 'http://127.0.0.1:' + bb._config.internalPort + '/',
+      resources: bb._config.resources,
       secureListenAddress: ':' + bb._config.port,
       ports: [
         { name: 'https', containerPort: bb._config.port },
       ],
+      image: bb._config.kubeRbacProxyImage,
     });
 
     {

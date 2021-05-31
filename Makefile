@@ -13,6 +13,8 @@ TOOLING=$(EMBEDMD_BIN) $(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETLIN
 
 JSONNETFMT_ARGS=-n 2 --max-blank-lines 2 --string-style s --comment-style s
 
+KUBE_VERSION?="1.20.0"
+
 all: generate fmt test
 
 .PHONY: clean
@@ -38,8 +40,7 @@ crdschemas: vendor
 
 .PHONY: validate
 validate: crdschemas manifests $(KUBECONFORM_BIN)
-	# Follow-up on https://github.com/instrumenta/kubernetes-json-schema/issues/26 if validations start failing
-	$(KUBECONFORM_BIN) -schema-location 'https://kubernetesjsonschema.dev' -schema-location 'crdschemas/{{ .ResourceKind }}.json' -skip CustomResourceDefinition manifests/
+	$(KUBECONFORM_BIN) -kubernetes-version $(KUBE_VERSION) -schema-location 'default' -schema-location 'crdschemas/{{ .ResourceKind }}.json' -skip CustomResourceDefinition manifests/
 
 .PHONY: fmt
 fmt: $(JSONNETFMT_BIN)

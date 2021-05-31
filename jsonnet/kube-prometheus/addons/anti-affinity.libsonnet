@@ -18,7 +18,7 @@
     },
   },
 
-  local antiaffinity(labelSelector, namespace, type, topologyKey) = {
+  antiaffinity(labelSelector, namespace, type, topologyKey):: {
     local podAffinityTerm = {
       namespaces: [namespace],
       topologyKey: topologyKey,
@@ -44,7 +44,7 @@
   alertmanager+: {
     alertmanager+: {
       spec+:
-        antiaffinity(
+        $.antiaffinity(
           $.alertmanager._config.selectorLabels,
           $.values.common.namespace,
           $.values.alertmanager.podAntiAffinity,
@@ -56,7 +56,7 @@
   prometheus+: {
     prometheus+: {
       spec+:
-        antiaffinity(
+        $.antiaffinity(
           $.prometheus._config.selectorLabels,
           $.values.common.namespace,
           $.values.prometheus.podAntiAffinity,
@@ -70,7 +70,7 @@
       spec+: {
         template+: {
           spec+:
-            antiaffinity(
+            $.antiaffinity(
               $.blackboxExporter._config.selectorLabels,
               $.values.common.namespace,
               $.values.blackboxExporter.podAntiAffinity,
@@ -86,7 +86,7 @@
       spec+: {
         template+: {
           spec+:
-            antiaffinity(
+            $.antiaffinity(
               $.prometheusAdapter._config.selectorLabels,
               $.values.common.namespace,
               $.values.prometheusAdapter.podAntiAffinity,

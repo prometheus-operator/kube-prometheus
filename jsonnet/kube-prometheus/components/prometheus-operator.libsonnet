@@ -7,6 +7,7 @@ local defaults = {
   namespace: error 'must provide namespace',
   version: error 'must provide version',
   image: error 'must provide image',
+  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage',
   configReloaderImage: error 'must provide config reloader image',
   resources: {
     limits: { cpu: '200m', memory: '200Mi' },
@@ -114,6 +115,7 @@ function(params)
       ports: [
         { name: 'https', containerPort: 8443 },
       ],
+      image: po._config.kubeRbacProxyImage,
     }),
 
     deployment+: {

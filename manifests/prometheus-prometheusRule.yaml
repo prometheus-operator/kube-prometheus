@@ -211,6 +211,16 @@ spec:
       for: 15m
       labels:
         severity: warning
+    - alert: PrometheusLabelLimitHit
+      annotations:
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped {{ printf "%.0f" $value }} targets because some samples exceeded the configured label_limit, label_name_length_limit or label_value_length_limit.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheuslabellimithit
+        summary: Prometheus has dropped targets because some scrape configs have exceeded the labels limit.
+      expr: |
+        increase(prometheus_target_scrape_pool_exceeded_label_limits_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
+      for: 15m
+      labels:
+        severity: warning
     - alert: PrometheusErrorSendingAlertsToAnyAlertmanager
       annotations:
         description: '{{ printf "%.1f" $value }}% minimum errors while sending alerts from Prometheus {{$labels.namespace}}/{{$labels.pod}} to any Alertmanager.'

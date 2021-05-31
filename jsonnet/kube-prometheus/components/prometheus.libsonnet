@@ -12,6 +12,7 @@ local defaults = {
   namespaces: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
   externalLabels: {},
+  enableFeatures: [],
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
     'app.kubernetes.io/version': defaults.version,
@@ -53,8 +54,10 @@ function(params) {
           (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') + (
     if p._config.thanos != {} then
       (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') + {
+        targetGroups: {},
         sidecar: {
           selector: p._config.mixin._config.thanosSelector,
+          dimensions: std.join(', ', ['job', 'instance']),
         },
       }
     else {}
@@ -276,15 +279,17 @@ function(params) {
         labels: p._config.commonLabels,
       },
       externalLabels: p._config.externalLabels,
+      enableFeatures: p._config.enableFeatures,
       serviceAccountName: 'prometheus-' + p._config.name,
-      serviceMonitorSelector: {},
       podMonitorSelector: {},
-      probeSelector: {},
-      serviceMonitorNamespaceSelector: {},
       podMonitorNamespaceSelector: {},
+      probeSelector: {},
       probeNamespaceSelector: {},
-      nodeSelector: { 'kubernetes.io/os': 'linux' },
+      ruleNamespaceSelector: {},
       ruleSelector: p._config.ruleSelector,
+      serviceMonitorSelector: {},
+      serviceMonitorNamespaceSelector: {},
+      nodeSelector: { 'kubernetes.io/os': 'linux' },
       resources: p._config.resources,
       alerting: {
         alertmanagers: [{
