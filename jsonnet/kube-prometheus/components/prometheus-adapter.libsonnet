@@ -300,20 +300,4 @@ function(params) {
       namespace: pa._config.namespace,
     }],
   },
-
-  [if (defaults + params).replicas > 1 then 'podDisruptionBudget']: {
-    apiVersion: 'policy/v1beta1',
-    kind: 'PodDisruptionBudget',
-    metadata: {
-      name: pa._config.name,
-      namespace: pa._config.namespace,
-      labels: pa._config.commonLabels,
-    },
-    spec: {
-      minAvailable: 1,
-      selector: {
-        matchLabels: pa._config.selectorLabels,
-      },
-    },
-  },
 }
