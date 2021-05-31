@@ -23,9 +23,9 @@ get_current_version() {
 get_version() {
   component="${1}"
   v="$(get_latest_version "${component}")"
-  
+ 
   # Advanced AI heurestics to filter out common patterns suggesting new version is not stable /s
-  if [[ "$v" == *"alpha"* ]] || [[ "$v" == *"beta"* ]] || [[ "$v" == *"rc"* ]] || [[ "$v" == *"helm"* ]]; then
+  if [[ "$v" == "" ]] || [[ "$v" == *"alpha"* ]] || [[ "$v" == *"beta"* ]] || [[ "$v" == *"rc"* ]] || [[ "$v" == *"helm"* ]]; then
      component="$(convert_to_camel_case "$(echo "${component}" | sed 's/^.*\///')")"
      v="$(get_current_version "${component}")"
   fi
@@ -56,6 +56,8 @@ cat <<-EOF
   "nodeExporter": "$(get_version "prometheus/node_exporter")",
   "prometheus": "$(get_version "prometheus/prometheus")",
   "prometheusAdapter": "$(get_version "kubernetes-sigs/prometheus-adapter")",
-  "prometheusOperator": "$(get_version "prometheus-operator/prometheus-operator")"
+  "prometheusOperator": "$(get_version "prometheus-operator/prometheus-operator")",
+  "kubeRbacProxy": "$(get_version "brancz/kube-rbac-proxy")",
+  "configmapReload": "$(get_version "jimmidyson/configmap-reload")"
 }
 EOF
