@@ -376,7 +376,7 @@ These mixins are selectable via the `platform` field of kubePrometheus:
 (import 'kube-prometheus/main.libsonnet') +
 {
   values+:: {
-    kubePrometheus+: {
+    common+: {
       platform: 'example-platform',
     },
   },
