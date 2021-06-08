@@ -109,8 +109,8 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "7301451eb94d2081fb740abf29755861dd122c65",
-      "sum": "V8jcZQ1Qrlm7AQ6wjbuQQsacPb0NvrcZovKyplmzW5w=",
+      "version": "8598683b2461fb68e1921735c20163c4c784f9b6",
+      "sum": "YIWuR6x64SRQSCr8tuuGN1cc0TK5HGR0HWvgot3fc6k=",
       "name": "alertmanager"
     },
     {

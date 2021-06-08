@@ -53,6 +53,9 @@ spec:
         - mountPath: /etc/grafana/provisioning/dashboards
           name: grafana-dashboards
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/alertmanager-overview
+          name: grafana-dashboard-alertmanager-overview
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/apiserver
           name: grafana-dashboard-apiserver
           readOnly: false
@@ -135,6 +138,9 @@ spec:
       - configMap:
           name: grafana-dashboards
         name: grafana-dashboards
+      - configMap:
+          name: grafana-dashboard-alertmanager-overview
+        name: grafana-dashboard-alertmanager-overview
       - configMap:
           name: grafana-dashboard-apiserver
         name: grafana-dashboard-apiserver

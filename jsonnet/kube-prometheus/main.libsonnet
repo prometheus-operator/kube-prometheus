@@ -68,7 +68,7 @@ local platformPatch = import './platforms/platforms.libsonnet';
       image: $.values.common.images.grafana,
       prometheusName: $.values.prometheus.name,
       // TODO(paulfantom) This should be done by iterating over all objects and looking for object.mixin.grafanaDashboards
-      dashboards: $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards + $.kubernetesControlPlane.mixin.grafanaDashboards,
+      dashboards: $.nodeExporter.mixin.grafanaDashboards + $.prometheus.mixin.grafanaDashboards + $.kubernetesControlPlane.mixin.grafanaDashboards + $.alertmanager.mixin.grafanaDashboards,
     },
     kubeStateMetrics: {
       namespace: $.values.common.namespace,
