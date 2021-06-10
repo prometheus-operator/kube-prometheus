@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 7.5.4
+    app.kubernetes.io/version: 8.0.0
   name: grafana-datasources
   namespace: monitoring
 type: Opaque
