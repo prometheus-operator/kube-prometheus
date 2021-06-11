@@ -16,4 +16,4 @@ spec:
     - kube-system
   selector:
     matchLabels:
-      app.kubernetes.io/name: kube-dns
+      k8s-app: kube-dns
