@@ -245,7 +245,7 @@ function(params) {
     spec: {
       jobLabel: 'app.kubernetes.io/name',
       selector: {
-        matchLabels: { 'app.kubernetes.io/name': 'kube-dns' },
+        matchLabels: { 'k8s-app': 'kube-dns' },
       },
       namespaceSelector: {
         matchNames: ['kube-system'],
