@@ -55,7 +55,7 @@ lint: $(JSONNETLINT_BIN) vendor
 .PHONY: test
 test: $(JB_BIN)
 	$(JB_BIN) install
-	./test.sh
+	./scripts/test.sh
 
 .PHONY: test-e2e
 test-e2e:
