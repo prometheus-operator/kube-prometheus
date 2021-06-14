@@ -1,4 +1,4 @@
-{
+(import '../addons/managed-cluster.libsonnet') + {
   values+:: {
     eks: {
       minimumAvailableIPs: 10,
