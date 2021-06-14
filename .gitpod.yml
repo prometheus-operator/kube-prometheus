@@ -1,4 +1,5 @@
-
+image: gitpod/workspace-full
+checkoutLocation: gitpod-k3s
 tasks: 
   - init: |
       make --always-make
@@ -21,6 +22,26 @@ tasks:
       fi
       EOF
       chmod +x ${PWD}/.git/hooks/pre-commit
+  - name: run kube-prometheus
+    command: |
+      .gitpod/prepare-k3s.sh
+      .gitpod/deploy-kube-prometheus.sh
+  - name: kernel dev environment
+    init: |
+      sudo apt update -y
+      sudo apt install qemu qemu-system-x86 linux-image-$(uname -r) libguestfs-tools sshpass netcat -y
+      sudo curl -o /usr/bin/kubectl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      sudo chmod +x /usr/bin/kubectl
+      .gitpod/prepare-rootfs.sh
+    command: |
+      .gitpod/qemu.sh
+ports:
+  - port: 3000
+    onOpen: open-browser
+  - port: 9090
+    onOpen: open-browser
+  - port: 9093
+    onOpen: open-browser
 vscode:
   extensions:
     - heptio.jsonnet@0.1.0:woEDU5N62LRdgdz0g/I6sQ==
