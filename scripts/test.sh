@@ -5,6 +5,8 @@ set -o pipefail
 
 # Make sure to use project tooling
 PATH="$(pwd)/tmp/bin:${PATH}"
+TESTFILE="$(pwd)/tmp/test.jsonnet"
+mkdir -p "$(pwd)/tmp"
 
 for i in examples/jsonnet-snippets/*.jsonnet; do
     [ -f "$i" ] || break
@@ -14,13 +16,13 @@ for i in examples/jsonnet-snippets/*.jsonnet; do
     snippet="local kp = $fileContent;
 
 $(<examples/jsonnet-build-snippet/build-snippet.jsonnet)"
-    echo "${snippet}" > "test.jsonnet"
+    echo "${snippet}" > "${TESTFILE}"
     echo "\`\`\`"
     echo "${snippet}"
     echo "\`\`\`"
     echo ""
-    jsonnet -J vendor "test.jsonnet" > /dev/null
-    rm -rf "test.jsonnet"
+    jsonnet -J vendor "${TESTFILE}" > /dev/null
+    rm -rf "${TESTFILE}"
 done
 
 for i in examples/*.jsonnet; do
