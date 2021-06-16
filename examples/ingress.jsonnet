@@ -60,7 +60,7 @@ local kp =
                 service: {
                   name: 'alertmanager-main',
                   port: {
-                    name: 'web'
+                    name: 'web',
                   },
                 },
               },
@@ -81,7 +81,7 @@ local kp =
                 service: {
                   name: 'grafana',
                   port: {
-                    name: 'http'
+                    name: 'http',
                   },
                 },
               },
@@ -102,7 +102,7 @@ local kp =
                 service: {
                   name: 'prometheus-k8s',
                   port: {
-                    name: 'web'
+                    name: 'web',
                   },
                 },
               },
