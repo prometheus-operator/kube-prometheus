@@ -54,10 +54,14 @@ local kp =
           host: 'alertmanager.example.com',
           http: {
             paths: [{
+              path: '/',
+              pathType: 'Prefix',
               backend: {
                 service: {
                   name: 'alertmanager-main',
-                  port: 'web',
+                  port: {
+                    name: 'web',
+                  },
                 },
               },
             }],
@@ -71,10 +75,14 @@ local kp =
           host: 'grafana.example.com',
           http: {
             paths: [{
+              path: '/',
+              pathType: 'Prefix',
               backend: {
                 service: {
                   name: 'grafana',
-                  port: 'http',
+                  port: {
+                    name: 'http',
+                  },
                 },
               },
             }],
@@ -88,10 +96,14 @@ local kp =
           host: 'prometheus.example.com',
           http: {
             paths: [{
+              path: '/',
+              pathType: 'Prefix',
               backend: {
                 service: {
                   name: 'prometheus-k8s',
-                  port: 'web',
+                  port: {
+                    name: 'web',
+                  },
                 },
               },
             }],
