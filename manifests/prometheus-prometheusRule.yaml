@@ -221,6 +221,16 @@ spec:
       for: 15m
       labels:
         severity: warning
+    - alert: PrometheusTargetSyncFailure
+      annotations:
+        description: '{{ printf "%.0f" $value }} targets in Prometheus {{$labels.namespace}}/{{$labels.pod}} have failed to sync because invalid configuration was supplied.'
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/prometheustargetsyncfailure
+        summary: Prometheus has failed to sync targets.
+      expr: |
+        increase(prometheus_target_sync_failed_total{job="prometheus-k8s",namespace="monitoring"}[30m]) > 0
+      for: 5m
+      labels:
+        severity: critical
     - alert: PrometheusErrorSendingAlertsToAnyAlertmanager
       annotations:
         description: '{{ printf "%.1f" $value }}% minimum errors while sending alerts from Prometheus {{$labels.namespace}}/{{$labels.pod}} to any Alertmanager.'
