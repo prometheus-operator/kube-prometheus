@@ -17,14 +17,26 @@ jobs:
         # Write to temporary file to make update atomic
         scripts/generate-versions.sh > /tmp/versions.json
         mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
+    - name: Install jsonnet bundler
+      run: |
+        go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
+    - name: Update jsonnet dependencies
+      run: |
+        jb update
         make --always-make generate
+
+        # Reset jsonnetfile.lock.json if no dependencies were updated
+        changedFiles=$(git diff --name-only | grep -v 'jsonnetfile.lock.json')
+        if [[ $changedFiles == "" ]]; then
+          git checkout -- jsonnetfile.lock.json;
+        fi
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
         commit-message: "[bot] Automated version update"
         title: "[bot] Automated version update"
         body: |
-          This is an automated version update performed from CI on behalf of @paulfantom.
+          This is an automated version and jsonnet dependencies update performed from CI on behalf of @paulfantom.
 
           Configuration of the workflow is located in `.github/workflows/versions.yaml`
         team-reviewers: kube-prometheus-reviewers
