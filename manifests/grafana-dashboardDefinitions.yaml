@@ -5602,7 +5602,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(kube_pod_container_resource_limits{cluster=\"$cluster\", resource=\"cpu\"}) / sum(kube_node_status_allocatable{resource=\"cpu\",cluster=\"$cluster\"})",
+                                  "expr": "sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{resource=\"cpu\",cluster=\"$cluster\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -5854,7 +5854,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(kube_pod_container_resource_limits{cluster=\"$cluster\", resource=\"memory\"}) / sum(kube_node_status_allocatable{resource=\"memory\",cluster=\"$cluster\"})",
+                                  "expr": "sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) / sum(kube_node_status_allocatable{resource=\"memory\",cluster=\"$cluster\"})",
                                   "format": "time_series",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -6258,7 +6258,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(kube_pod_container_resource_requests{cluster=\"$cluster\", resource=\"cpu\"}) by (namespace)",
+                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -6267,7 +6267,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(kube_pod_container_resource_limits{cluster=\"$cluster\", resource=\"cpu\"}) by (namespace)",
+                                  "expr": "sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -6276,7 +6276,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(kube_pod_container_resource_limits{cluster=\"$cluster\", resource=\"cpu\"}) by (namespace)",
+                                  "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}) by (namespace) / sum(namespace_cpu:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -6676,7 +6676,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(kube_pod_container_resource_requests{cluster=\"$cluster\", resource=\"memory\"}) by (namespace)",
+                                  "expr": "sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -6685,7 +6685,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(container_memory_rss{cluster=\"$cluster\", container!=\"\"}) by (namespace) / sum(kube_pod_container_resource_requests{cluster=\"$cluster\", resource=\"memory\"}) by (namespace)",
+                                  "expr": "sum(container_memory_rss{cluster=\"$cluster\", container!=\"\"}) by (namespace) / sum(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}) by (namespace)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -6694,7 +6694,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(kube_pod_container_resource_limits{cluster=\"$cluster\", resource=\"memory\"}) by (namespace)",
+                                  "expr": "sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -6703,7 +6703,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "sum(container_memory_rss{cluster=\"$cluster\", container!=\"\"}) by (namespace) / sum(kube_pod_container_resource_limits{cluster=\"$cluster\", resource=\"memory\"}) by (namespace)",
+                                  "expr": "sum(container_memory_rss{cluster=\"$cluster\", container!=\"\"}) by (namespace) / sum(namespace_memory:kube_pod_container_resource_limits:sum{cluster=\"$cluster\"}) by (namespace)",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
