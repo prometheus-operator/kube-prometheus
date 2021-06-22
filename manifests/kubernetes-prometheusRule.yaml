@@ -19,6 +19,8 @@ spec:
         summary: Pod is crash looping.
       expr: |
         increase(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[10m]) > 0
+        and
+        sum without (phase) (kube_pod_status_phase{phase!="Running",job="kube-state-metrics"} == 1)
       for: 15m
       labels:
         severity: warning
@@ -214,19 +216,19 @@ spec:
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubehpareplicasmismatch
         summary: HPA has not matched descired number of replicas.
       expr: |
-        (kube_hpa_status_desired_replicas{job="kube-state-metrics"}
+        (kube_horizontalpodautoscaler_status_desired_replicas{job="kube-state-metrics"}
           !=
-        kube_hpa_status_current_replicas{job="kube-state-metrics"})
+        kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics"})
           and
-        (kube_hpa_status_current_replicas{job="kube-state-metrics"}
+        (kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics"}
           >
-        kube_hpa_spec_min_replicas{job="kube-state-metrics"})
+        kube_horizontalpodautoscaler_spec_min_replicas{job="kube-state-metrics"})
           and
-        (kube_hpa_status_current_replicas{job="kube-state-metrics"}
+        (kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics"}
           <
-        kube_hpa_spec_max_replicas{job="kube-state-metrics"})
+        kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics"})
           and
-        changes(kube_hpa_status_current_replicas{job="kube-state-metrics"}[15m]) == 0
+        changes(kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics"}[15m]) == 0
       for: 15m
       labels:
         severity: warning
@@ -236,9 +238,9 @@ spec:
         runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/kubehpamaxedout
         summary: HPA is running at max replicas
       expr: |
-        kube_hpa_status_current_replicas{job="kube-state-metrics"}
+        kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics"}
           ==
-        kube_hpa_spec_max_replicas{job="kube-state-metrics"}
+        kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics"}
       for: 15m
       labels:
         severity: warning
@@ -1250,6 +1252,28 @@ spec:
             )
         )
       record: namespace_cpu:kube_pod_container_resource_requests:sum
+    - expr: |
+        sum by (namespace, cluster) (
+            sum by (namespace, pod, cluster) (
+                max by (namespace, pod, container, cluster) (
+                  kube_pod_container_resource_limits{resource="memory",job="kube-state-metrics"}
+                ) * on(namespace, pod, cluster) group_left() max by (namespace, pod) (
+                  kube_pod_status_phase{phase=~"Pending|Running"} == 1
+                )
+            )
+        )
+      record: namespace_memory:kube_pod_container_resource_limits:sum
+    - expr: |
+        sum by (namespace, cluster) (
+            sum by (namespace, pod, cluster) (
+                max by (namespace, pod, container, cluster) (
+                  kube_pod_container_resource_limits{resource="cpu",job="kube-state-metrics"}
+                ) * on(namespace, pod, cluster) group_left() max by (namespace, pod) (
+                  kube_pod_status_phase{phase=~"Pending|Running"} == 1
+                )
+            )
+        )
+      record: namespace_cpu:kube_pod_container_resource_limits:sum
     - expr: |
         max by (cluster, namespace, workload, pod) (
           label_replace(
