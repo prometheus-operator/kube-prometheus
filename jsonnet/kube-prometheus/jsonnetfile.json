@@ -91,7 +91,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "master",
+      "version": "main",
       "name": "alertmanager"
     },
     {
