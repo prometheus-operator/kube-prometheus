@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: prometheus
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.27.1
+    app.kubernetes.io/version: 2.28.0
   name: prometheus-k8s
   namespace: monitoring
 spec:
