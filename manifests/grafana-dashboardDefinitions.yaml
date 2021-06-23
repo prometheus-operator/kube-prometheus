@@ -30943,6 +30943,14 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
+                                  "expr": "sum by (job) (rate(prometheus_target_scrapes_exceeded_body_size_limit_total[1m]))",
+                                  "format": "time_series",
+                                  "intervalFactor": 2,
+                                  "legendFormat": "exceeded body size limit: {{job}}",
+                                  "legendLink": null,
+                                  "step": 10
+                              },
+                              {
                                   "expr": "sum by (job) (rate(prometheus_target_scrapes_exceeded_sample_limit_total[1m]))",
                                   "format": "time_series",
                                   "intervalFactor": 2,
