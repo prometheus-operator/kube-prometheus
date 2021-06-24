@@ -175,8 +175,11 @@ function(params) {
         '--no-collector.wifi',
         '--no-collector.hwmon',
         '--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
-        '--collector.netclass.ignored-devices=^(veth.*)$',
-        '--collector.netdev.device-exclude=^(veth.*)$',
+        // NOTE: ignore veth network interface associated with containers.
+        // OVN renames veth.* to <rand-hex>@if<X> where X is /sys/class/net/<if>/ifindex
+        // thus [a-z0-9] regex below
+        '--collector.netclass.ignored-devices=^(veth.*|[a-z0-9]+@if\\d+)$',
+        '--collector.netdev.device-exclude=^(veth.*|[a-z0-9]+@if\\d+)$',
       ],
       volumeMounts: [
         { name: 'sys', mountPath: '/host/sys', mountPropagation: 'HostToContainer', readOnly: true },
