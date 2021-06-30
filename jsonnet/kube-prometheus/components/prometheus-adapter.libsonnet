@@ -22,13 +22,24 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
+  // Default range intervals are equal to 4 times the default scrape interval.
+  // This is done in order to follow Prometheus rule of thumb with irate().
+  rangeIntervals: {
+    kubelet: '4m',
+    nodeExporter: '4m',
+    windowsExporter: '4m',
+  },
 
   prometheusURL: error 'must provide prometheusURL',
   config: {
     resourceRules: {
       cpu: {
-        containerQuery: 'sum(irate(container_cpu_usage_seconds_total{<<.LabelMatchers>>,container!="",pod!=""}[5m])) by (<<.GroupBy>>)',
-        nodeQuery: 'sum(1 - irate(node_cpu_seconds_total{mode="idle"}[5m]) * on(namespace, pod) group_left(node) node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}) by (<<.GroupBy>>) or sum (1- irate(windows_cpu_time_total{mode="idle", job="windows-exporter",<<.LabelMatchers>>}[5m])) by (<<.GroupBy>>)',
+        containerQuery: |||
+          sum(irate(container_cpu_usage_seconds_total{<<.LabelMatchers>>,container!="",pod!=""}[%(kubelet)s])) by (<<.GroupBy>>)
+        ||| % $.rangeIntervals,
+        nodeQuery: |||
+          sum(1 - irate(node_cpu_seconds_total{mode="idle"}[%(nodeExporter)s]) * on(namespace, pod) group_left(node) node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}) by (<<.GroupBy>>) or sum (1- irate(windows_cpu_time_total{mode="idle", job="windows-exporter",<<.LabelMatchers>>}[%(windowsExporter)s])) by (<<.GroupBy>>)
+        ||| % $.rangeIntervals,
         resources: {
           overrides: {
             node: { resource: 'node' },
