@@ -23,12 +23,19 @@ get_current_version() {
 get_version() {
   component="${1}"
   v="$(get_latest_version "${component}")"
- 
+
+  component="$(convert_to_camel_case "$(echo "${component}" | sed 's/^.*\///')")"
+  cv="$(get_current_version "${component}")"
+
   # Advanced AI heurestics to filter out common patterns suggesting new version is not stable /s
   if [[ "$v" == "" ]] || [[ "$v" == *"alpha"* ]] || [[ "$v" == *"beta"* ]] || [[ "$v" == *"rc"* ]] || [[ "$v" == *"helm"* ]]; then
-     component="$(convert_to_camel_case "$(echo "${component}" | sed 's/^.*\///')")"
-     v="$(get_current_version "${component}")"
+     echo "$cv"
+     return
   fi
+
+  # Use higher version from new version and current version
+  v=$(printf '%s\n' "$v" "$cv" | sort -r | head -n1)
+  
   echo "$v"
 }
 
