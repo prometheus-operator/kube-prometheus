@@ -28,7 +28,7 @@ generate: manifests **.md
 **.md: $(EMBEDMD_BIN) $(shell find examples) build.sh example.jsonnet
 	$(EMBEDMD_BIN) -w `find . -name "*.md" | grep -v vendor`
 
-manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor build.sh
+manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor
 	./build.sh $<
 
 vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
@@ -36,7 +36,7 @@ vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 	$(JB_BIN) install
 
 crdschemas: vendor
-	./scripts/generate-schemas.sh	
+	./scripts/generate-schemas.sh
 
 .PHONY: validate
 validate: crdschemas manifests $(KUBECONFORM_BIN)
