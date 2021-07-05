@@ -231,7 +231,7 @@ local kp =
         rules: [{
           apiGroups: ['policy'],
           resources: ['podsecuritypolicies'],
-          verbs: ['use']
+          verbs: ['use'],
           resourceNames: ['node-exporter']
         }],
       },
