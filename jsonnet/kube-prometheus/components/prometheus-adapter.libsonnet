@@ -35,10 +35,26 @@ local defaults = {
     resourceRules: {
       cpu: {
         containerQuery: |||
-          sum(irate(container_cpu_usage_seconds_total{<<.LabelMatchers>>,container!="",pod!=""}[%(kubelet)s])) by (<<.GroupBy>>)
+          sum by (<<.GroupBy>>) (
+            irate (
+                container_cpu_usage_seconds_total{<<.LabelMatchers>>,container!="",pod!=""}[%(kubelet)s]
+            )
+          )
         ||| % $.rangeIntervals,
         nodeQuery: |||
-          sum(1 - irate(node_cpu_seconds_total{mode="idle"}[%(nodeExporter)s]) * on(namespace, pod) group_left(node) node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}) by (<<.GroupBy>>) or sum (1- irate(windows_cpu_time_total{mode="idle", job="windows-exporter",<<.LabelMatchers>>}[%(windowsExporter)s])) by (<<.GroupBy>>)
+          sum by (<<.GroupBy>>) (
+            1 - irate(
+              node_cpu_seconds_total{mode="idle"}[%(nodeExporter)s]
+            )
+            * on(namespace, pod) group_left(node) (
+              node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}
+            )
+          )
+          or sum by (<<.GroupBy>>) (
+            1 - irate(
+              windows_cpu_time_total{mode="idle", job="windows-exporter",<<.LabelMatchers>>}[%(windowsExporter)s]
+            )
+          )
         ||| % $.rangeIntervals,
         resources: {
           overrides: {
@@ -50,8 +66,23 @@ local defaults = {
         containerLabel: 'container',
       },
       memory: {
-        containerQuery: 'sum(container_memory_working_set_bytes{<<.LabelMatchers>>,container!="",pod!=""}) by (<<.GroupBy>>)',
-        nodeQuery: 'sum(node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>} - node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}) by (<<.GroupBy>>) or sum(windows_cs_physical_memory_bytes{job="windows-exporter",<<.LabelMatchers>>} - windows_memory_available_bytes{job="windows-exporter",<<.LabelMatchers>>}) by (<<.GroupBy>>)',
+        containerQuery: |||
+          sum by (<<.GroupBy>>) (
+            container_memory_working_set_bytes{<<.LabelMatchers>>,container!="",pod!=""}
+          )
+        |||,
+        nodeQuery: |||
+          sum by (<<.GroupBy>>) (
+            node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>}
+            -
+            node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}
+          )
+          or sum by (<<.GroupBy>>) (
+            windows_cs_physical_memory_bytes{job="windows-exporter",<<.LabelMatchers>>}
+            -
+            windows_memory_available_bytes{job="windows-exporter",<<.LabelMatchers>>}
+          )
+        |||,
         resources: {
           overrides: {
             instance: { resource: 'node' },
