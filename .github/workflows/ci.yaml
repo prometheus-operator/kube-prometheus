@@ -4,7 +4,7 @@ on:
   - pull_request
 env:
   golang-version: '1.15'
-  kind-version: 'v0.9.0'
+  kind-version: 'v0.11.0'
 jobs:
   generate:
     runs-on: ${{ matrix.os }}
@@ -63,13 +63,9 @@ jobs:
       with:
         version: ${{ env.kind-version }}
         image: ${{ matrix.kind-image }}
+        wait: 300s
     - name: Wait for cluster to finish bootstraping
-      run: |
-        until [ "$(kubectl get pods --all-namespaces --no-headers | grep -cEv '([0-9]+)/\1')" -eq 0 ]; do
-            sleep 5s
-        done
-        kubectl cluster-info
-        kubectl get pods -A
+      run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
     - name: Create kube-prometheus stack
       run: |
         kubectl create -f manifests/setup
