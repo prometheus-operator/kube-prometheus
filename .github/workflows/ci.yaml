@@ -4,7 +4,7 @@ on:
   - pull_request
 env:
   golang-version: '1.15'
-  kind-version: 'v0.9.0'
+  kind-version: 'v0.11.0'
 jobs:
   generate:
     runs-on: ${{ matrix.os }}
