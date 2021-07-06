@@ -61,6 +61,10 @@ This results in creating multiple `PrometheusRule` objects instead of having one
 
 All examples from `examples/` directory were adapted to the new codebase. [Please take a look at them for guideance](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples)
 
+## Legacy migration
+
+An example of conversion of a legacy release-0.3 my.jsonnet file to release-0.8 can be found in [migration-example](./migration-example)
+
 ## Advanced usage examples
 
 For more advanced usage examples you can take a look at those two, open to public, implementations:
