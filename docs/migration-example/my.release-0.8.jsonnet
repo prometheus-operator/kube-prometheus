@@ -1,16 +1,16 @@
-# Has the following customisations
-# 	Custom alert manager config
-# 	Ingresses for the alert manager, prometheus and grafana
-# 	Grafana admin user password
-# 	Custom prometheus rules
-# 	Custom grafana dashboards
-# 	Custom prometheus config - Data retention, memory, etc.
-#	Node exporter role and role binding so we can use a PSP for the node exporter
+// Has the following customisations
+// 	Custom alert manager config
+// 	Ingresses for the alert manager, prometheus and grafana
+// 	Grafana admin user password
+// 	Custom prometheus rules
+// 	Custom grafana dashboards
+// 	Custom prometheus config - Data retention, memory, etc.
+//	Node exporter role and role binding so we can use a PSP for the node exporter
 
-# for help with expected content, see https://github.com/thaum-xyz/ankhmorpork
+// for help with expected content, see https://github.com/thaum-xyz/ankhmorpork
 
-# External variables
-# See https://jsonnet.org/learning/tutorial.html
+// External variables
+// See https://jsonnet.org/learning/tutorial.html
 local cluster_identifier = std.extVar('cluster_identifier');
 local etcd_ip = std.extVar('etcd_ip');
 local etcd_tls_ca = std.extVar('etcd_tls_ca');
@@ -21,26 +21,18 @@ local prometheus_data_retention_period = std.extVar('prometheus_data_retention_p
 local prometheus_request_memory = std.extVar('prometheus_request_memory');
 
 
-# Derived variables
+// Derived variables
 local alert_manager_host = 'alertmanager.' + cluster_identifier + '.myorg.local';
 local grafana_host = 'grafana.' + cluster_identifier + '.myorg.local';
 local prometheus_host = 'prometheus.' + cluster_identifier + '.myorg.local';
 
 
-# ksonnet no longer required
-
-
-
-
-
-
-
-
+// ksonnet no longer required
 
 
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
-  # kubeadm now achieved by setting platform value - see 9 lines below
+  // kubeadm now achieved by setting platform value - see 9 lines below
   (import 'kube-prometheus/addons/static-etcd.libsonnet') +
   (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
   {
@@ -49,72 +41,69 @@ local kp =
         namespace: 'monitoring',
       },
 
-      # Add kubeadm platform-specific items, 
-      # including kube-contoller-manager and kube-scheduler discovery
+      // Add kubeadm platform-specific items,
+      // including kube-contoller-manager and kube-scheduler discovery
       kubePrometheus+: {
-        platform: 'kubeadm'
+        platform: 'kubeadm',
       },
 
-      # Override alert manager config
-      # See https://github.com/prometheus-operator/kube-prometheus/blob/main/examples/alertmanager-config-external.jsonnet
+      // Override alert manager config
+      // See https://github.com/prometheus-operator/kube-prometheus/blob/main/examples/alertmanager-config-external.jsonnet
       alertmanager+: {
         config: importstr 'alertmanager.yaml',
       },
 
-      # Override etcd config
-      # See https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/addons/static-etcd.libsonnet
-      # See https://github.com/prometheus-operator/kube-prometheus/blob/main/examples/etcd-skip-verify.jsonnet
+      // Override etcd config
+      // See https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/addons/static-etcd.libsonnet
+      // See https://github.com/prometheus-operator/kube-prometheus/blob/main/examples/etcd-skip-verify.jsonnet
       etcd+:: {
         clientCA: etcd_tls_ca,
         clientCert: etcd_tls_cert,
         clientKey: etcd_tls_key,
-        ips: [ etcd_ip ],
+        ips: [etcd_ip],
       },
 
-      # Override grafana config
-      # anonymous access
-      # 	See http://docs.grafana.org/installation/configuration/
-      # 	See http://docs.grafana.org/auth/overview/#anonymous-authentication
-      # admin_password
-      # 	See http://docs.grafana.org/installation/configuration/#admin-password
+      // Override grafana config
+      // anonymous access
+      // 	See http://docs.grafana.org/installation/configuration/
+      // 	See http://docs.grafana.org/auth/overview/#anonymous-authentication
+      // admin_password
+      // 	See http://docs.grafana.org/installation/configuration/#admin-password
       grafana+:: {
         config: {
           sections: {
             'auth.anonymous': {
-              enabled: true
+              enabled: true,
             },
             security: {
-              admin_password: grafana_admin_password
+              admin_password: grafana_admin_password,
             },
           },
         },
-        # Additional grafana dashboards
+        // Additional grafana dashboards
         dashboards+:: {
           'my-specific.json': (import 'my-grafana-dashboard-definitions.json'),
-        }
+        },
       },
     },
 
 
-
-
-
-    # Alert manager needs an externalUrl
+    // Alert manager needs an externalUrl
     alertmanager+:: {
       alertmanager+: {
         spec+: {
 
-          # See https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/exposing-prometheus-alertmanager-grafana-ingress.md
+          // See https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/exposing-prometheus-alertmanager-grafana-ingress.md
           externalUrl: 'https://' + alert_manager_host,
         },
       },
     },
 
 
-    # Add additional ingresses
-    # See https://github.com/prometheus-operator/kube-prometheus/blob/main/examples/ingress.jsonnet
+    // Add additional ingresses
+    // See https://github.com/prometheus-operator/kube-prometheus/blob/main/examples/ingress.jsonnet
     ingress+:: {
-      'alertmanager': {
+      alertmanager: {
         apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
@@ -148,7 +137,7 @@ local kp =
           }],
         },
       },
-      'grafana': {
+      grafana: {
         apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
@@ -182,7 +171,7 @@ local kp =
           }],
         },
       },
-      'prometheus': {
+      prometheus: {
         apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
@@ -219,7 +208,7 @@ local kp =
     },
 
 
-    # Node exporter PSP role and role binding
+    // Node exporter PSP role and role binding
     nodeExporter+: {
       'psp-role'+: {
         apiVersion: 'rbac.authorization.k8s.io/v1',
@@ -232,7 +221,7 @@ local kp =
           apiGroups: ['policy'],
           resources: ['podsecuritypolicies'],
           verbs: ['use'],
-          resourceNames: ['node-exporter']
+          resourceNames: ['node-exporter'],
         }],
       },
       'psp-rolebinding'+: {
@@ -250,12 +239,12 @@ local kp =
         },
         subjects: [{
           kind: 'ServiceAccount',
-          name: 'node-exporter'
+          name: 'node-exporter',
         }],
       },
     },
 
-    # Prometheus needs some extra custom config
+    // Prometheus needs some extra custom config
     prometheus+:: {
       prometheus+: {
         spec+: {
@@ -264,24 +253,24 @@ local kp =
             cluster: cluster_identifier,
           },
 
-          # See https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/exposing-prometheus-alertmanager-grafana-ingress.md
+          // See https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/exposing-prometheus-alertmanager-grafana-ingress.md
           externalUrl: 'https://' + prometheus_host,
-          # Override reuest memory
+          // Override reuest memory
           resources: {
             requests: {
               memory: prometheus_request_memory,
             },
           },
-          # Override data retention period
+          // Override data retention period
           retention: prometheus_data_retention_period,
         },
       },
     },
 
 
-    # Additional prometheus rules
-    # See https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/developing-prometheus-rules-and-grafana-dashboards.md#pre-rendered-rules
-    # cat my-prometheus-rules.yaml | gojsontoyaml -yamltojson | jq . > my-prometheus-rules.json
+    // Additional prometheus rules
+    // See https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/developing-prometheus-rules-and-grafana-dashboards.md#pre-rendered-rules
+    // cat my-prometheus-rules.yaml | gojsontoyaml -yamltojson | jq . > my-prometheus-rules.json
     prometheusMe: {
       rules: {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -292,8 +281,8 @@ local kp =
           labels: {
             'app.kubernetes.io/name': 'kube-prometheus',
             'app.kubernetes.io/part-of': 'kube-prometheus',
-            'prometheus': 'k8s',
-            'role': 'alert-rules'
+            prometheus: 'k8s',
+            role: 'alert-rules',
           },
         },
         spec: {
@@ -304,7 +293,7 @@ local kp =
   };
 
 
-# Render
+// Render
 { 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +
 {
   ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
