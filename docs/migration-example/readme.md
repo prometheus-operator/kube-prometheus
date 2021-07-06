@@ -30,11 +30,11 @@ changes required.
 local kp =
   (import 'kube-prometheus/kube-prometheus.libsonnet') +
   (import 'kube-prometheus/kube-prometheus-kubeadm.libsonnet') +
-  (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') + 
+  (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') +
 
   {
     _config+:: {
-      # Override namespace
+      // Override namespace
       namespace: 'monitoring',
   
   
@@ -51,7 +51,7 @@ local kp =
 ```jsonnet
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
-  # kubeadm now achieved by setting platform value - see 9 lines below
+  // kubeadm now achieved by setting platform value - see 9 lines below
   (import 'kube-prometheus/addons/static-etcd.libsonnet') +
   (import 'kube-prometheus/addons/podsecuritypolicies.libsonnet') +
   {
@@ -60,10 +60,10 @@ local kp =
         namespace: 'monitoring',
       },
 
-      # Add kubeadm platform-specific items, 
-      # including kube-contoller-manager and kube-scheduler discovery
+      // Add kubeadm platform-specific items,
+      // including kube-contoller-manager and kube-scheduler discovery
       kubePrometheus+: {
-        platform: 'kubeadm'
+        platform: 'kubeadm',
       },
 ```
 
@@ -79,9 +79,9 @@ local kp =
 <td>
 
 ```jsonnet
-    # Add additional ingresses
-    # See https://github.com/coreos/kube-prometheus/...
-    #           tree/master/examples/ingress.jsonnet
+    // Add additional ingresses
+    // See https://github.com/coreos/kube-prometheus/...
+    //           tree/master/examples/ingress.jsonnet
     ingress+:: {
       alertmanager:
         ingress.new() +
@@ -107,10 +107,10 @@ local kp =
             ingressRuleHttpPath.mixin.backend.withServicePort(9093)
           ),
         ) +
-        # Note we do not need a TLS secretName here as we are going to use the
-        # nginx-ingress default secret which is a wildcard
-        # secretName would need to be in the same namespace at this time,
-        # see https://github.com/kubernetes/ingress-nginx/issues/2371
+        // Note we do not need a TLS secretName here as we are going to use the
+        // nginx-ingress default secret which is a wildcard
+        // secretName would need to be in the same namespace at this time,
+        // see https://github.com/kubernetes/ingress-nginx/issues/2371
         ingress.mixin.spec.withTls(
           ingressTls.new() +
           ingressTls.withHosts(alert_manager_host)
@@ -123,11 +123,11 @@ local kp =
 <td>
 
 ```jsonnet
-    # Add additional ingresses
-    # See https://github.com/prometheus-operator/kube-prometheus/...
-    #           blob/main/examples/ingress.jsonnet
+    // Add additional ingresses
+    // See https://github.com/prometheus-operator/kube-prometheus/...
+    //           blob/main/examples/ingress.jsonnet
     ingress+:: {
-      'alertmanager': {
+      alertmanager: {
         apiVersion: 'networking.k8s.io/v1',
         kind: 'Ingress',
         metadata: {
@@ -175,13 +175,13 @@ local kp =
 <td>
 
 ```jsonnet
-    # Additional prometheus rules
-    # See https://github.com/coreos/kube-prometheus/docs/...
-    #           developing-prometheus-rules-and-grafana-dashboards.md
-    #
-    # cat my-prometheus-rules.yaml | \
-    #   gojsontoyaml -yamltojson | \
-    #   jq . > my-prometheus-rules.json
+    // Additional prometheus rules
+    // See https://github.com/coreos/kube-prometheus/docs/...
+    //           developing-prometheus-rules-and-grafana-dashboards.md
+    //
+    // cat my-prometheus-rules.yaml | \
+    //   gojsontoyaml -yamltojson | \
+    //   jq . > my-prometheus-rules.json
     prometheusRules+:: {
 
 
@@ -212,13 +212,13 @@ local kp =
 <td>
 
 ```jsonnet
-    # Additional prometheus rules
-    # See https://github.com/prometheus-operator/kube-prometheus/blob/main/...
-    #           docs/developing-prometheus-rules-and-grafana-dashboards.md...
-    #           #pre-rendered-rules
-    # cat my-prometheus-rules.yaml | \
-    #   gojsontoyaml -yamltojson | \
-    #   jq . > my-prometheus-rules.json
+    // Additional prometheus rules
+    // See https://github.com/prometheus-operator/kube-prometheus/blob/main/...
+    //           docs/developing-prometheus-rules-and-grafana-dashboards.md...
+    //           #pre-rendered-rules
+    // cat my-prometheus-rules.yaml | \
+    //   gojsontoyaml -yamltojson | \
+    //   jq . > my-prometheus-rules.json
     prometheusMe: {
       rules: {
         apiVersion: 'monitoring.coreos.com/v1',
@@ -229,8 +229,8 @@ local kp =
           labels: {
             'app.kubernetes.io/name': 'kube-prometheus',
             'app.kubernetes.io/part-of': 'kube-prometheus',
-            'prometheus': 'k8s',
-            'role': 'alert-rules'
+            prometheus: 'k8s',
+            role: 'alert-rules',
           },
         },
         spec: {
