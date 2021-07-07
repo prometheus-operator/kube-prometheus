@@ -36,6 +36,10 @@ vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 crdschemas: vendor
 	./scripts/generate-schemas.sh	
 
+.PHONY: update
+update: $(JB_BIN)
+	$(JB_BIN) update
+
 .PHONY: validate
 validate: crdschemas manifests $(KUBECONFORM_BIN)
 	# Follow-up on https://github.com/instrumenta/kubernetes-json-schema/issues/26 if validations start failing
