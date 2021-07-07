@@ -38,6 +38,10 @@ vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 crdschemas: vendor
 	./scripts/generate-schemas.sh
 
+.PHONY: update
+update: $(JB_BIN)
+	$(JB_BIN) update
+
 .PHONY: validate
 validate: crdschemas manifests $(KUBECONFORM_BIN)
 	$(KUBECONFORM_BIN) -kubernetes-version $(KUBE_VERSION) -schema-location 'default' -schema-location 'crdschemas/{{ .ResourceKind }}.json' -skip CustomResourceDefinition manifests/

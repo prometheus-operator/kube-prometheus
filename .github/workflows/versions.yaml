@@ -17,13 +17,10 @@ jobs:
         # Write to temporary file to make update atomic
         scripts/generate-versions.sh > /tmp/versions.json
         mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
-    - name: Install jsonnet bundler
-      run: |
-        go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
     - name: Update jsonnet dependencies
       run: |
-        jb update
-        make --always-make generate
+        make update
+        make generate
 
         # Reset jsonnetfile.lock.json if no dependencies were updated
         changedFiles=$(git diff --name-only | grep -v 'jsonnetfile.lock.json')
