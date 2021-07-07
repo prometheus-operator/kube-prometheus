@@ -33,6 +33,10 @@ vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor
 	$(JB_BIN) install
 
+.PHONY: update
+update: $(JB_BIN)
+	$(JB_BIN) update
+
 .PHONY: fmt
 fmt: $(JSONNETFMT_BIN)
 	find . -name 'vendor' -prune -o -name '*.libsonnet' -o -name '*.jsonnet' -print | \
