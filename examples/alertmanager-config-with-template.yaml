@@ -1,0 +1,27 @@
+# external alertmanager yaml
+global:
+  resolve_timeout: 10m
+  slack_api_url: url
+route:
+  group_by: ['job']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: 'null'
+  routes:
+  - match:
+      alertname: Watchdog
+    receiver: 'null'
+receivers:
+- name: 'null'
+- name: slack
+slack_configs:
+- channel: '#alertmanager-testing'
+  send_resolved: true
+   title: '{{ template "slack.title" . }}'
+    icon_emoji: '{{ template "slack.icon_emoji" . }}'
+    color: '{{ template "slack.color" . }}'
+    text: '{{ template "slack.text" . }}
+
+templates:
+- '/etc/alertmanager/configmaps/alertmanager-alert-template.tmpl'
