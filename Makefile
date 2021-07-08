@@ -13,7 +13,7 @@ TOOLING=$(EMBEDMD_BIN) $(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETLIN
 
 JSONNETFMT_ARGS=-n 2 --max-blank-lines 2 --string-style s --comment-style s
 
-KUBE_VERSION?="1.20.0"
+KUBE_VERSION?="1.21.0"
 
 all: generate fmt test
 
