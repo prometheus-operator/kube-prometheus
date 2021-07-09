@@ -120,6 +120,13 @@ function(params) {
               regex: 'container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)',
               action: 'drop',
             },
+            // Drop all cAdvisor metrics without (pod,namespace) label pairs
+            {
+              sourceLabels: ['pod', 'namespace'],
+              regex: ';',
+              separator: ';',
+              action: 'drop',
+            },
           ],
         },
         {

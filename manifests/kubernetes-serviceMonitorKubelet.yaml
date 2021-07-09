@@ -60,6 +60,12 @@ spec:
       regex: container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)
       sourceLabels:
       - __name__
+    - action: drop
+      regex: ;
+      separator: ;
+      sourceLabels:
+      - pod
+      - namespace
     path: /metrics/cadvisor
     port: https-metrics
     relabelings:
