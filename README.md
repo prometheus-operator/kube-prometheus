@@ -70,6 +70,7 @@ If you are migrating from `release-0.7` branch or earlier please read [what chan
       - [Authentication problem](#authentication-problem)
       - [Authorization problem](#authorization-problem)
     - [kube-state-metrics resource usage](#kube-state-metrics-resource-usage)
+    - [Error retrieving kube-proxy metrics](#error-retrieving-kube-proxy-metrics)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -769,6 +770,13 @@ config. They default to:
       memoryPerNode: '30Mi',
     }
 ```
+
+### Error retrieving kube-proxy metrics
+By default, kubeadm will configure kube-proxy to listen on 127.0.0.1 for metrics. Because of this prometheus would not be able to scrape these metrics. This would have to be changed to 0.0.0.0 in one of the following two places:
+
+1. Before cluster initialization, the config file passed to kubeadm init should have KubeProxyConfiguration manifest with the field metricsBindAddress set to 0.0.0.0:10249
+2. If the k8s cluster is already up and running, we'll have to modify the configmap kube-proxy in the namespace kube-system and set the metricsBindAddress field. After this kube-proxy daemonset would have to be restarted with
+`kubectl -n kube-system rollout restart daemonset kube-proxy`
 
 ## Contributing
 
