@@ -44,7 +44,7 @@ function(params) {
   assert std.isObject(ne._config.mixin._config),
 
   mixin:: (import 'github.com/prometheus/node_exporter/docs/node-mixin/mixin.libsonnet') +
-          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
+          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') {
             _config+:: ne._config.mixin._config,
           },
 

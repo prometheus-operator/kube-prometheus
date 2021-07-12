@@ -78,7 +78,7 @@ function(params) {
   assert std.isObject(am._config.mixin._config),
 
   mixin:: (import 'github.com/prometheus/alertmanager/doc/alertmanager-mixin/mixin.libsonnet') +
-          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') {
+          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') {
             _config+:: am._config.mixin._config,
           },
 
