@@ -22,6 +22,7 @@ local defaults = {
       hostNetworkInterfaceSelector: 'device!~"veth.+"',
     },
   },
+  kubeProxy: false,
 };
 
 function(params) {
@@ -233,6 +234,36 @@ function(params) {
       }],
     },
   },
+
+  [if (defaults + params).kubeProxy then 'podMonitorKubeProxy']: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'PodMonitor',
+    metadata: {
+      labels: {
+        'k8s-app': 'kube-proxy',
+      },
+      name: 'kube-proxy',
+      namespace: k8s._config.namespace,
+    },
+    spec: {
+      jobLabel: 'k8s-app',
+      namespaceSelector: {
+        matchNames: [
+          'kube-system',
+        ],
+      },
+      selector: {
+        matchLabels: {
+          'k8s-app': 'kube-proxy',
+        },
+      },
+      podMetricsEndpoints: [{
+        honorLabels: true,
+        targetPort: 10249,
+      }],
+    },
+  },
+
 
   serviceMonitorCoreDNS: {
     apiVersion: 'monitoring.coreos.com/v1',
