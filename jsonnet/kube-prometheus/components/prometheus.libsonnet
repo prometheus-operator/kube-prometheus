@@ -51,7 +51,7 @@ function(params) {
   assert std.isObject(p._config.mixin._config),
 
   mixin:: (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') +
-          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/alerts/add-runbook-links.libsonnet') + (
+          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') + (
     if p._config.thanos != {} then
       (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') + {
         targetGroups: {},
