@@ -77,8 +77,8 @@ function(params) {
   dashboardSources: glib.grafana.dashboardSources,
 
   dashboardDefinitions: if std.length(g._config.dashboards) > 0 || 
-                          std.length(g._config.rawDashboards) > 0 ||
-                          std.length(g._config.folderDashboards) > 0 then {
+                           std.length(g._config.rawDashboards) > 0 ||
+                           std.length(g._config.folderDashboards) > 0 then {
     apiVersion: 'v1',
     kind: 'ConfigMapList',
     items: glib.grafana.dashboardDefinitions,
