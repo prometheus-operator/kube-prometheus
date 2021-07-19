@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.1.2
+    app.kubernetes.io/version: 1.2.0
     prometheus: k8s
     role: alert-rules
   name: node-exporter-rules
@@ -223,6 +223,30 @@ spec:
         node_md_disks{state="failed"} > 0
       labels:
         severity: warning
+    - alert: NodeFileDescriptorLimit
+      annotations:
+        description: File descriptors limit at {{ $labels.instance }} is currently at {{ printf "%.2f" $value }}%.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefiledescriptorlimit
+        summary: Kernel is predicted to exhaust file descriptors limit soon.
+      expr: |
+        (
+          node_filefd_allocated{job="node-exporter"} * 100 / node_filefd_maximum{job="node-exporter"} > 70
+        )
+      for: 15m
+      labels:
+        severity: warning
+    - alert: NodeFileDescriptorLimit
+      annotations:
+        description: File descriptors limit at {{ $labels.instance }} is currently at {{ printf "%.2f" $value }}%.
+        runbook_url: https://github.com/prometheus-operator/kube-prometheus/wiki/nodefiledescriptorlimit
+        summary: Kernel is predicted to exhaust file descriptors limit soon.
+      expr: |
+        (
+          node_filefd_allocated{job="node-exporter"} * 100 / node_filefd_maximum{job="node-exporter"} > 90
+        )
+      for: 15m
+      labels:
+        severity: critical
   - name: node-exporter.rules
     rules:
     - expr: |
