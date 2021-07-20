@@ -29,7 +29,7 @@ local defaults = {
     ruleLabels: {},
     _config: {
       kubeStateMetricsSelector: 'job="' + defaults.name + '"',
-      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
+      runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/%s',
     },
   },
 };

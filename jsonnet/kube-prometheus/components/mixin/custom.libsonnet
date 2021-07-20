@@ -11,7 +11,7 @@ local defaults = {
     _config: {
       nodeExporterSelector: 'job="node-exporter"',
       hostNetworkInterfaceSelector: 'device!~"veth.+"',
-      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
+      runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/general/%s',
     },
   },
 };

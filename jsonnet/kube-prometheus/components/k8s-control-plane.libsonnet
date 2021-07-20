@@ -17,7 +17,7 @@ local defaults = {
       kubeControllerManagerSelector: 'job="kube-controller-manager"',
       kubeApiserverSelector: 'job="apiserver"',
       podLabel: 'pod',
-      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
+      runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/kubernetes/%s',
       diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
       hostNetworkInterfaceSelector: 'device!~"veth.+"',
     },

@@ -30,7 +30,7 @@ local defaults = {
       nodeExporterSelector: 'job="' + defaults.name + '"',
       fsSpaceFillingUpCriticalThreshold: 15,
       diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
-      runbookURLPattern: 'https://github.com/prometheus-operator/kube-prometheus/wiki/%s',
+      runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/node/%s',
     },
   },
 };
