@@ -97,10 +97,11 @@
                   severity: 'critical',
                 },
                 annotations: {
-                  message: 'Instance {{ $labels.instance }} has less than 10 IPs available.',
+                  summary: 'EKS CNI is running low on available IPs',
+                  description: 'Instance {{ $labels.instance }} has only {{ $value }} IPs available which is lower than set threshold of %s' % $.values.eks.minimumAvailableIPs,
                 },
                 'for': $.values.eks.minimumAvailableIPsTime,
-                alert: 'EksAvailableIPs',
+                alert: 'EksCNILowAvailableIPs',
               },
             ],
           },
