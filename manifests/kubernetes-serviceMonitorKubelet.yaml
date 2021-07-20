@@ -60,6 +60,12 @@ spec:
       regex: container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)
       sourceLabels:
       - __name__
+    - action: drop
+      regex: (container_fs_.*|container_spec_.*|container_blkio_device_usage_total|container_file_descriptors|container_sockets|container_threads_max|container_threads|container_start_time_seconds|container_last_seen);;
+      sourceLabels:
+      - __name__
+      - pod
+      - namespace
     path: /metrics/cadvisor
     port: https-metrics
     relabelings:
