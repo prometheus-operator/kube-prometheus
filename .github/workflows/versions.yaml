@@ -33,11 +33,22 @@ jobs:
         commit-message: "[bot] Automated version update"
         title: "[bot] Automated version update"
         body: |
+          ## Description
+
           This is an automated version and jsonnet dependencies update performed from CI on behalf of @paulfantom.
 
           Configuration of the workflow is located in `.github/workflows/versions.yaml`
+
+          ## Type of change
+
+          - [x] `NONE` (if none of the other choices apply. Example, tooling, build system, CI, docs, etc.)
+
+          ## Changelog entry
+          
+          ```release-note
+
+          ```
         team-reviewers: kube-prometheus-reviewers
-        labels: kind/enhancement
         branch: automated-updates
         delete-branch: true
         # GITHUB_TOKEN cannot be used as it won't trigger CI in a created PR
