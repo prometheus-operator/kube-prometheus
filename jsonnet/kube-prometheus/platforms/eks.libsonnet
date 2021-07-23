@@ -31,15 +31,6 @@
             name: 'cni-metrics-port',
             port: 61678,
             targetPort: 61678,
-            relabelings: [
-              {
-                action: 'replace',
-                regex: '(.*)',
-                replacement: '$1',
-                sourceLabels: ['__meta_kubernetes_pod_node_name'],
-                targetLabel: 'instance',
-              },
-            ],
           },
         ],
         selector: { 'app.kubernetes.io/name': 'aws-node' },
@@ -74,6 +65,15 @@
             port: 'cni-metrics-port',
             interval: '30s',
             path: '/metrics',
+            relabelings: [
+              {
+                action: 'replace',
+                regex: '(.*)',
+                replacement: '$1',
+                sourceLabels: ['__meta_kubernetes_pod_node_name'],
+                targetLabel: 'instance',
+              },
+            ],
           },
         ],
       },
