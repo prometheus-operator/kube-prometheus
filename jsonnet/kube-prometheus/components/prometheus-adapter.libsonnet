@@ -206,6 +206,7 @@ function(params) {
         '--secure-port=6443',
         '--tls-cipher-suites=' + std.join(',', pa._config.tlsCipherSuites),
       ],
+      resources: pa._config.resources,
       ports: [{ containerPort: 6443 }],
       volumeMounts: [
         { name: 'tmpfs', mountPath: '/tmp', readOnly: false },
