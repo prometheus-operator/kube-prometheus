@@ -40,6 +40,13 @@ spec:
         name: prometheus-adapter
         ports:
         - containerPort: 6443
+        resources:
+          limits:
+            cpu: 250m
+            memory: 180Mi
+          requests:
+            cpu: 102m
+            memory: 180Mi
         volumeMounts:
         - mountPath: /tmp
           name: tmpfs

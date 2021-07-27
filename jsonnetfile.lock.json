@@ -38,7 +38,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "a20c679492aae363414dce23bc63da09cf8a7287",
+      "version": "4c6f9dabceb944ce894d79eeb516c98694f5759f",
       "sum": "GRf2GvwEU4jhXV+JOonXSZ4wdDv8mnHBPCQ6TUVd+g8="
     },
     {
@@ -130,7 +130,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "79d354ad2e7c3d510a7811176d5ffcd1b29c8b77",
+      "version": "507d61fdeb4540c34102f41b7286895ecec19324",
       "sum": "G3mFWvwIrrhG6hlPz/hQdE6ZNSim88DlbSDJN7enkhY=",
       "name": "prometheus"
     },
@@ -141,7 +141,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "0f5223beb7e9cb7e62f0227bf5649deb851e6112",
+      "version": "83419bc5e3c5f667410a04c1c9920e27c3779162",
       "sum": "cajthvLKDjYgYHCKQU2g/pTMRkxcbuJEvTnCyJOihl8=",
       "name": "thanos-mixin"
     },
