@@ -178,8 +178,8 @@ function(params) {
         // NOTE: ignore veth network interface associated with containers.
         // OVN renames veth.* to <rand-hex>@if<X> where X is /sys/class/net/<if>/ifindex
         // thus [a-z0-9] regex below
-        '--collector.netclass.ignored-devices=^(veth.*|[a-z0-9]+@if\\d+)$',
-        '--collector.netdev.device-exclude=^(veth.*|[a-z0-9]+@if\\d+)$',
+        '--collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$',
+        '--collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$',
       ],
       volumeMounts: [
         { name: 'sys', mountPath: '/host/sys', mountPropagation: 'HostToContainer', readOnly: true },
