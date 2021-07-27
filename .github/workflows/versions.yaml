@@ -53,5 +53,4 @@ jobs:
         delete-branch: true
         # GITHUB_TOKEN cannot be used as it won't trigger CI in a created PR
         # More in https://github.com/peter-evans/create-pull-request/issues/155
-        # TODO(paulfantom) Consider running this from a special bot account.
-        token: ${{ secrets.PAT }}
+        token: ${{ secrets.PROM_OP_BOT_PAT }}
