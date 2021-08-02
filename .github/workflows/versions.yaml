@@ -1,13 +1,18 @@
 name: Upgrade to latest versions
 
-on:
-  schedule:
-    - cron: '37 13 * * 1'
+on: workflow_dispatch
 jobs:
   versions:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch:
+          - 'release-0.8'
+          - 'main'
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ matrix.branch }}
     - uses: actions/setup-go@v2
       with:
         go-version: 1.16
@@ -17,6 +22,7 @@ jobs:
         # Write to temporary file to make update atomic
         scripts/generate-versions.sh > /tmp/versions.json
         mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
+      if: ${{ matrix.branch }} == 'main'
     - name: Update jsonnet dependencies
       run: |
         make update
@@ -30,8 +36,8 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v3
       with:
-        commit-message: "[bot] Automated version update"
-        title: "[bot] Automated version update"
+        commit-message: "[bot] [${{ matrix.branch }}] Automated version update"
+        title: "[bot] [${{ matrix.branch }}] Automated version update"
         body: |
           ## Description
 
@@ -49,7 +55,7 @@ jobs:
 
           ```
         team-reviewers: kube-prometheus-reviewers
-        branch: automated-updates
+        branch: automated-updates-${{ matrix.branch }}
         delete-branch: true
         # GITHUB_TOKEN cannot be used as it won't trigger CI in a created PR
         # More in https://github.com/peter-evans/create-pull-request/issues/155
