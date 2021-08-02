@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: kube-state-metrics
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.1.0
+    app.kubernetes.io/version: 2.1.1
   name: kube-state-metrics
   namespace: monitoring
 spec:
@@ -23,7 +23,7 @@ spec:
         app.kubernetes.io/component: exporter
         app.kubernetes.io/name: kube-state-metrics
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 2.1.0
+        app.kubernetes.io/version: 2.1.1
     spec:
       containers:
       - args:
@@ -31,7 +31,7 @@ spec:
         - --port=8081
         - --telemetry-host=127.0.0.1
         - --telemetry-port=8082
-        image: k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.1.0
+        image: k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.1.1
         name: kube-state-metrics
         resources:
           limits:
@@ -47,7 +47,7 @@ spec:
         - --secure-listen-address=:8443
         - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
         - --upstream=http://127.0.0.1:8081/
-        image: quay.io/brancz/kube-rbac-proxy:v0.10.0
+        image: quay.io/brancz/kube-rbac-proxy:v0.11.0
         name: kube-rbac-proxy-main
         ports:
         - containerPort: 8443
@@ -68,7 +68,7 @@ spec:
         - --secure-listen-address=:9443
         - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
         - --upstream=http://127.0.0.1:8082/
-        image: quay.io/brancz/kube-rbac-proxy:v0.10.0
+        image: quay.io/brancz/kube-rbac-proxy:v0.11.0
         name: kube-rbac-proxy-self
         ports:
         - containerPort: 9443
