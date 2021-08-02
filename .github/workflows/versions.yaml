@@ -22,7 +22,7 @@ jobs:
         # Write to temporary file to make update atomic
         scripts/generate-versions.sh > /tmp/versions.json
         mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
-      if: ${{ matrix.branch }} == 'main'
+      if: matrix.branch == 'main'
     - name: Update jsonnet dependencies
       run: |
         make update
