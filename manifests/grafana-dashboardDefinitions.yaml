@@ -23777,7 +23777,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  instance:node_cpu_utilisation:rate5m{job=\"node-exporter\"}\n*\n  instance:node_num_cpu:sum{job=\"node-exporter\"}\n)\n/ scalar(sum(instance:node_num_cpu:sum{job=\"node-exporter\"}))\n",
+                                  "expr": "(\n  instance:node_cpu_utilisation:rate1m{job=\"node-exporter\"}\n*\n  instance:node_num_cpu:sum{job=\"node-exporter\"}\n)\n/ scalar(sum(instance:node_num_cpu:sum{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -24047,7 +24047,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_vmstat_pgmajfault:rate1m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -24153,7 +24153,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_network_receive_bytes_excluding_lo:rate1m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Receive",
@@ -24161,7 +24161,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_network_transmit_bytes_excluding_lo:rate1m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Transmit",
@@ -24255,7 +24255,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_network_receive_drop_excluding_lo:rate1m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Receive",
@@ -24263,7 +24263,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\"}",
+                                  "expr": "instance:node_network_transmit_drop_excluding_lo:rate1m{job=\"node-exporter\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Transmit",
@@ -24361,7 +24361,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\"}))\n",
+                                  "expr": "instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{device}}",
@@ -24447,7 +24447,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\"}))\n",
+                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\"}\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\"}))\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} {{device}}",
@@ -24730,7 +24730,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_cpu_utilisation:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_cpu_utilisation:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Utilisation",
@@ -25000,7 +25000,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_vmstat_pgmajfault:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Major page faults",
@@ -25106,7 +25106,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_network_receive_bytes_excluding_lo:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Receive",
@@ -25114,7 +25114,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_network_transmit_bytes_excluding_lo:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Transmit",
@@ -25208,7 +25208,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_network_receive_drop_excluding_lo:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Receive drops",
@@ -25216,7 +25216,7 @@ items:
                                   "step": 10
                               },
                               {
-                                  "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance:node_network_transmit_drop_excluding_lo:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Transmit drops",
@@ -25314,7 +25314,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance_device:node_disk_io_time_seconds:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}}",
@@ -25400,7 +25400,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "instance_device:node_disk_io_time_weighted_seconds:rate1m{job=\"node-exporter\", instance=\"$instance\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}}",
@@ -25727,7 +25727,7 @@ items:
                               {
                                   "expr": "(\n  (1 - rate(node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\"}[$__interval]))\n/ ignoring(cpu) group_left\n  count without (cpu)( node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\"})\n)\n",
                                   "format": "time_series",
-                                  "interval": "$__rate_interval",
+                                  "interval": "1m",
                                   "intervalFactor": 5,
                                   "legendFormat": "{{cpu}}",
                                   "refId": "A"
@@ -26163,7 +26163,7 @@ items:
                               {
                                   "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "$__rate_interval",
+                                  "interval": "1m",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}} read",
                                   "refId": "A"
@@ -26171,7 +26171,7 @@ items:
                               {
                                   "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "$__rate_interval",
+                                  "interval": "1m",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}} written",
                                   "refId": "B"
@@ -26179,7 +26179,7 @@ items:
                               {
                                   "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "$__rate_interval",
+                                  "interval": "1m",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}} io time",
                                   "refId": "C"
@@ -26393,7 +26393,7 @@ items:
                               {
                                   "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "$__rate_interval",
+                                  "interval": "1m",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}}",
                                   "refId": "A"
@@ -26487,7 +26487,7 @@ items:
                               {
                                   "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__interval])",
                                   "format": "time_series",
-                                  "interval": "$__rate_interval",
+                                  "interval": "1m",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{device}}",
                                   "refId": "A"
