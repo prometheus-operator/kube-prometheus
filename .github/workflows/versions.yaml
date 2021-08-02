@@ -1,8 +1,6 @@
 name: Upgrade to latest versions
 
-on:
-  schedule:
-    - cron: '37 13 * * 1'
+on: workflow_dispatch
 jobs:
   versions:
     runs-on: ubuntu-latest
