@@ -1,8 +1,13 @@
 (import '../addons/managed-cluster.libsonnet') + {
   values+:: {
-    eks: {
-      minimumAvailableIPs: 10,
-      minimumAvailableIPsTime: '10m',
+    awsVpcCni: {
+      // `minimumWarmIPs` should be inferior or equal to `WARM_IP_TARGET`.
+      //
+      // References:
+      // https://github.com/aws/amazon-vpc-cni-k8s/blob/v1.9.0/docs/eni-and-ip-target.md
+      // https://github.com/aws/amazon-vpc-cni-k8s/blob/v1.9.0/pkg/ipamd/ipamd.go#L61-L71
+      minimumWarmIPs: 10,
+      minimumWarmIPsTime: '10m',
     },
   },
   kubernetesControlPlane+: {
@@ -17,7 +22,8 @@
         ],
       },
     },
-    AwsEksCniMetricService: {
+
+    serviceAwsVpcCniMetrics: {
       apiVersion: 'v1',
       kind: 'Service',
       metadata: {
@@ -38,14 +44,14 @@
       },
     },
 
-    serviceMonitorAwsEksCNI: {
+    serviceMonitorAwsVpcCni: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
       metadata: {
-        name: 'awsekscni',
+        name: 'aws-node',
         namespace: $.values.common.namespace,
         labels: {
-          'app.kubernetes.io/name': 'eks-cni',
+          'app.kubernetes.io/name': 'aws-node',
         },
       },
       spec: {
@@ -78,30 +84,34 @@
         ],
       },
     },
-    prometheusRuleEksCNI: {
+
+    prometheusRuleAwsVpcCni: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'PrometheusRule',
       metadata: {
         labels: $.prometheus._config.commonLabels + $.prometheus._config.mixin.ruleLabels,
-        name: 'eks-rules',
+        name: 'aws-vpc-cni-rules',
         namespace: $.prometheus._config.namespace,
       },
       spec: {
         groups: [
           {
-            name: 'kube-prometheus-eks.rules',
+            name: 'kube-prometheus-aws-vpc-cni.rules',
             rules: [
               {
-                expr: 'sum by(instance) (awscni_ip_max) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % $.values.eks.minimumAvailableIPs,
+                expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % $.values.awsVpcCni.minimumWarmIPs,
                 labels: {
                   severity: 'critical',
                 },
                 annotations: {
-                  summary: 'EKS CNI is running low on available IPs',
-                  description: 'Instance {{ $labels.instance }} has only {{ $value }} IPs available which is lower than set threshold of %s' % $.values.eks.minimumAvailableIPs,
+                  summary: 'AWS VPC CNI has a low warm IP pool',
+                  description: |||
+                    Instance {{ $labels.instance }} has only {{ $value }} warm IPs which is lower than set threshold of %s.
+                    It could mean the current subnet is out of available IP addresses or the CNI is unable to request them from the EC2 API.
+                  ||| % $.values.awsVpcCni.minimumWarmIPs,
                 },
-                'for': $.values.eks.minimumAvailableIPsTime,
-                alert: 'EksCNILowAvailableIPs',
+                'for': $.values.awsVpcCni.minimumWarmIPsTime,
+                alert: 'AwsVpcCniWarmIPsLow',
               },
             ],
           },
