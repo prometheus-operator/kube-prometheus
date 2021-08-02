@@ -7,6 +7,9 @@ jobs:
     strategy:
       matrix:
         branch:
+          - 'release-0.5'
+          - 'release-0.6'
+          - 'release-0.7'
           - 'release-0.8'
           - 'main'
     steps:
@@ -41,7 +44,7 @@ jobs:
         body: |
           ## Description
 
-          This is an automated version and jsonnet dependencies update performed from CI on behalf of @paulfantom.
+          This is an automated version and jsonnet dependencies update performed from CI.
 
           Configuration of the workflow is located in `.github/workflows/versions.yaml`
 
