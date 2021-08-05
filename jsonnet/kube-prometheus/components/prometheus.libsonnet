@@ -50,20 +50,22 @@ function(params) {
   assert std.isObject(p._config.resources),
   assert std.isObject(p._config.mixin._config),
 
-  mixin:: (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') +
-          (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') + (
-    if p._config.thanos != {} then
-      (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') + {
-        targetGroups: {},
-        sidecar: {
-          selector: p._config.mixin._config.thanosSelector,
-          dimensions: std.join(', ', ['job', 'instance']),
-        },
-      }
-    else {}
-  ) {
-    _config+:: p._config.mixin._config,
-  },
+  mixin::
+    (import 'github.com/prometheus/prometheus/documentation/prometheus-mixin/mixin.libsonnet') +
+    (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') + {
+      _config+:: p._config.mixin._config,
+    },
+
+  mixinThanos::
+    (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') +
+    (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') + {
+      _config+:: p._config.mixin._config,
+      targetGroups: {},
+      sidecar: {
+        selector: p._config.mixin._config.thanosSelector,
+        dimensions: std.join(', ', ['job', 'instance']),
+      },
+    },
 
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',
@@ -324,6 +326,22 @@ function(params) {
         port: 'web',
         interval: '30s',
       }],
+    },
+  },
+
+  // Include thanos sidecar PrometheusRule only if thanos config was passed by user
+  [if std.objectHas(params, 'thanos') && std.length(params.thanos) > 0 then 'prometheusRuleThanosSidecar']: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'PrometheusRule',
+    metadata: {
+      labels: p._config.commonLabels + p._config.mixin.ruleLabels,
+      name: 'prometheus-' + p._config.name + '-thanos-sidecar-rules',
+      namespace: p._config.namespace,
+    },
+    spec: {
+      local r = if std.objectHasAll(p.mixinThanos, 'prometheusRules') then p.mixinThanos.prometheusRules.groups else [],
+      local a = if std.objectHasAll(p.mixinThanos, 'prometheusAlerts') then p.mixinThanos.prometheusAlerts.groups else [],
+      groups: a + r,
     },
   },
 
