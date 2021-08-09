@@ -1,5 +1,5 @@
-local windowsdashboards = import 'kubernetes-mixin/dashboards/windows.libsonnet';
-local windowsrules = import 'kubernetes-mixin/rules/windows.libsonnet';
+local windowsdashboards = import 'github.com/kubernetes-monitoring/kubernetes-mixin/dashboards/windows.libsonnet';
+local windowsrules = import 'github.com/kubernetes-monitoring/kubernetes-mixin/rules/windows.libsonnet';
 
 {
   values+:: {
