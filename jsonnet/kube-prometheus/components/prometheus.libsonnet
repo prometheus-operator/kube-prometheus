@@ -24,14 +24,9 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   } + { prometheus: defaults.name },
-  ruleSelector: {
-    matchLabels: defaults.mixin.ruleLabels,
-  },
+  ruleSelector: {},
   mixin: {
-    ruleLabels: {
-      role: 'alert-rules',
-      prometheus: defaults.name,
-    },
+    ruleLabels: {},
     _config: {
       prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
       prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',

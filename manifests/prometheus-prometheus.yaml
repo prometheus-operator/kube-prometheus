@@ -36,10 +36,7 @@ spec:
     requests:
       memory: 400Mi
   ruleNamespaceSelector: {}
-  ruleSelector:
-    matchLabels:
-      prometheus: k8s
-      role: alert-rules
+  ruleSelector: {}
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
