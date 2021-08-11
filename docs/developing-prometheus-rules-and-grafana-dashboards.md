@@ -83,6 +83,10 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
       metadata: {
         name: 'my-prometheus-rule',
         namespace: $.values.common.namespace,
+        labels: {
+          prometheus: 'k8s',
+          role: 'alert-rules',
+        }
       },
       spec: {
         groups: [
@@ -139,6 +143,10 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
       metadata: {
         name: 'my-prometheus-rule',
         namespace: $.values.common.namespace,
+        labels: {
+          prometheus: 'k8s',
+          role: 'alert-rules',
+        }
       },
       spec: {
         groups: [
@@ -199,6 +207,10 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
       metadata: {
         name: 'my-prometheus-rule',
         namespace: $.values.common.namespace,
+        labels: {
+          prometheus: 'k8s',
+          role: 'alert-rules',
+        }
       },
       spec: {
         groups: (import 'existingrule.json').groups,
@@ -292,6 +304,10 @@ local add = {
       metadata: {
         name: 'example-application-rules',
         namespace: $.values.common.namespace,
+        labels: {
+          prometheus: 'k8s',
+          role: 'alert-rules',
+        }
       },
       spec: (import 'existingrule.json'),
     },
