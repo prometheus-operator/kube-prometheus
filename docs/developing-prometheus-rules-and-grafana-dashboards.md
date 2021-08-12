@@ -228,7 +228,7 @@ Here the alert `KubeStatefulSetReplicasMismatch` is being filtered out of the gr
 ```jsonnet
 local filter = {
   kubernetesControlPlane+: {
-    prometheusRule+:: {
+    prometheusRule+: {
       spec+: {
         groups: std.map(
           function(group)
@@ -255,7 +255,7 @@ Here the expression for another alert in the same component is updated from its 
 ```jsonnet
 local update = {
   kubernetesControlPlane+: {
-    prometheusRule+:: {
+    prometheusRule+: {
       spec+: {
         groups: std.map(
           function(group)
