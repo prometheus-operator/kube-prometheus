@@ -31722,7 +31722,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(prometheus_build_info, job)",
+                      "query": "label_values(prometheus_build_info{job=\"prometheus-k8s\",namespace=\"monitoring\"}, job)",
                       "refresh": 1,
                       "regex": "",
                       "sort": 2,
@@ -31750,7 +31750,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(prometheus_build_info, instance)",
+                      "query": "label_values(prometheus_build_info{job=~\"$job\"}, instance)",
                       "refresh": 1,
                       "regex": "",
                       "sort": 2,
