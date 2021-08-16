@@ -18,7 +18,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "ae36379800a064246884d9e6963b777b9a7ee35d",
+      "version": "60d5159091ab06e80ad446ce9e4f415e5f53439e",
       "sum": "EgKKzxcW3ttt7gjPMX//DNTqNcn/0o2VAIaWJ/HSLEc="
     },
     {
@@ -28,8 +28,8 @@
           "subdir": "grafonnet"
         }
       },
-      "version": "356bd73e4792ffe107725776ca8946895969c191",
-      "sum": "CSMZ3dJrpJpwvffie8BqcfrIVVwiKNqdPEN+1XWRBGU="
+      "version": "3082bfca110166cd69533fa3c0875fdb1b68c329",
+      "sum": "4/sUV0Kk+o8I+wlYxL9R6EPhL/NiLfYHk+NXlU64RUk="
     },
     {
       "source": {
@@ -38,8 +38,8 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "9c3fb8096e1f80e2f3a84566566906ff187f5a8c",
-      "sum": "9/eJqljTTtJeq9QRjabdKWL6yD8a7VzLmGKBK3ir77k="
+      "version": "e0c0f8caf0296138f7a74f1af5e9964339881788",
+      "sum": "GRf2GvwEU4jhXV+JOonXSZ4wdDv8mnHBPCQ6TUVd+g8="
     },
     {
       "source": {
@@ -69,7 +69,7 @@
           "subdir": "lib/promgrafonnet"
         }
       },
-      "version": "ead45674dba3c8712e422d99223453177aac6bf4",
+      "version": "9adde6c4eef082ad05b46124d780f42d6b19b896",
       "sum": "zv7hXGui6BfHzE9wPatHI/AGZa4A2WKo6pq7ZdqBsps="
     },
     {
@@ -79,7 +79,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "89aaf6c524ee891140c4c8f2a05b1b16f5847309",
+      "version": "e72315512a38653b19dcfe4429f93eadedc0ea96",
       "sum": "zD/pbQLnQq+5hegEelaheHS8mn1h09GTktFO74iwlBI="
     },
     {
@@ -89,7 +89,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "89aaf6c524ee891140c4c8f2a05b1b16f5847309",
+      "version": "e72315512a38653b19dcfe4429f93eadedc0ea96",
       "sum": "E1GGavnf9PCWBm4WVrxWnc0FIj72UcbcweqGioWrOdU="
     },
     {
@@ -151,7 +151,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "37e6ef61566c7c70793ba6d128f00c4c66cb2402",
+      "version": "79d8cfdc1a00f8a96475d5d1ff1a852b184b146e",
       "sum": "OptiWUMOHFrRGTZhSfxV1RCeXZ90qsefGNTD4lDYVG0="
     },
     {
