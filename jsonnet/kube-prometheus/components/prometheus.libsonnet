@@ -34,7 +34,7 @@ local defaults = {
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/prometheus/%s',
     },
   },
-  thanos: {},
+  thanos: null,
 };
 
 
@@ -100,7 +100,7 @@ function(params) {
                { name: 'web', targetPort: 'web', port: 9090 },
              ] +
              (
-               if p._config.thanos != {} then
+               if p._config.thanos != null then
                  [{ name: 'grpc', port: 10901, targetPort: 10901 }]
                else []
              ),
@@ -325,7 +325,7 @@ function(params) {
   },
 
   // Include thanos sidecar PrometheusRule only if thanos config was passed by user
-  [if std.objectHas(params, 'thanos') && std.length(params.thanos) > 0 then 'prometheusRuleThanosSidecar']: {
+  [if std.objectHas(params, 'thanos') && params.thanos != null then 'prometheusRuleThanosSidecar']: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'PrometheusRule',
     metadata: {
@@ -341,7 +341,7 @@ function(params) {
   },
 
   // Include thanos sidecar Service only if thanos config was passed by user
-  [if std.objectHas(params, 'thanos') && std.length(params.thanos) > 0 then 'serviceThanosSidecar']: {
+  [if std.objectHas(params, 'thanos') && params.thanos != null then 'serviceThanosSidecar']: {
     apiVersion: 'v1',
     kind: 'Service',
     metadata+: {
@@ -366,7 +366,7 @@ function(params) {
   },
 
   // Include thanos sidecar ServiceMonitor only if thanos config was passed by user
-  [if std.objectHas(params, 'thanos') && std.length(params.thanos) > 0 then 'serviceMonitorThanosSidecar']: {
+  [if std.objectHas(params, 'thanos') && params.thanos != null then 'serviceMonitorThanosSidecar']: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'ServiceMonitor',
     metadata+: {
