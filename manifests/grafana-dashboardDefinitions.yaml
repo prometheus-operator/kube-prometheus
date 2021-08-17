@@ -4149,7 +4149,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 0,
@@ -5289,7 +5289,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kube-controller-manager\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -5315,7 +5315,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(process_cpu_seconds_total{cluster=\"$cluster\", job=\"kube-controller-manager\"}, instance)",
+                      "query": "label_values(up{cluster=\"$cluster\", job=\"kube-controller-manager\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -8328,7 +8328,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(node_cpu_seconds_total, cluster)",
+                      "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -20770,7 +20770,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -22137,7 +22137,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 0,
@@ -23830,7 +23830,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 0,
@@ -28723,7 +28723,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 0,
@@ -34059,7 +34059,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kube-scheduler\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
