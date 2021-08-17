@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: metrics-adapter
     app.kubernetes.io/name: prometheus-adapter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.8.4
+    app.kubernetes.io/version: 0.9.0
   name: resource-metrics:system:auth-delegator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
