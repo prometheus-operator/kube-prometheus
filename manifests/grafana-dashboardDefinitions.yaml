@@ -40,6 +40,7 @@ items:
                           ],
                           "datasource": "$datasource",
                           "decimals": 3,
+                          "description": "How many percent of requests (both read and write) in 30 days have been answered successfully and fast enough?",
                           "format": "percentunit",
                           "gauge": {
                               "maxValue": 100,
@@ -99,7 +100,7 @@ items:
                               }
                           ],
                           "thresholds": "",
-                          "title": "Availability (30d) > 99.000",
+                          "title": "Availability (30d) > 99.000%",
                           "tooltip": {
                               "shared": false
                           },
@@ -123,7 +124,9 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "decimals": 3,
-                          "fill": 1,
+                          "description": "How much error budget is left looking at our 0.990% availability gurantees?",
+                          "fill": 10,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -136,6 +139,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -171,7 +175,7 @@ items:
                           ],
                           "timeFrom": null,
                           "timeShift": null,
-                          "title": "ErrorBudget (30d) > 99.000",
+                          "title": "ErrorBudget (30d) > 99.000%",
                           "tooltip": {
                               "shared": false,
                               "sort": 0,
@@ -232,6 +236,7 @@ items:
                           ],
                           "datasource": "$datasource",
                           "decimals": 3,
+                          "description": "How many percent of read requests (LIST,GET) in 30 days have been answered successfully and fast enough?",
                           "format": "percentunit",
                           "gauge": {
                               "maxValue": 100,
@@ -314,7 +319,9 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
-                          "fill": 1,
+                          "description": "How many read requests (LIST,GET) per second do the apiservers get by code?",
+                          "fill": 10,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -327,6 +334,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -342,18 +350,33 @@ items:
                           "renderer": "flot",
                           "repeat": null,
                           "seriesOverrides": [
-
+                              {
+                                  "alias": "/2../i",
+                                  "color": "#56A64B"
+                              },
+                              {
+                                  "alias": "/3../i",
+                                  "color": "#F2CC0C"
+                              },
+                              {
+                                  "alias": "/4../i",
+                                  "color": "#3274D9"
+                              },
+                              {
+                                  "alias": "/5../i",
+                                  "color": "#E02F44"
+                              }
                           ],
                           "spaceLength": 10,
                           "span": 3,
-                          "stack": false,
+                          "stack": true,
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(code_resource:apiserver_request_total:rate5m{verb=\"read\"})",
+                                  "expr": "sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\"read\"})",
                                   "format": "time_series",
                                   "intervalFactor": 2,
-                                  "legendFormat": "",
+                                  "legendFormat": "{{ code }}",
                                   "refId": "A"
                               }
                           ],
@@ -405,7 +428,9 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
+                          "description": "How many percent of read requests (LIST,GET) per second are returned with errors (5xx)?",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -418,6 +443,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -475,7 +501,7 @@ items:
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
-                                  "min": null,
+                                  "min": 0,
                                   "show": true
                               },
                               {
@@ -483,7 +509,7 @@ items:
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
-                                  "min": null,
+                                  "min": 0,
                                   "show": true
                               }
                           ]
@@ -496,7 +522,9 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
+                          "description": "How many seconds is the 99th percentile for reading (LIST|GET) a given resource?",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -509,6 +537,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -603,6 +632,7 @@ items:
                           ],
                           "datasource": "$datasource",
                           "decimals": 3,
+                          "description": "How many percent of write requests (POST|PUT|PATCH|DELETE) in 30 days have been answered successfully and fast enough?",
                           "format": "percentunit",
                           "gauge": {
                               "maxValue": 100,
@@ -685,7 +715,9 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
-                          "fill": 1,
+                          "description": "How many write requests (POST|PUT|PATCH|DELETE) per second do the apiservers get by code?",
+                          "fill": 10,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -698,6 +730,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -713,18 +746,33 @@ items:
                           "renderer": "flot",
                           "repeat": null,
                           "seriesOverrides": [
-
+                              {
+                                  "alias": "/2../i",
+                                  "color": "#56A64B"
+                              },
+                              {
+                                  "alias": "/3../i",
+                                  "color": "#F2CC0C"
+                              },
+                              {
+                                  "alias": "/4../i",
+                                  "color": "#3274D9"
+                              },
+                              {
+                                  "alias": "/5../i",
+                                  "color": "#E02F44"
+                              }
                           ],
                           "spaceLength": 10,
                           "span": 3,
-                          "stack": false,
+                          "stack": true,
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(code_resource:apiserver_request_total:rate5m{verb=\"write\"})",
+                                  "expr": "sum by (code) (code_resource:apiserver_request_total:rate5m{verb=\"write\"})",
                                   "format": "time_series",
                                   "intervalFactor": 2,
-                                  "legendFormat": "",
+                                  "legendFormat": "{{ code }}",
                                   "refId": "A"
                               }
                           ],
@@ -776,7 +824,9 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
+                          "description": "How many percent of write requests (POST|PUT|PATCH|DELETE) per second are returned with errors (5xx)?",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -789,6 +839,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -846,7 +897,7 @@ items:
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
-                                  "min": null,
+                                  "min": 0,
                                   "show": true
                               },
                               {
@@ -854,7 +905,7 @@ items:
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
-                                  "min": null,
+                                  "min": 0,
                                   "show": true
                               }
                           ]
@@ -867,7 +918,9 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
+                          "description": "How many seconds is the 99th percentile for writing (POST|PUT|PATCH|DELETE) a given resource?",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -880,6 +933,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -964,318 +1018,19 @@ items:
                   "collapsed": false,
                   "panels": [
                       {
-                          "cacheTimeout": null,
-                          "colorBackground": false,
-                          "colorValue": false,
-                          "colors": [
-                              "#299c46",
-                              "rgba(237, 129, 40, 0.89)",
-                              "#d44a3a"
-                          ],
-                          "datasource": "$datasource",
-                          "format": "none",
-                          "gauge": {
-                              "maxValue": 100,
-                              "minValue": 0,
-                              "show": false,
-                              "thresholdLabels": false,
-                              "thresholdMarkers": true
+                          "aliasColors": {
+
                           },
+                          "bars": false,
+                          "dashLength": 10,
+                          "dashes": false,
+                          "datasource": "$datasource",
+                          "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
                           "id": 12,
-                          "interval": null,
-                          "links": [
-
-                          ],
-                          "mappingType": 1,
-                          "mappingTypes": [
-                              {
-                                  "name": "value to text",
-                                  "value": 1
-                              },
-                              {
-                                  "name": "range to text",
-                                  "value": 2
-                              }
-                          ],
-                          "maxDataPoints": 100,
-                          "nullPointMode": "connected",
-                          "nullText": null,
-                          "postfix": "",
-                          "postfixFontSize": "50%",
-                          "prefix": "",
-                          "prefixFontSize": "50%",
-                          "rangeMaps": [
-                              {
-                                  "from": "null",
-                                  "text": "N/A",
-                                  "to": "null"
-                              }
-                          ],
-                          "span": 2,
-                          "sparkline": {
-                              "fillColor": "rgba(31, 118, 189, 0.18)",
-                              "full": false,
-                              "lineColor": "rgb(31, 120, 193)",
-                              "show": false
-                          },
-                          "tableColumn": "",
-                          "targets": [
-                              {
-                                  "expr": "sum(up{job=\"apiserver\", cluster=\"$cluster\"})",
-                                  "format": "time_series",
-                                  "intervalFactor": 2,
-                                  "legendFormat": "",
-                                  "refId": "A"
-                              }
-                          ],
-                          "thresholds": "",
-                          "title": "Up",
-                          "tooltip": {
-                              "shared": false
-                          },
-                          "type": "singlestat",
-                          "valueFontSize": "80%",
-                          "valueMaps": [
-                              {
-                                  "op": "=",
-                                  "text": "N/A",
-                                  "value": "null"
-                              }
-                          ],
-                          "valueName": "min"
-                      },
-                      {
-                          "aliasColors": {
-
-                          },
-                          "bars": false,
-                          "dashLength": 10,
-                          "dashes": false,
-                          "datasource": "$datasource",
-                          "fill": 1,
-                          "gridPos": {
-
-                          },
-                          "id": 13,
-                          "legend": {
-                              "alignAsTable": false,
-                              "avg": false,
-                              "current": false,
-                              "max": false,
-                              "min": false,
-                              "rightSide": false,
-                              "show": true,
-                              "total": false,
-                              "values": false
-                          },
-                          "lines": true,
-                          "linewidth": 1,
-                          "links": [
-
-                          ],
-                          "nullPointMode": "null",
-                          "percentage": false,
-                          "pointradius": 5,
-                          "points": false,
-                          "renderer": "flot",
-                          "repeat": null,
-                          "seriesOverrides": [
-
-                          ],
-                          "spaceLength": 10,
-                          "span": 5,
-                          "stack": false,
-                          "steppedLine": false,
-                          "targets": [
-                              {
-                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"2..\", cluster=\"$cluster\"}[5m]))",
-                                  "format": "time_series",
-                                  "intervalFactor": 2,
-                                  "legendFormat": "2xx",
-                                  "refId": "A"
-                              },
-                              {
-                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"3..\", cluster=\"$cluster\"}[5m]))",
-                                  "format": "time_series",
-                                  "intervalFactor": 2,
-                                  "legendFormat": "3xx",
-                                  "refId": "B"
-                              },
-                              {
-                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"4..\", cluster=\"$cluster\"}[5m]))",
-                                  "format": "time_series",
-                                  "intervalFactor": 2,
-                                  "legendFormat": "4xx",
-                                  "refId": "C"
-                              },
-                              {
-                                  "expr": "sum(rate(apiserver_request_total{job=\"apiserver\", instance=~\"$instance\",code=~\"5..\", cluster=\"$cluster\"}[5m]))",
-                                  "format": "time_series",
-                                  "intervalFactor": 2,
-                                  "legendFormat": "5xx",
-                                  "refId": "D"
-                              }
-                          ],
-                          "thresholds": [
-
-                          ],
-                          "timeFrom": null,
-                          "timeShift": null,
-                          "title": "RPC Rate",
-                          "tooltip": {
-                              "shared": false,
-                              "sort": 0,
-                              "value_type": "individual"
-                          },
-                          "type": "graph",
-                          "xaxis": {
-                              "buckets": null,
-                              "mode": "time",
-                              "name": null,
-                              "show": true,
-                              "values": [
-
-                              ]
-                          },
-                          "yaxes": [
-                              {
-                                  "format": "ops",
-                                  "label": null,
-                                  "logBase": 1,
-                                  "max": null,
-                                  "min": null,
-                                  "show": true
-                              },
-                              {
-                                  "format": "ops",
-                                  "label": null,
-                                  "logBase": 1,
-                                  "max": null,
-                                  "min": null,
-                                  "show": true
-                              }
-                          ]
-                      },
-                      {
-                          "aliasColors": {
-
-                          },
-                          "bars": false,
-                          "dashLength": 10,
-                          "dashes": false,
-                          "datasource": "$datasource",
-                          "fill": 1,
-                          "gridPos": {
-
-                          },
-                          "id": 14,
-                          "legend": {
-                              "alignAsTable": true,
-                              "avg": false,
-                              "current": true,
-                              "max": false,
-                              "min": false,
-                              "rightSide": true,
-                              "show": true,
-                              "total": false,
-                              "values": true
-                          },
-                          "lines": true,
-                          "linewidth": 1,
-                          "links": [
-
-                          ],
-                          "nullPointMode": "null",
-                          "percentage": false,
-                          "pointradius": 5,
-                          "points": false,
-                          "renderer": "flot",
-                          "repeat": null,
-                          "seriesOverrides": [
-
-                          ],
-                          "spaceLength": 10,
-                          "span": 5,
-                          "stack": false,
-                          "steppedLine": false,
-                          "targets": [
-                              {
-                                  "expr": "histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{job=\"apiserver\", instance=~\"$instance\", verb!=\"WATCH\", cluster=\"$cluster\"}[5m])) by (verb, le))",
-                                  "format": "time_series",
-                                  "intervalFactor": 2,
-                                  "legendFormat": "{{verb}}",
-                                  "refId": "A"
-                              }
-                          ],
-                          "thresholds": [
-
-                          ],
-                          "timeFrom": null,
-                          "timeShift": null,
-                          "title": "Request duration 99th quantile",
-                          "tooltip": {
-                              "shared": false,
-                              "sort": 0,
-                              "value_type": "individual"
-                          },
-                          "type": "graph",
-                          "xaxis": {
-                              "buckets": null,
-                              "mode": "time",
-                              "name": null,
-                              "show": true,
-                              "values": [
-
-                              ]
-                          },
-                          "yaxes": [
-                              {
-                                  "format": "s",
-                                  "label": null,
-                                  "logBase": 1,
-                                  "max": null,
-                                  "min": null,
-                                  "show": true
-                              },
-                              {
-                                  "format": "s",
-                                  "label": null,
-                                  "logBase": 1,
-                                  "max": null,
-                                  "min": null,
-                                  "show": true
-                              }
-                          ]
-                      }
-                  ],
-                  "repeat": null,
-                  "repeatIteration": null,
-                  "repeatRowId": null,
-                  "showTitle": false,
-                  "title": "Dashboard Row",
-                  "titleSize": "h6",
-                  "type": "row"
-              },
-              {
-                  "collapse": false,
-                  "collapsed": false,
-                  "panels": [
-                      {
-                          "aliasColors": {
-
-                          },
-                          "bars": false,
-                          "dashLength": 10,
-                          "dashes": false,
-                          "datasource": "$datasource",
-                          "fill": 1,
-                          "gridPos": {
-
-                          },
-                          "id": 15,
                           "legend": {
                               "alignAsTable": false,
                               "avg": false,
@@ -1284,6 +1039,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": false,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -1302,7 +1058,7 @@ items:
 
                           ],
                           "spaceLength": 10,
-                          "span": 6,
+                          "span": 4,
                           "stack": false,
                           "steppedLine": false,
                           "targets": [
@@ -1363,10 +1119,11 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
-                          "id": 16,
+                          "id": 13,
                           "legend": {
                               "alignAsTable": false,
                               "avg": false,
@@ -1375,6 +1132,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": false,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -1393,7 +1151,7 @@ items:
 
                           ],
                           "spaceLength": 10,
-                          "span": 6,
+                          "span": 4,
                           "stack": false,
                           "steppedLine": false,
                           "targets": [
@@ -1454,10 +1212,11 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
-                          "id": 17,
+                          "id": 14,
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -1466,6 +1225,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -1484,7 +1244,7 @@ items:
 
                           ],
                           "spaceLength": 10,
-                          "span": 12,
+                          "span": 4,
                           "stack": false,
                           "steppedLine": false,
                           "targets": [
@@ -1558,10 +1318,11 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
-                          "id": 18,
+                          "id": 15,
                           "legend": {
                               "alignAsTable": false,
                               "avg": false,
@@ -1570,6 +1331,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -1649,10 +1411,11 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
-                          "id": 19,
+                          "id": 16,
                           "legend": {
                               "alignAsTable": false,
                               "avg": false,
@@ -1661,6 +1424,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -1747,10 +1511,11 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
-                          "id": 20,
+                          "id": 17,
                           "legend": {
                               "alignAsTable": false,
                               "avg": false,
@@ -1759,6 +1524,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -1858,10 +1624,11 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
-                          "id": 21,
+                          "id": 18,
                           "legend": {
                               "alignAsTable": false,
                               "avg": false,
@@ -1870,6 +1637,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -1949,10 +1717,11 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
-                          "id": 22,
+                          "id": 19,
                           "legend": {
                               "alignAsTable": false,
                               "avg": false,
@@ -1961,6 +1730,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -2040,10 +1810,11 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
-                          "id": 23,
+                          "id": 20,
                           "legend": {
                               "alignAsTable": false,
                               "avg": false,
@@ -2052,6 +1823,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -2310,6 +2082,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -2327,6 +2100,7 @@ items:
                       "min": false,
                       "rightSide": true,
                       "show": true,
+                      "sideWidth": null,
                       "sort": "current",
                       "sortDesc": true,
                       "total": false,
@@ -2411,6 +2185,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -2428,6 +2203,7 @@ items:
                       "min": false,
                       "rightSide": true,
                       "show": true,
+                      "sideWidth": null,
                       "sort": "current",
                       "sortDesc": true,
                       "total": false,
@@ -2558,6 +2334,9 @@ items:
                   "id": 5,
                   "lines": true,
                   "linewidth": 1,
+                  "links": [
+
+                  ],
                   "minSpan": 24,
                   "nullPointMode": "null as zero",
                   "renderer": "flot",
@@ -2850,6 +2629,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -2867,6 +2647,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "sort": "current",
                               "sortDesc": true,
                               "total": false,
@@ -2951,6 +2732,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -2968,6 +2750,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "sort": "current",
                               "sortDesc": true,
                               "total": false,
@@ -3082,6 +2865,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 24,
@@ -3099,6 +2883,7 @@ items:
                       "min": true,
                       "rightSide": true,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": true
                   },
@@ -3181,6 +2966,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 24,
@@ -3198,6 +2984,7 @@ items:
                       "min": true,
                       "rightSide": true,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": true
                   },
@@ -3291,6 +3078,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3308,6 +3096,7 @@ items:
                               "min": true,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -3390,6 +3179,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3407,6 +3197,7 @@ items:
                               "min": true,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -3509,6 +3300,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3526,6 +3318,7 @@ items:
                               "min": true,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -3608,6 +3401,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3625,6 +3419,7 @@ items:
                               "min": true,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -3707,6 +3502,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3724,6 +3520,7 @@ items:
                               "min": true,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -3810,6 +3607,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3827,6 +3625,7 @@ items:
                               "min": true,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -4183,6 +3982,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4195,6 +3995,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -4287,6 +4088,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4299,6 +4101,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -4391,6 +4194,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4403,6 +4207,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -4495,6 +4300,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4507,6 +4313,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -4607,6 +4414,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4619,6 +4427,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -4711,6 +4520,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4723,6 +4533,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -4815,6 +4626,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4827,6 +4639,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -4906,6 +4719,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4918,6 +4732,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -4997,6 +4812,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -5009,6 +4825,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -5866,6 +5683,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 0,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to pods",
                                   "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell_1",
                                   "pattern": "Value #A",
@@ -5884,6 +5702,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 0,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to workloads",
                                   "linkUrl": "./d/a87fb0d919ec0ea5f6543124e16c42a5/k8s-resources-workloads-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell_1",
                                   "pattern": "Value #B",
@@ -5902,6 +5721,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -5920,6 +5740,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -5938,6 +5759,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -5956,6 +5778,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -5974,6 +5797,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #G",
@@ -5992,6 +5816,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to pods",
                                   "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell",
                                   "pattern": "namespace",
@@ -6285,6 +6110,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 0,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to pods",
                                   "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell_1",
                                   "pattern": "Value #A",
@@ -6303,6 +6129,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 0,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to workloads",
                                   "linkUrl": "./d/a87fb0d919ec0ea5f6543124e16c42a5/k8s-resources-workloads-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell_1",
                                   "pattern": "Value #B",
@@ -6321,6 +6148,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -6339,6 +6167,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -6357,6 +6186,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -6375,6 +6205,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -6393,6 +6224,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #G",
@@ -6411,6 +6243,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to pods",
                                   "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell",
                                   "pattern": "namespace",
@@ -6606,6 +6439,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -6624,6 +6458,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -6642,6 +6477,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -6660,6 +6496,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -6678,6 +6515,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -6696,6 +6534,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -6714,6 +6553,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to pods",
                                   "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell",
                                   "pattern": "namespace",
@@ -7376,7 +7216,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(irate(container_network_receive_packets_total{cluster=\"$cluster\", namespace=~\".+\"}[$__interval])) by (namespace)",
+                                  "expr": "sum(irate(container_network_transmit_packets_total{cluster=\"$cluster\", namespace=~\".+\"}[$__interval])) by (namespace)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{namespace}}",
@@ -8301,6 +8141,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -8319,6 +8160,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -8337,6 +8179,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -8355,6 +8198,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -8373,6 +8217,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -8391,6 +8236,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                                   "pattern": "pod",
@@ -8701,6 +8547,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -8719,6 +8566,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -8737,6 +8585,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -8755,6 +8604,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -8773,6 +8623,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -8791,6 +8642,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -8809,6 +8661,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #G",
@@ -8827,6 +8680,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #H",
@@ -8845,6 +8699,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                                   "pattern": "pod",
@@ -9049,6 +8904,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -9067,6 +8923,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -9085,6 +8942,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -9103,6 +8961,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -9121,6 +8980,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -9139,6 +8999,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -9157,6 +9018,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to pods",
                                   "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                                   "pattern": "pod",
@@ -9623,7 +9485,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(irate(container_network_receive_packets_total{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__interval])) by (pod)",
+                                  "expr": "sum(irate(container_network_transmit_packets_total{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__interval])) by (pod)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{pod}}",
@@ -10165,6 +10027,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -10183,6 +10046,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -10201,6 +10065,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -10219,6 +10084,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -10237,6 +10103,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -10255,6 +10122,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "pod",
@@ -10530,6 +10398,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -10548,6 +10417,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -10566,6 +10436,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -10584,6 +10455,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -10602,6 +10474,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -10620,6 +10493,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -10638,6 +10512,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #G",
@@ -10656,6 +10531,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #H",
@@ -10674,6 +10550,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "pod",
@@ -11250,6 +11127,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -11268,6 +11146,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -11286,6 +11165,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -11304,6 +11184,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -11322,6 +11203,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -11340,6 +11222,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "container",
@@ -11650,6 +11533,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -11668,6 +11552,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -11686,6 +11571,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -11704,6 +11590,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -11722,6 +11609,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -11740,6 +11628,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -11758,6 +11647,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #G",
@@ -11776,6 +11666,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #H",
@@ -11794,6 +11685,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "container",
@@ -12847,6 +12739,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -12865,6 +12758,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -12883,6 +12777,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -12901,6 +12796,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -12919,6 +12815,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -12937,6 +12834,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                                   "pattern": "pod",
@@ -13212,6 +13110,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -13230,6 +13129,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -13248,6 +13148,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -13266,6 +13167,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -13284,6 +13186,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -13302,6 +13205,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                                   "pattern": "pod",
@@ -13479,6 +13383,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -13497,6 +13402,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -13515,6 +13421,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -13533,6 +13440,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -13551,6 +13459,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -13569,6 +13478,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -13587,6 +13497,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                                   "pattern": "pod",
@@ -14880,6 +14791,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 0,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -14898,6 +14810,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -14916,6 +14829,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -14934,6 +14848,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -14952,6 +14867,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -14970,6 +14886,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -14988,6 +14905,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$__cell_2",
                                   "pattern": "workload",
@@ -15006,6 +14924,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "workload_type",
@@ -15325,6 +15244,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 0,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -15343,6 +15263,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -15361,6 +15282,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -15379,6 +15301,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -15397,6 +15320,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -15415,6 +15339,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -15433,6 +15358,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$__cell_2",
                                   "pattern": "workload",
@@ -15451,6 +15377,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "workload_type",
@@ -15637,6 +15564,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -15655,6 +15583,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -15673,6 +15602,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #C",
@@ -15691,6 +15621,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #D",
@@ -15709,6 +15640,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #E",
@@ -15727,6 +15659,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #F",
@@ -15745,6 +15678,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": true,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down to pods",
                                   "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$type",
                                   "pattern": "workload",
@@ -15763,6 +15697,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "workload_type",
@@ -17382,6 +17317,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17394,6 +17330,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -17473,6 +17410,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17485,6 +17423,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -17577,6 +17516,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17589,6 +17529,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -17681,6 +17622,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17693,6 +17635,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -17779,6 +17722,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17791,6 +17735,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -17890,6 +17835,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17904,6 +17850,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -17983,6 +17930,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17997,6 +17945,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -18089,6 +18038,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18103,6 +18053,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -18195,6 +18146,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18207,6 +18159,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -18286,6 +18239,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18298,6 +18252,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -18391,6 +18346,7 @@ items:
                           "datasource": "$datasource",
                           "description": "Pod lifecycle event generator",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18403,6 +18359,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -18482,6 +18439,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18494,6 +18452,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -18586,6 +18545,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18598,6 +18558,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -18690,6 +18651,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18702,6 +18664,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -18815,6 +18778,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18827,6 +18791,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -18919,6 +18884,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18931,6 +18897,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -19010,6 +18977,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -19022,6 +18990,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -19101,6 +19070,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -19113,6 +19083,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -19662,6 +19633,9 @@ items:
                   "id": 5,
                   "lines": true,
                   "linewidth": 1,
+                  "links": [
+
+                  ],
                   "minSpan": 24,
                   "nullPointMode": "null as zero",
                   "renderer": "flot",
@@ -19910,6 +19884,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -19927,6 +19902,7 @@ items:
                       "min": false,
                       "rightSide": false,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": false
                   },
@@ -20009,6 +19985,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -20026,6 +20003,7 @@ items:
                       "min": false,
                       "rightSide": false,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": false
                   },
@@ -20119,6 +20097,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -20136,6 +20115,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -20218,6 +20198,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -20235,6 +20216,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -20337,6 +20319,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -20354,6 +20337,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -20436,6 +20420,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -20453,6 +20438,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -20777,6 +20763,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -20794,6 +20781,7 @@ items:
                       "min": false,
                       "rightSide": true,
                       "show": true,
+                      "sideWidth": null,
                       "sort": "current",
                       "sortDesc": true,
                       "total": false,
@@ -20878,6 +20866,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -20895,6 +20884,7 @@ items:
                       "min": false,
                       "rightSide": true,
                       "show": true,
+                      "sideWidth": null,
                       "sort": "current",
                       "sortDesc": true,
                       "total": false,
@@ -21025,6 +21015,9 @@ items:
                   "id": 5,
                   "lines": true,
                   "linewidth": 1,
+                  "links": [
+
+                  ],
                   "minSpan": 24,
                   "nullPointMode": "null as zero",
                   "renderer": "flot",
@@ -21317,6 +21310,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21334,6 +21328,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "sort": "current",
                               "sortDesc": true,
                               "total": false,
@@ -21418,6 +21413,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21435,6 +21431,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "sort": "current",
                               "sortDesc": true,
                               "total": false,
@@ -21549,6 +21546,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -21566,6 +21564,7 @@ items:
                       "min": false,
                       "rightSide": false,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": false
                   },
@@ -21648,6 +21647,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -21665,6 +21665,7 @@ items:
                       "min": false,
                       "rightSide": false,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": false
                   },
@@ -21758,6 +21759,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21775,6 +21777,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -21857,6 +21860,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21874,6 +21878,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -21976,6 +21981,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21993,6 +21999,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -22075,6 +22082,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -22092,6 +22100,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -24347,6 +24356,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24359,6 +24369,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -24439,6 +24450,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 0,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24451,6 +24463,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -24564,6 +24577,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24576,6 +24590,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -24773,6 +24788,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 0,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24785,6 +24801,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -24888,6 +24905,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24900,6 +24918,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -25006,6 +25025,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 0,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -25018,6 +25038,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -25098,6 +25119,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 0,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -25110,6 +25132,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -25318,6 +25341,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -25330,6 +25354,7 @@ items:
                               "min": true,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -25513,6 +25538,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -25525,6 +25551,7 @@ items:
                               "min": true,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -26174,6 +26201,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -26191,6 +26219,7 @@ items:
                       "min": false,
                       "rightSide": false,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": false
                   },
@@ -26273,6 +26302,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -26290,6 +26320,7 @@ items:
                       "min": false,
                       "rightSide": false,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": false
                   },
@@ -26383,6 +26414,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -26400,6 +26432,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -26482,6 +26515,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -26499,6 +26533,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -26601,6 +26636,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -26618,6 +26654,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -26700,6 +26737,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -26717,6 +26755,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27049,6 +27088,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27061,6 +27101,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27140,6 +27181,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27152,6 +27194,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27244,6 +27287,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27256,6 +27300,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27348,6 +27393,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27360,6 +27406,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27440,6 +27487,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27452,6 +27500,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27531,6 +27580,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27543,6 +27593,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27622,6 +27673,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27634,6 +27686,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27726,6 +27779,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27738,6 +27792,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27817,6 +27872,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27829,6 +27885,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -27921,6 +27978,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27933,6 +27991,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -28012,6 +28071,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -28024,6 +28084,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -28116,6 +28177,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -28128,6 +28190,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -28207,6 +28270,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -28219,6 +28283,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -28298,6 +28363,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -28310,6 +28376,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -28389,6 +28456,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -28401,6 +28469,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -28709,6 +28778,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #A",
@@ -28727,6 +28797,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "Value #B",
@@ -28745,6 +28816,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "instance",
@@ -28763,6 +28835,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "job",
@@ -28781,6 +28854,7 @@ items:
                                   "dateFormat": "YYYY-MM-DD HH:mm:ss",
                                   "decimals": 2,
                                   "link": false,
+                                  "linkTargetBlank": false,
                                   "linkTooltip": "Drill down",
                                   "linkUrl": "",
                                   "pattern": "version",
@@ -28833,7 +28907,7 @@ items:
                           "timeShift": null,
                           "title": "Prometheus Stats",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -28932,7 +29006,7 @@ items:
                           "timeShift": null,
                           "title": "Target Sync",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29018,7 +29092,7 @@ items:
                           "timeShift": null,
                           "title": "Targets",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29116,7 +29190,7 @@ items:
                           "timeShift": null,
                           "title": "Average Scrape Interval Duration",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29226,7 +29300,7 @@ items:
                           "timeShift": null,
                           "title": "Scrape failures",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29312,7 +29386,7 @@ items:
                           "timeShift": null,
                           "title": "Appended Samples",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29410,7 +29484,7 @@ items:
                           "timeShift": null,
                           "title": "Head Series",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29496,7 +29570,7 @@ items:
                           "timeShift": null,
                           "title": "Head Chunks",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29594,7 +29668,7 @@ items:
                           "timeShift": null,
                           "title": "Query Rate",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29680,7 +29754,7 @@ items:
                           "timeShift": null,
                           "title": "Stage Duration",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29746,7 +29820,7 @@ items:
                       "type": "datasource"
                   },
                   {
-                      "allValue": null,
+                      "allValue": ".+",
                       "current": {
                           "selected": true,
                           "text": "All",
@@ -29774,7 +29848,7 @@ items:
                       "useTags": false
                   },
                   {
-                      "allValue": null,
+                      "allValue": ".+",
                       "current": {
                           "selected": true,
                           "text": "All",
@@ -29963,6 +30037,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -29975,6 +30050,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -30054,6 +30130,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30066,6 +30143,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -30158,6 +30236,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30170,6 +30249,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -30249,6 +30329,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30261,6 +30342,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -30353,6 +30435,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30365,6 +30448,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -30465,6 +30549,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30477,6 +30562,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -30569,6 +30655,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30581,6 +30668,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -30673,6 +30761,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30685,6 +30774,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -30764,6 +30854,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30776,6 +30867,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -30855,6 +30947,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30867,6 +30960,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -31158,6 +31252,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31170,6 +31265,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -31270,6 +31366,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31282,6 +31379,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -31395,6 +31493,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31407,6 +31506,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -31507,6 +31607,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31519,6 +31620,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -31611,6 +31713,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31623,6 +31726,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": true
                           },
@@ -31715,6 +31819,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31727,6 +31832,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -31806,6 +31912,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31818,6 +31925,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -31897,6 +32005,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31909,6 +32018,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -32728,6 +32838,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -32740,6 +32851,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -33050,6 +33162,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -33067,6 +33180,7 @@ items:
                       "min": false,
                       "rightSide": true,
                       "show": true,
+                      "sideWidth": null,
                       "sort": "current",
                       "sortDesc": true,
                       "total": false,
@@ -33151,6 +33265,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -33168,6 +33283,7 @@ items:
                       "min": false,
                       "rightSide": true,
                       "show": true,
+                      "sideWidth": null,
                       "sort": "current",
                       "sortDesc": true,
                       "total": false,
@@ -33263,6 +33379,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33280,6 +33397,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "sort": "current",
                               "sortDesc": true,
                               "total": false,
@@ -33364,6 +33482,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33381,6 +33500,7 @@ items:
                               "min": false,
                               "rightSide": true,
                               "show": true,
+                              "sideWidth": null,
                               "sort": "current",
                               "sortDesc": true,
                               "total": false,
@@ -33495,6 +33615,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -33512,6 +33633,7 @@ items:
                       "min": false,
                       "rightSide": false,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": false
                   },
@@ -33594,6 +33716,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -33611,6 +33734,7 @@ items:
                       "min": false,
                       "rightSide": false,
                       "show": true,
+                      "sideWidth": null,
                       "total": false,
                       "values": false
                   },
@@ -33704,6 +33828,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33721,6 +33846,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -33803,6 +33929,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33820,6 +33947,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -33922,6 +34050,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33939,6 +34068,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
@@ -34021,6 +34151,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -34038,6 +34169,7 @@ items:
                               "min": false,
                               "rightSide": false,
                               "show": true,
+                              "sideWidth": null,
                               "total": false,
                               "values": false
                           },
