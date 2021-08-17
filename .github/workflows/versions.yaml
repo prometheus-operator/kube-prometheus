@@ -35,8 +35,8 @@ jobs:
         make generate
 
         # Reset jsonnetfile.lock.json if no dependencies were updated
-        changedFiles=$(git diff --name-only | grep -v 'jsonnetfile.lock.json')
-        if [[ $changedFiles == "" ]]; then
+        changedFiles=$(git diff --name-only | grep -v 'jsonnetfile.lock.json' | wc -l)
+        if [[ "$changedFiles" -eq 0 ]]; then
           git checkout -- jsonnetfile.lock.json;
         fi
     - name: Create Pull Request
