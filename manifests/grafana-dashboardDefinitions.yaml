@@ -144,6 +144,7 @@ items:
                           "decimals": 3,
                           "description": "How much error budget is left looking at our 0.990% availability gurantees?",
                           "fill": 10,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -338,6 +339,7 @@ items:
                           "datasource": "$datasource",
                           "description": "How many read requests (LIST,GET) per second do the apiservers get by code?",
                           "fill": 10,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -446,6 +448,7 @@ items:
                           "datasource": "$datasource",
                           "description": "How many percent of read requests (LIST,GET) per second are returned with errors (5xx)?",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -539,6 +542,7 @@ items:
                           "datasource": "$datasource",
                           "description": "How many seconds is the 99th percentile for reading (LIST|GET) a given resource?",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -731,6 +735,7 @@ items:
                           "datasource": "$datasource",
                           "description": "How many write requests (POST|PUT|PATCH|DELETE) per second do the apiservers get by code?",
                           "fill": 10,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -839,6 +844,7 @@ items:
                           "datasource": "$datasource",
                           "description": "How many percent of write requests (POST|PUT|PATCH|DELETE) per second are returned with errors (5xx)?",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -932,6 +938,7 @@ items:
                           "datasource": "$datasource",
                           "description": "How many seconds is the 99th percentile for writing (POST|PUT|PATCH|DELETE) a given resource?",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -1037,6 +1044,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -1129,6 +1137,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -1221,6 +1230,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -1326,6 +1336,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -1418,6 +1429,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -1510,6 +1522,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -1780,6 +1793,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -1882,6 +1896,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -2325,6 +2340,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -2427,6 +2443,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -2559,6 +2576,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 24,
@@ -2659,6 +2677,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 24,
@@ -2770,6 +2789,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -2870,6 +2890,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -2990,6 +3011,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3090,6 +3112,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3190,6 +3213,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3294,6 +3318,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 24,
@@ -3668,6 +3693,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -3773,6 +3799,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -3878,6 +3905,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -3983,6 +4011,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4096,6 +4125,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4201,6 +4231,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4306,6 +4337,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4398,6 +4430,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -4490,6 +4523,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -6895,7 +6929,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(irate(container_network_receive_packets_total{cluster=\"$cluster\", namespace=~\".+\"}[$__interval])) by (namespace)",
+                                  "expr": "sum(irate(container_network_transmit_packets_total{cluster=\"$cluster\", namespace=~\".+\"}[$__interval])) by (namespace)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{namespace}}",
@@ -9138,7 +9172,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(irate(container_network_receive_packets_total{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__interval])) by (pod)",
+                                  "expr": "sum(irate(container_network_transmit_packets_total{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__interval])) by (pod)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{pod}}",
@@ -16978,6 +17012,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17070,6 +17105,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17175,6 +17211,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17280,6 +17317,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17379,6 +17417,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17491,6 +17530,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17585,6 +17625,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17692,6 +17733,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17799,6 +17841,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17891,6 +17934,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -17997,6 +18041,7 @@ items:
                           "datasource": "$datasource",
                           "description": "Pod lifecycle event generator",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18089,6 +18134,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18194,6 +18240,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18299,6 +18346,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18425,6 +18473,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18530,6 +18579,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18622,6 +18672,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -18714,6 +18765,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -19527,6 +19579,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -19627,6 +19680,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -19738,6 +19792,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -19838,6 +19893,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -19958,6 +20014,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -20058,6 +20115,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -20400,6 +20458,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -20502,6 +20561,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -20945,6 +21005,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21047,6 +21108,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21179,6 +21241,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -21279,6 +21342,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -21390,6 +21454,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21490,6 +21555,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21610,6 +21676,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -21710,6 +21777,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -23983,6 +24051,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24076,6 +24145,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 0,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24202,6 +24272,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24412,6 +24483,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 0,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24528,6 +24600,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24647,6 +24720,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 0,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24740,6 +24814,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 0,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -24961,6 +25036,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -25157,6 +25233,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -25819,6 +25896,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -25919,6 +25997,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -26030,6 +26109,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -26130,6 +26210,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -26250,6 +26331,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -26350,6 +26432,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 10,
                               "w": 12,
@@ -26700,6 +26783,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -26792,6 +26876,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -26897,6 +26982,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27002,6 +27088,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27095,6 +27182,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27187,6 +27275,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27279,6 +27368,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27384,6 +27474,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27476,6 +27567,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27581,6 +27673,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27673,6 +27766,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27778,6 +27872,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27870,6 +27965,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -27962,6 +28058,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -28054,6 +28151,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -28504,7 +28602,7 @@ items:
                           "timeShift": null,
                           "title": "Prometheus Stats",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -28603,7 +28701,7 @@ items:
                           "timeShift": null,
                           "title": "Target Sync",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -28689,7 +28787,7 @@ items:
                           "timeShift": null,
                           "title": "Targets",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -28787,7 +28885,7 @@ items:
                           "timeShift": null,
                           "title": "Average Scrape Interval Duration",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -28897,7 +28995,7 @@ items:
                           "timeShift": null,
                           "title": "Scrape failures",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -28983,7 +29081,7 @@ items:
                           "timeShift": null,
                           "title": "Appended Samples",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29081,7 +29179,7 @@ items:
                           "timeShift": null,
                           "title": "Head Series",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29167,7 +29265,7 @@ items:
                           "timeShift": null,
                           "title": "Head Chunks",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29265,7 +29363,7 @@ items:
                           "timeShift": null,
                           "title": "Query Rate",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29351,7 +29449,7 @@ items:
                           "timeShift": null,
                           "title": "Stage Duration",
                           "tooltip": {
-                              "shared": true,
+                              "shared": false,
                               "sort": 0,
                               "value_type": "individual"
                           },
@@ -29417,7 +29515,7 @@ items:
                       "type": "datasource"
                   },
                   {
-                      "allValue": null,
+                      "allValue": ".+",
                       "current": {
                           "selected": true,
                           "text": "All",
@@ -29445,7 +29543,7 @@ items:
                       "useTags": false
                   },
                   {
-                      "allValue": null,
+                      "allValue": ".+",
                       "current": {
                           "selected": true,
                           "text": "All",
@@ -29634,6 +29732,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -29726,6 +29825,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -29831,6 +29931,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -29923,6 +30024,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30028,6 +30130,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30141,6 +30244,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30246,6 +30350,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30351,6 +30456,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30443,6 +30549,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30535,6 +30642,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30839,6 +30947,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -30952,6 +31061,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31078,6 +31188,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31191,6 +31302,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31296,6 +31408,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31401,6 +31514,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31493,6 +31607,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -31585,6 +31700,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -32417,6 +32533,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 1,
+                          "fillGradient": 0,
                           "gridPos": {
 
                           },
@@ -32740,6 +32857,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -32842,6 +32960,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -32955,6 +33074,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33057,6 +33177,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33189,6 +33310,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -33289,6 +33411,7 @@ items:
                   "dashes": false,
                   "datasource": "$datasource",
                   "fill": 2,
+                  "fillGradient": 0,
                   "gridPos": {
                       "h": 9,
                       "w": 12,
@@ -33400,6 +33523,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33500,6 +33624,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33620,6 +33745,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
@@ -33720,6 +33846,7 @@ items:
                           "dashes": false,
                           "datasource": "$datasource",
                           "fill": 2,
+                          "fillGradient": 0,
                           "gridPos": {
                               "h": 9,
                               "w": 12,
