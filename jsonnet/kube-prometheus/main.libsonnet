@@ -43,7 +43,7 @@ local utils = import './lib/utils.libsonnet';
         kubeStateMetrics: 'k8s.gcr.io/kube-state-metrics/kube-state-metrics:v' + $.values.common.versions.kubeStateMetrics,
         nodeExporter: 'quay.io/prometheus/node-exporter:v' + $.values.common.versions.nodeExporter,
         prometheus: 'quay.io/prometheus/prometheus:v' + $.values.common.versions.prometheus,
-        prometheusAdapter: 'directxman12/k8s-prometheus-adapter:v' + $.values.common.versions.prometheusAdapter,
+        prometheusAdapter: 'k8s.gcr.io/prometheus-adapter/prometheus-adapter:v' + $.values.common.versions.prometheusAdapter,
         prometheusOperator: 'quay.io/prometheus-operator/prometheus-operator:v' + $.values.common.versions.prometheusOperator,
         prometheusOperatorReloader: 'quay.io/prometheus-operator/prometheus-config-reloader:v' + $.values.common.versions.prometheusOperator,
         kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy:v' + $.values.common.versions.kubeRbacProxy,
