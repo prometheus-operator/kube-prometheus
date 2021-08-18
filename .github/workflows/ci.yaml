@@ -52,7 +52,6 @@ jobs:
     strategy:
       matrix:
         kind-image:
-          - 'kindest/node:v1.20.7'
           - 'kindest/node:v1.21.1'
           - 'kindest/node:v1.22.0'
     steps:
