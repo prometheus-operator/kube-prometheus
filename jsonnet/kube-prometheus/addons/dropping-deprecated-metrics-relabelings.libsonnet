@@ -32,7 +32,7 @@
   // Drop all etcd metrics which are deprecated in kubernetes.
   {
     sourceLabels: ['__name__'],
-    regex: 'etcd_(helper_cache_hit_count|helper_cache_miss_count|helper_cache_entry_count|request_cache_get_latencies_summary|request_cache_add_latencies_summary|request_latencies_summary)',
+    regex: 'etcd_(helper_cache_hit_count|helper_cache_miss_count|helper_cache_entry_count|object_counts|request_cache_get_latencies_summary|request_cache_add_latencies_summary|request_latencies_summary)',
     action: 'drop',
   },
   // Drop all transformation metrics which are deprecated in kubernetes.
