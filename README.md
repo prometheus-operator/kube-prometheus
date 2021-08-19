@@ -366,7 +366,8 @@ A common example is that not all Kubernetes clusters are created exactly the sam
 * bootkube
 * eks
 * gke
-* kops-coredns
+* kops
+* kops_coredns
 * kubeadm
 * kubespray
 
