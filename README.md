@@ -108,15 +108,15 @@ The following versions are supported and work as we test against these versions 
 
 | kube-prometheus stack                                                                    | Kubernetes 1.18 | Kubernetes 1.19 | Kubernetes 1.20 | Kubernetes 1.21 | Kubernetes 1.22 |
 |------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| [`release-0.5`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.5) | ✔               | ✗               | ✗               | ✗               | ✗               |
 | [`release-0.6`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.6) | ✗               | ✔               | ✗               | ✗               | ✗               |
 | [`release-0.7`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.7) | ✗               | ✔               | ✔               | ✗               | ✗               |
 | [`release-0.8`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.8) | ✗               | ✗               | ✔               | ✔               | ✗               |
+| [`release-0.9`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.9) | ✗               | ✗               | ✗               | ✔               | ✔               |
 | [`HEAD`](https://github.com/prometheus-operator/kube-prometheus/tree/main)               | ✗               | ✗               | ✗               | ✔               | ✔               |
 
 ## Quickstart
 
->Note: For versions before Kubernetes v1.20.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
+>Note: For versions before Kubernetes v1.21.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
 
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 
