@@ -758,7 +758,7 @@ resources. One driver for more resource needs, is a high number of
 namespaces. There may be others.
 
 kube-state-metrics resource allocation is managed by
-[addon-resizer](https://github.com/kubernetes/autoscaler/tree/main/addon-resizer/nanny)
+[addon-resizer](https://github.com/kubernetes/autoscaler/tree/master/addon-resizer/nanny)
 You can control it's parameters by setting variables in the
 config. They default to:
 
