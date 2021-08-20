@@ -17,7 +17,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "release-3.5"
+      "version": "main"
     },
     {
       "source": {
@@ -26,7 +26,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "release-0.50"
+      "version": "master"
     },
     {
       "source": {
@@ -35,7 +35,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "release-0.50",
+      "version": "master",
       "name": "prometheus-operator-mixin"
     },
     {
@@ -45,7 +45,7 @@
           "subdir": ""
         }
       },
-      "version": "release-0.9"
+      "version": "master"
     },
     {
       "source": {
@@ -54,7 +54,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "release-2.1"
+      "version": "master"
     },
     {
       "source": {
@@ -63,7 +63,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "release-2.1"
+      "version": "master"
     },
     {
       "source": {
@@ -72,7 +72,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "832909dd257eb368cf83363ffcae3ab84cb4bcb1"
+      "version": "master"
     },
     {
       "source": {
@@ -81,7 +81,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "751ca03faddc9c64089c41d0da370a3a0b477742",
+      "version": "main",
       "name": "prometheus"
     },
     {
@@ -91,7 +91,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "b408b522bc653d014e53035e59fa394cc1edd762",
+      "version": "main",
       "name": "alertmanager"
     },
     {
@@ -101,7 +101,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "release-0.22",
+      "version": "main",
       "name": "thanos-mixin"
     }
   ],
