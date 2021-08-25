@@ -123,7 +123,7 @@ spec:
           name: grafana-dashboard-workload-total
           readOnly: false
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       securityContext:
         fsGroup: 65534
         runAsNonRoot: true
