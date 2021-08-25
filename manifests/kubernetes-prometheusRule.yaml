@@ -573,7 +573,7 @@ spec:
         ) > 0.95
       for: 15m
       labels:
-        severity: warning
+        severity: info
     - alert: KubeNodeReadinessFlapping
       annotations:
         description: The readiness status of node {{ $labels.node }} has changed {{ $value }} times in the last 15 minutes.
