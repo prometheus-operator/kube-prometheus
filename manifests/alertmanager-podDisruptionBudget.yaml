@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: alert-router
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.22.2
+    app.kubernetes.io/version: 0.23.0
   name: alertmanager-main
   namespace: monitoring
 spec:
