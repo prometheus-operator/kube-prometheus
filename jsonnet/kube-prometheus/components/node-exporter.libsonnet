@@ -28,6 +28,7 @@ local defaults = {
     ruleLabels: {},
     _config: {
       nodeExporterSelector: 'job="' + defaults.name + '"',
+      fsSpaceFillingUpWarningThreshold: 20,
       fsSpaceFillingUpCriticalThreshold: 15,
       diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/node/%s',
