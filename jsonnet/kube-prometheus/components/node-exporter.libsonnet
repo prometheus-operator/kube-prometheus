@@ -28,6 +28,11 @@ local defaults = {
     ruleLabels: {},
     _config: {
       nodeExporterSelector: 'job="' + defaults.name + '"',
+      // Adjust NodeFilesystemSpaceFillingUp warning and critical thresholds according to the following default kubelet
+      // GC values,
+      // imageGCLowThresholdPercent: 80
+      // imageGCHighThresholdPercent: 85
+      // See https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/ for more details.
       fsSpaceFillingUpWarningThreshold: 20,
       fsSpaceFillingUpCriticalThreshold: 15,
       diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
