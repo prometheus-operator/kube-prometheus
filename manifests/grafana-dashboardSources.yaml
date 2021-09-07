@@ -6,6 +6,7 @@ data:
         "providers": [
             {
                 "folder": "Default",
+                "folderUid": "",
                 "name": "0",
                 "options": {
                     "path": "/grafana-dashboard-definitions/0"
