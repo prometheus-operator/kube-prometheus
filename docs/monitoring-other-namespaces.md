@@ -20,7 +20,7 @@ This is done in the variable `prometheus.roleSpecificNamespaces`. You usually se
 
 Example to create the needed `Role` and `RoleBinding` for the Namespace `foo` : 
 ```
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+local kp = (import 'kube-prometheus/main.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
 
