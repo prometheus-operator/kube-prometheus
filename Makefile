@@ -13,8 +13,6 @@ TOOLING=$(EMBEDMD_BIN) $(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETLIN
 
 JSONNETFMT_ARGS=-n 2 --max-blank-lines 2 --string-style s --comment-style s
 
-KUBE_VERSION?="1.20.0"
-
 all: generate fmt test
 
 .PHONY: clean
@@ -43,7 +41,16 @@ update: $(JB_BIN)
 	$(JB_BIN) update
 
 .PHONY: validate
-validate: crdschemas manifests $(KUBECONFORM_BIN)
+validate: validate-1.21 validate-1.22
+
+validate-1.21:
+	KUBE_VERSION=1.21.1 $(MAKE) kubeconform
+
+validate-1.22:
+	KUBE_VERSION=1.22.0 $(MAKE) kubeconform
+
+.PHONY: kubeconform
+kubeconform: crdschemas manifests $(KUBECONFORM_BIN)
 	$(KUBECONFORM_BIN) -kubernetes-version $(KUBE_VERSION) -schema-location 'default' -schema-location 'crdschemas/{{ .ResourceKind }}.json' -skip CustomResourceDefinition manifests/
 
 .PHONY: fmt
