@@ -12,6 +12,7 @@ local defaults = {
     limits: { cpu: '250m', memory: '180Mi' },
   },
   listenAddress: '127.0.0.1',
+  filesystemIgnoredMountPoints: '^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
   port: 9100,
   commonLabels:: {
     'app.kubernetes.io/name': defaults.name,
