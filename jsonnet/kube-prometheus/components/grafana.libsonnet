@@ -68,8 +68,7 @@ function(params) {
     },
   },
 
-  // Add object only if user passes config and config is not empty
-  [if std.objectHas(params, 'config') && std.length(params.config) > 0 then 'config']: glib.grafana.config,
+  config: glib.grafana.config,
   service: glib.grafana.service,
   serviceAccount: glib.grafana.serviceAccount,
   deployment: glib.grafana.deployment,

@@ -15,6 +15,7 @@ resources:
 - ./manifests/blackbox-exporter-service.yaml
 - ./manifests/blackbox-exporter-serviceAccount.yaml
 - ./manifests/blackbox-exporter-serviceMonitor.yaml
+- ./manifests/grafana-config.yaml
 - ./manifests/grafana-dashboardDatasources.yaml
 - ./manifests/grafana-dashboardDefinitions.yaml
 - ./manifests/grafana-dashboardSources.yaml
