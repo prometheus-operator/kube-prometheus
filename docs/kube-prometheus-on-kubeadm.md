@@ -1,15 +1,22 @@
-<br>
-<div class="alert alert-info" role="alert">
-    <i class="fa fa-exclamation-triangle"></i><b> Note:</b> Starting with v0.12.0, Prometheus Operator requires use of Kubernetes v1.7.x and up.
-</div>
+---
+title: "Deploy to kubeadm"
+description: "Deploy kube-prometheus to Kubernets kubeadm."
+lead: "Deploy kube-prometheus to Kubernets kubeadm."
+date: 2021-03-08T23:04:32+01:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "kube"
+weight: 500
+toc: true
+---
 
-# Kube Prometheus on Kubeadm
-
-The [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/) tool is linked by Kubernetes as the offical way to deploy and manage self-hosted clusters. Kubeadm does a lot of heavy lifting by automatically configuring your Kubernetes cluster with some common options. This guide is intended to show you how to deploy Prometheus, Prometheus Operator and Kube Prometheus to get you started monitoring your cluster that was deployed with Kubeadm.
+The [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/) tool is linked by Kubernetes as the offical way to deploy and manage self-hosted clusters. kubeadm does a lot of heavy lifting by automatically configuring your Kubernetes cluster with some common options. This guide is intended to show you how to deploy Prometheus, Prometheus Operator and Kube Prometheus to get you started monitoring your cluster that was deployed with kubeadm.
 
 This guide assumes you have a basic understanding of how to use the functionality the Prometheus Operator implements. If you haven't yet, we recommend reading through the [getting started guide](https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md) as well as the [alerting guide](https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/alerting.md).
 
-## Kubeadm Pre-requisites
+## kubeadm Pre-requisites
 
 This guide assumes you have some familiarity with `kubeadm` or at least have deployed a cluster using `kubeadm`. By default, `kubeadm` does not expose two of the services that we will be monitoring. Therefore, in order to get the most out of the `kube-prometheus` package, we need to make some quick tweaks to the Kubernetes cluster. Since we will be monitoring the `kube-controller-manager` and `kube-scheduler`, we must expose them to the cluster.
 

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: exporter
+    app.kubernetes.io/name: blackbox-exporter
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.19.0
+  name: blackbox-exporter
+  namespace: monitoring
+spec:
+  ports:
+  - name: https
+    port: 9115
+    targetPort: https
+  - name: probe
+    port: 19115
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: exporter
+    app.kubernetes.io/name: blackbox-exporter
+    app.kubernetes.io/part-of: kube-prometheus

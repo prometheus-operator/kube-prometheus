@@ -14,10 +14,12 @@ local ingress(name, namespace, rules) = {
 };
 
 local kp =
-  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/main.libsonnet') +
   {
-    _config+:: {
-      namespace: 'monitoring',
+    values+:: {
+      common+: {
+        namespace: 'monitoring',
+      },
       grafana+:: {
         config+: {
           sections+: {
@@ -47,15 +49,19 @@ local kp =
     ingress+:: {
       'alertmanager-main': ingress(
         'alertmanager-main',
-        $._config.namespace,
+        $.values.common.namespace,
         [{
           host: 'alertmanager.example.com',
           http: {
             paths: [{
+              path: '/',
+              pathType: 'Prefix',
               backend: {
                 service: {
                   name: 'alertmanager-main',
-                  port: 'web',
+                  port: {
+                    name: 'web',
+                  },
                 },
               },
             }],
@@ -64,15 +70,19 @@ local kp =
       ),
       grafana: ingress(
         'grafana',
-        $._config.namespace,
+        $.values.common.namespace,
         [{
           host: 'grafana.example.com',
           http: {
             paths: [{
+              path: '/',
+              pathType: 'Prefix',
               backend: {
                 service: {
                   name: 'grafana',
-                  port: 'http',
+                  port: {
+                    name: 'http',
+                  },
                 },
               },
             }],
@@ -81,15 +91,19 @@ local kp =
       ),
       'prometheus-k8s': ingress(
         'prometheus-k8s',
-        $._config.namespace,
+        $.values.common.namespace,
         [{
           host: 'prometheus.example.com',
           http: {
             paths: [{
+              path: '/',
+              pathType: 'Prefix',
               backend: {
                 service: {
                   name: 'prometheus-k8s',
-                  port: 'web',
+                  port: {
+                    name: 'web',
+                  },
                 },
               },
             }],
@@ -105,7 +119,7 @@ local kp =
         kind: 'Secret',
         metadata: {
           name: 'basic-auth',
-          namespace: $._config.namespace,
+          namespace: $.values.common.namespace,
         },
         data: { auth: std.base64(importstr 'auth') },
         type: 'Opaque',

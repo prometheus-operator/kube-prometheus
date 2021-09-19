@@ -1,4 +1,17 @@
-# Monitoring other Kubernetes Namespaces
+---
+title: "Monitoring other Namespaces"
+description: "This guide will help you monitor applications in other Namespaces."
+lead: "This guide will help you monitor applications in other Namespaces."
+date: 2021-03-08T23:04:32+01:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "kube"
+weight: 640
+toc: true
+---
+
 This guide will help you monitor applications in other Namespaces. By default the RBAC rules are only enabled for the `Default` and `kube-system` Namespace during Install.
 
 # Setup
@@ -7,7 +20,7 @@ This is done in the variable `prometheus.roleSpecificNamespaces`. You usually se
 
 Example to create the needed `Role` and `RoleBinding` for the Namespace `foo` : 
 ```
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
+local kp = (import 'kube-prometheus/main.libsonnet') + {
   _config+:: {
     namespace: 'monitoring',
 

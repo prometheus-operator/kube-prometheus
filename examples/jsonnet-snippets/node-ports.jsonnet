@@ -1,2 +1,2 @@
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-node-ports.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/addons/node-ports.libsonnet')
