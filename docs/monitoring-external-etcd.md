@@ -1,5 +1,18 @@
-# Monitoring external etcd
-This guide will help you monitor an external etcd cluster. When the etcd cluster is not hosted inside Kubernetes.
+---
+title: "Monitoring external etcd"
+description: "This guide will help you monitor an external etcd cluster."
+lead: "This guide will help you monitor an external etcd cluster."
+date: 2021-03-08T23:04:32+01:00
+draft: false
+images: []
+menu:
+  docs:
+    parent: "kube"
+weight: 640
+toc: true
+---
+
+When the etcd cluster is not hosted inside Kubernetes.
 This is often the case with Kubernetes setups. This approach has been tested with kube-aws but the same principals apply to other tools.
 
 Note that [etcd.jsonnet](../examples/etcd.jsonnet) & [kube-prometheus-static-etcd.libsonnet](../jsonnet/kube-prometheus/kube-prometheus-static-etcd.libsonnet) (which are described by a section of the [Readme](../README.md#static-etcd-configuration)) do the following:

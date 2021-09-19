@@ -1,8 +1,9 @@
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
-
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/addons/static-etcd.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
     etcd+:: {
       ips: ['127.0.0.1'],
       clientCA: importstr 'etcd-client-ca.crt',

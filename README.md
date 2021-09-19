@@ -1,5 +1,9 @@
 # kube-prometheus
 
+[![Build Status](https://github.com/prometheus-operator/kube-prometheus/workflows/ci/badge.svg)](https://github.com/prometheus-operator/kube-prometheus/actions)
+[![Slack](https://img.shields.io/badge/join%20slack-%23prometheus--operator-brightgreen.svg)](http://slack.k8s.io/)
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/prometheus-operator/kube-prometheus)
+
 > Note that everything is experimental and may change significantly at any time.
 
 This repository collects Kubernetes manifests, [Grafana](http://grafana.com/) dashboards, and [Prometheus rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with [Prometheus](https://prometheus.io/) using the Prometheus Operator.
@@ -18,9 +22,14 @@ Components included in this package:
 
 This stack is meant for cluster monitoring, so it is pre-configured to collect metrics from all Kubernetes components. In addition to that it delivers a default set of dashboards and alerting rules. Many of the useful dashboards and alerts come from the [kubernetes-mixin project](https://github.com/kubernetes-monitoring/kubernetes-mixin), similar to this project it provides composable jsonnet as a library for users to customize to their needs.
 
+## Warning
+
+If you are migrating from `release-0.7` branch or earlier please read [what changed and how to migrate in our guide](https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/migration-guide.md).
+
 ## Table of contents
 
 - [kube-prometheus](#kube-prometheus)
+  - [Warning](#warning)
   - [Table of contents](#table-of-contents)
   - [Prerequisites](#prerequisites)
     - [minikube](#minikube)
@@ -53,13 +62,17 @@ This stack is meant for cluster monitoring, so it is pre-configured to collect m
     - [Stripping container resource limits](#stripping-container-resource-limits)
     - [Customizing Prometheus alerting/recording rules and Grafana dashboards](#customizing-prometheus-alertingrecording-rules-and-grafana-dashboards)
     - [Exposing Prometheus/Alermanager/Grafana via Ingress](#exposing-prometheusalermanagergrafana-via-ingress)
+    - [Setting up a blackbox exporter](#setting-up-a-blackbox-exporter)
   - [Minikube Example](#minikube-example)
+  - [Continuous Delivery](#continuous-delivery)
   - [Troubleshooting](#troubleshooting)
     - [Error retrieving kubelet metrics](#error-retrieving-kubelet-metrics)
       - [Authentication problem](#authentication-problem)
       - [Authorization problem](#authorization-problem)
     - [kube-state-metrics resource usage](#kube-state-metrics-resource-usage)
+    - [Error retrieving kube-proxy metrics](#error-retrieving-kube-proxy-metrics)
   - [Contributing](#contributing)
+  - [License](#license)
 
 ## Prerequisites
 
@@ -78,7 +91,7 @@ This adapter is an Extension API Server and Kubernetes needs to be have this fea
 To try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
 
 ```shell
-$ minikube delete && minikube start --kubernetes-version=v1.19.0 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
+$ minikube delete && minikube start --kubernetes-version=v1.20.0 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0
 ```
 
 The kube-prometheus stack includes a resource metrics API server, so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:
@@ -93,19 +106,17 @@ $ minikube addons disable metrics-server
 
 The following versions are supported and work as we test against these versions in their respective branches. But note that other versions might work!
 
-| kube-prometheus stack | Kubernetes 1.14 | Kubernetes 1.15 | Kubernetes 1.16 | Kubernetes 1.17 | Kubernetes 1.18 | Kubernetes 1.19 |
-|-----------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| `release-0.3`         | ✔               | ✔               | ✔               | ✔               | ✗               | ✗               |
-| `release-0.4`         | ✗               | ✗               | ✔ (v1.16.5+)    | ✔               | ✗               | ✗               |
-| `release-0.5`         | ✗               | ✗               | ✗               | ✗               | ✔               | ✗               |
-| `release-0.6`         | ✗               | ✗               | ✗               | ✗               | ✔               | ✔               |
-| `HEAD`                | ✗               | ✗               | ✗               | ✗               | x               | ✔               |
-
-Note: Due to [two](https://github.com/kubernetes/kubernetes/issues/83778) [bugs](https://github.com/kubernetes/kubernetes/issues/86359) in Kubernetes v1.16.1, and prior to Kubernetes v1.16.5 the kube-prometheus release-0.4 branch only supports v1.16.5 and higher.  The `extension-apiserver-authentication-reader` role in the kube-system namespace can be manually edited to include list and watch permissions in order to workaround the second issue with Kubernetes v1.16.2 through v1.16.4.
+| kube-prometheus stack                                                                    | Kubernetes 1.18 | Kubernetes 1.19 | Kubernetes 1.20 | Kubernetes 1.21 | Kubernetes 1.22 |
+|------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
+| [`release-0.6`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.6) | ✗               | ✔               | ✗               | ✗               | ✗               |
+| [`release-0.7`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.7) | ✗               | ✔               | ✔               | ✗               | ✗               |
+| [`release-0.8`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.8) | ✗               | ✗               | ✔               | ✔               | ✗               |
+| [`release-0.9`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.9) | ✗               | ✗               | ✗               | ✔               | ✔               |
+| [`HEAD`](https://github.com/prometheus-operator/kube-prometheus/tree/main)               | ✗               | ✗               | ✗               | ✔               | ✔               |
 
 ## Quickstart
 
->Note: For versions before Kubernetes v1.19.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
+>Note: For versions before Kubernetes v1.21.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
 
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 
@@ -113,7 +124,7 @@ Though for a quickstart a compiled version of the Kubernetes [manifests](manifes
  * Create the monitoring stack using the config in the `manifests` directory:
 
 ```shell
-# Create the namespace and CRDs, and then wait for them to be availble before creating the remaining resources
+# Create the namespace and CRDs, and then wait for them to be available before creating the remaining resources
 kubectl create -f manifests/setup
 until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
 kubectl create -f manifests/
@@ -174,12 +185,15 @@ Install this library in your own project with [jsonnet-bundler](https://github.c
 $ mkdir my-kube-prometheus; cd my-kube-prometheus
 $ jb init  # Creates the initial/empty `jsonnetfile.json`
 # Install the kube-prometheus dependency
-$ jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.4 # Creates `vendor/` & `jsonnetfile.lock.json`, and fills in `jsonnetfile.json`
+$ jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.7 # Creates `vendor/` & `jsonnetfile.lock.json`, and fills in `jsonnetfile.json`
+
+$ wget https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/release-0.7/example.jsonnet -O example.jsonnet
+$ wget https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/release-0.7/build.sh -O build.sh
 ```
 
 > `jb` can be installed with `go get github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb`
 
-> An e.g. of how to install a given version of this library: `jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.4`
+> An e.g. of how to install a given version of this library: `jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.7`
 
 In order to update the kube-prometheus dependency, simply use the jsonnet-bundler update functionality:
 ```shell
@@ -190,7 +204,7 @@ $ jb update
 
 e.g. of how to compile the manifests: `./build.sh example.jsonnet`
 
-> before compiling, install `gojsontoyaml` tool with `go get github.com/brancz/gojsontoyaml`
+> before compiling, install `gojsontoyaml` tool with `go get github.com/brancz/gojsontoyaml` and `jsonnet` with `go get github.com/google/go-jsonnet/cmd/jsonnet`
 
 Here's [example.jsonnet](example.jsonnet):
 
@@ -199,33 +213,39 @@ Here's [example.jsonnet](example.jsonnet):
 [embedmd]:# (example.jsonnet)
 ```jsonnet
 local kp =
-  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/main.libsonnet') +
   // Uncomment the following imports to enable its patches
-  // (import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-managed-cluster.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-node-ports.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-thanos-sidecar.libsonnet') +
-  // (import 'kube-prometheus/kube-prometheus-custom-metrics.libsonnet') +
+  // (import 'kube-prometheus/addons/anti-affinity.libsonnet') +
+  // (import 'kube-prometheus/addons/managed-cluster.libsonnet') +
+  // (import 'kube-prometheus/addons/node-ports.libsonnet') +
+  // (import 'kube-prometheus/addons/static-etcd.libsonnet') +
+  // (import 'kube-prometheus/addons/custom-metrics.libsonnet') +
+  // (import 'kube-prometheus/addons/external-metrics.libsonnet') +
   {
-    _config+:: {
-      namespace: 'monitoring',
+    values+:: {
+      common+: {
+        namespace: 'monitoring',
+      },
     },
   };
 
-{ ['setup/0namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{ 'setup/0namespace-namespace': kp.kubePrometheus.namespace } +
 {
   ['setup/prometheus-operator-' + name]: kp.prometheusOperator[name]
-  for name in std.filter((function(name) name != 'serviceMonitor'), std.objectFields(kp.prometheusOperator))
+  for name in std.filter((function(name) name != 'serviceMonitor' && name != 'prometheusRule'), std.objectFields(kp.prometheusOperator))
 } +
-// serviceMonitor is separated so that it can be created after the CRDs are ready
+// serviceMonitor and prometheusRule are separated so that they can be created after the CRDs are ready
 { 'prometheus-operator-serviceMonitor': kp.prometheusOperator.serviceMonitor } +
-{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
-{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ 'prometheus-operator-prometheusRule': kp.prometheusOperator.prometheusRule } +
+{ 'kube-prometheus-prometheusRule': kp.kubePrometheus.prometheusRule } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
+{ ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
+{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) }
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
-{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
+{ ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) }
 ```
 
 And here's the [build.sh](build.sh) script (which uses `vendor/` to render all manifests in a json structure of `{filename: manifest-content}`):
@@ -266,7 +286,7 @@ The previous steps (compilation) has created a bunch of manifest files in the ma
 Now simply use `kubectl` to install Prometheus and Grafana as per your configuration:
 
 ```shell
-# Update the namespace and CRDs, and then wait for them to be availble before creating the remaining resources
+# Update the namespace and CRDs, and then wait for them to be available before creating the remaining resources
 $ kubectl apply -f manifests/setup
 $ kubectl apply -f manifests/
 ```
@@ -308,74 +328,22 @@ Once updated, just follow the instructions under "Compiling" and "Apply the kube
 
 Jsonnet has the concept of hidden fields. These are fields, that are not going to be rendered in a result. This is used to configure the kube-prometheus components in jsonnet. In the example jsonnet code of the above [Customizing Kube-Prometheus section](#customizing-kube-prometheus), you can see an example of this, where the `namespace` is being configured to be `monitoring`. In order to not override the whole object, use the `+::` construct of jsonnet, to merge objects, this way you can override individual settings, but retain all other settings and defaults.
 
-These are the available fields with their respective default values:
+The available fields and their default values can be seen in [main.libsonnet](jsonnet/kube-prometheus/main.libsonnet). Note that many of the fields get their default values from variables, and for example the version numbers are imported from [versions.json](jsonnet/kube-prometheus/versions.json).
+
+Configuration is mainly done in the `values` map. You can see this being used in the `example.jsonnet` to set the namespace to `monitoring`. This is done in the `common` field, which all other components take their default value from. See for example how Alertmanager is configured in `main.libsonnet`:
+
 ```
-{
-	_config+:: {
-    namespace: "default",
-
-    versions+:: {
-        alertmanager: "v0.17.0",
-        nodeExporter: "v0.18.1",
-        kubeStateMetrics: "v1.5.0",
-        kubeRbacProxy: "v0.4.1",
-        prometheusOperator: "v0.30.0",
-        prometheus: "v2.10.0",
-    },
-
-    imageRepos+:: {
-        prometheus: "quay.io/prometheus/prometheus",
-        alertmanager: "quay.io/prometheus/alertmanager",
-        kubeStateMetrics: "quay.io/coreos/kube-state-metrics",
-        kubeRbacProxy: "quay.io/coreos/kube-rbac-proxy",
-        nodeExporter: "quay.io/prometheus/node-exporter",
-        prometheusOperator: "quay.io/prometheus-operator/prometheus-operator",
-    },
-
-    prometheus+:: {
-        names: 'k8s',
-        replicas: 2,
-        rules: {},
-    },
-
-    alertmanager+:: {
+    alertmanager: {
       name: 'main',
-      config: |||
-        global:
-          resolve_timeout: 5m
-        route:
-          group_by: ['job']
-          group_wait: 30s
-          group_interval: 5m
-          repeat_interval: 12h
-          receiver: 'null'
-          routes:
-          - match:
-              alertname: Watchdog
-            receiver: 'null'
-        receivers:
-        - name: 'null'
-      |||,
-      replicas: 3,
+      // Use the namespace specified under values.common by default.
+      namespace: $.values.common.namespace,
+      version: $.values.common.versions.alertmanager,
+      image: $.values.common.images.alertmanager,
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
-
-    kubeStateMetrics+:: {
-      collectors: '',  // empty string gets a default set
-      scrapeInterval: '30s',
-      scrapeTimeout: '30s',
-
-      baseCPU: '100m',
-      baseMemory: '150Mi',
-    },
-
-    nodeExporter+:: {
-      port: 9100,
-    },
-	},
-}
 ```
 
-The grafana definition is located in a different project (https://github.com/brancz/kubernetes-grafana), but needed configuration can be customized from the same top level `_config` field. For example to allow anonymous access to grafana, add the following `_config` section:
+The grafana definition is located in a different project (https://github.com/brancz/kubernetes-grafana), but needed configuration can be customized from the same top level `values` field. For example to allow anonymous access to grafana, add the following `values` section:
 ```
       grafana+:: {
         config: { // http://docs.grafana.org/installation/configuration/
@@ -392,57 +360,28 @@ Jsonnet is a turing complete language, any logic can be reflected in it. It also
 
 ### Cluster Creation Tools
 
-A common example is that not all Kubernetes clusters are created exactly the same way, meaning the configuration to monitor them may be slightly different. For [kubeadm](examples/jsonnet-snippets/kubeadm.jsonnet), [bootkube](examples/jsonnet-snippets/bootkube.jsonnet), [kops](examples/jsonnet-snippets/kops.jsonnet) and [kubespray](examples/jsonnet-snippets/kubespray.jsonnet) clusters there are mixins available to easily configure these:
+A common example is that not all Kubernetes clusters are created exactly the same way, meaning the configuration to monitor them may be slightly different. For the following clusters there are mixins available to easily configure them:
 
-kubeadm:
+* aws
+* bootkube
+* eks
+* gke
+* kops-coredns
+* kubeadm
+* kubespray
 
-[embedmd]:# (examples/jsonnet-snippets/kubeadm.jsonnet)
+These mixins are selectable via the `platform` field of kubePrometheus:
+
+[embedmd]:# (examples/jsonnet-snippets/platform.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kubeadm.libsonnet')
-```
-
-bootkube:
-
-[embedmd]:# (examples/jsonnet-snippets/bootkube.jsonnet)
-```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-bootkube.libsonnet')
-```
-
-kops:
-
-[embedmd]:# (examples/jsonnet-snippets/kops.jsonnet)
-```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kops.libsonnet')
-```
-
-kops with CoreDNS:
-
-If your kops cluster is using CoreDNS, there is an additional mixin to import.
-
-[embedmd]:# (examples/jsonnet-snippets/kops-coredns.jsonnet)
-```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kops.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kops-coredns.libsonnet')
-```
-
-kubespray:
-
-[embedmd]:# (examples/jsonnet-snippets/kubespray.jsonnet)
-```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kubespray.libsonnet')
-```
-
-kube-aws:
-
-[embedmd]:# (examples/jsonnet-snippets/kube-aws.jsonnet)
-```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-kube-aws.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+{
+  values+:: {
+    common+: {
+      platform: 'example-platform',
+    },
+  },
+}
 ```
 
 ### Internal Registry
@@ -468,10 +407,12 @@ Then to generate manifests with `internal-registry.com/organization`, use the `w
 
 [embedmd]:# (examples/internal-registry.jsonnet)
 ```jsonnet
-local mixin = import 'kube-prometheus/kube-prometheus-config-mixins.libsonnet';
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local mixin = import 'kube-prometheus/addons/config-mixins.libsonnet';
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
 } + mixin.withImageRepository('internal-registry.com/organization');
 
@@ -490,8 +431,8 @@ Another mixin that may be useful for exploring the stack is to expose the UIs of
 
 [embedmd]:# (examples/jsonnet-snippets/node-ports.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-node-ports.libsonnet')
+(import 'kube-prometheus/main.libsonnet') +
+(import 'kube-prometheus/addons/node-ports.libsonnet')
 ```
 
 ### Prometheus Object Name
@@ -500,7 +441,7 @@ To give another customization example, the name of the `Prometheus` object provi
 
 [embedmd]:# (examples/prometheus-name-override.jsonnet)
 ```jsonnet
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
+((import 'kube-prometheus/main.libsonnet') + {
    prometheus+: {
      prometheus+: {
        metadata+: {
@@ -517,7 +458,7 @@ Standard Kubernetes manifests are all written using [ksonnet-lib](https://github
 
 [embedmd]:# (examples/ksonnet-example.jsonnet)
 ```jsonnet
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
+((import 'kube-prometheus/main.libsonnet') + {
    nodeExporter+: {
      daemonset+: {
        metadata+: {
@@ -530,12 +471,12 @@ Standard Kubernetes manifests are all written using [ksonnet-lib](https://github
 
 ### Alertmanager configuration
 
-The Alertmanager configuration is located in the `_config.alertmanager.config` configuration field. In order to set a custom Alertmanager configuration simply set this field.
+The Alertmanager configuration is located in the `values.alertmanager.config` configuration field. In order to set a custom Alertmanager configuration simply set this field.
 
 [embedmd]:# (examples/alertmanager-config.jsonnet)
 ```jsonnet
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
-   _config+:: {
+((import 'kube-prometheus/main.libsonnet') + {
+   values+:: {
      alertmanager+: {
        config: |||
          global:
@@ -562,8 +503,8 @@ In the above example the configuration has been inlined, but can just as well be
 
 [embedmd]:# (examples/alertmanager-config-external.jsonnet)
 ```jsonnet
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
-   _config+:: {
+((import 'kube-prometheus/main.libsonnet') + {
+   values+:: {
      alertmanager+: {
        config: importstr 'alertmanager-config.yaml',
      },
@@ -573,15 +514,17 @@ In the above example the configuration has been inlined, but can just as well be
 
 ### Adding additional namespaces to monitor
 
-In order to monitor additional namespaces, the Prometheus server requires the appropriate `Role` and `RoleBinding` to be able to discover targets from that namespace. By default the Prometheus server is limited to the three namespaces it requires: default, kube-system and the namespace you configure the stack to run in via `$._config.namespace`. This is specified in `$._config.prometheus.namespaces`, to add new namespaces to monitor, simply append the additional namespaces:
+In order to monitor additional namespaces, the Prometheus server requires the appropriate `Role` and `RoleBinding` to be able to discover targets from that namespace. By default the Prometheus server is limited to the three namespaces it requires: default, kube-system and the namespace you configure the stack to run in via `$.values.namespace`. This is specified in `$.values.prometheus.namespaces`, to add new namespaces to monitor, simply append the additional namespaces:
 
 [embedmd]:# (examples/additional-namespaces.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
 
-    prometheus+:: {
+    prometheus+: {
       namespaces+: ['my-namespace', 'my-second-namespace'],
     },
   },
@@ -606,14 +549,16 @@ You can define ServiceMonitor resources in your `jsonnet` spec. See the snippet 
 
 [embedmd]:# (examples/additional-namespaces-servicemonitor.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
     prometheus+:: {
       namespaces+: ['my-namespace', 'my-second-namespace'],
     },
   },
-  prometheus+:: {
+  exampleApplication: {
     serviceMonitorMyNamespace: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
@@ -645,7 +590,8 @@ local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') + {
 { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
+{ ['example-application-' + name]: kp.exampleApplication[name] for name in std.objectFields(kp.exampleApplication) }
 ```
 
 > NOTE: make sure your service resources have the right labels (eg. `'app': 'myapp'`) applied. Prometheus uses kubernetes labels to discover resources inside the namespaces.
@@ -656,12 +602,13 @@ In case you want to monitor all namespaces in a cluster, you can add the followi
 
 [embedmd]:# (examples/all-namespaces.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           (import 'kube-prometheus/kube-prometheus-all-namespaces.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
-
-    prometheus+:: {
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/addons/all-namespaces.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
+    prometheus+: {
       namespaces: [],
     },
   },
@@ -689,11 +636,26 @@ In order to configure a static etcd cluster to scrape there is a simple [kube-pr
 ### Pod Anti-Affinity
 
 To prevent `Prometheus` and `Alertmanager` instances from being deployed onto the same node when
-possible, one can include the [kube-prometheus-anti-affinity.libsonnet](jsonnet/kube-prometheus/kube-prometheus-anti-affinity.libsonnet) mixin:
+possible, one can include the [kube-prometheus-anti-affinity.libsonnet](jsonnet/kube-prometheus/addons/anti-affinity.libsonnet) mixin:
 
+[embedmd]:# (examples/anti-affinity.jsonnet)
 ```jsonnet
-(import 'kube-prometheus/kube-prometheus.libsonnet') +
-(import 'kube-prometheus/kube-prometheus-anti-affinity.libsonnet')
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/addons/anti-affinity.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
+  },
+};
+
+{ ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+{ ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
+{ ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
+{ ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
+{ ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
+{ ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
+{ ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
 ### Stripping container resource limits
@@ -703,10 +665,12 @@ To do that, one can import the following mixin
 
 [embedmd]:# (examples/strip-limits.jsonnet)
 ```jsonnet
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           (import 'kube-prometheus/kube-prometheus-strip-limits.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/addons/strip-limits.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
   },
 };
 
@@ -727,6 +691,36 @@ See [developing Prometheus rules and Grafana dashboards](docs/developing-prometh
 
 See [exposing Prometheus/Alertmanager/Grafana](docs/exposing-prometheus-alertmanager-grafana-ingress.md) guide.
 
+### Setting up a blackbox exporter
+
+```jsonnet
+local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
+           // ... all necessary mixins ...
+  {
+    values+:: {
+      // ... configuration for other features ...
+      blackboxExporter+:: {
+        modules+:: {
+          tls_connect: {
+            prober: 'tcp',
+            tcp: {
+              tls: true
+            }
+          }
+        }
+      }
+    }
+  };
+
+{ ['setup/0namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
+// ... other rendering blocks ...
+{ ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) }
+```
+
+Then describe the actual blackbox checks you want to run using `Probe` resources. Specify `blackbox-exporter.<namespace>.svc.cluster.local:9115` as the `spec.prober.url` field of the `Probe` resource.
+
+See the [blackbox exporter guide](docs/blackbox-exporter.md) for the list of configurable options and a complete example.
+
 ## Minikube Example
 
 To use an easy to reproduce example, see [minikube.jsonnet](examples/minikube.jsonnet), which uses the minikube setup as demonstrated in [Prerequisites](#prerequisites). Because we would like easy access to our Prometheus, Alertmanager and Grafana UIs, `minikube.jsonnet` exposes the services as NodePort type services.
@@ -736,6 +730,8 @@ To use an easy to reproduce example, see [minikube.jsonnet](examples/minikube.js
 Working examples of use with continuous delivery tools are found in examples/continuous-delivery.
 
 ## Troubleshooting
+
+See the general [guidelines](docs/community-support.md) for getting support from the community.
 
 ### Error retrieving kubelet metrics
 
@@ -762,7 +758,7 @@ resources. One driver for more resource needs, is a high number of
 namespaces. There may be others.
 
 kube-state-metrics resource allocation is managed by
-[addon-resizer](https://github.com/kubernetes/autoscaler/tree/master/addon-resizer/nanny)
+[addon-resizer](https://github.com/kubernetes/autoscaler/tree/main/addon-resizer/nanny)
 You can control it's parameters by setting variables in the
 config. They default to:
 
@@ -774,6 +770,13 @@ config. They default to:
       memoryPerNode: '30Mi',
     }
 ```
+
+### Error retrieving kube-proxy metrics
+By default, kubeadm will configure kube-proxy to listen on 127.0.0.1 for metrics. Because of this prometheus would not be able to scrape these metrics. This would have to be changed to 0.0.0.0 in one of the following two places:
+
+1. Before cluster initialization, the config file passed to kubeadm init should have KubeProxyConfiguration manifest with the field metricsBindAddress set to 0.0.0.0:10249
+2. If the k8s cluster is already up and running, we'll have to modify the configmap kube-proxy in the namespace kube-system and set the metricsBindAddress field. After this kube-proxy daemonset would have to be restarted with
+`kubectl -n kube-system rollout restart daemonset kube-proxy`
 
 ## Contributing
 
@@ -787,3 +790,7 @@ the following process:
 3. Update the pinned kube-prometheus dependency in `jsonnetfile.lock.json`: `jb update`
 3. Generate dependent `*.yaml` files: `make generate`
 4. Commit the generated changes.
+
+## License
+
+Apache License 2.0, see [LICENSE](https://github.com/prometheus-operator/kube-prometheus/blob/main/LICENSE).

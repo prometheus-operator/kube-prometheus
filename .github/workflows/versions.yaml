@@ -1,0 +1,68 @@
+name: Upgrade to latest versions
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 7 * * 1'
+jobs:
+  versions:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch:
+          - 'release-0.6'
+          - 'release-0.7'
+          - 'release-0.8'
+          - 'release-0.9'
+          - 'main'
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ matrix.branch }}
+    - uses: actions/setup-go@v2
+      with:
+        go-version: 1.16
+    - name: Upgrade versions
+      run: |
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+        # Write to temporary file to make update atomic
+        scripts/generate-versions.sh > /tmp/versions.json
+        mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
+      if: matrix.branch == 'main'
+    - name: Update jsonnet dependencies
+      run: |
+        make update
+        make generate
+
+        # Reset jsonnetfile.lock.json if no dependencies were updated
+        changedFiles=$(git diff --name-only | grep -v 'jsonnetfile.lock.json' | wc -l)
+        if [[ "$changedFiles" -eq 0 ]]; then
+          git checkout -- jsonnetfile.lock.json;
+        fi
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      with:
+        commit-message: "[bot] [${{ matrix.branch }}] Automated version update"
+        title: "[bot] [${{ matrix.branch }}] Automated version update"
+        body: |
+          ## Description
+
+          This is an automated version and jsonnet dependencies update performed from CI.
+
+          Configuration of the workflow is located in `.github/workflows/versions.yaml`
+
+          ## Type of change
+
+          - [x] `NONE` (if none of the other choices apply. Example, tooling, build system, CI, docs, etc.)
+
+          ## Changelog entry
+          
+          ```release-note
+
+          ```
+        team-reviewers: kube-prometheus-reviewers
+        branch: automated-updates-${{ matrix.branch }}
+        delete-branch: true
+        # GITHUB_TOKEN cannot be used as it won't trigger CI in a created PR
+        # More in https://github.com/peter-evans/create-pull-request/issues/155
+        token: ${{ secrets.PROM_OP_BOT_PAT }}

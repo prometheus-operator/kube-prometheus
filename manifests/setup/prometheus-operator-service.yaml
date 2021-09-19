@@ -4,7 +4,8 @@ metadata:
   labels:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: prometheus-operator
-    app.kubernetes.io/version: v0.43.2
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.50.0
   name: prometheus-operator
   namespace: monitoring
 spec:
@@ -16,3 +17,4 @@ spec:
   selector:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/part-of: kube-prometheus

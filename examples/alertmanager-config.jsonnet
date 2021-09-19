@@ -1,5 +1,5 @@
-((import 'kube-prometheus/kube-prometheus.libsonnet') + {
-   _config+:: {
+((import 'kube-prometheus/main.libsonnet') + {
+   values+:: {
      alertmanager+: {
        config: |||
          global:

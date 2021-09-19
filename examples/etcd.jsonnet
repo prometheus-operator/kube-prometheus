@@ -1,10 +1,12 @@
-local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
-           (import 'kube-prometheus/kube-prometheus-static-etcd.libsonnet') + {
-  _config+:: {
-    namespace: 'monitoring',
+local kp = (import 'kube-prometheus/main.libsonnet') +
+           (import 'kube-prometheus/addons/static-etcd.libsonnet') + {
+  values+:: {
+    common+: {
+      namespace: 'monitoring',
+    },
 
     // Reference info: https://github.com/coreos/kube-prometheus/blob/master/README.md#static-etcd-configuration
-    etcd+:: {
+    etcd+: {
       // Configure this to be the IP(s) to scrape - i.e. your etcd node(s) (use commas to separate multiple values).
       ips: ['127.0.0.1'],
 

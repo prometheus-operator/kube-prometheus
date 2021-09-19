@@ -4,8 +4,26 @@ data:
     "resourceRules":
       "cpu":
         "containerLabel": "container"
-        "containerQuery": "sum(irate(container_cpu_usage_seconds_total{<<.LabelMatchers>>,container!=\"POD\",container!=\"\",pod!=\"\"}[5m])) by (<<.GroupBy>>)"
-        "nodeQuery": "sum(1 - irate(node_cpu_seconds_total{mode=\"idle\"}[5m]) * on(namespace, pod) group_left(node) node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}) by (<<.GroupBy>>)"
+        "containerQuery": |
+          sum by (<<.GroupBy>>) (
+            irate (
+                container_cpu_usage_seconds_total{<<.LabelMatchers>>,container!="",pod!=""}[120s]
+            )
+          )
+        "nodeQuery": |
+          sum by (<<.GroupBy>>) (
+            1 - irate(
+              node_cpu_seconds_total{mode="idle"}[60s]
+            )
+            * on(namespace, pod) group_left(node) (
+              node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}
+            )
+          )
+          or sum by (<<.GroupBy>>) (
+            1 - irate(
+              windows_cpu_time_total{mode="idle", job="windows-exporter",<<.LabelMatchers>>}[4m]
+            )
+          )
         "resources":
           "overrides":
             "namespace":
@@ -16,8 +34,21 @@ data:
               "resource": "pod"
       "memory":
         "containerLabel": "container"
-        "containerQuery": "sum(container_memory_working_set_bytes{<<.LabelMatchers>>,container!=\"POD\",container!=\"\",pod!=\"\"}) by (<<.GroupBy>>)"
-        "nodeQuery": "sum(node_memory_MemTotal_bytes{job=\"node-exporter\",<<.LabelMatchers>>} - node_memory_MemAvailable_bytes{job=\"node-exporter\",<<.LabelMatchers>>}) by (<<.GroupBy>>)"
+        "containerQuery": |
+          sum by (<<.GroupBy>>) (
+            container_memory_working_set_bytes{<<.LabelMatchers>>,container!="",pod!=""}
+          )
+        "nodeQuery": |
+          sum by (<<.GroupBy>>) (
+            node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>}
+            -
+            node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}
+          )
+          or sum by (<<.GroupBy>>) (
+            windows_cs_physical_memory_bytes{job="windows-exporter",<<.LabelMatchers>>}
+            -
+            windows_memory_available_bytes{job="windows-exporter",<<.LabelMatchers>>}
+          )
         "resources":
           "overrides":
             "instance":
@@ -29,5 +60,10 @@ data:
       "window": "5m"
 kind: ConfigMap
 metadata:
+  labels:
+    app.kubernetes.io/component: metrics-adapter
+    app.kubernetes.io/name: prometheus-adapter
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.9.0
   name: adapter-config
   namespace: monitoring
