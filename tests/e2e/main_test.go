@@ -277,3 +277,18 @@ func TestFailedRuleEvaluations(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestGrafana(t *testing.T){
+	kClient := promClient.kubeClient
+	
+	err := wait.Poll(30*time.Second, 5*time.Minute, func() (bool, error) {
+		grafanaDeployment, err := kClient.AppsV1().Deployments("monitoring").Get(context.Background(), "grafana", metav1.GetOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		return grafanaDeployment.Status.ReadyReplicas == *grafanaDeployment.Spec.Replicas, nil
+	})
+	if err != nil {
+		t.Fatal(errors.Wrap(err, "Timeout while waiting for deployment ready condition."))
+	}
+}
