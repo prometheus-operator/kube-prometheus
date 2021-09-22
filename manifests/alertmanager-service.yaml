@@ -14,6 +14,9 @@ spec:
   - name: web
     port: 9093
     targetPort: web
+  - name: reloader-web
+    port: 8080
+    targetPort: reloader-web
   selector:
     alertmanager: main
     app: alertmanager

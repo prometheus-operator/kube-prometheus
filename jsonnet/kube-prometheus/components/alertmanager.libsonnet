@@ -19,6 +19,7 @@ local defaults = {
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
   name: error 'must provide name',
+  reloaderPort: 8080,
   config: {
     global: {
       resolve_timeout: '5m',
@@ -136,6 +137,7 @@ function(params) {
     spec: {
       ports: [
         { name: 'web', targetPort: 'web', port: 9093 },
+        { name: 'reloader-web', port: am._config.reloaderPort, targetPort: 'reloader-web' },
       ],
       selector: {
         app: 'alertmanager',
@@ -161,6 +163,7 @@ function(params) {
       },
       endpoints: [
         { port: 'web', interval: '30s' },
+        { port: 'reloader-web', interval: '30s' },
       ],
     },
   },

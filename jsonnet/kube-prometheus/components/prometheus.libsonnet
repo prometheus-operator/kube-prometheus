@@ -35,6 +35,7 @@ local defaults = {
     },
   },
   thanos: null,
+  reloaderPort: 8080,
 };
 
 
@@ -98,6 +99,7 @@ function(params) {
     spec: {
       ports: [
                { name: 'web', targetPort: 'web', port: 9090 },
+               { name: 'reloader-web', port: p._config.reloaderPort, targetPort: 'reloader-web' },
              ] +
              (
                if p._config.thanos != null then
@@ -317,10 +319,10 @@ function(params) {
       selector: {
         matchLabels: p._config.selectorLabels,
       },
-      endpoints: [{
-        port: 'web',
-        interval: '30s',
-      }],
+      endpoints: [
+        { port: 'web', interval: '30s' },
+        { port: 'reloader-web', interval: '30s' },
+      ],
     },
   },
 
