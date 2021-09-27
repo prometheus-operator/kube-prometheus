@@ -59,6 +59,7 @@ function(params) {
       targetGroups: {},
       sidecar: {
         selector: p._config.mixin._config.thanosSelector,
+        thanosPrometheusCommonDimensions: 'namespace, pod',
         dimensions: std.join(', ', ['job', 'instance']),
       },
     },
