@@ -140,8 +140,7 @@ function(params) {
               sourceLabels: ['__name__', 'container'],
               action: 'drop',
               regex: '(' + std.join('|',
-                                    [  // metrics are available at slice level
-                                      'container_fs_.*',
+                                    [
                                       'container_blkio_device_usage_total',
                                     ]) + ');.+',
             },
