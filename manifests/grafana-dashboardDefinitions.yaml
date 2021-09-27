@@ -18680,7 +18680,8 @@ items:
                           ],
                           "fields": "",
                           "values": false
-                      }
+                      },
+                      "textMode": "auto"
                   },
                   "pluginVersion": "7",
                   "targets": [
@@ -18736,7 +18737,8 @@ items:
                           ],
                           "fields": "",
                           "values": false
-                      }
+                      },
+                      "textMode": "auto"
                   },
                   "pluginVersion": "7",
                   "targets": [
@@ -18792,7 +18794,8 @@ items:
                           ],
                           "fields": "",
                           "values": false
-                      }
+                      },
+                      "textMode": "auto"
                   },
                   "pluginVersion": "7",
                   "targets": [
@@ -18848,7 +18851,8 @@ items:
                           ],
                           "fields": "",
                           "values": false
-                      }
+                      },
+                      "textMode": "auto"
                   },
                   "pluginVersion": "7",
                   "targets": [
@@ -18904,7 +18908,8 @@ items:
                           ],
                           "fields": "",
                           "values": false
-                      }
+                      },
+                      "textMode": "auto"
                   },
                   "pluginVersion": "7",
                   "targets": [
@@ -18960,7 +18965,8 @@ items:
                           ],
                           "fields": "",
                           "values": false
-                      }
+                      },
+                      "textMode": "auto"
                   },
                   "pluginVersion": "7",
                   "targets": [
