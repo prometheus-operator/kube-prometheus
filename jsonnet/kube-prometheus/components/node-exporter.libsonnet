@@ -180,7 +180,7 @@ function(params) {
         '--path.rootfs=/host/root',
         '--no-collector.wifi',
         '--no-collector.hwmon',
-        '--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
+        '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
         // NOTE: ignore veth network interface associated with containers.
         // OVN renames veth.* to <rand-hex>@if<X> where X is /sys/class/net/<if>/ifindex
         // thus [a-z0-9] regex below
