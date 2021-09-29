@@ -12,6 +12,7 @@ local defaults = {
     'app.kubernetes.io/version': defaults.version,
     'app.kubernetes.io/component': 'alert-router',
     'app.kubernetes.io/part-of': 'kube-prometheus',
+    'app.kubernetes.io/managed-by': 'prometheus-operator',
   },
   selectorLabels:: {
     [labelName]: defaults.commonLabels[labelName]
