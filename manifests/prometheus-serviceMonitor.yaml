@@ -3,6 +3,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     app.kubernetes.io/component: prometheus
+    app.kubernetes.io/managed-by: prometheus-operator
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.30.0
@@ -17,6 +18,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: prometheus
+      app.kubernetes.io/managed-by: prometheus-operator
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
       prometheus: k8s
