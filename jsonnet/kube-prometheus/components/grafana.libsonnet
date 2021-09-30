@@ -21,6 +21,7 @@ local defaults = {
   },
   prometheusName: error 'must provide prometheus name',
   dashboards: {},
+  notifiers: [],
   // TODO(paulfantom): expose those to have a stable API. After kubernetes-grafana refactor those could probably be removed.
   rawDashboards: {},
   folderDashboards: {},
@@ -52,6 +53,7 @@ function(params) {
       grafana+:: {
         labels: g._config.commonLabels,
         dashboards: g._config.dashboards,
+        notifiers: g._config.notifiers,
         resources: g._config.resources,
         rawDashboards: g._config.rawDashboards,
         folderDashboards: g._config.folderDashboards,
@@ -74,6 +76,7 @@ function(params) {
   deployment: glib.grafana.deployment,
   dashboardDatasources: glib.grafana.dashboardDatasources,
   dashboardSources: glib.grafana.dashboardSources,
+  notifierSources: glib.grafana.notifierSources,
 
   dashboardDefinitions: if std.length(g._config.dashboards) > 0 ||
                            std.length(g._config.rawDashboards) > 0 ||
