@@ -5,4 +5,5 @@ vendor/
 .swp
 crdschemas/
 
-.gitpod/_output/
+developer-workspace/gitpod/_output
+kind

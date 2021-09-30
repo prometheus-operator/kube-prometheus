@@ -78,3 +78,8 @@ $(BIN_DIR):
 $(TOOLING): $(BIN_DIR)
 	@echo Installing tools from scripts/tools.go
 	@cd scripts && cat tools.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go build -modfile=go.mod -o $(BIN_DIR) %
+
+.PHONY: deploy
+deploy:
+	./developer-workspace/codespaces/prepare-kind.sh
+	./developer-workspace/common/deploy-kube-prometheus.sh
