@@ -172,6 +172,21 @@ function(params) {
             insecureSkipVerify: true,
           },
           bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          metricRelabelings: [
+            {
+              sourceLabels: ['__name__'],
+              action: 'drop',
+              regex: '(' + std.join('|',
+                                    [
+                                      'apiserver_client_certificate_.*',  // The only client supposed to connect to the aggregated API is the apiserver so it is not really meaningful to monitor its certificate.
+                                      'apiserver_envelope_.*',  // Prometheus-adapter isn't using envelope for storage.
+                                      'apiserver_flowcontrol_.*',  // Prometheus-adapter isn't using flowcontrol.
+                                      'apiserver_storage_.*',  // Prometheus-adapter isn't using the apiserver storage.
+                                      'apiserver_webhooks_.*',  // Prometeus-adapter doesn't make use of apiserver webhooks.
+                                      'workqueue_.*',  // Metrics related to the internal apiserver auth workqueues are not very useful to prometheus-adapter.
+                                    ]) + ')',
+            },
+          ],
         },
       ],
     },
