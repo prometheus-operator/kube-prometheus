@@ -4,7 +4,7 @@
   "grafana": "8.1.5",
   "kubeStateMetrics": "2.2.1",
   "nodeExporter": "1.2.2",
-  "prometheus": "2.30.0",
+  "prometheus": "2.30.2",
   "prometheusAdapter": "0.9.0",
   "prometheusOperator": "0.51.1",
   "kubeRbacProxy": "0.11.0",
