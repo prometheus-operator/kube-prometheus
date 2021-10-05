@@ -15,7 +15,9 @@
 package e2e
 
 import (
+	"bytes"
 	"context"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -24,7 +26,9 @@ import (
 
 	"github.com/Jeffail/gabs"
 	"github.com/pkg/errors"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -278,9 +282,9 @@ func TestFailedRuleEvaluations(t *testing.T) {
 	}
 }
 
-func TestGrafana(t *testing.T){
+func TestGrafana(t *testing.T) {
 	kClient := promClient.kubeClient
-	
+
 	err := wait.Poll(30*time.Second, 5*time.Minute, func() (bool, error) {
 		grafanaDeployment, err := kClient.AppsV1().Deployments("monitoring").Get(context.Background(), "grafana", metav1.GetOptions{})
 		if err != nil {
@@ -291,4 +295,104 @@ func TestGrafana(t *testing.T){
 	if err != nil {
 		t.Fatal(errors.Wrap(err, "Timeout while waiting for deployment ready condition."))
 	}
+}
+
+// TestDeprecationLogs tests if all components of kube-prometheus doesn't emit deprecation warning in its logs.
+// Kube-prometheus aims to keep itself up-to-date with upstream configuration, which means we don't use deprecated flags.
+func TestDeprecationLogs(t *testing.T) {
+	kClient := promClient.kubeClient
+
+	type getLabelSelectorFunc func(string) labels.Set
+
+	daemonSetGetLabelSelector := func(app string) labels.Set {
+		daemonset, err := kClient.AppsV1().DaemonSets("monitoring").Get(context.Background(), app, metav1.GetOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		return labels.Set(daemonset.Spec.Selector.MatchLabels)
+	}
+
+	deploymentGetLabelSelector := func(app string) labels.Set {
+		deployment, err := kClient.AppsV1().Deployments("monitoring").Get(context.Background(), app, metav1.GetOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		return labels.Set(deployment.Spec.Selector.MatchLabels)
+	}
+
+	statefulSetGetLabelSelector := func(app string) labels.Set {
+		statefulSet, err := kClient.AppsV1().StatefulSets("monitoring").Get(context.Background(), app, metav1.GetOptions{})
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		return labels.Set(statefulSet.Spec.Selector.MatchLabels)
+	}
+
+	testCases := []struct {
+		app              string
+		container        string
+		getLabelSelector getLabelSelectorFunc
+	}{
+		{
+			app:              "node-exporter",
+			container:        "node-exporter",
+			getLabelSelector: daemonSetGetLabelSelector,
+		}, {
+			app:              "prometheus-k8s",
+			container:        "prometheus",
+			getLabelSelector: statefulSetGetLabelSelector,
+		}, {
+			app:              "alertmanager-main",
+			container:        "alertmanager",
+			getLabelSelector: statefulSetGetLabelSelector,
+		}, {
+			app:              "grafana",
+			container:        "grafana",
+			getLabelSelector: deploymentGetLabelSelector,
+		}, {
+			app:              "kube-state-metrics",
+			container:        "kube-state-metrics",
+			getLabelSelector: deploymentGetLabelSelector,
+		}, {
+			app:              "prometheus-operator",
+			container:        "prometheus-operator",
+			getLabelSelector: deploymentGetLabelSelector,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.app, func(t *testing.T) {
+			pods, err := kClient.CoreV1().Pods("monitoring").List(context.Background(), metav1.ListOptions{LabelSelector: tc.getLabelSelector(tc.app).AsSelector().String()})
+			if err != nil {
+				t.Fatal(err)
+			}
+			podLogOpts := v1.PodLogOptions{
+				Container: tc.container,
+			}
+
+			for _, pod := range pods.Items {
+				req := kClient.CoreV1().Pods(pod.Namespace).GetLogs(pod.Name, &podLogOpts)
+				podLogs, err := req.Stream(context.Background())
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer podLogs.Close()
+
+				buf := new(bytes.Buffer)
+				_, err = io.Copy(buf, podLogs)
+				if err != nil {
+					t.Fatal(err)
+				}
+				logs := buf.String()
+				if strings.Contains(strings.ToLower(logs), "deprecated") {
+					t.Log(logs)
+					t.Fatalf("Deprecation warnings found in the logs. We aim to always use up-to-date configuration. App: %v. Container: %v", tc.app, tc.container)
+				}
+			}
+		})
+	}
+
 }
