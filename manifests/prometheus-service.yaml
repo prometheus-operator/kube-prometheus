@@ -18,7 +18,6 @@ spec:
     port: 8080
     targetPort: reloader-web
   selector:
-    app: prometheus
     app.kubernetes.io/component: prometheus
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
