@@ -121,6 +121,7 @@ func TestQueryPrometheus(t *testing.T) {
 }
 
 func TestDroppedMetrics(t *testing.T) {
+	t.Parallel()
 	// query metadata for all metrics and their metadata
 	md, err := promClient.metadata("{job=~\".+\"}")
 	if err != nil {
@@ -142,6 +143,7 @@ func TestDroppedMetrics(t *testing.T) {
 }
 
 func TestTargetsScheme(t *testing.T) {
+	t.Parallel()
 	// query targets for all endpoints
 	tgs, err := promClient.targets()
 	if err != nil {
@@ -169,6 +171,7 @@ func TestTargetsScheme(t *testing.T) {
 // trigger "many-to-many" evaluation errors when multiple kube-state-metrics
 // instances are running.
 func TestFailedRuleEvaluations(t *testing.T) {
+	t.Parallel()
 	// Scale kube-state-metrics to 2 replicas.
 	kClient := promClient.kubeClient
 
@@ -279,6 +282,7 @@ func TestFailedRuleEvaluations(t *testing.T) {
 }
 
 func TestGrafana(t *testing.T){
+	t.Parallel()
 	kClient := promClient.kubeClient
 	
 	err := wait.Poll(30*time.Second, 5*time.Minute, func() (bool, error) {
