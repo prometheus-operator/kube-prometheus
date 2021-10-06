@@ -107,7 +107,7 @@ function(params) {
                  [{ name: 'grpc', port: 10901, targetPort: 10901 }]
                else []
              ),
-      selector: { app: 'prometheus' } + p._config.selectorLabels,
+      selector: p._config.selectorLabels,
       sessionAffinity: 'ClientIP',
     },
   },

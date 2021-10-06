@@ -140,7 +140,6 @@ function(params) {
         { name: 'reloader-web', port: am._config.reloaderPort, targetPort: 'reloader-web' },
       ],
       selector: {
-        app: 'alertmanager',
         alertmanager: am._config.name,
       } + am._config.selectorLabels,
       sessionAffinity: 'ClientIP',
