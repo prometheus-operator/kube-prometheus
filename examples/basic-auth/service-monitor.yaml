@@ -19,4 +19,4 @@ spec:
     - logging
   selector:
     matchLabels:
-      app: myapp
+      app.kubernetes.io/name: myapp
