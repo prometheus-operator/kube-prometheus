@@ -4807,7 +4807,7 @@ items:
                           "title": "CPU Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -4891,7 +4891,7 @@ items:
                           "title": "CPU Requests Commitment",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -4975,7 +4975,7 @@ items:
                           "title": "CPU Limits Commitment",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -5059,7 +5059,7 @@ items:
                           "title": "Memory Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -5143,7 +5143,7 @@ items:
                           "title": "Memory Requests Commitment",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -5227,7 +5227,7 @@ items:
                           "title": "Memory Limits Commitment",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -5325,7 +5325,7 @@ items:
                           "title": "CPU Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -5653,7 +5653,7 @@ items:
                           "title": "CPU Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -5752,7 +5752,7 @@ items:
                           "title": "Memory Usage (w/o cache)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -6080,7 +6080,7 @@ items:
                           "title": "Requests by Namespace",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -6382,7 +6382,7 @@ items:
                           "title": "Current Network Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -6481,7 +6481,7 @@ items:
                           "title": "Receive Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -6579,7 +6579,7 @@ items:
                           "title": "Transmit Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -6677,7 +6677,7 @@ items:
                           "title": "Average Container Bandwidth by Namespace: Received",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -6775,7 +6775,7 @@ items:
                           "title": "Average Container Bandwidth by Namespace: Transmitted",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -6873,7 +6873,7 @@ items:
                           "title": "Rate of Received Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -6971,7 +6971,7 @@ items:
                           "title": "Rate of Transmitted Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -7069,7 +7069,7 @@ items:
                           "title": "Rate of Received Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -7167,7 +7167,7 @@ items:
                           "title": "Rate of Transmitted Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -7372,7 +7372,7 @@ items:
                           "title": "CPU Utilisation (from requests)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -7456,7 +7456,7 @@ items:
                           "title": "CPU Utilisation (from limits)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -7540,7 +7540,7 @@ items:
                           "title": "Memory Utilization (from requests)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -7624,7 +7624,7 @@ items:
                           "title": "Memory Utilisation (from limits)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "singlestat",
@@ -7757,7 +7757,7 @@ items:
                           "title": "CPU Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -8029,7 +8029,7 @@ items:
                           "title": "CPU Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -8163,7 +8163,7 @@ items:
                           "title": "Memory Usage (w/o cache)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -8519,7 +8519,7 @@ items:
                           "title": "Memory Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -8821,7 +8821,7 @@ items:
                           "title": "Current Network Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -8920,7 +8920,7 @@ items:
                           "title": "Receive Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -9018,7 +9018,7 @@ items:
                           "title": "Transmit Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -9116,7 +9116,7 @@ items:
                           "title": "Rate of Received Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -9214,7 +9214,7 @@ items:
                           "title": "Rate of Transmitted Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -9312,7 +9312,7 @@ items:
                           "title": "Rate of Received Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -9410,7 +9410,7 @@ items:
                           "title": "Rate of Transmitted Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -9644,7 +9644,7 @@ items:
                           "title": "CPU Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -9916,7 +9916,7 @@ items:
                           "title": "CPU Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -10015,7 +10015,7 @@ items:
                           "title": "Memory Usage (w/o cache)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -10371,7 +10371,7 @@ items:
                           "title": "Memory Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -10639,7 +10639,7 @@ items:
                           "title": "CPU Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -10744,7 +10744,7 @@ items:
                           "title": "CPU Throttling",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -11016,7 +11016,7 @@ items:
                           "title": "CPU Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -11150,7 +11150,7 @@ items:
                           "title": "Memory Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -11506,7 +11506,7 @@ items:
                           "title": "Memory Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -11606,7 +11606,7 @@ items:
                           "title": "Receive Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -11705,7 +11705,7 @@ items:
                           "title": "Transmit Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -11804,7 +11804,7 @@ items:
                           "title": "Rate of Received Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -11903,7 +11903,7 @@ items:
                           "title": "Rate of Transmitted Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -12002,7 +12002,7 @@ items:
                           "title": "Rate of Received Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -12101,7 +12101,7 @@ items:
                           "title": "Rate of Transmitted Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -12362,7 +12362,7 @@ items:
                           "title": "CPU Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -12634,7 +12634,7 @@ items:
                           "title": "CPU Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -12733,7 +12733,7 @@ items:
                           "title": "Memory Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -13005,7 +13005,7 @@ items:
                           "title": "Memory Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -13307,7 +13307,7 @@ items:
                           "title": "Current Network Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -13406,7 +13406,7 @@ items:
                           "title": "Receive Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -13504,7 +13504,7 @@ items:
                           "title": "Transmit Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -13602,7 +13602,7 @@ items:
                           "title": "Average Container Bandwidth by Pod: Received",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -13700,7 +13700,7 @@ items:
                           "title": "Average Container Bandwidth by Pod: Transmitted",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -13798,7 +13798,7 @@ items:
                           "title": "Rate of Received Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -13896,7 +13896,7 @@ items:
                           "title": "Rate of Transmitted Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -13994,7 +13994,7 @@ items:
                           "title": "Rate of Received Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -14092,7 +14092,7 @@ items:
                           "title": "Rate of Transmitted Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -14415,7 +14415,7 @@ items:
                           "title": "CPU Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -14734,7 +14734,7 @@ items:
                           "title": "CPU Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -14868,7 +14868,7 @@ items:
                           "title": "Memory Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -15187,7 +15187,7 @@ items:
                           "title": "Memory Quota",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -15508,7 +15508,7 @@ items:
                           "title": "Current Network Usage",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -15607,7 +15607,7 @@ items:
                           "title": "Receive Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -15705,7 +15705,7 @@ items:
                           "title": "Transmit Bandwidth",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -15803,7 +15803,7 @@ items:
                           "title": "Average Container Bandwidth by Workload: Received",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -15901,7 +15901,7 @@ items:
                           "title": "Average Container Bandwidth by Workload: Transmitted",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -15999,7 +15999,7 @@ items:
                           "title": "Rate of Received Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -16097,7 +16097,7 @@ items:
                           "title": "Rate of Transmitted Packets",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -16195,7 +16195,7 @@ items:
                           "title": "Rate of Received Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -16293,7 +16293,7 @@ items:
                           "title": "Rate of Transmitted Packets Dropped",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -22244,7 +22244,7 @@ items:
                           "title": "CPU Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -22330,7 +22330,7 @@ items:
                           "title": "CPU Saturation (load1 per CPU)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -22428,7 +22428,7 @@ items:
                           "title": "Memory Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -22514,7 +22514,7 @@ items:
                           "title": "Memory Saturation (Major Page Faults)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -22628,7 +22628,7 @@ items:
                           "title": "Net Utilisation (Bytes Receive/Transmit)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -22730,7 +22730,7 @@ items:
                           "title": "Net Saturation (Drops Receive/Transmit)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -22828,7 +22828,7 @@ items:
                           "title": "Disk IO Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -22914,7 +22914,7 @@ items:
                           "title": "Disk IO Saturation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23012,7 +23012,7 @@ items:
                           "title": "Disk Space Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23192,7 +23192,7 @@ items:
                           "title": "CPU Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23278,7 +23278,7 @@ items:
                           "title": "CPU Saturation (Load1 per CPU)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23376,7 +23376,7 @@ items:
                           "title": "Memory Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23462,7 +23462,7 @@ items:
                           "title": "Memory Saturation (Major Page Faults)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23576,7 +23576,7 @@ items:
                           "title": "Net Utilisation (Bytes Receive/Transmit)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23678,7 +23678,7 @@ items:
                           "title": "Net Saturation (Drops Receive/Transmit)",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23776,7 +23776,7 @@ items:
                           "title": "Disk IO Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23862,7 +23862,7 @@ items:
                           "title": "Disk IO Saturation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -23960,7 +23960,7 @@ items:
                           "title": "Disk Space Utilisation",
                           "tooltip": {
                               "shared": false,
-                              "sort": 0,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -28706,8 +28706,8 @@ items:
                           "timeShift": null,
                           "title": "Prometheus Stats",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "transform": "table",
@@ -28805,8 +28805,8 @@ items:
                           "timeShift": null,
                           "title": "Target Sync",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -28891,8 +28891,8 @@ items:
                           "timeShift": null,
                           "title": "Targets",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -28989,8 +28989,8 @@ items:
                           "timeShift": null,
                           "title": "Average Scrape Interval Duration",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -29099,8 +29099,8 @@ items:
                           "timeShift": null,
                           "title": "Scrape failures",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -29185,8 +29185,8 @@ items:
                           "timeShift": null,
                           "title": "Appended Samples",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -29283,8 +29283,8 @@ items:
                           "timeShift": null,
                           "title": "Head Series",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -29369,8 +29369,8 @@ items:
                           "timeShift": null,
                           "title": "Head Chunks",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -29467,8 +29467,8 @@ items:
                           "timeShift": null,
                           "title": "Query Rate",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
@@ -29553,8 +29553,8 @@ items:
                           "timeShift": null,
                           "title": "Stage Duration",
                           "tooltip": {
-                              "shared": false,
-                              "sort": 0,
+                              "shared": true,
+                              "sort": 2,
                               "value_type": "individual"
                           },
                           "type": "graph",
