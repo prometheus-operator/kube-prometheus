@@ -81,7 +81,7 @@
     },
 
     deployment:
-      local podLabels = { app: 'ksm-autoscaler' };
+      local podLabels = { 'app.kubernetes.io/name': 'ksm-autoscaler' };
       local c = {
         name: 'ksm-autoscaler',
         image: $.values.clusterVerticalAutoscaler.image,

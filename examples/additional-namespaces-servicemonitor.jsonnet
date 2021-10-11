@@ -24,7 +24,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
         ],
         selector: {
           matchLabels: {
-            app: 'myapp',
+            'app.kubernetes.io/name': 'myapp',
           },
         },
       },
