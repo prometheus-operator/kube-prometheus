@@ -168,7 +168,7 @@ function(params) {
   },
 
   [if (defaults + params).replicas > 1 then 'podDisruptionBudget']: {
-    apiVersion: 'policy/v1beta1',
+    apiVersion: 'policy/v1',
     kind: 'PodDisruptionBudget',
     metadata: {
       name: 'alertmanager-' + am._config.name,
