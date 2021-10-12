@@ -14,13 +14,11 @@ spec:
     rules:
     - alert: KubePodCrashLooping
       annotations:
-        description: Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is restarting {{ printf "%.2f" $value }} times / 10 minutes.
+        description: 'Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in waiting state (reason: "CrashLoopBackOff").'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodcrashlooping
         summary: Pod is crash looping.
       expr: |
-        increase(kube_pod_container_status_restarts_total{job="kube-state-metrics"}[10m]) > 0
-        and
-        kube_pod_container_status_waiting{job="kube-state-metrics"} == 1
+        max_over_time(kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff", job="kube-state-metrics"}[5m]) >= 1
       for: 15m
       labels:
         severity: warning
