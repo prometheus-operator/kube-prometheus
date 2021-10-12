@@ -12,7 +12,7 @@ local defaults = {
     limits: { cpu: '250m', memory: '180Mi' },
   },
   listenAddress: '127.0.0.1',
-  filesystemIgnoredMountPoints: '^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
+  filesystemMountPointsExclude: '^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
   port: 9100,
   commonLabels:: {
     'app.kubernetes.io/name': defaults.name,
@@ -181,7 +181,7 @@ function(params) {
         '--path.rootfs=/host/root',
         '--no-collector.wifi',
         '--no-collector.hwmon',
-        '--collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
+        '--collector.filesystem.mount-points-exclude=' + ne._config.filesystemMountPointsExclude,
         // NOTE: ignore veth network interface associated with containers.
         // OVN renames veth.* to <rand-hex>@if<X> where X is /sys/class/net/<if>/ifindex
         // thus [a-z0-9] regex below
