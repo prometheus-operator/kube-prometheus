@@ -31,6 +31,7 @@ local kp =
   // (import 'kube-prometheus/addons/static-etcd.libsonnet') +
   // (import 'kube-prometheus/addons/custom-metrics.libsonnet') +
   // (import 'kube-prometheus/addons/external-metrics.libsonnet') +
+  // (import 'kube-prometheus/addons/prometheus-adapter-audit.libsonnet') +
   {
     values+:: {
       common+: {
