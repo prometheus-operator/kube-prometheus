@@ -1,17 +1,16 @@
-local kp = import 'kube-prometheus/kube-prometheus.libsonnet';
-local l = import 'kube-prometheus/lib/lib.libsonnet';
-local config = kp._config;
+local kp = import 'kube-prometheus/main.libsonnet';
+local l = import 'kube-prometheus/addons/config-mixins.libsonnet';
+local config = kp.values.common;
 
 local makeImages(config) = [
   {
-    name: config.imageRepos[image],
-    tag: config.versions[image],
+    name: config.images[image],
   }
-  for image in std.objectFields(config.imageRepos)
+  for image in std.objectFields(config.images)
 ];
 
-local upstreamImage(image) = '%s:%s' % [image.name, image.tag];
-local downstreamImage(registry, image) = '%s/%s:%s' % [registry, l.imageName(image.name), image.tag];
+local upstreamImage(image) = '%s' % [image.name];
+local downstreamImage(registry, image) = '%s/%s' % [registry, l.imageName(image.name)];
 
 local pullPush(image, newRegistry) = [
   'docker pull %s' % upstreamImage(image),
