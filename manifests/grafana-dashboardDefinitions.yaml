@@ -2252,7 +2252,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(apiserver_request_total, cluster)",
+                      "query": "label_values(up{job=\"apiserver\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -2278,7 +2278,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(apiserver_request_total{job=\"apiserver\", cluster=\"$cluster\"}, instance)",
+                      "query": "label_values(up{job=\"apiserver\", cluster=\"$cluster\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -11034,7 +11034,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -11061,7 +11061,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
+                      "query": "label_values(kube_namespace_created{cluster=\"$cluster\"}, namespace)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -12001,7 +12001,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -12028,7 +12028,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, node)",
+                      "query": "label_values(up{job=\"kube-state-metrics\", cluster=\"$cluster\"}, node)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -14390,7 +14390,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -14417,7 +14417,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
+                      "query": "label_values(kube_namespace_created{cluster=\"$cluster\"}, namespace)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -16338,7 +16338,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -16365,7 +16365,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
+                      "query": "label_values(kube_namespace_created{cluster=\"$cluster\"}, namespace)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -18500,7 +18500,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -20796,13 +20796,13 @@ items:
                       "datasource": "$datasource",
                       "hide": 0,
                       "includeAll": true,
-                      "label": null,
+                      "label": "Data Source",
                       "multi": false,
                       "name": "instance",
                       "options": [
 
                       ],
-                      "query": "label_values(kubelet_runtime_operations_total{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\"}, instance)",
+                      "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics\",cluster=\"$cluster\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -25008,7 +25008,7 @@ items:
                           "value": "Prometheus"
                       },
                       "hide": 0,
-                      "label": null,
+                      "label": "Data Source",
                       "name": "datasource",
                       "options": [
 
@@ -26060,7 +26060,7 @@ items:
                           "value": "Prometheus"
                       },
                       "hide": 0,
-                      "label": null,
+                      "label": "Data Source",
                       "name": "datasource",
                       "options": [
 
@@ -27067,7 +27067,7 @@ items:
                           "value": "Prometheus"
                       },
                       "hide": 0,
-                      "label": null,
+                      "label": "Data Source",
                       "name": "datasource",
                       "options": [
 
@@ -27580,7 +27580,7 @@ items:
                           "value": "default"
                       },
                       "hide": 0,
-                      "label": null,
+                      "label": "Data Source",
                       "name": "datasource",
                       "options": [
 
@@ -32976,7 +32976,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info, cluster)",
+                      "query": "label_values(up{job=\"kube-proxy\"}, cluster)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -33002,7 +33002,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kubeproxy_network_programming_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\"}, instance)",
+                      "query": "label_values(up{job=\"kube-proxy\", cluster=\"$cluster\", job=\"kube-proxy\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -34091,7 +34091,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(process_cpu_seconds_total{cluster=\"$cluster\", job=\"kube-scheduler\"}, instance)",
+                      "query": "label_values(up{job=\"kube-scheduler\", cluster=\"$cluster\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
