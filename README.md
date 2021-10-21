@@ -80,8 +80,8 @@ You will need a Kubernetes cluster, that's it! By default it is assumed, that th
 
 This means the kubelet configuration must contain these flags:
 
-* `--authentication-token-webhook=true` This flag enables, that a `ServiceAccount` token can be used to authenticate against the kubelet(s).  This can also be enabled by setting the kubelet configuration value `authentication.webhook.enabled` to `true`.
-* `--authorization-mode=Webhook` This flag enables, that the kubelet will perform an RBAC request with the API to determine, whether the requesting entity (Prometheus in this case) is allowed to access a resource, in specific for this project the `/metrics` endpoint.  This can also be enabled by setting the kubelet configuration value `authorization.mode` to `Webhook`.
+* `--authentication-token-webhook=true` This flag enables, that a `ServiceAccount` token can be used to authenticate against the kubelet(s). This can also be enabled by setting the kubelet configuration value `authentication.webhook.enabled` to `true`.
+* `--authorization-mode=Webhook` This flag enables, that the kubelet will perform an RBAC request with the API to determine, whether the requesting entity (Prometheus in this case) is allowed to access a resource, in specific for this project the `/metrics` endpoint. This can also be enabled by setting the kubelet configuration value `authorization.mode` to `Webhook`.
 
 This stack provides [resource metrics](https://github.com/kubernetes/metrics#resource-metrics-api) by deploying the [Prometheus Adapter](https://github.com/DirectXMan12/k8s-prometheus-adapter/).
 This adapter is an Extension API Server and Kubernetes needs to be have this feature enabled, otherwise the adapter has no effect, but is still deployed.
@@ -116,12 +116,12 @@ The following versions are supported and work as we test against these versions 
 
 ## Quickstart
 
->Note: For versions before Kubernetes v1.21.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
+> Note: For versions before Kubernetes v1.21.z refer to the [Kubernetes compatibility matrix](#kubernetes-compatibility-matrix) in order to choose a compatible branch.
 
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 
 Though for a quickstart a compiled version of the Kubernetes [manifests](manifests) generated with this library (specifically with `example.jsonnet`) is checked into this repository in order to try the content out quickly. To try out the stack un-customized run:
- * Create the monitoring stack using the config in the `manifests` directory:
+* Create the monitoring stack using the config in the `manifests` directory:
 
 ```shell
 # Create the namespace and CRDs, and then wait for them to be available before creating the remaining resources
@@ -135,7 +135,8 @@ Alternatively, the resources in both folders can be applied with a single comman
 `kubectl create -f manifests/setup -f manifests`, but it may be necessary to run the command multiple times for all components to
 be created successfullly.
 
- * And to teardown the stack:
+* And to teardown the stack:
+
 ```shell
 kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
 ```
@@ -173,14 +174,15 @@ Then access via [http://localhost:9093](http://localhost:9093)
 ## Customizing Kube-Prometheus
 
 This section:
- * describes how to customize the kube-prometheus library via compiling the kube-prometheus manifests yourself (as an alternative to the [Quickstart section](#Quickstart)).
- * still doesn't require you to make a copy of this entire repository, but rather only a copy of a few select files.
+* describes how to customize the kube-prometheus library via compiling the kube-prometheus manifests yourself (as an alternative to the [Quickstart section](#quickstart)).
+* still doesn't require you to make a copy of this entire repository, but rather only a copy of a few select files.
 
 ### Installing
 
 The content of this project consists of a set of [jsonnet](http://jsonnet.org/) files making up a library to be consumed.
 
 Install this library in your own project with [jsonnet-bundler](https://github.com/jsonnet-bundler/jsonnet-bundler#install) (the jsonnet package manager):
+
 ```shell
 $ mkdir my-kube-prometheus; cd my-kube-prometheus
 $ jb init  # Creates the initial/empty `jsonnetfile.json`
@@ -196,6 +198,7 @@ $ wget https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/rel
 > An e.g. of how to install a given version of this library: `jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometheus@release-0.7`
 
 In order to update the kube-prometheus dependency, simply use the jsonnet-bundler update functionality:
+
 ```shell
 $ jb update
 ```
@@ -210,8 +213,7 @@ Here's [example.jsonnet](example.jsonnet):
 
 > Note: some of the following components must be configured beforehand. See [configuration](#configuration) and [customization-examples](#customization-examples).
 
-[embedmd]:# (example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat example.jsonnet"
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
   // Uncomment the following imports to enable its patches
@@ -250,8 +252,7 @@ local kp =
 
 And here's the [build.sh](build.sh) script (which uses `vendor/` to render all manifests in a json structure of `{filename: manifest-content}`):
 
-[embedmd]:# (build.sh)
-```sh
+```sh mdox-exec="cat build.sh"
 #!/usr/bin/env bash
 
 # This script uses arg $1 (name of *.jsonnet file to use) to generate the manifests/*.yaml files.
@@ -282,6 +283,7 @@ rm -f kustomization
 This script runs the jsonnet code, then reads each key of the generated json and uses that as the file name, and writes the value of that key to that file, and converts each json manifest to yaml.
 
 ### Apply the kube-prometheus stack
+
 The previous steps (compilation) has created a bunch of manifest files in the manifest/ folder.
 Now simply use `kubectl` to install Prometheus and Grafana as per your configuration:
 
@@ -290,6 +292,7 @@ Now simply use `kubectl` to install Prometheus and Grafana as per your configura
 $ kubectl apply -f manifests/setup
 $ kubectl apply -f manifests/
 ```
+
 Alternatively, the resources in both folders can be applied with a single command
 `kubectl apply -Rf manifests`, but it may be necessary to run the command multiple times for all components to
 be created successfullly.
@@ -299,15 +302,18 @@ Check the monitoring namespace (or the namespace you have specific in `namespace
 ### Containerized Installing and Compiling
 
 If you don't care to have `jb` nor `jsonnet` nor `gojsontoyaml` installed, then use `quay.io/coreos/jsonnet-ci` container image. Do the following from this `kube-prometheus` directory:
+
 ```shell
 $ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) quay.io/coreos/jsonnet-ci jb update
 $ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) quay.io/coreos/jsonnet-ci ./build.sh example.jsonnet
 ```
 
 ## Update from upstream project
+
 You may wish to fetch changes made on this project so they are available to you.
 
 ### Update jb
+
 `jb` may have been updated so it's a good idea to get the latest version of this binary:
 
 ```shell
@@ -315,14 +321,16 @@ $ go get -u github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb
 ```
 
 ### Update kube-prometheus
+
 The command below will sync with upstream project:
+
 ```shell
 $ jb update
 ```
 
 ### Compile the manifests and apply
-Once updated, just follow the instructions under "Compiling" and "Apply the kube-prometheus stack" to apply the changes to your cluster.
 
+Once updated, just follow the instructions under "Compiling" and "Apply the kube-prometheus stack" to apply the changes to your cluster.
 
 ## Configuration
 
@@ -343,7 +351,8 @@ Configuration is mainly done in the `values` map. You can see this being used in
     },
 ```
 
-The grafana definition is located in a different project (https://github.com/brancz/kubernetes-grafana), but needed configuration can be customized from the same top level `values` field. For example to allow anonymous access to grafana, add the following `values` section:
+The grafana definition is located in a different project (https://github.com/brancz/kubernetes-grafana ), but needed configuration can be customized from the same top level `values` field. For example to allow anonymous access to grafana, add the following `values` section:
+
 ```
       grafana+:: {
         config: { // http://docs.grafana.org/installation/configuration/
@@ -373,8 +382,7 @@ A common example is that not all Kubernetes clusters are created exactly the sam
 
 These mixins are selectable via the `platform` field of kubePrometheus:
 
-[embedmd]:# (examples/jsonnet-snippets/platform.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/jsonnet-snippets/platform.jsonnet"
 (import 'kube-prometheus/main.libsonnet') +
 {
   values+:: {
@@ -406,8 +414,7 @@ The output of this command can be piped to a shell to be executed by appending `
 
 Then to generate manifests with `internal-registry.com/organization`, use the `withImageRepository` mixin:
 
-[embedmd]:# (examples/internal-registry.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/internal-registry.jsonnet"
 local mixin = import 'kube-prometheus/addons/config-mixins.libsonnet';
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
@@ -430,8 +437,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 Another mixin that may be useful for exploring the stack is to expose the UIs of Prometheus, Alertmanager and Grafana on NodePorts:
 
-[embedmd]:# (examples/jsonnet-snippets/node-ports.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/jsonnet-snippets/node-ports.jsonnet"
 (import 'kube-prometheus/main.libsonnet') +
 (import 'kube-prometheus/addons/node-ports.libsonnet')
 ```
@@ -440,8 +446,7 @@ Another mixin that may be useful for exploring the stack is to expose the UIs of
 
 To give another customization example, the name of the `Prometheus` object provided by this library can be overridden:
 
-[embedmd]:# (examples/prometheus-name-override.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/prometheus-name-override.jsonnet"
 ((import 'kube-prometheus/main.libsonnet') + {
    prometheus+: {
      prometheus+: {
@@ -457,8 +462,7 @@ To give another customization example, the name of the `Prometheus` object provi
 
 Standard Kubernetes manifests are all written using [ksonnet-lib](https://github.com/ksonnet/ksonnet-lib/), so they can be modified with the mixins supplied by ksonnet-lib. For example to override the namespace of the node-exporter DaemonSet:
 
-[embedmd]:# (examples/ksonnet-example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/ksonnet-example.jsonnet"
 ((import 'kube-prometheus/main.libsonnet') + {
    nodeExporter+: {
      daemonset+: {
@@ -474,8 +478,7 @@ Standard Kubernetes manifests are all written using [ksonnet-lib](https://github
 
 The Alertmanager configuration is located in the `values.alertmanager.config` configuration field. In order to set a custom Alertmanager configuration simply set this field.
 
-[embedmd]:# (examples/alertmanager-config.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/alertmanager-config.jsonnet"
 ((import 'kube-prometheus/main.libsonnet') + {
    values+:: {
      alertmanager+: {
@@ -502,8 +505,7 @@ The Alertmanager configuration is located in the `values.alertmanager.config` co
 
 In the above example the configuration has been inlined, but can just as well be an external file imported in jsonnet via the `importstr` function.
 
-[embedmd]:# (examples/alertmanager-config-external.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/alertmanager-config-external.jsonnet"
 ((import 'kube-prometheus/main.libsonnet') + {
    values+:: {
      alertmanager+: {
@@ -517,8 +519,7 @@ In the above example the configuration has been inlined, but can just as well be
 
 In order to monitor additional namespaces, the Prometheus server requires the appropriate `Role` and `RoleBinding` to be able to discover targets from that namespace. By default the Prometheus server is limited to the three namespaces it requires: default, kube-system and the namespace you configure the stack to run in via `$.values.namespace`. This is specified in `$.values.prometheus.namespaces`, to add new namespaces to monitor, simply append the additional namespaces:
 
-[embedmd]:# (examples/additional-namespaces.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/additional-namespaces.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+: {
@@ -548,8 +549,7 @@ In order to Prometheus be able to discovery and scrape services inside the addit
 
 You can define ServiceMonitor resources in your `jsonnet` spec. See the snippet bellow:
 
-[embedmd]:# (examples/additional-namespaces-servicemonitor.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/additional-namespaces-servicemonitor.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+: {
@@ -599,10 +599,9 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 ### Monitoring all namespaces
 
-In case you want to monitor all namespaces in a cluster, you can add the following mixin. Also, make sure to empty the namespaces defined in prometheus so that roleBindings are not created against them.  
+In case you want to monitor all namespaces in a cluster, you can add the following mixin. Also, make sure to empty the namespaces defined in prometheus so that roleBindings are not created against them.
 
-[embedmd]:# (examples/all-namespaces.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/all-namespaces.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') +
            (import 'kube-prometheus/addons/all-namespaces.libsonnet') + {
   values+:: {
@@ -630,7 +629,7 @@ Proceed with [creating ServiceMonitors for the services in the namespaces](#defi
 
 ### Static etcd configuration
 
-In order to configure a static etcd cluster to scrape there is a simple [kube-prometheus-static-etcd.libsonnet](jsonnet/kube-prometheus/kube-prometheus-static-etcd.libsonnet) mixin prepared - see [etcd.jsonnet](examples/etcd.jsonnet) for an example of how to use that mixin, and [Monitoring external etcd](docs/monitoring-external-etcd.md) for more information.
+In order to configure a static etcd cluster to scrape there is a simple [static-etcd.libsonnet](jsonnet/kube-prometheus/addons/static-etcd.libsonnet) mixin prepared - see [etcd.jsonnet](examples/etcd.jsonnet) for an example of how to use that mixin, and [Monitoring external etcd](docs/monitoring-external-etcd.md) for more information.
 
 > Note that monitoring etcd in minikube is currently not possible because of how etcd is setup. (minikube's etcd binds to 127.0.0.1:2379 only, and within host networking namespace.)
 
@@ -639,8 +638,7 @@ In order to configure a static etcd cluster to scrape there is a simple [kube-pr
 To prevent `Prometheus` and `Alertmanager` instances from being deployed onto the same node when
 possible, one can include the [kube-prometheus-anti-affinity.libsonnet](jsonnet/kube-prometheus/addons/anti-affinity.libsonnet) mixin:
 
-[embedmd]:# (examples/anti-affinity.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/anti-affinity.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') +
            (import 'kube-prometheus/addons/anti-affinity.libsonnet') + {
   values+:: {
@@ -664,8 +662,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
 Sometimes in small clusters, the CPU/memory limits can get high enough for alerts to be fired continuously. To prevent this, one can strip off the predefined limits.
 To do that, one can import the following mixin
 
-[embedmd]:# (examples/strip-limits.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/strip-limits.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') +
            (import 'kube-prometheus/addons/strip-limits.libsonnet') + {
   values+:: {
@@ -763,7 +760,7 @@ kube-state-metrics resource allocation is managed by
 You can control it's parameters by setting variables in the
 config. They default to:
 
-``` jsonnet
+```jsonnet
     kubeStateMetrics+:: {
       baseCPU: '100m',
       cpuPerNode: '2m',
@@ -773,11 +770,12 @@ config. They default to:
 ```
 
 ### Error retrieving kube-proxy metrics
+
 By default, kubeadm will configure kube-proxy to listen on 127.0.0.1 for metrics. Because of this prometheus would not be able to scrape these metrics. This would have to be changed to 0.0.0.0 in one of the following two places:
 
 1. Before cluster initialization, the config file passed to kubeadm init should have KubeProxyConfiguration manifest with the field metricsBindAddress set to 0.0.0.0:10249
 2. If the k8s cluster is already up and running, we'll have to modify the configmap kube-proxy in the namespace kube-system and set the metricsBindAddress field. After this kube-proxy daemonset would have to be restarted with
-`kubectl -n kube-system rollout restart daemonset kube-proxy`
+   `kubectl -n kube-system rollout restart daemonset kube-proxy`
 
 ## Contributing
 
@@ -789,8 +787,8 @@ the following process:
 2. Commit your changes (This is currently necessary due to our vendoring
    process. This is likely to change in the future).
 3. Update the pinned kube-prometheus dependency in `jsonnetfile.lock.json`: `jb update`
-3. Generate dependent `*.yaml` files: `make generate`
-4. Commit the generated changes.
+4. Generate dependent `*.yaml` files: `make generate`
+5. Commit the generated changes.
 
 ## License
 

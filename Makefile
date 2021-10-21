@@ -2,29 +2,39 @@ SHELL=/bin/bash -o pipefail
 
 BIN_DIR?=$(shell pwd)/tmp/bin
 
-EMBEDMD_BIN=$(BIN_DIR)/embedmd
+MDOX_BIN=$(BIN_DIR)/mdox
 JB_BIN=$(BIN_DIR)/jb
 GOJSONTOYAML_BIN=$(BIN_DIR)/gojsontoyaml
 JSONNET_BIN=$(BIN_DIR)/jsonnet
 JSONNETLINT_BIN=$(BIN_DIR)/jsonnet-lint
 JSONNETFMT_BIN=$(BIN_DIR)/jsonnetfmt
 KUBECONFORM_BIN=$(BIN_DIR)/kubeconform
-TOOLING=$(EMBEDMD_BIN) $(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETLINT_BIN) $(JSONNETFMT_BIN) $(KUBECONFORM_BIN)
+TOOLING=$(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETLINT_BIN) $(JSONNETFMT_BIN) $(KUBECONFORM_BIN) $(MDOX_BIN)
 
 JSONNETFMT_ARGS=-n 2 --max-blank-lines 2 --string-style s --comment-style s
 
-all: generate fmt test
+MDOX_VALIDATE_CONFIG?=.mdox.validate.yaml
+MD_FILES_TO_FORMAT=$(shell find docs developer-workspace examples experimental jsonnet manifests -name "*.md") $(shell ls *.md)
+
+all: generate fmt test docs
 
 .PHONY: clean
 clean:
 	# Remove all files and directories ignored by git.
 	git clean -Xfd .
 
-.PHONY: generate
-generate: manifests **.md
+.PHONY: docs
+docs: $(MDOX_BIN) $(shell find examples) build.sh example.jsonnet
+	@echo ">> formatting and local/remote links"
+	$(MDOX_BIN) fmt --soft-wraps -l --links.localize.address-regex="https://prometheus-operator.dev/.*" --links.validate.config-file=$(MDOX_VALIDATE_CONFIG) $(MD_FILES_TO_FORMAT)
 
-**.md: $(EMBEDMD_BIN) $(shell find examples) build.sh example.jsonnet
-	$(EMBEDMD_BIN) -w `find . -name "*.md" | grep -v vendor`
+.PHONY: check-docs
+check-docs: $(MDOX_BIN) $(shell find examples) build.sh example.jsonnet
+	@echo ">> checking formatting and local/remote links"
+	$(MDOX_BIN) fmt --soft-wraps --check -l --links.localize.address-regex="https://prometheus-operator.dev/.*" --links.validate.config-file=$(MDOX_VALIDATE_CONFIG) $(MD_FILES_TO_FORMAT)
+
+.PHONY: generate
+generate: manifests
 
 manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor
 	./build.sh $<
