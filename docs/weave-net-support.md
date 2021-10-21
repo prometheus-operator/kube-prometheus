@@ -15,8 +15,7 @@ Using kube-prometheus and kubectl you will be able install the following for mon
 ## Instructions
 - You can monitor Weave Net using an example like below. **Please note that some alert configurations are environment specific and may require modifications of alert thresholds**. For example: The FastDP flows have never gone below 15000 for us. But if this value is say 20000 for you then you can use an example like below to update the alert. The alerts which may require threshold modifications are `WeaveNetFastDPFlowsLow` and `WeaveNetIPAMUnreachable`.
 
-[embedmd]:# (../examples/weave-net-example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/weave-net-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') +
            (import 'kube-prometheus/addons/weave-net/weave-net.libsonnet') + {
   values+:: {

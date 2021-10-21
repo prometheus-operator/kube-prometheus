@@ -15,7 +15,7 @@ toc: true
 When the etcd cluster is not hosted inside Kubernetes.
 This is often the case with Kubernetes setups. This approach has been tested with kube-aws but the same principals apply to other tools.
 
-Note that [etcd.jsonnet](../examples/etcd.jsonnet) & [kube-prometheus-static-etcd.libsonnet](../jsonnet/kube-prometheus/kube-prometheus-static-etcd.libsonnet) (which are described by a section of the [Readme](../README.md#static-etcd-configuration)) do the following:
+Note that [etcd.jsonnet](../examples/etcd.jsonnet) & [static-etcd.libsonnet](../jsonnet/kube-prometheus/addons/static-etcd.libsonnet) (which are described by a section of the [Readme](../README.md#static-etcd-configuration)) do the following:
  * Put the three etcd TLS client files (CA & cert & key) into a secret in the namespace, and have Prometheus Operator load the secret.
  * Create the following (to expose etcd metrics - port 2379): a Service, Endpoint, & ServiceMonitor.
 

@@ -1,0 +1,9 @@
+version: 1
+
+validators:
+  # Ignore localhost links.
+  - regex: 'localhost'
+    type: "ignore"
+  # Ignore release links.
+  - regex: 'https:\/\/github\.com\/prometheus-operator\/kube-prometheus\/releases'
+    type: "ignore"

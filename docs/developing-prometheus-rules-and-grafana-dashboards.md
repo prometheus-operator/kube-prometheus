@@ -20,8 +20,7 @@ For both the Prometheus rules and the Grafana dashboards Kubernetes `ConfigMap`s
 
 As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](../README.md):
 
-[embedmd]:# (../example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat example.jsonnet"
 local kp =
   (import 'kube-prometheus/main.libsonnet') +
   // Uncomment the following imports to enable its patches
@@ -68,8 +67,7 @@ The format is exactly the Prometheus format, so there should be no changes neces
 
 > Note that alerts can just as well be included into this file, using the jsonnet `import` function. In this example it is just inlined in order to demonstrate their use in a single file.
 
-[embedmd]:# (../examples/prometheus-additional-alert-rule-example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/prometheus-additional-alert-rule-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+: {
@@ -124,8 +122,7 @@ In order to add a recording rule, simply do the same with the `prometheusRules` 
 
 > Note that rules can just as well be included into this file, using the jsonnet `import` function. In this example it is just inlined in order to demonstrate their use in a single file.
 
-[embedmd]:# (../examples/prometheus-additional-recording-rule-example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/prometheus-additional-recording-rule-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+: {
@@ -184,8 +181,7 @@ cat existingrule.yaml | gojsontoyaml -yamltojson > existingrule.json
 
 Then import it in jsonnet:
 
-[embedmd]:# (../examples/prometheus-additional-rendered-rule-example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/prometheus-additional-rendered-rule-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+: {
@@ -337,8 +333,7 @@ We recommend using the [grafonnet](https://github.com/grafana/grafonnet-lib/) li
 
 > Note that dashboards can just as well be included into this file, using the jsonnet `import` function. In this example it is just inlined in order to demonstrate their use in a single file.
 
-[embedmd]:# (../examples/grafana-additional-jsonnet-dashboard-example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/grafana-additional-jsonnet-dashboard-example.jsonnet"
 local grafana = import 'grafonnet/grafana.libsonnet';
 local dashboard = grafana.dashboard;
 local row = grafana.row;
@@ -394,8 +389,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 As jsonnet is a superset of json, the jsonnet `import` function can be used to include Grafana dashboard json blobs. In this example we are importing a [provided example dashboard](../examples/example-grafana-dashboard.json).
 
-[embedmd]:# (../examples/grafana-additional-rendered-dashboard-example.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/grafana-additional-rendered-dashboard-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+:: {
@@ -419,8 +413,8 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 ```
 
 In case you have lots of json dashboard exported out from grafana UI the above approach is going to take lots of time to improve performance we can use `rawDashboards` field and provide it's value as json string by using `importstr`
-[embedmd]:# (../examples/grafana-additional-rendered-dashboard-example-2.jsonnet)
-```jsonnet
+
+```jsonnet mdox-exec="cat examples/grafana-additional-rendered-dashboard-example-2.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+:: {
@@ -523,8 +517,7 @@ values+:: {
 
 Full example of including etcd mixin using method described above:
 
-[embedmd]:# (../examples/mixin-inclusion.jsonnet)
-```jsonnet
+```jsonnet mdox-exec="cat examples/mixin-inclusion.jsonnet"
 local addMixin = (import 'kube-prometheus/lib/mixin.libsonnet');
 local etcdMixin = addMixin({
   name: 'etcd',
