@@ -16,7 +16,8 @@ spec:
     rules:
     - alert: PrometheusOperatorListErrors
       annotations:
-        description: Errors while performing List operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.
+        description: Errors while performing List operations in controller {{$labels.controller}}
+          in {{$labels.namespace}} namespace.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorlisterrors
         summary: Errors while performing list operations in controller.
       expr: |
@@ -26,7 +27,8 @@ spec:
         severity: warning
     - alert: PrometheusOperatorWatchErrors
       annotations:
-        description: Errors while performing watch operations in controller {{$labels.controller}} in {{$labels.namespace}} namespace.
+        description: Errors while performing watch operations in controller {{$labels.controller}}
+          in {{$labels.namespace}} namespace.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorwatcherrors
         summary: Errors while performing watch operations in controller.
       expr: |
@@ -36,7 +38,8 @@ spec:
         severity: warning
     - alert: PrometheusOperatorSyncFailed
       annotations:
-        description: Controller {{ $labels.controller }} in {{ $labels.namespace }} namespace fails to reconcile {{ $value }} objects.
+        description: Controller {{ $labels.controller }} in {{ $labels.namespace }}
+          namespace fails to reconcile {{ $value }} objects.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorsyncfailed
         summary: Last controller reconciliation failed
       expr: |
@@ -46,7 +49,9 @@ spec:
         severity: warning
     - alert: PrometheusOperatorReconcileErrors
       annotations:
-        description: '{{ $value | humanizePercentage }} of reconciling operations failed for {{ $labels.controller }} controller in {{ $labels.namespace }} namespace.'
+        description: '{{ $value | humanizePercentage }} of reconciling operations
+          failed for {{ $labels.controller }} controller in {{ $labels.namespace }}
+          namespace.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorreconcileerrors
         summary: Errors while reconciling controller.
       expr: |
@@ -56,7 +61,8 @@ spec:
         severity: warning
     - alert: PrometheusOperatorNodeLookupErrors
       annotations:
-        description: Errors while reconciling Prometheus in {{ $labels.namespace }} Namespace.
+        description: Errors while reconciling Prometheus in {{ $labels.namespace }}
+          Namespace.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatornodelookuperrors
         summary: Errors while reconciling Prometheus.
       expr: |
@@ -66,7 +72,8 @@ spec:
         severity: warning
     - alert: PrometheusOperatorNotReady
       annotations:
-        description: Prometheus operator in {{ $labels.namespace }} namespace isn't ready to reconcile {{ $labels.controller }} resources.
+        description: Prometheus operator in {{ $labels.namespace }} namespace isn't
+          ready to reconcile {{ $labels.controller }} resources.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatornotready
         summary: Prometheus operator not ready
       expr: |
@@ -76,7 +83,9 @@ spec:
         severity: warning
     - alert: PrometheusOperatorRejectedResources
       annotations:
-        description: Prometheus operator in {{ $labels.namespace }} namespace rejected {{ printf "%0.0f" $value }} {{ $labels.controller }}/{{ $labels.resource }} resources.
+        description: Prometheus operator in {{ $labels.namespace }} namespace rejected
+          {{ printf "%0.0f" $value }} {{ $labels.controller }}/{{ $labels.resource
+          }} resources.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/prometheusoperatorrejectedresources
         summary: Resources rejected by Prometheus operator
       expr: |
