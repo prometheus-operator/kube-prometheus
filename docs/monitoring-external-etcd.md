@@ -1,23 +1,23 @@
 ---
-title: "Monitoring external etcd"
-description: "This guide will help you monitor an external etcd cluster."
-lead: "This guide will help you monitor an external etcd cluster."
-date: 2021-03-08T23:04:32+01:00
-draft: false
-images: []
-menu:
-  docs:
-    parent: "kube"
 weight: 640
 toc: true
+title: Monitoring external etcd
+menu:
+    docs:
+        parent: kube
+lead: This guide will help you monitor an external etcd cluster.
+images: []
+draft: false
+description: This guide will help you monitor an external etcd cluster.
+date: "2021-03-08T23:04:32+01:00"
 ---
 
 When the etcd cluster is not hosted inside Kubernetes.
 This is often the case with Kubernetes setups. This approach has been tested with kube-aws but the same principals apply to other tools.
 
 Note that [etcd.jsonnet](../examples/etcd.jsonnet) & [static-etcd.libsonnet](../jsonnet/kube-prometheus/addons/static-etcd.libsonnet) (which are described by a section of the [Readme](../README.md#static-etcd-configuration)) do the following:
- * Put the three etcd TLS client files (CA & cert & key) into a secret in the namespace, and have Prometheus Operator load the secret.
- * Create the following (to expose etcd metrics - port 2379): a Service, Endpoint, & ServiceMonitor.
+* Put the three etcd TLS client files (CA & cert & key) into a secret in the namespace, and have Prometheus Operator load the secret.
+* Create the following (to expose etcd metrics - port 2379): a Service, Endpoint, & ServiceMonitor.
 
 # Step 1: Open the port
 
@@ -26,6 +26,7 @@ You now need to allow the nodes Prometheus are running on to talk to the etcd on
 If using kube-aws, you will need to edit the etcd security group inbound, specifying the security group of your Kubernetes node (worker) as the source.
 
 ## kube-aws and EIP or ENI inconsistency
+
 With kube-aws, each etcd node has two IP addresses:
 
 * EC2 instance IP
@@ -40,6 +41,7 @@ Another idea woud be to use the DNS entries of etcd, but those are not currently
 # Step 2: verify
 
 Go to the Prometheus UI on :9090/config and check that you have an etcd job entry:
+
 ```
 - job_name: monitoring/etcd-k8s/0
   scrape_interval: 30s
@@ -48,6 +50,5 @@ Go to the Prometheus UI on :9090/config and check that you have an etcd job entr
 ```
 
 On the :9090/targets page:
- * You should see "etcd" with the UP state. If not, check the Error column for more information.
- * If no "etcd" targets are even shown on this page, prometheus isn't attempting to scrape it.
-
+* You should see "etcd" with the UP state. If not, check the Error column for more information.
+* If no "etcd" targets are even shown on this page, prometheus isn't attempting to scrape it.

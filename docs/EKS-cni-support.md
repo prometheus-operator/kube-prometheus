@@ -4,7 +4,7 @@ AWS EKS uses [CNI](https://github.com/aws/amazon-vpc-cni-k8s) networking plugin 
 
 One fatal issue that can occur is that you run out of IP addresses in your eks cluster. (Generally happens due to error configs where pods keep scheduling).
 
-You can monitor the `awscni` using kube-promethus with : 
+You can monitor the `awscni` using kube-promethus with :
 
 ```jsonnet mdox-exec="cat examples/eks-cni-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {

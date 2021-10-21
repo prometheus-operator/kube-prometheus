@@ -1,15 +1,15 @@
 ---
-title: "Prometheus Rules and Grafana Dashboards"
-description: "Create Prometheus Rules and Grafana Dashboards on top of kube-prometheus"
-lead: "Create Prometheus Rules and Grafana Dashboards on top of kube-prometheus"
-date: 2021-03-08T23:04:32+01:00
-draft: false
-images: []
-menu:
-  docs:
-    parent: "kube"
 weight: 650
 toc: true
+title: Prometheus Rules and Grafana Dashboards
+menu:
+    docs:
+        parent: kube
+lead: Create Prometheus Rules and Grafana Dashboards on top of kube-prometheus
+images: []
+draft: false
+description: Create Prometheus Rules and Grafana Dashboards on top of kube-prometheus
+date: "2021-03-08T23:04:32+01:00"
 ---
 
 `kube-prometheus` ships with a set of default [Prometheus rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [Grafana](http://grafana.com/) dashboards. At some point one might like to extend them, the purpose of this document is to explain how to do this.
@@ -213,6 +213,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
 { ['example-application-' + name]: kp.exampleApplication[name] for name in std.objectFields(kp.exampleApplication) }
 ```
+
 ### Changing default rules
 
 Along with adding additional rules, we give the user the option to filter or adjust the existing rules imported by `kube-prometheus/main.libsonnet`. The recording rules can be found in [kube-prometheus/components/mixin/rules](../jsonnet/kube-prometheus/components/mixin/rules) and [kubernetes-mixin/rules](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/rules) while the alerting rules can be found in [kube-prometheus/components/mixin/alerts](../jsonnet/kube-prometheus/components/mixin/alerts) and [kubernetes-mixin/alerts](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/alerts).
@@ -220,7 +221,9 @@ Along with adding additional rules, we give the user the option to filter or adj
 Knowing which rules to change, the user can now use functions from the [Jsonnet standard library](https://jsonnet.org/ref/stdlib.html) to make these changes. Below are examples of both a filter and an adjustment being made to the default rules. These changes can be assigned to a local variable and then added to the `local kp` object as seen in the examples above.
 
 #### Filter
+
 Here the alert `KubeStatefulSetReplicasMismatch` is being filtered out of the group `kubernetes-apps`. The default rule can be seen [here](https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/alerts/apps_alerts.libsonnet). You first need to find out in which component the rule is defined (here it is kuberentesControlPlane).
+
 ```jsonnet
 local filter = {
   kubernetesControlPlane+: {
@@ -247,7 +250,9 @@ local filter = {
 ```
 
 #### Adjustment
+
 Here the expression for another alert in the same component is updated from its previous value. The default rule can be seen [here](https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/alerts/apps_alerts.libsonnet).
+
 ```jsonnet
 local update = {
   kubernetesControlPlane+: {
@@ -279,6 +284,7 @@ local update = {
 ```
 
 Using the example from above about adding in pre-rendered rules, the new local variables can be added in as follows:
+
 ```jsonnet
 local add = {
   exampleApplication:: {
@@ -323,6 +329,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
 { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) } +
 { ['exampleApplication-' + name]: kp.exampleApplication[name] for name in std.objectFields(kp.exampleApplication) }
 ```
+
 ## Dashboards
 
 Dashboards can either be added using jsonnet or simply a pre-rendered json dashboard.

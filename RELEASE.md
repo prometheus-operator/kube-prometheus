@@ -4,12 +4,12 @@ Kube-prometheus has a somehow predictable release schedule, releases were
 historically cut in sync with OpenShift releases as per downstream needs. So
 far there hasn't been any problem with this schedule since it is also in sync
 with Kubernetes releases. So for every new Kubernetes release, there is a new
-release of kube-prometheus, although it tends to happen later. 
+release of kube-prometheus, although it tends to happen later.
 
 # How to cut a new release
 
 > This guide is strongly based on the [prometheus-operator release
-instructions](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md).
+> instructions](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md).
 
 ## Branch management and versioning strategy
 
@@ -53,9 +53,9 @@ failed or because the main branch was already up-to-date.
 The main branch of kube-prometheus should support the last 2 versions of
 Kubernetes. We need to make sure that the CI on the main branch is testing the
 kube-prometheus configuration against both of these versions by updating the [CI
-worklow](/.github/workflows/ci.yaml) to include the latest kind version and the
+worklow](.github/workflows/ci.yaml) to include the latest kind version and the
 2 latest images versions that are attached to the kind release. Once that is
-done, the [compatibility matrix](/README.md#kubernetes-compatibility-matrix) in
+done, the [compatibility matrix](README.md#kubernetes-compatibility-matrix) in
 the README should also be updated to reflect the CI changes.
 
 ## Create pull request to cut the release
@@ -63,9 +63,9 @@ the README should also be updated to reflect the CI changes.
 ### Pin Jsonnet dependencies
 
 Pin jsonnet dependencies in
-[jsonnetfile.json](/jsonnet/kube-prometheus/jsonnetfile.json). Each dependency
+[jsonnetfile.json](jsonnet/kube-prometheus/jsonnetfile.json). Each dependency
 should be pinned to the latest release branch or if it doesn't have one, pinned
-to the latest commit. 
+to the latest commit.
 
 ### Start with a fresh environment
 
@@ -87,14 +87,14 @@ make generate
 
 ### Update the compatibility matrix
 
-Update the [compatibility matrix](/README.md#kubernetes-compatibility-matrix) in
+Update the [compatibility matrix](README.md#kubernetes-compatibility-matrix) in
 the README, by adding the new release based on the `main` branch compatibility
 and removing the oldest release branch to only keep the latest 5 branches in the
 matrix.
 
 ### Update changelog
 
-Iterate over the PRs that were merged between the latest release of kube-prometheus and the HEAD and add the changelog entries to the [CHANGELOG](/CHANGELOG.md).
+Iterate over the PRs that were merged between the latest release of kube-prometheus and the HEAD and add the changelog entries to the [CHANGELOG](CHANGELOG.md).
 
 ## Create release branch
 
@@ -111,10 +111,10 @@ the main branch to be in sync with the latest changes of its dependencies.
 
 ### Update CI workflow
 
-Update the [versions workflow](/.github/workflows/versions.yaml) to include the latest release branch and remove the oldest one to reflect the list of supported releases.
+Update the [versions workflow](.github/workflows/versions.yaml) to include the latest release branch and remove the oldest one to reflect the list of supported releases.
 
 ### Update Kubernetes versions used by kubeconform
 
 Update the versions of Kubernetes used when validating manifests with
-kubeconform in the [Makefile](/Makefile) to align with the compatibility
+kubeconform in the [Makefile](Makefile) to align with the compatibility
 matrix.

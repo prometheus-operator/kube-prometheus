@@ -1,15 +1,15 @@
 ---
-title: "Deploy to kubeadm"
-description: "Deploy kube-prometheus to Kubernets kubeadm."
-lead: "Deploy kube-prometheus to Kubernets kubeadm."
-date: 2021-03-08T23:04:32+01:00
-draft: false
-images: []
-menu:
-  docs:
-    parent: "kube"
 weight: 500
 toc: true
+title: Deploy to kubeadm
+menu:
+    docs:
+        parent: kube
+lead: Deploy kube-prometheus to Kubernets kubeadm.
+images: []
+draft: false
+description: Deploy kube-prometheus to Kubernets kubeadm.
+date: "2021-03-08T23:04:32+01:00"
 ---
 
 The [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/) tool is linked by Kubernetes as the offical way to deploy and manage self-hosted clusters. kubeadm does a lot of heavy lifting by automatically configuring your Kubernetes cluster with some common options. This guide is intended to show you how to deploy Prometheus, Prometheus Operator and Kube Prometheus to get you started monitoring your cluster that was deployed with kubeadm.
@@ -92,7 +92,6 @@ Once you complete this guide you will monitor the following:
 * apiserver
 * kube-scheduler
 * kube-controller-manager
-
 
 ## Getting Up and Running Fast with Kube-Prometheus
 

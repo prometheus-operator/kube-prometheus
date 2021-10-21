@@ -1,9 +1,11 @@
 # Setup Weave Net monitoring using kube-prometheus
+
 [Weave Net](https://kubernetes.io/docs/concepts/cluster-administration/networking/#weave-net-from-weaveworks) is a resilient and simple to use CNI provider for Kubernetes. A well monitored and observed CNI provider helps in troubleshooting Kubernetes networking problems. [Weave Net](https://www.weave.works/docs/net/latest/concepts/how-it-works/) emits [prometheus metrics](https://www.weave.works/docs/net/latest/tasks/manage/metrics/) for monitoring Weave Net. There are many ways to install Weave Net in your cluster. One of them is using [kops](https://github.com/kubernetes/kops/blob/master/docs/networking.md).
 
 Following this document, you can setup Weave Net monitoring for your cluster using kube-prometheus.
 
 ## Contents
+
 Using kube-prometheus and kubectl you will be able install the following for monitoring Weave Net in your cluster:
 
 1. [Service for Weave Net](https://gist.github.com/alok87/379c6234b582f555c141f6fddea9fbce) The service which the [service monitor](https://coreos.com/operators/prometheus/docs/latest/user-guides/cluster-monitoring.html) scrapes.
@@ -65,6 +67,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
 ```
 
 - After you have the required yamls file please run
+
 ```
 kubectl create -f prometheus-serviceWeaveNet.yaml
 kubectl create -f prometheus-serviceMonitorWeaveNet.yaml

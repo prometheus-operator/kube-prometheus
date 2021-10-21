@@ -1,15 +1,15 @@
 ---
-title: "Expose via Ingress"
-description: "How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana."
-lead: "How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana."
-date: 2021-03-08T23:04:32+01:00
-draft: false
-images: []
-menu:
-  docs:
-    parent: "kube"
 weight: 500
 toc: true
+title: Expose via Ingress
+menu:
+    docs:
+        parent: kube
+lead: How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana.
+images: []
+draft: false
+description: How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana.
+date: "2021-03-08T23:04:32+01:00"
 ---
 
 In order to access the web interfaces via the Internet [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) is a popular option. This guide explains, how Kubernetes Ingress can be setup, in order to expose the Prometheus, Alertmanager and Grafana UIs, that are included in the [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) project.
