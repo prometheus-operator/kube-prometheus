@@ -1,5 +1,5 @@
 {
-  prometheus+:: {
+  prometheus+: {
     clusterRole+: {
       rules+: [
         {
