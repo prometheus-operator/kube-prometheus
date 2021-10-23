@@ -33,14 +33,14 @@ Thanks to our community we identified a lot of short-commings of previous design
 
 Those concepts were already present in the repository but it wasn't clear which file is holding what. After refactoring we categorized jsonnet code into 3 buckets and put them into separate directories:
 - `components` - main building blocks for kube-prometheus, written as functions responsible for creating multiple objects representing kubernetes manifests. For example all objects for node_exporter deployment are bundled in `components/node_exporter.libsonnet` library
-- `addons` - everything that can enhance kube-prometheus deployment. Those are small snippets of code adding a small feature, for example adding anti-affinity to pods via [`addons/anti-affinity.libsonnet`][antiaffinity]. Addons are meant to be used in object-oriented way like `local kp = (import 'kube-prometheus/main.libsonnet') + (import 'kube-prometheus/addons/all-namespaces.libsonnet')`
+- `addons` - everything that can enhance kube-prometheus deployment. Those are small snippets of code adding a small feature, for example adding anti-affinity to pods via [`addons/anti-affinity.libsonnet`](https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/addons/anti-affinity.libsonnet). Addons are meant to be used in object-oriented way like `local kp = (import 'kube-prometheus/main.libsonnet') + (import 'kube-prometheus/addons/all-namespaces.libsonnet')`
 - `platforms` - currently those are `addons` specialized to allow deploying kube-prometheus project on a specific platform.
 
 ### Component configuration
 
-Refactoring main components to use functions allowed us to define APIs for said components. Each function has a default set of parameters that can be overridden or that are required to be set by a user. Those default parameters are represented in each component by `defaults` map at the top of each library file, for example in [`node_exporter.libsonnet`][node_exporter_defaults_example].
+Refactoring main components to use functions allowed us to define APIs for said components. Each function has a default set of parameters that can be overridden or that are required to be set by a user. Those default parameters are represented in each component by `defaults` map at the top of each library file, for example in [`node_exporter.libsonnet`](https://github.com/prometheus-operator/kube-prometheus/blob/1d2a0e275af97948667777739a18b24464480dc8/jsonnet/kube-prometheus/components/node-exporter.libsonnet#L3-L34).
 
-This API is meant to ease the use of kube-prometheus as parameters can be passed from a JSON file and don't need to be in jsonnet format. However, if you need to modify particular parts of the stack, jsonnet allows you to do this and we are also not restricting such access in any way. An example of such modifications can be seen in any of our `addons`, like the [`addons/anti-affinity.libsonnet`][antiaffinity] one.
+This API is meant to ease the use of kube-prometheus as parameters can be passed from a JSON file and don't need to be in jsonnet format. However, if you need to modify particular parts of the stack, jsonnet allows you to do this and we are also not restricting such access in any way. An example of such modifications can be seen in any of our `addons`, like the [`addons/anti-affinity.libsonnet`](https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/addons/anti-affinity.libsonnet) one.
 
 ### Mixin integration
 
@@ -63,25 +63,14 @@ All examples from `examples/` directory were adapted to the new codebase. [Pleas
 
 ## Legacy migration
 
-An example of conversion of a legacy release-0.3 my.jsonnet file to release-0.8 can be found in [migration-example](./migration-example)
+An example of conversion of a legacy release-0.3 my.jsonnet file to release-0.8 can be found in [migration-example](migration-example)
 
 ## Advanced usage examples
 
 For more advanced usage examples you can take a look at those two, open to public, implementations:
-- [thaum-xyz/ankhmorpork][thaum] - extending kube-prometheus to adapt to a required environment
-- [openshift/cluster-monitoring-operator][openshift] - using kube-prometheus components as standalone libraries to build a custom solution
+- [thaum-xyz/ankhmorpork](https://github.com/thaum-xyz/ankhmorpork/blob/master/apps/monitoring/jsonnet) - extending kube-prometheus to adapt to a required environment
+- [openshift/cluster-monitoring-operator](https://github.com/openshift/cluster-monitoring-operator/pull/1044) - using kube-prometheus components as standalone libraries to build a custom solution
 
 ## Final note
 
-Refactoring was a huge undertaking and possibly this document didn't describe in enough detail how to help you with migration to the new stack. If that is the case, please reach out to us by using [GitHub discussions][discussions] feature or directly on [#prometheus-operator kubernetes slack channel][slack].
-
-
-[antiaffinity]: https://github.com/prometheus-operator/kube-prometheus/blob/main/jsonnet/kube-prometheus/addons/anti-affinity.libsonnet
-
-[node_exporter_defaults_example]: https://github.com/prometheus-operator/kube-prometheus/blob/1d2a0e275af97948667777739a18b24464480dc8/jsonnet/kube-prometheus/components/node-exporter.libsonnet#L3-L34
-
-[openshift]: https://github.com/openshift/cluster-monitoring-operator/pull/1044
-[thaum]: https://github.com/thaum-xyz/ankhmorpork/blob/master/apps/monitoring/jsonnet
-
-[discussions]: https://github.com/prometheus-operator/kube-prometheus/discussions
-[slack]: http://slack.k8s.io/
+Refactoring was a huge undertaking and possibly this document didn't describe in enough detail how to help you with migration to the new stack. If that is the case, please reach out to us by using [GitHub discussions](https://github.com/prometheus-operator/kube-prometheus/discussions) feature or directly on [#prometheus-operator kubernetes slack channel](http://slack.k8s.io/).

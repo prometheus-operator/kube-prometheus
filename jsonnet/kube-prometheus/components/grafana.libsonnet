@@ -1,3 +1,5 @@
+local kubernetesGrafana = import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet';
+
 local defaults = {
   local defaults = self,
   name: 'grafana',
@@ -20,86 +22,35 @@ local defaults = {
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
   prometheusName: error 'must provide prometheus name',
-  dashboards: {},
-  // TODO(paulfantom): expose those to have a stable API. After kubernetes-grafana refactor those could probably be removed.
-  rawDashboards: {},
-  folderDashboards: {},
-  containers: [],
-  datasources: [],
-  config: {},
-  plugins: [],
-  env: [],
 };
 
-function(params) {
-  local g = self,
-  _config:: defaults + params,
+function(params)
+  local config = defaults + params;
   // Safety check
-  assert std.isObject(g._config.resources),
+  assert std.isObject(config.resources);
 
-  local glib = (import 'github.com/brancz/kubernetes-grafana/grafana/grafana.libsonnet') + {
-    _config+:: {
-      namespace: g._config.namespace,
-      versions+:: {
-        grafana: g._config.version,
-      },
-      imageRepos+:: {
-        grafana: std.split(g._config.image, ':')[0],
-      },
-      prometheus+:: {
-        name: g._config.prometheusName,
-      },
-      grafana+:: {
+  kubernetesGrafana(config) {
+    local g = self,
+    _config+:: config,
+
+    serviceMonitor: {
+      apiVersion: 'monitoring.coreos.com/v1',
+      kind: 'ServiceMonitor',
+      metadata: {
+        name: 'grafana',
+        namespace: g._config.namespace,
         labels: g._config.commonLabels,
-        dashboards: g._config.dashboards,
-        resources: g._config.resources,
-        rawDashboards: g._config.rawDashboards,
-        folderDashboards: g._config.folderDashboards,
-        containers: g._config.containers,
-        config+: g._config.config,
-        plugins+: g._config.plugins,
-        env: g._config.env,
-      } + (
-        // Conditionally overwrite default setting.
-        if std.length(g._config.datasources) > 0 then
-          { datasources: g._config.datasources }
-        else {}
-      ),
-    },
-  },
-
-  config: glib.grafana.config,
-  service: glib.grafana.service,
-  serviceAccount: glib.grafana.serviceAccount,
-  deployment: glib.grafana.deployment,
-  dashboardDatasources: glib.grafana.dashboardDatasources,
-  dashboardSources: glib.grafana.dashboardSources,
-
-  dashboardDefinitions: if std.length(g._config.dashboards) > 0 ||
-                           std.length(g._config.rawDashboards) > 0 ||
-                           std.length(g._config.folderDashboards) > 0 then {
-    apiVersion: 'v1',
-    kind: 'ConfigMapList',
-    items: glib.grafana.dashboardDefinitions,
-  },
-  serviceMonitor: {
-    apiVersion: 'monitoring.coreos.com/v1',
-    kind: 'ServiceMonitor',
-    metadata: {
-      name: 'grafana',
-      namespace: g._config.namespace,
-      labels: g._config.commonLabels,
-    },
-    spec: {
-      selector: {
-        matchLabels: {
-          'app.kubernetes.io/name': 'grafana',
-        },
       },
-      endpoints: [{
-        port: 'http',
-        interval: '15s',
-      }],
+      spec: {
+        selector: {
+          matchLabels: {
+            'app.kubernetes.io/name': 'grafana',
+          },
+        },
+        endpoints: [{
+          port: 'http',
+          interval: '15s',
+        }],
+      },
     },
-  },
-}
+  }

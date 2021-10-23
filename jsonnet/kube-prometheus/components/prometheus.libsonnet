@@ -35,6 +35,7 @@ local defaults = {
     },
   },
   thanos: null,
+  reloaderPort: 8080,
 };
 
 
@@ -58,6 +59,7 @@ function(params) {
       targetGroups: {},
       sidecar: {
         selector: p._config.mixin._config.thanosSelector,
+        thanosPrometheusCommonDimensions: 'namespace, pod',
         dimensions: std.join(', ', ['job', 'instance']),
       },
     },
@@ -98,13 +100,14 @@ function(params) {
     spec: {
       ports: [
                { name: 'web', targetPort: 'web', port: 9090 },
+               { name: 'reloader-web', port: p._config.reloaderPort, targetPort: 'reloader-web' },
              ] +
              (
                if p._config.thanos != null then
                  [{ name: 'grpc', port: 10901, targetPort: 10901 }]
                else []
              ),
-      selector: { app: 'prometheus' } + p._config.selectorLabels,
+      selector: p._config.selectorLabels,
       sessionAffinity: 'ClientIP',
     },
   },
@@ -243,7 +246,7 @@ function(params) {
     },
 
   [if (defaults + params).replicas > 1 then 'podDisruptionBudget']: {
-    apiVersion: 'policy/v1beta1',
+    apiVersion: 'policy/v1',
     kind: 'PodDisruptionBudget',
     metadata: {
       name: 'prometheus-' + p._config.name,
@@ -317,10 +320,10 @@ function(params) {
       selector: {
         matchLabels: p._config.selectorLabels,
       },
-      endpoints: [{
-        port: 'web',
-        interval: '30s',
-      }],
+      endpoints: [
+        { port: 'web', interval: '30s' },
+        { port: 'reloader-web', interval: '30s' },
+      ],
     },
   },
 

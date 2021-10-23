@@ -1,11 +1,11 @@
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   labels:
     app.kubernetes.io/component: prometheus
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.29.2
+    app.kubernetes.io/version: 2.30.3
   name: prometheus-k8s
   namespace: monitoring
 spec:

@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: prometheus
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.29.2
+    app.kubernetes.io/version: 2.30.3
     prometheus: k8s
     role: alert-rules
   name: prometheus-k8s-prometheus-rules
@@ -16,7 +16,8 @@ spec:
     rules:
     - alert: PrometheusBadConfig
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to reload its configuration.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to
+          reload its configuration.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusbadconfig
         summary: Failed Prometheus configuration reload.
       expr: |
@@ -28,9 +29,11 @@ spec:
         severity: critical
     - alert: PrometheusNotificationQueueRunningFull
       annotations:
-        description: Alert notification queue of Prometheus {{$labels.namespace}}/{{$labels.pod}} is running full.
+        description: Alert notification queue of Prometheus {{$labels.namespace}}/{{$labels.pod}}
+          is running full.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusnotificationqueuerunningfull
-        summary: Prometheus alert notification queue predicted to run full in less than 30m.
+        summary: Prometheus alert notification queue predicted to run full in less
+          than 30m.
       expr: |
         # Without min_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
@@ -44,9 +47,11 @@ spec:
         severity: warning
     - alert: PrometheusErrorSendingAlertsToSomeAlertmanagers
       annotations:
-        description: '{{ printf "%.1f" $value }}% errors while sending alerts from Prometheus {{$labels.namespace}}/{{$labels.pod}} to Alertmanager {{$labels.alertmanager}}.'
+        description: '{{ printf "%.1f" $value }}% errors while sending alerts from
+          Prometheus {{$labels.namespace}}/{{$labels.pod}} to Alertmanager {{$labels.alertmanager}}.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuserrorsendingalertstosomealertmanagers
-        summary: Prometheus has encountered more than 1% errors sending alerts to a specific Alertmanager.
+        summary: Prometheus has encountered more than 1% errors sending alerts to
+          a specific Alertmanager.
       expr: |
         (
           rate(prometheus_notifications_errors_total{job="prometheus-k8s",namespace="monitoring"}[5m])
@@ -60,7 +65,8 @@ spec:
         severity: warning
     - alert: PrometheusNotConnectedToAlertmanagers
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not connected to any Alertmanagers.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not connected
+          to any Alertmanagers.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusnotconnectedtoalertmanagers
         summary: Prometheus is not connected to any Alertmanagers.
       expr: |
@@ -72,7 +78,8 @@ spec:
         severity: warning
     - alert: PrometheusTSDBReloadsFailing
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected {{$value | humanize}} reload failures over the last 3h.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected
+          {{$value | humanize}} reload failures over the last 3h.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheustsdbreloadsfailing
         summary: Prometheus has issues reloading blocks from disk.
       expr: |
@@ -82,7 +89,8 @@ spec:
         severity: warning
     - alert: PrometheusTSDBCompactionsFailing
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected {{$value | humanize}} compaction failures over the last 3h.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has detected
+          {{$value | humanize}} compaction failures over the last 3h.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheustsdbcompactionsfailing
         summary: Prometheus has issues compacting blocks.
       expr: |
@@ -92,7 +100,8 @@ spec:
         severity: warning
     - alert: PrometheusNotIngestingSamples
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not ingesting samples.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is not ingesting
+          samples.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusnotingestingsamples
         summary: Prometheus is not ingesting samples.
       expr: |
@@ -110,7 +119,9 @@ spec:
         severity: warning
     - alert: PrometheusDuplicateTimestamps
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping {{ printf "%.4g" $value  }} samples/s with different values but duplicated timestamp.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping
+          {{ printf "%.4g" $value  }} samples/s with different values but duplicated
+          timestamp.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusduplicatetimestamps
         summary: Prometheus is dropping samples with duplicate timestamps.
       expr: |
@@ -120,7 +131,8 @@ spec:
         severity: warning
     - alert: PrometheusOutOfOrderTimestamps
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping {{ printf "%.4g" $value  }} samples/s with timestamps arriving out of order.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} is dropping
+          {{ printf "%.4g" $value  }} samples/s with timestamps arriving out of order.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusoutofordertimestamps
         summary: Prometheus drops samples with out-of-order timestamps.
       expr: |
@@ -130,7 +142,9 @@ spec:
         severity: warning
     - alert: PrometheusRemoteStorageFailures
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} failed to send {{ printf "%.1f" $value }}% of the samples to {{ $labels.remote_name}}:{{ $labels.url }}
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} failed to send
+          {{ printf "%.1f" $value }}% of the samples to {{ $labels.remote_name}}:{{
+          $labels.url }}
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusremotestoragefailures
         summary: Prometheus fails to send samples to remote storage.
       expr: |
@@ -150,7 +164,9 @@ spec:
         severity: critical
     - alert: PrometheusRemoteWriteBehind
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write is {{ printf "%.1f" $value }}s behind for {{ $labels.remote_name}}:{{ $labels.url }}.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
+          is {{ printf "%.1f" $value }}s behind for {{ $labels.remote_name}}:{{ $labels.url
+          }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusremotewritebehind
         summary: Prometheus remote write is behind.
       expr: |
@@ -167,9 +183,14 @@ spec:
         severity: critical
     - alert: PrometheusRemoteWriteDesiredShards
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write desired shards calculation wants to run {{ $value }} shards for queue {{ $labels.remote_name}}:{{ $labels.url }}, which is more than the max of {{ printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}` $labels.instance | query | first | value }}.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} remote write
+          desired shards calculation wants to run {{ $value }} shards for queue {{
+          $labels.remote_name}}:{{ $labels.url }}, which is more than the max of {{
+          printf `prometheus_remote_storage_shards_max{instance="%s",job="prometheus-k8s",namespace="monitoring"}`
+          $labels.instance | query | first | value }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusremotewritedesiredshards
-        summary: Prometheus remote write desired shards calculation wants to run more than configured max shards.
+        summary: Prometheus remote write desired shards calculation wants to run more
+          than configured max shards.
       expr: |
         # Without max_over_time, failed scrapes could create false negatives, see
         # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
@@ -183,7 +204,8 @@ spec:
         severity: warning
     - alert: PrometheusRuleFailures
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to evaluate {{ printf "%.0f" $value }} rules in the last 5m.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to
+          evaluate {{ printf "%.0f" $value }} rules in the last 5m.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusrulefailures
         summary: Prometheus is failing rule evaluations.
       expr: |
@@ -193,7 +215,8 @@ spec:
         severity: critical
     - alert: PrometheusMissingRuleEvaluations
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has missed {{ printf "%.0f" $value }} rule group evaluations in the last 5m.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has missed {{
+          printf "%.0f" $value }} rule group evaluations in the last 5m.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusmissingruleevaluations
         summary: Prometheus is missing rule evaluations due to slow rule group evaluation.
       expr: |
@@ -203,9 +226,12 @@ spec:
         severity: warning
     - alert: PrometheusTargetLimitHit
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped {{ printf "%.0f" $value }} targets because the number of targets exceeded the configured target_limit.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped
+          {{ printf "%.0f" $value }} targets because the number of targets exceeded
+          the configured target_limit.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheustargetlimithit
-        summary: Prometheus has dropped targets because some scrape configs have exceeded the targets limit.
+        summary: Prometheus has dropped targets because some scrape configs have exceeded
+          the targets limit.
       expr: |
         increase(prometheus_target_scrape_pool_exceeded_target_limit_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
       for: 15m
@@ -213,9 +239,12 @@ spec:
         severity: warning
     - alert: PrometheusLabelLimitHit
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped {{ printf "%.0f" $value }} targets because some samples exceeded the configured label_limit, label_name_length_limit or label_value_length_limit.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped
+          {{ printf "%.0f" $value }} targets because some samples exceeded the configured
+          label_limit, label_name_length_limit or label_value_length_limit.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuslabellimithit
-        summary: Prometheus has dropped targets because some scrape configs have exceeded the labels limit.
+        summary: Prometheus has dropped targets because some scrape configs have exceeded
+          the labels limit.
       expr: |
         increase(prometheus_target_scrape_pool_exceeded_label_limits_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
       for: 15m
@@ -223,7 +252,8 @@ spec:
         severity: warning
     - alert: PrometheusTargetSyncFailure
       annotations:
-        description: '{{ printf "%.0f" $value }} targets in Prometheus {{$labels.namespace}}/{{$labels.pod}} have failed to sync because invalid configuration was supplied.'
+        description: '{{ printf "%.0f" $value }} targets in Prometheus {{$labels.namespace}}/{{$labels.pod}}
+          have failed to sync because invalid configuration was supplied.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheustargetsyncfailure
         summary: Prometheus has failed to sync targets.
       expr: |
@@ -233,7 +263,8 @@ spec:
         severity: critical
     - alert: PrometheusErrorSendingAlertsToAnyAlertmanager
       annotations:
-        description: '{{ printf "%.1f" $value }}% minimum errors while sending alerts from Prometheus {{$labels.namespace}}/{{$labels.pod}} to any Alertmanager.'
+        description: '{{ printf "%.1f" $value }}% minimum errors while sending alerts
+          from Prometheus {{$labels.namespace}}/{{$labels.pod}} to any Alertmanager.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuserrorsendingalertstoanyalertmanager
         summary: Prometheus encounters more than 3% errors sending alerts to any Alertmanager.
       expr: |

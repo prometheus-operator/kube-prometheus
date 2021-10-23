@@ -1,11 +1,10 @@
 # Windows
 
-The [Windows addon](../examples/windows.jsonnet) adds the dashboards and rules from  [kubernetes-monitoring/kubernetes-mixin](https://github.com/kubernetes-monitoring/kubernetes-mixin#dashboards-for-windows-nodes).  
+The [Windows addon](../examples/windows.jsonnet) adds the dashboards and rules from [kubernetes-monitoring/kubernetes-mixin](https://github.com/kubernetes-monitoring/kubernetes-mixin#dashboards-for-windows-nodes).
 
 Currently, Windows does not support running with [windows_exporter](https://github.com/prometheus-community/windows_exporter) in a pod so this add on uses [additional scrape configuration](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/additional-scrape-config.md) to set up a static config to scrape the node ports where windows_exporter is configured.
 
-
-The addon requires you to specify the node ips and ports where it can find the windows_exporter.  See the [full example](../examples/windows.jsonnet) for setup.
+The addon requires you to specify the node ips and ports where it can find the windows_exporter. See the [full example](../examples/windows.jsonnet) for setup.
 
 ```
 local kp = (import 'kube-prometheus/main.libsonnet') +

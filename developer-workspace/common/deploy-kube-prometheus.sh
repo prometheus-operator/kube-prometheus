@@ -1,9 +1,13 @@
+#!/bin/bash
+
 kubectl apply -f manifests/setup
 
 # Safety wait for CRDs to be working
 sleep 30
 
 kubectl apply -f manifests/
+sleep 30
+# Safety wait for resources to be created
 
 kubectl rollout status -n monitoring daemonset node-exporter
 kubectl rollout status -n monitoring statefulset alertmanager-main

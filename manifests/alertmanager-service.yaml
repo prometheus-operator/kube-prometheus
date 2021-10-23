@@ -14,9 +14,11 @@ spec:
   - name: web
     port: 9093
     targetPort: web
+  - name: reloader-web
+    port: 8080
+    targetPort: reloader-web
   selector:
     alertmanager: main
-    app: alertmanager
     app.kubernetes.io/component: alert-router
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus

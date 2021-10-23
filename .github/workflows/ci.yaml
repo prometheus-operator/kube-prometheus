@@ -22,6 +22,17 @@ jobs:
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make generate validate && git diff --exit-code
+  check-docs:
+    runs-on: ubuntu-latest
+    name: Check Documentation formatting and links
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false
+    - uses: actions/setup-go@v2
+      with:
+        go-version: ${{ env.golang-version }}
+    - run: make check-docs
   lint:
     runs-on: ubuntu-latest
     name: Jsonnet linter
