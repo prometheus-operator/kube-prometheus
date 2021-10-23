@@ -1,5 +1,5 @@
-local kp = import 'kube-prometheus/main.libsonnet';
 local l = import 'kube-prometheus/addons/config-mixins.libsonnet';
+local kp = import 'kube-prometheus/main.libsonnet';
 local config = kp.values.common;
 
 local makeImages(config) = [
