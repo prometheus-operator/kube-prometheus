@@ -4,7 +4,7 @@ For bugs, you can use the GitHub [issue tracker](https://github.com/prometheus-o
 
 For questions, you can use the GitHub [discussions forum](https://github.com/prometheus-operator/kube-prometheus/discussions).
 
-Many of the `kube-prometheus` project's contributors and users can also be found on the #prometheus-operator channel of the [Kubernetes Slack][Kubernetes Slack].
+Many of the `kube-prometheus` project's contributors and users can also be found on the #prometheus-operator channel of the [Kubernetes Slack](https://slack.k8s.io/).
 
 `kube-prometheus` is the aggregation of many projects that all have different
 channels to reach out for help and support. This community strives at
@@ -18,7 +18,7 @@ if applicable.
 
 For documentation, check the project's [documentation directory](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation).
 
-For questions, use the #prometheus-operator channel on the [Kubernetes Slack][Kubernetes Slack].
+For questions, use the #prometheus-operator channel on the [Kubernetes Slack](https://slack.k8s.io/).
 
 For bugs, use the GitHub [issue tracker](https://github.com/prometheus-operator/prometheus-operator/issues/new/choose).
 
@@ -26,19 +26,19 @@ For bugs, use the GitHub [issue tracker](https://github.com/prometheus-operator/
 
 For documentation, check the Prometheus [online docs](https://prometheus.io/docs/). There is a
 [section](https://prometheus.io/docs/introduction/media/) with links to blog
-posts, recorded talks and presentations. This [repository](https://github.com/roaldnefs/awesome-prometheus) 
+posts, recorded talks and presentations. This [repository](https://github.com/roaldnefs/awesome-prometheus)
 (not affiliated to the Prometheus project) has also a list of curated resources
 related to the Prometheus ecosystem.
 
 For questions, see the Prometheus [community page](https://prometheus.io/community/) for the various channels.
 
-There is also a #prometheus channel on the [CNCF Slack][CNCF Slack].
+There is also a #prometheus channel on the [CNCF Slack](https://slack.cncf.io/).
 
 ## kube-state-metrics
 
 For documentation, see the project's [docs directory](https://github.com/kubernetes/kube-state-metrics/tree/master/docs).
 
-For questions, use the #kube-state-metrics channel on the [Kubernetes Slack][Kubernetes Slack].
+For questions, use the #kube-state-metrics channel on the [Kubernetes Slack](https://slack.k8s.io/).
 
 For bugs, use the GitHub [issue tracker](https://github.com/kubernetes/kube-state-metrics/issues/new/choose).
 
@@ -46,7 +46,7 @@ For bugs, use the GitHub [issue tracker](https://github.com/kubernetes/kube-stat
 
 For documentation, check the [Kubernetes docs](https://kubernetes.io/docs/home/).
 
-For questions, use the [community forums](https://discuss.kubernetes.io/) and the [Kubernetes Slack][Kubernetes Slack]. Check also the [community page](https://kubernetes.io/community/#discuss).
+For questions, use the [community forums](https://discuss.kubernetes.io/) and the [Kubernetes Slack](https://slack.k8s.io/). Check also the [community page](https://kubernetes.io/community/#discuss).
 
 For bugs, use the GitHub [issue tracker](https://github.com/kubernetes/kubernetes/issues/new/choose).
 
@@ -54,7 +54,7 @@ For bugs, use the GitHub [issue tracker](https://github.com/kubernetes/kubernete
 
 For documentation, check the project's [README](https://github.com/DirectXMan12/k8s-prometheus-adapter/blob/master/README.md).
 
-For questions, use the #sig-instrumentation channel on the [Kubernetes Slack][Kubernetes Slack].
+For questions, use the #sig-instrumentation channel on the [Kubernetes Slack](https://slack.k8s.io/).
 
 For bugs, use the GitHub [issue tracker](https://github.com/DirectXMan12/k8s-prometheus-adapter/issues/new).
 
@@ -70,7 +70,7 @@ For bugs, use the GitHub [issue tracker](https://github.com/grafana/grafana/issu
 
 For documentation, check the project's [README](https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/README.md).
 
-For questions, use #monitoring-mixins channel on the [Kubernetes Slack][Kubernetes Slack].
+For questions, use #monitoring-mixins channel on the [Kubernetes Slack](https://slack.k8s.io/).
 
 For bugs, use the GitHub [issue tracker](https://github.com/kubernetes-monitoring/kubernetes-mixin/issues/new).
 
@@ -79,6 +79,3 @@ For bugs, use the GitHub [issue tracker](https://github.com/kubernetes-monitorin
 For documentation, check the [Jsonnet](https://jsonnet.org/) website.
 
 For questions, use the [mailing list](https://groups.google.com/forum/#!forum/jsonnet).
-
-[Kubernetes Slack]: https://slack.k8s.io/
-[CNCF Slack]: https://slack.cncf.io/

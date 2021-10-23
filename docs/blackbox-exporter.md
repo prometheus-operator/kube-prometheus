@@ -1,16 +1,16 @@
 ---
-title: "Blackbox Exporter"
-description: "Generated API docs for the Prometheus Operator"
-lead: "This Document documents the types introduced by the Prometheus Operator to be consumed by users."
-date: 2021-03-08T08:49:31+00:00
-lastmod: 2021-03-08T08:49:31+00:00
-draft: false
-images: []
-menu:
-  docs:
-    parent: "kube"
 weight: 630
 toc: true
+title: Blackbox Exporter
+menu:
+    docs:
+        parent: kube
+lead: This Document documents the types introduced by the Prometheus Operator to be consumed by users.
+lastmod: "2021-03-08T08:49:31+00:00"
+images: []
+draft: false
+description: Generated API docs for the Prometheus Operator
+date: "2021-03-08T08:49:31+00:00"
 ---
 
 # Setting up a blackbox exporter
@@ -21,6 +21,7 @@ The `prometheus-operator` defines a `Probe` resource type that can be used to de
 
 1. Override blackbox-related configuration parameters as needed.
 2. Add the following to the list of renderers to render the blackbox exporter manifests:
+
 ```
 { ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) }
 ```

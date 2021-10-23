@@ -5,13 +5,18 @@ metadata:
     app.kubernetes.io/component: metrics-adapter
     app.kubernetes.io/name: prometheus-adapter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.9.0
+    app.kubernetes.io/version: 0.9.1
   name: prometheus-adapter
   namespace: monitoring
 spec:
   endpoints:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     interval: 30s
+    metricRelabelings:
+    - action: drop
+      regex: (apiserver_client_certificate_.*|apiserver_envelope_.*|apiserver_flowcontrol_.*|apiserver_storage_.*|apiserver_webhooks_.*|workqueue_.*)
+      sourceLabels:
+      - __name__
     port: https
     scheme: https
     tlsConfig:

@@ -2,9 +2,9 @@
 
 An example conversion of a legacy custom jsonnet file to release-0.8
 format can be seen by viewing and comparing this
-[release-0.3 jsonnet file](./my.release-0.3.jsonnet) (when the github
+[release-0.3 jsonnet file](my.release-0.3.jsonnet) (when the github
 repo was under `https://github.com/coreos/kube-prometheus...`)
-and the corresponding [release-0.8 jsonnet file](./my.release-0.8.jsonnet).
+and the corresponding [release-0.8 jsonnet file](my.release-0.8.jsonnet).
 
 These two files have had necessary blank lines added so that they
 can be compared side-by-side and line-by-line on screen.
@@ -16,8 +16,9 @@ release-0.3 and also the major migration after release-0.7 as described in
 The sample files are intended as an example of format conversion and
 not necessarily best practice for the files in release-0.3 or release-0.8.
 
-Below are three sample extracts of the conversion as an indication of the 
+Below are three sample extracts of the conversion as an indication of the
 changes required.
+
 <table>
 <tr>
 <th> release-0.3 </th>

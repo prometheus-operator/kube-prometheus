@@ -1,15 +1,15 @@
 ---
-title: "Expose via Ingress"
-description: "How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana."
-lead: "How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana."
-date: 2021-03-08T23:04:32+01:00
-draft: false
-images: []
-menu:
-  docs:
-    parent: "kube"
 weight: 500
 toc: true
+title: Expose via Ingress
+menu:
+    docs:
+        parent: kube
+lead: How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana.
+images: []
+draft: false
+description: How to setup a Kubernetes Ingress to expose the Prometheus, Alertmanager and Grafana.
+date: "2021-03-08T23:04:32+01:00"
 ---
 
 In order to access the web interfaces via the Internet [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) is a popular option. This guide explains, how Kubernetes Ingress can be setup, in order to expose the Prometheus, Alertmanager and Grafana UIs, that are included in the [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) project.
@@ -104,7 +104,7 @@ k.core.v1.list.new([
 
 In order to expose Alertmanager and Grafana, simply create additional fields containing an ingress object, but simply pointing at the `alertmanager` or `grafana` instead of the `prometheus-k8s` Service. Make sure to also use the correct port respectively, for Alertmanager it is also `web`, for Grafana it is `http`. Be sure to also specify the appropriate external URL. Note that the external URL for grafana is set in a different way than the external URL for Prometheus or Alertmanager. See [ingress.jsonnet](../examples/ingress.jsonnet) for how to set the Grafana external URL.
 
-In order to render the ingress objects similar to the other objects use as demonstrated in the [main readme](../README.md#usage):
+In order to render the ingress objects similar to the other objects use as demonstrated in the [main readme](../README.md):
 
 ```
 { ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +

@@ -5,6 +5,7 @@ authentication. Until it does, Prometheus must use HTTP (not HTTPS)
 for scraping.
 
 You can configure this behavior through kube-prometheus with:
+
 ```
 local kp = (import 'kube-prometheus/kube-prometheus.libsonnet') +
     (import 'kube-prometheus/kube-prometheus-insecure-kubelet.libsonnet') +
