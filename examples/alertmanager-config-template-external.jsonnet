@@ -1,20 +1,20 @@
 local configmap(name, namespace, data) = {
     apiVersion: "v1",
     kind: "ConfigMap",
-    metadate : {
+    metadata : {
         name: name,
         namespace: namespace,
     },
     data: data,
  };
 
-local kp = 
+local kp =
     // different libsonnet imported
   {
       configmap+:: {
           'alert-templates': configmap(
           'alertmanager-alert-template.tmpl',
-          $._config.namespace, 
+          $._config.namespace,
           {"data": importstr 'alertmanager-alert-template.tmpl'},
           )
       },
