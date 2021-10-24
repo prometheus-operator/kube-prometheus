@@ -14,7 +14,7 @@ local ingress(name, namespace, rules) = {
 };
 
 local kp =
-  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/main.libsonnet') +
   {
     _config+:: {
       namespace: 'monitoring',
@@ -48,47 +48,49 @@ local kp =
       'kube-prometheus': ingress(
         'kube-prometheus',
         $._config.namespace,
-        [{
-          host: 'alertmanager.example.com',
-          http: {
-            paths: [{
-              backend: {
-                service: {
-                  name: 'alertmanager-main',
-                  port: 'web',
+        [
+          {
+            host: 'alertmanager.example.com',
+            http: {
+              paths: [{
+                backend: {
+                  service: {
+                    name: 'alertmanager-main',
+                    port: 'web',
+                  },
                 },
-              },
-            }],
+              }],
+            },
           },
-        },
-        {
-          host: 'grafana.example.com',
-          http: {
-            paths: [{
-              backend: {
-                service: {
-                  name: 'grafana',
-                  port: 'http',
+          {
+            host: 'grafana.example.com',
+            http: {
+              paths: [{
+                backend: {
+                  service: {
+                    name: 'grafana',
+                    port: 'http',
+                  },
                 },
-              },
-            }],
+              }],
+            },
           },
-        },
-        {
-          host: 'alertmanager.example.com',
-          http: {
-            paths: [{
-              backend: {
-                service: {
-                  name: 'prometheus-k8s',
-                  port: 'web',
+          {
+            host: 'alertmanager.example.com',
+            http: {
+              paths: [{
+                backend: {
+                  service: {
+                    name: 'prometheus-k8s',
+                    port: 'web',
+                  },
                 },
-              },
-            }],
+              }],
+            },
           },
-        },]
+        ]
       ),
-        
+
     },
   } + {
     // Create basic auth secret - replace 'auth' file with your own
