@@ -16,6 +16,8 @@ spec:
       app.kubernetes.io/part-of: kube-prometheus
   template:
     metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: node-exporter
       labels:
         app.kubernetes.io/component: exporter
         app.kubernetes.io/name: node-exporter
