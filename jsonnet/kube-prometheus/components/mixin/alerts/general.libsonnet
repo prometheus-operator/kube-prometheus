@@ -33,6 +33,24 @@
               severity: 'none',
             },
           },
+          {
+            alert: 'InfoInhibitor',
+            annotations: {
+              summary: 'Info-level alert inhibition.',
+              description: |||
+                This is an alert that is used to inhibit info alerts.
+                By themselves, the info-level alerts are sometimes very noisy, but they are relevant when combined with
+                other alerts.
+                This alert fires whenever there's a severity="info" alert, and stops firing when another alert with a
+                severity of 'warning' or 'critical' starts firing on the same namespace.
+                This alert should be routed to a null receiver and configured to inhibit alerts with severity="info".
+              |||,
+            },
+            expr: 'ALERTS{severity = "info"} == 1 unless on(namespace) ALERTS{alertname != "InfoInhibitor", severity =~ "warning|critical", alertstate="firing"} == 1',
+            labels: {
+              severity: 'none',
+            },
+          },
         ],
       },
     ],

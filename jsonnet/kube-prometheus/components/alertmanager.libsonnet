@@ -35,6 +35,10 @@ local defaults = {
       source_matchers: ['severity = warning'],
       target_matchers: ['severity = info'],
       equal: ['namespace', 'alertname'],
+    }, {
+      source_matchers: ['alertname = InfoInhibitor'],
+      target_matchers: ['severity = info'],
+      equal: ['namespace'],
     }],
     route: {
       group_by: ['namespace'],
@@ -45,12 +49,14 @@ local defaults = {
       routes: [
         { receiver: 'Watchdog', matchers: ['alertname = Watchdog'] },
         { receiver: 'Critical', matchers: ['severity = critical'] },
+        { receiver: 'null', matchers: ['alertname = InfoInhibitor'] },
       ],
     },
     receivers: [
       { name: 'Default' },
       { name: 'Watchdog' },
       { name: 'Critical' },
+      { name: 'null' },
     ],
   },
   replicas: 3,
