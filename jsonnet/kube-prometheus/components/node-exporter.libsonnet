@@ -233,7 +233,12 @@ function(params) {
           rollingUpdate: { maxUnavailable: '10%' },
         },
         template: {
-          metadata: { labels: ne._config.commonLabels },
+          metadata: {
+            annotations: {
+              'kubectl.kubernetes.io/default-container': nodeExporter.name,
+            },
+            labels: ne._config.commonLabels,
+          },
           spec: {
             nodeSelector: { 'kubernetes.io/os': 'linux' },
             tolerations: [{
