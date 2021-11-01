@@ -206,6 +206,30 @@ function(params) {
     },
   },
 
+  networkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: pa.service.metadata,
+    spec: {
+      podSelector: {
+        matchLabels: pa._config.selectorLabels,
+      },
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'prometheus',
+            },
+          },
+        }],
+        ports: std.map(function(o) {
+          port: o.port,
+          protocol: 'TCP',
+        }, pa.service.spec.ports),
+      }],
+    },
+  },
+
   deployment:
     local c = {
       name: pa._config.name,

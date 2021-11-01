@@ -159,6 +159,30 @@ function(params) {
     },
   },
 
+  networkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: ne.service.metadata,
+    spec: {
+      podSelector: {
+        matchLabels: ne._config.selectorLabels,
+      },
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'prometheus',
+            },
+          },
+        }],
+        ports: std.map(function(o) {
+          port: o.port,
+          protocol: 'TCP',
+        }, ne.service.spec.ports),
+      }],
+    },
+  },
+
   daemonset:
     local nodeExporter = {
       name: ne._config.name,
