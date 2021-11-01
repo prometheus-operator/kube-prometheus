@@ -168,6 +168,8 @@ function(params) {
       podSelector: {
         matchLabels: ne._config.selectorLabels,
       },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
       ingress: [{
         from: [{
           podSelector: {
