@@ -3,6 +3,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     app.kubernetes.io/name: kube-controller-manager
+    app.kubernetes.io/part-of: kube-prometheus
   name: kube-controller-manager
   namespace: monitoring
 spec:
