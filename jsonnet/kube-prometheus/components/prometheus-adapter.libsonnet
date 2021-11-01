@@ -206,6 +206,21 @@ function(params) {
     },
   },
 
+  networkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: pa.service.metadata,
+    spec: {
+      podSelector: {
+        matchLabels: pa._config.selectorLabels,
+      },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
+      // Prometheus-adapter needs ingress allowed so HPAs can request metrics from it.
+      ingress: [{}],
+    },
+  },
+
   deployment:
     local c = {
       name: pa._config.name,

@@ -250,6 +250,30 @@ function(params) {
       },
     },
 
+  networkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: bb.service.metadata,
+    spec: {
+      podSelector: {
+        matchLabels: bb._config.selectorLabels,
+      },
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'prometheus',
+            },
+          },
+        }],
+        ports: std.map(function(o) {
+          port: o.port,
+          protocol: 'TCP',
+        }, bb.service.spec.ports),
+      }],
+    },
+  },
+
   service: {
     apiVersion: 'v1',
     kind: 'Service',
