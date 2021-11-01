@@ -137,9 +137,9 @@ function(params) {
         { name: 'web', targetPort: 'web', port: 9093 },
         { name: 'reloader-web', port: am._config.reloaderPort, targetPort: 'reloader-web' },
       ],
-      selector: {
+      selector: am._config.selectorLabels {
         alertmanager: am._config.name,
-      } + am._config.selectorLabels,
+      },
       sessionAffinity: 'ClientIP',
     },
   },
@@ -150,9 +150,9 @@ function(params) {
     metadata: am._metadata,
     spec: {
       selector: {
-        matchLabels: {
+        matchLabels: am._config.selectorLabels {
           alertmanager: am._config.name,
-        } + am._config.selectorLabels,
+        },
       },
       endpoints: [
         { port: 'web', interval: '30s' },
@@ -168,9 +168,9 @@ function(params) {
     spec: {
       maxUnavailable: 1,
       selector: {
-        matchLabels: {
+        matchLabels: am._config.selectorLabels {
           alertmanager: am._config.name,
-        } + am._config.selectorLabels,
+        },
       },
     },
   },
@@ -189,11 +189,11 @@ function(params) {
       version: am._config.version,
       image: am._config.image,
       podMetadata: {
-        labels: am._metadata.labels,
+        labels: am.alertmanager.metadata.labels,
       },
       resources: am._config.resources,
       nodeSelector: { 'kubernetes.io/os': 'linux' },
-      serviceAccountName: am._metadata.name,
+      serviceAccountName: am.serviceAccount.metadata.name,
       securityContext: {
         runAsUser: 1000,
         runAsNonRoot: true,

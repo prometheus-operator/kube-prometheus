@@ -213,7 +213,9 @@ function(params) {
       metadata: bb._metadata,
       spec: {
         replicas: bb._config.replicas,
-        selector: { matchLabels: bb._config.selectorLabels },
+        selector: {
+          matchLabels: bb._config.selectorLabels
+        },
         template: {
           metadata: {
             labels: bb._config.commonLabels,

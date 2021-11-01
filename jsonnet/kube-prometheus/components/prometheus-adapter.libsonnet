@@ -232,7 +232,9 @@ function(params) {
       metadata: pa._metadata,
       spec: {
         replicas: pa._config.replicas,
-        selector: { matchLabels: pa._config.selectorLabels },
+        selector: {
+          matchLabels: pa._config.selectorLabels
+        },
         strategy: {
           rollingUpdate: {
             maxSurge: 1,

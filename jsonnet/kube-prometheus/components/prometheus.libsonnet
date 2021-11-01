@@ -120,11 +120,11 @@ function(params) {
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
         kind: 'Role',
-        name: 'prometheus-' + p._config.name,
+        name: p._metadata.name,
       },
       subjects: [{
         kind: 'ServiceAccount',
-        name: 'prometheus-' + p._config.name,
+        name: p.serviceAccount.metadata.name,
         namespace: p._config.namespace,
       }],
     };
@@ -236,9 +236,9 @@ function(params) {
     spec: {
       minAvailable: 1,
       selector: {
-        matchLabels: {
+        matchLabels: p._config.selectorLabels {
           prometheus: p._config.name,
-        } + p._config.selectorLabels,
+        },
       },
     },
   },
@@ -255,11 +255,11 @@ function(params) {
       version: p._config.version,
       image: p._config.image,
       podMetadata: {
-        labels: p._metadata.labels,
+        labels: p.prometheus.metadata.labels,
       },
       externalLabels: p._config.externalLabels,
       enableFeatures: p._config.enableFeatures,
-      serviceAccountName: p._metadata.name,
+      serviceAccountName: p.serviceAccount.metadata.name,
       podMonitorSelector: {},
       podMonitorNamespaceSelector: {},
       probeSelector: {},

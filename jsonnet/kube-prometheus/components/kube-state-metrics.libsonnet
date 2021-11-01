@@ -143,7 +143,9 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       metadata: ksm._metadata,
       spec: {
         jobLabel: 'app.kubernetes.io/name',
-        selector: { matchLabels: ksm._config.selectorLabels },
+        selector: {
+          matchLabels: ksm._config.selectorLabels
+        },
         endpoints: [
           {
             port: 'https-main',

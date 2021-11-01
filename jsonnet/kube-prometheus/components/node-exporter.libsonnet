@@ -209,7 +209,9 @@ function(params) {
       kind: 'DaemonSet',
       metadata: ne._metadata,
       spec: {
-        selector: { matchLabels: ne._config.selectorLabels },
+        selector: {
+          matchLabels: ne._config.selectorLabels
+        },
         updateStrategy: {
           type: 'RollingUpdate',
           rollingUpdate: { maxUnavailable: '10%' },
