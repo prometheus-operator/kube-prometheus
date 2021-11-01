@@ -32,15 +32,16 @@ function(params)
   kubernetesGrafana(config) {
     local g = self,
     _config+:: config,
+    _metadata:: {
+      name: 'grafana',
+      namespace: g._config.namespace,
+      labels: g._config.commonLabels,
+    },
 
     serviceMonitor: {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
-      metadata: {
-        name: 'grafana',
-        namespace: g._config.namespace,
-        labels: g._config.commonLabels,
-      },
+      metadata: g._metadata,
       spec: {
         selector: {
           matchLabels: {
