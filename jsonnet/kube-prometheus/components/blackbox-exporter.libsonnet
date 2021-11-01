@@ -214,7 +214,7 @@ function(params) {
       spec: {
         replicas: bb._config.replicas,
         selector: {
-          matchLabels: bb._config.selectorLabels
+          matchLabels: bb._config.selectorLabels,
         },
         template: {
           metadata: {

@@ -233,7 +233,7 @@ function(params) {
       spec: {
         replicas: pa._config.replicas,
         selector: {
-          matchLabels: pa._config.selectorLabels
+          matchLabels: pa._config.selectorLabels,
         },
         strategy: {
           rollingUpdate: {

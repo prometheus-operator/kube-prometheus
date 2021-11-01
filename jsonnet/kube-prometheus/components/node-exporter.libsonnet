@@ -210,7 +210,7 @@ function(params) {
       metadata: ne._metadata,
       spec: {
         selector: {
-          matchLabels: ne._config.selectorLabels
+          matchLabels: ne._config.selectorLabels,
         },
         updateStrategy: {
           type: 'RollingUpdate',

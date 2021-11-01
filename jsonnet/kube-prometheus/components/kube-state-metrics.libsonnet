@@ -144,7 +144,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       spec: {
         jobLabel: 'app.kubernetes.io/name',
         selector: {
-          matchLabels: ksm._config.selectorLabels
+          matchLabels: ksm._config.selectorLabels,
         },
         endpoints: [
           {
