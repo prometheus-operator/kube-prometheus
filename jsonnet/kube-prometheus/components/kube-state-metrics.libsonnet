@@ -126,6 +126,8 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       podSelector: {
         matchLabels: ksm._config.selectorLabels,
       },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
       ingress: [{
         from: [{
           podSelector: {

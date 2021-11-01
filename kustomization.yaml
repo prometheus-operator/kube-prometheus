@@ -12,6 +12,7 @@ resources:
 - ./manifests/blackboxExporter-clusterRoleBinding.yaml
 - ./manifests/blackboxExporter-configuration.yaml
 - ./manifests/blackboxExporter-deployment.yaml
+- ./manifests/blackboxExporter-networkPolicy.yaml
 - ./manifests/blackboxExporter-service.yaml
 - ./manifests/blackboxExporter-serviceAccount.yaml
 - ./manifests/blackboxExporter-serviceMonitor.yaml
@@ -27,6 +28,7 @@ resources:
 - ./manifests/kubeStateMetrics-clusterRole.yaml
 - ./manifests/kubeStateMetrics-clusterRoleBinding.yaml
 - ./manifests/kubeStateMetrics-deployment.yaml
+- ./manifests/kubeStateMetrics-networkPolicy.yaml
 - ./manifests/kubeStateMetrics-prometheusRule.yaml
 - ./manifests/kubeStateMetrics-service.yaml
 - ./manifests/kubeStateMetrics-serviceAccount.yaml
@@ -40,6 +42,7 @@ resources:
 - ./manifests/nodeExporter-clusterRole.yaml
 - ./manifests/nodeExporter-clusterRoleBinding.yaml
 - ./manifests/nodeExporter-daemonset.yaml
+- ./manifests/nodeExporter-networkPolicy.yaml
 - ./manifests/nodeExporter-prometheusRule.yaml
 - ./manifests/nodeExporter-service.yaml
 - ./manifests/nodeExporter-serviceAccount.yaml
@@ -64,6 +67,7 @@ resources:
 - ./manifests/prometheusAdapter-clusterRoleServerResources.yaml
 - ./manifests/prometheusAdapter-configMap.yaml
 - ./manifests/prometheusAdapter-deployment.yaml
+- ./manifests/prometheusAdapter-networkPolicy.yaml
 - ./manifests/prometheusAdapter-podDisruptionBudget.yaml
 - ./manifests/prometheusAdapter-roleBindingAuthReader.yaml
 - ./manifests/prometheusAdapter-service.yaml

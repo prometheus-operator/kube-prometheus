@@ -246,6 +246,8 @@ function(params) {
       podSelector: {
         matchLabels: bb._config.selectorLabels,
       },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
       ingress: [{
         from: [{
           podSelector: {

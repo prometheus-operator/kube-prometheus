@@ -214,6 +214,8 @@ function(params) {
       podSelector: {
         matchLabels: pa._config.selectorLabels,
       },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
       ingress: [{
         from: [{
           podSelector: {
