@@ -1,12 +1,14 @@
 local relabelings = import '../addons/dropping-deprecated-metrics-relabelings.libsonnet';
 
 local defaults = {
-  namespace: error 'must provide namespace',
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  namespace:: error 'must provide namespace',
   commonLabels:: {
     'app.kubernetes.io/name': 'kube-prometheus',
     'app.kubernetes.io/part-of': 'kube-prometheus',
   },
-  mixin: {
+  mixin:: {
     ruleLabels: {},
     _config: {
       cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
@@ -22,7 +24,7 @@ local defaults = {
       hostNetworkInterfaceSelector: 'device!~"veth.+"',
     },
   },
-  kubeProxy: false,
+  kubeProxy:: false,
 };
 
 function(params) {

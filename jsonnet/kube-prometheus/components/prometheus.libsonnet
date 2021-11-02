@@ -1,15 +1,18 @@
 local defaults = {
   local defaults = self,
-  namespace: error 'must provide namespace',
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  namespace:: error 'must provide namespace',
   version: error 'must provide version',
   image: error 'must provide image',
   resources: {
     requests: { memory: '400Mi' },
   },
 
-  name: error 'must provide name',
-  alertmanagerName: error 'must provide alertmanagerName',
-  namespaces: ['default', 'kube-system', defaults.namespace],
+  name:: error 'must provide name',
+  //TODO: remove alertmanagerName and convert to plain 'alerting' object
+  alertmanagerName:: error 'must provide alertmanagerName',
+  namespaces:: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
   externalLabels: {},
   enableFeatures: [],
@@ -25,7 +28,7 @@ local defaults = {
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   } + { prometheus: defaults.name },
   ruleSelector: {},
-  mixin: {
+  mixin:: {
     ruleLabels: {},
     _config: {
       prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
@@ -35,7 +38,7 @@ local defaults = {
     },
   },
   thanos: null,
-  reloaderPort: 8080,
+  reloaderPort:: 8080,
 };
 
 

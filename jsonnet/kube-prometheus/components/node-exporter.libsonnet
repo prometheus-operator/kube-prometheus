@@ -2,18 +2,20 @@ local krp = import './kube-rbac-proxy.libsonnet';
 
 local defaults = {
   local defaults = self,
-  name: 'node-exporter',
-  namespace: error 'must provide namespace',
-  version: error 'must provide version',
-  image: error 'must provide version',
-  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage',
-  resources: {
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  name:: 'node-exporter',
+  namespace:: error 'must provide namespace',
+  version:: error 'must provide version',
+  image:: error 'must provide version',
+  kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
+  resources:: {
     requests: { cpu: '102m', memory: '180Mi' },
     limits: { cpu: '250m', memory: '180Mi' },
   },
-  listenAddress: '127.0.0.1',
-  filesystemMountPointsExclude: '^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
-  port: 9100,
+  listenAddress:: '127.0.0.1',
+  filesystemMountPointsExclude:: '^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
+  port:: 9100,
   commonLabels:: {
     'app.kubernetes.io/name': defaults.name,
     'app.kubernetes.io/version': defaults.version,
@@ -25,7 +27,7 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
-  mixin: {
+  mixin:: {
     ruleLabels: {},
     _config: {
       nodeExporterSelector: 'job="' + defaults.name + '"',

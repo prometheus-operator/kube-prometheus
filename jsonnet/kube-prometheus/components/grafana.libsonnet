@@ -2,11 +2,13 @@ local kubernetesGrafana = import 'github.com/brancz/kubernetes-grafana/grafana/g
 
 local defaults = {
   local defaults = self,
-  name: 'grafana',
-  namespace: error 'must provide namespace',
-  version: error 'must provide version',
-  image: error 'must provide image',
-  resources: {
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  name:: 'grafana',
+  namespace:: error 'must provide namespace',
+  version:: error 'must provide version',
+  image:: error 'must provide image',
+  resources:: {
     requests: { cpu: '100m', memory: '100Mi' },
     limits: { cpu: '200m', memory: '200Mi' },
   },
@@ -21,7 +23,7 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
-  prometheusName: error 'must provide prometheus name',
+  prometheusName:: error 'must provide prometheus name',
 };
 
 function(params)
