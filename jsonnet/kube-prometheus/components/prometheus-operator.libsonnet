@@ -45,6 +45,11 @@ function(params)
     local po = self,
     // declare variable as a field to allow overriding options and to have unified API across all components
     _config:: config,
+    _metadata:: {
+      labels: po._config.commonLabels,
+      name: po._config.name,
+      namespace: po._config.namespace,
+    },
     mixin:: (import 'github.com/prometheus-operator/prometheus-operator/jsonnet/mixin/mixin.libsonnet') +
             (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') {
               _config+:: po._config.mixin._config,

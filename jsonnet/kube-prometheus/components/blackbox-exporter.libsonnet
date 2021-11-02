@@ -92,14 +92,17 @@ function(params) {
   _config:: defaults + params,
   // Safety check
   assert std.isObject(bb._config.resources),
+  _metadata:: {
+    name: 'blackbox-exporter',
+    namespace: bb._config.namespace,
+    labels: bb._config.commonLabels,
+  },
 
   configuration: {
     apiVersion: 'v1',
     kind: 'ConfigMap',
-    metadata: {
+    metadata: bb._metadata {
       name: 'blackbox-exporter-configuration',
-      namespace: bb._config.namespace,
-      labels: bb._config.commonLabels,
     },
     data: {
       'config.yml': std.manifestYamlDoc({ modules: bb._config.modules }),
@@ -109,10 +112,7 @@ function(params) {
   serviceAccount: {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
-    metadata: {
-      name: 'blackbox-exporter',
-      namespace: bb._config.namespace,
-    },
+    metadata: bb._metadata,
   },
 
   clusterRole: {
@@ -138,9 +138,7 @@ function(params) {
   clusterRoleBinding: {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRoleBinding',
-    metadata: {
-      name: 'blackbox-exporter',
-    },
+    metadata: bb._metadata,
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
       kind: 'ClusterRole',
@@ -212,14 +210,12 @@ function(params) {
     {
       apiVersion: 'apps/v1',
       kind: 'Deployment',
-      metadata: {
-        name: 'blackbox-exporter',
-        namespace: bb._config.namespace,
-        labels: bb._config.commonLabels,
-      },
+      metadata: bb._metadata,
       spec: {
         replicas: bb._config.replicas,
-        selector: { matchLabels: bb._config.selectorLabels },
+        selector: {
+          matchLabels: bb._config.selectorLabels,
+        },
         template: {
           metadata: {
             labels: bb._config.commonLabels,
@@ -243,11 +239,7 @@ function(params) {
   service: {
     apiVersion: 'v1',
     kind: 'Service',
-    metadata: {
-      name: 'blackbox-exporter',
-      namespace: bb._config.namespace,
-      labels: bb._config.commonLabels,
-    },
+    metadata: bb._metadata,
     spec: {
       ports: [{
         name: 'https',
@@ -262,29 +254,24 @@ function(params) {
     },
   },
 
-  serviceMonitor:
-    {
-      apiVersion: 'monitoring.coreos.com/v1',
-      kind: 'ServiceMonitor',
-      metadata: {
-        name: 'blackbox-exporter',
-        namespace: bb._config.namespace,
-        labels: bb._config.commonLabels,
-      },
-      spec: {
-        endpoints: [{
-          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-          interval: '30s',
-          path: '/metrics',
-          port: 'https',
-          scheme: 'https',
-          tlsConfig: {
-            insecureSkipVerify: true,
-          },
-        }],
-        selector: {
-          matchLabels: bb._config.selectorLabels,
+  serviceMonitor: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'ServiceMonitor',
+    metadata: bb._metadata,
+    spec: {
+      endpoints: [{
+        bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+        interval: '30s',
+        path: '/metrics',
+        port: 'https',
+        scheme: 'https',
+        tlsConfig: {
+          insecureSkipVerify: true,
         },
+      }],
+      selector: {
+        matchLabels: bb._config.selectorLabels,
       },
     },
+  },
 }

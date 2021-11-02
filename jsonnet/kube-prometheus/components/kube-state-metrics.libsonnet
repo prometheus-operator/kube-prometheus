@@ -54,6 +54,12 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
   commonLabels:: ksm._config.commonLabels,
   podLabels:: ksm._config.selectorLabels,
 
+  _metadata:: {
+    labels: ksm._config.commonLabels,
+    name: ksm._config.name,
+    namespace: ksm._config.namespace,
+  },
+
   mixin:: (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics-mixin/mixin.libsonnet') +
           (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') {
             _config+:: ksm._config.mixin._config,
@@ -62,10 +68,9 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
   prometheusRule: {
     apiVersion: 'monitoring.coreos.com/v1',
     kind: 'PrometheusRule',
-    metadata: {
-      labels: ksm._config.commonLabels + ksm._config.mixin.ruleLabels,
+    metadata: ksm._metadata {
+      labels+: ksm._config.mixin.ruleLabels,
       name: ksm._config.name + '-rules',
-      namespace: ksm._config.namespace,
     },
     spec: {
       local r = if std.objectHasAll(ksm.mixin, 'prometheusRules') then ksm.mixin.prometheusRules.groups else [],
@@ -135,14 +140,12 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     {
       apiVersion: 'monitoring.coreos.com/v1',
       kind: 'ServiceMonitor',
-      metadata: {
-        name: ksm.name,
-        namespace: ksm._config.namespace,
-        labels: ksm._config.commonLabels,
-      },
+      metadata: ksm._metadata,
       spec: {
         jobLabel: 'app.kubernetes.io/name',
-        selector: { matchLabels: ksm._config.selectorLabels },
+        selector: {
+          matchLabels: ksm._config.selectorLabels,
+        },
         endpoints: [
           {
             port: 'https-main',

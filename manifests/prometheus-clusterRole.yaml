@@ -7,6 +7,7 @@ metadata:
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.30.3
   name: prometheus-k8s
+  namespace: monitoring
 rules:
 - apiGroups:
   - ""
