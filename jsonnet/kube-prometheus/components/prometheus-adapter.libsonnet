@@ -1,16 +1,18 @@
 local defaults = {
   local defaults = self,
-  name: 'prometheus-adapter',
-  namespace: error 'must provide namespace',
-  version: error 'must provide version',
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  name:: 'prometheus-adapter',
+  namespace:: error 'must provide namespace',
+  version:: error 'must provide version',
   image: error 'must provide image',
-  resources: {
+  resources:: {
     requests: { cpu: '102m', memory: '180Mi' },
     limits: { cpu: '250m', memory: '180Mi' },
   },
-  replicas: 2,
-  listenAddress: '127.0.0.1',
-  port: 9100,
+  replicas:: 2,
+  listenAddress:: '127.0.0.1',
+  port:: 9100,
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus-adapter',
     'app.kubernetes.io/version': defaults.version,
@@ -24,14 +26,14 @@ local defaults = {
   },
   // Default range intervals are equal to 4 times the default scrape interval.
   // This is done in order to follow Prometheus rule of thumb with irate().
-  rangeIntervals: {
+  rangeIntervals:: {
     kubelet: '4m',
     nodeExporter: '4m',
     windowsExporter: '4m',
   },
 
-  prometheusURL: error 'must provide prometheusURL',
-  config: {
+  prometheusURL:: error 'must provide prometheusURL',
+  config:: {
     resourceRules: {
       cpu: {
         containerQuery: |||
@@ -95,7 +97,7 @@ local defaults = {
       window: '5m',
     },
   },
-  tlsCipherSuites: [
+  tlsCipherSuites:: [
     'TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305',
     'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305',
     'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256',

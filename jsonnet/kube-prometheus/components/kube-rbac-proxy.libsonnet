@@ -1,14 +1,16 @@
 local defaults = {
-  namespace: error 'must provide namespace',
-  image: error 'must provide image',
-  ports: error 'must provide ports',
-  secureListenAddress: error 'must provide secureListenAddress',
-  upstream: error 'must provide upstream',
-  resources: {
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  namespace:: error 'must provide namespace',
+  image:: error 'must provide image',
+  ports:: error 'must provide ports',
+  secureListenAddress:: error 'must provide secureListenAddress',
+  upstream:: error 'must provide upstream',
+  resources:: {
     requests: { cpu: '10m', memory: '20Mi' },
     limits: { cpu: '20m', memory: '40Mi' },
   },
-  tlsCipherSuites: [
+  tlsCipherSuites:: [
     'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256',  // required by h2: http://golang.org/cl/30721
     'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256',  // required by h2: http://golang.org/cl/30721
 

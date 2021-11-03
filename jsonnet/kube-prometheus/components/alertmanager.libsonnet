@@ -1,6 +1,8 @@
 local defaults = {
   local defaults = self,
-  namespace: error 'must provide namespace',
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  namespace:: error 'must provide namespace',
   image: error 'must provide image',
   version: error 'must provide version',
   resources: {
@@ -18,9 +20,9 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
-  name: error 'must provide name',
-  reloaderPort: 8080,
-  config: {
+  name:: error 'must provide name',
+  reloaderPort:: 8080,
+  config:: {
     global: {
       resolve_timeout: '5m',
     },
@@ -59,7 +61,7 @@ local defaults = {
     ],
   },
   replicas: 3,
-  mixin: {
+  mixin:: {
     ruleLabels: {},
     _config: {
       alertmanagerName: '{{ $labels.namespace }}/{{ $labels.pod}}',

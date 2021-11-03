@@ -2,10 +2,12 @@ local krp = import './kube-rbac-proxy.libsonnet';
 
 local defaults = {
   local defaults = self,
-  namespace: error 'must provide namespace',
-  version: error 'must provide version',
-  image: error 'must provide version',
-  resources: {
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  namespace:: error 'must provide namespace',
+  version:: error 'must provide version',
+  image:: error 'must provide version',
+  resources:: {
     requests: { cpu: '10m', memory: '20Mi' },
     limits: { cpu: '20m', memory: '40Mi' },
   },
@@ -20,13 +22,13 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
-  configmapReloaderImage: error 'must provide version',
-  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage',
+  configmapReloaderImage:: error 'must provide version',
+  kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
 
-  port: 9115,
-  internalPort: 19115,
-  replicas: 1,
-  modules: {
+  port:: 9115,
+  internalPort:: 19115,
+  replicas:: 1,
+  modules:: {
     http_2xx: {
       prober: 'http',
       http: {
@@ -81,7 +83,7 @@ local defaults = {
       },
     },
   },
-  privileged:
+  privileged::
     local icmpModules = [self.modules[m] for m in std.objectFields(self.modules) if self.modules[m].prober == 'icmp'];
     std.length(icmpModules) > 0,
 };

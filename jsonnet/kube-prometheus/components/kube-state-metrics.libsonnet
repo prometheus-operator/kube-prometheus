@@ -2,24 +2,26 @@ local krp = import './kube-rbac-proxy.libsonnet';
 
 local defaults = {
   local defaults = self,
-  name: 'kube-state-metrics',
-  namespace: error 'must provide namespace',
-  version: error 'must provide version',
-  image: error 'must provide version',
-  kubeRbacProxyImage: error 'must provide kubeRbacProxyImage',
-  resources: {
+  // Convention: Top-level fields related to CRDs are public, other fields are hidden
+  // If there is no CRD for the component, everything is hidden in defaults.
+  name:: 'kube-state-metrics',
+  namespace:: error 'must provide namespace',
+  version:: error 'must provide version',
+  image:: error 'must provide version',
+  kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
+  resources:: {
     requests: { cpu: '10m', memory: '190Mi' },
     limits: { cpu: '100m', memory: '250Mi' },
   },
 
-  kubeRbacProxyMain: {
+  kubeRbacProxyMain:: {
     resources+: {
       limits+: { cpu: '40m' },
       requests+: { cpu: '20m' },
     },
   },
-  scrapeInterval: '30s',
-  scrapeTimeout: '30s',
+  scrapeInterval:: '30s',
+  scrapeTimeout:: '30s',
   commonLabels:: {
     'app.kubernetes.io/name': defaults.name,
     'app.kubernetes.io/version': defaults.version,
@@ -31,7 +33,7 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
-  mixin: {
+  mixin:: {
     ruleLabels: {},
     _config: {
       kubeStateMetricsSelector: 'job="' + defaults.name + '"',
