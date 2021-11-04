@@ -1,4 +1,6 @@
-local defaults = {
+local spec = import 'specs/alertmanager-spec.libsonnet';
+
+local defaults = spec {
   local defaults = self,
   // Convention: Top-level fields related to CRDs are public, other fields are hidden
   // If there is no CRD for the component, everything is hidden in defaults.
@@ -186,7 +188,7 @@ function(params) {
         alertmanager: am._config.name,
       },
     },
-    spec: {
+    spec: spec {
       replicas: am._config.replicas,
       version: am._config.version,
       image: am._config.image,
