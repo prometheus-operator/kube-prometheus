@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 8.2.2
+    app.kubernetes.io/version: 8.2.3
   name: grafana
   namespace: monitoring
 spec:
@@ -18,18 +18,18 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: 46c0415b77b987f164f26db3534f3126
-        checksum/grafana-dashboardproviders: c6b43488328ffef02efb6cf85119aee7
-        checksum/grafana-datasources: fe3334ba9a65c5dc3f3546019f2122ee
+        checksum/grafana-config: b79dc1ccbe0b7bb9061f33b070644207
+        checksum/grafana-dashboardproviders: 9f3dea5af0d21594c8f3f300913c7d5b
+        checksum/grafana-datasources: f4a0ab9b93870ef81e1991c63860041a
       labels:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 8.2.2
+        app.kubernetes.io/version: 8.2.3
     spec:
       containers:
       - env: []
-        image: grafana/grafana:8.2.2
+        image: grafana/grafana:8.2.3
         name: grafana
         ports:
         - containerPort: 3000
