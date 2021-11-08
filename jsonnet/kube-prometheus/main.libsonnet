@@ -91,7 +91,14 @@ local utils = import './lib/utils.libsonnet';
       version: $.values.common.versions.prometheus,
       image: $.values.common.images.prometheus,
       name: 'k8s',
-      alertmanagerName: $.values.alertmanager.name,
+      alerting: {
+        alertmanagers: [{
+          namespace: $.values.common.namespace,
+          name: 'alertmanager-' + $.values.alertmanager.name,
+          port: $.alertmanager.service.spec.ports[0].name,
+          apiVersion: 'v2',
+        }],
+      },
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
     prometheusAdapter: {

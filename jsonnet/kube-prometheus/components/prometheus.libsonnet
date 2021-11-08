@@ -2,20 +2,21 @@ local defaults = {
   local defaults = self,
   // Convention: Top-level fields related to CRDs are public, other fields are hidden
   // If there is no CRD for the component, everything is hidden in defaults.
+  name:: error 'must provide name',
   namespace:: error 'must provide namespace',
   version: error 'must provide version',
   image: error 'must provide image',
   resources: {
     requests: { memory: '400Mi' },
   },
-
-  name:: error 'must provide name',
-  //TODO: remove alertmanagerName and convert to plain 'alerting' object
-  alertmanagerName:: error 'must provide alertmanagerName',
+  //TODO(paulfantom): remove alertmanagerName after release-0.10 and convert to plain 'alerting' object.
+  alertmanagerName:: '',
+  alerting: {},
   namespaces:: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
   externalLabels: {},
   enableFeatures: [],
+  ruleSelector: {},
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
     'app.kubernetes.io/version': defaults.version,
@@ -27,7 +28,6 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   } + { prometheus: defaults.name },
-  ruleSelector: {},
   mixin:: {
     ruleLabels: {},
     _config: {
@@ -273,7 +273,7 @@ function(params) {
       serviceMonitorNamespaceSelector: {},
       nodeSelector: { 'kubernetes.io/os': 'linux' },
       resources: p._config.resources,
-      alerting: {
+      alerting: if p._config.alerting != {} then p._config.alerting else {
         alertmanagers: [{
           namespace: p._config.namespace,
           name: 'alertmanager-' + p._config.alertmanagerName,
