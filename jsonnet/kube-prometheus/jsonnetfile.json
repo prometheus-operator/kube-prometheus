@@ -26,7 +26,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "master"
+      "version": "main"
     },
     {
       "source": {
@@ -35,7 +35,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "master",
+      "version": "main",
       "name": "prometheus-operator-mixin"
     },
     {
