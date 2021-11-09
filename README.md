@@ -71,7 +71,7 @@ If you are migrating from `release-0.7` branch or earlier please read [what chan
       - [Authorization problem](#authorization-problem)
     - [kube-state-metrics resource usage](#kube-state-metrics-resource-usage)
     - [Error retrieving kube-proxy metrics](#error-retrieving-kube-proxy-metrics)
-  - [Contributing](#contributing)
+  - [Contributing](CONTRIBUTING.md)
   - [License](#license)
 
 ## Prerequisites
@@ -776,19 +776,6 @@ By default, kubeadm will configure kube-proxy to listen on 127.0.0.1 for metrics
 1. Before cluster initialization, the config file passed to kubeadm init should have KubeProxyConfiguration manifest with the field metricsBindAddress set to 0.0.0.0:10249
 2. If the k8s cluster is already up and running, we'll have to modify the configmap kube-proxy in the namespace kube-system and set the metricsBindAddress field. After this kube-proxy daemonset would have to be restarted with
    `kubectl -n kube-system rollout restart daemonset kube-proxy`
-
-## Contributing
-
-All `.yaml` files in the `/manifests` folder are generated via
-[Jsonnet](https://jsonnet.org/). Contributing changes will most likely include
-the following process:
-
-1. Make your changes in the respective `*.jsonnet` file.
-2. Commit your changes (This is currently necessary due to our vendoring
-   process. This is likely to change in the future).
-3. Update the pinned kube-prometheus dependency in `jsonnetfile.lock.json`: `jb update`
-4. Generate dependent `*.yaml` files: `make generate`
-5. Commit the generated changes.
 
 ## License
 
