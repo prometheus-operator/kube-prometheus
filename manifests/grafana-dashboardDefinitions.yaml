@@ -12028,7 +12028,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(up{job=\"kube-state-metrics\", cluster=\"$cluster\"}, node)",
+                      "query": "label_values(kube_node_info{cluster=\"$cluster\"}, node)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
