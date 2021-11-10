@@ -8,6 +8,17 @@
     then c { resources+: { limits: {} } }
     else c,
 
+  blackboxExporter+: {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+: {
+            containers: std.map(noLimit, super.containers),
+          },
+        },
+      },
+    },
+  },
   nodeExporter+: {
     daemonset+: {
       spec+: {
