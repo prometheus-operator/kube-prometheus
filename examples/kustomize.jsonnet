@@ -8,22 +8,22 @@ local kp =
   };
 
 local manifests =
-  { 'setup/namespace': kp.kubePrometheus.namespace } +
-  { ['setup/' + name]: kp.prometheusOperator[name]
-    for name in std.filter(function(name) kp.prometheusOperator[name]['kind'] == 'CustomResourceDefinition', std.objectFields(kp.prometheusOperator))
+  {
+    ['setup/' + resource]: kp[component][resource]
+    for component in std.objectFields(kp)
+    for resource in std.filter(
+      function(resource)
+        kp[component][resource].kind == 'CustomResourceDefinition' || kp[component][resource].kind == 'Namespace', std.objectFields(kp[component])
+    )
   } +
-  { 'kube-prometheus-prometheusRule': kp.kubePrometheus.prometheusRule } +
-  { ['prometheus-operator-' + name]: kp.prometheusOperator[name]
-    for name in std.filter(function(name) kp.prometheusOperator[name]['kind'] != 'CustomResourceDefinition', std.objectFields(kp.prometheusOperator))
-  } +
-  { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
-  { ['blackbox-exporter-' + name]: kp.blackboxExporter[name] for name in std.objectFields(kp.blackboxExporter) } +
-  { ['kube-state-metrics-' + name]: kp.kubeStateMetrics[name] for name in std.objectFields(kp.kubeStateMetrics) } +
-  { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
-  { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
-  { ['prometheus-adapter-' + name]: kp.prometheusAdapter[name] for name in std.objectFields(kp.prometheusAdapter) } +
-  { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
-  { ['kubernetes-' + name]: kp.kubernetesControlPlane[name] for name in std.objectFields(kp.kubernetesControlPlane) };
+  {
+    [component + '-' + resource]: kp[component][resource]
+    for component in std.objectFields(kp)
+    for resource in std.filter(
+      function(resource)
+        kp[component][resource].kind != 'CustomResourceDefinition' && kp[component][resource].kind != 'Namespace', std.objectFields(kp[component])
+    )
+  };
 
 local kustomizationResourceFile(name) = './manifests/' + name + '.yaml';
 local kustomization = {
