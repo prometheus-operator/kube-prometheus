@@ -2,46 +2,55 @@
 // https://github.com/prometheus-operator/kube-prometheus/issues/72
 
 {
-  local noLimit(c) =
-    //if std.objectHas(c, 'resources') && c.name != 'kube-state-metrics'
-    if c.name != 'kube-state-metrics'
-    then c { resources+: { limits: {} } }
-    else c,
+  //TODO(arthursens): Expand example once kube-rbac-proxy can be managed with a first-class
+  // object inside node-exporter, kube-state-metrics and prometheus-operator.
+  // See also: https://github.com/prometheus-operator/kube-prometheus/issues/1500#issuecomment-966727623
+  values+:: {
+    alertmanager+: {
+      resources+: {
+        limits: {},
+      },
+    },
 
-  nodeExporter+: {
-    daemonset+: {
-      spec+: {
-        template+: {
-          spec+: {
-            containers: std.map(noLimit, super.containers),
-          },
-        },
+    blackboxExporter+: {
+      resources+: {
+        limits: {},
       },
     },
-  },
-  kubeStateMetrics+: {
-    deployment+: {
-      spec+: {
-        template+: {
-          spec+: {
-            containers: std.map(noLimit, super.containers),
-          },
-        },
+
+    grafana+: {
+      resources+: {
+        limits: {},
       },
     },
-  },
-  prometheusOperator+: {
-    deployment+: {
-      spec+: {
-        template+: {
-          spec+: {
-            local addArgs(c) =
-              if c.name == 'prometheus-operator'
-              then c { args+: ['--config-reloader-cpu-limit=0', '--config-reloader-memory-limit=0'] }
-              else c,
-            containers: std.map(addArgs, super.containers),
-          },
-        },
+
+    kubeStateMetrics+: {
+      resources+: {
+        limits: {},
+      },
+    },
+
+    nodeExporter+: {
+      resources+: {
+        limits: {},
+      },
+    },
+
+    prometheusAdapter+: {
+      resources+: {
+        limits: {},
+      },
+    },
+
+    prometheusOperator+: {
+      resources+: {
+        limits: {},
+      },
+    },
+
+    prometheus+: {
+      resources+: {
+        limits: {},
       },
     },
   },
