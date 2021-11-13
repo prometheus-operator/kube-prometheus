@@ -22,7 +22,7 @@
           },
           {
             expr: 'sum(rate(node_cpu_seconds_total{mode!="idle",mode!="iowait",mode!="steal"}[5m]))',
-            record: 'cluster:node_cpu:sum_rate5m',
+            record: 'cluster:node_cpu_seconds_total:rate5m',
           },
           {
             expr: 'cluster:node_cpu_seconds_total:rate5m / count(sum(node_cpu_seconds_total) BY (instance, cpu))',
