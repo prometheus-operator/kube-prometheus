@@ -86,3 +86,18 @@ jobs:
       run: |
         export KUBECONFIG="${HOME}/.kube/config"
         make test-e2e
+
+  # Added to summarize the matrix and allow easy branch protection rules setup
+  e2e-tests-result:
+    name: End-to-End Test Results
+    if: always()
+    needs:
+      - e2e-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark the job as a success
+        if: needs.e2e-tests.result == 'success'
+        run: exit 0
+      - name: Mark the job as a failure
+        if: needs.e2e-tests.result != 'success'
+        run: exit 1
