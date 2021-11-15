@@ -102,9 +102,9 @@ k.core.v1.list.new([
 ])
 ```
 
-In order to expose Alertmanager and Grafana, simply create additional fields containing an ingress object, but simply pointing at the `alertmanager` or `grafana` instead of the `prometheus-k8s` Service. Make sure to also use the correct port respectively, for Alertmanager it is also `web`, for Grafana it is `http`. Be sure to also specify the appropriate external URL. Note that the external URL for grafana is set in a different way than the external URL for Prometheus or Alertmanager. See [ingress.jsonnet](../examples/ingress.jsonnet) for how to set the Grafana external URL.
+In order to expose Alertmanager and Grafana, simply create additional fields containing an ingress object, but simply pointing at the `alertmanager` or `grafana` instead of the `prometheus-k8s` Service. Make sure to also use the correct port respectively, for Alertmanager it is also `web`, for Grafana it is `http`. Be sure to also specify the appropriate external URL. Note that the external URL for grafana is set in a different way than the external URL for Prometheus or Alertmanager. See [ingress.jsonnet](../../examples/ingress.jsonnet) for how to set the Grafana external URL.
 
-In order to render the ingress objects similar to the other objects use as demonstrated in the [main readme](../README.md):
+In order to render the ingress objects similar to the other objects use as demonstrated in the [main readme](../../README.md):
 
 ```
 { ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
@@ -119,4 +119,4 @@ In order to render the ingress objects similar to the other objects use as demon
 
 Note, that in comparison only the last line was added, the rest is identical to the original.
 
-See [ingress.jsonnet](../examples/ingress.jsonnet) for an example implementation.
+See [ingress.jsonnet](../../examples/ingress.jsonnet) for an example implementation.

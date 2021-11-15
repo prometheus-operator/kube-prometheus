@@ -1,3 +1,10 @@
+### Static etcd configuration
+
+In order to configure a static etcd cluster to scrape there is a simple [static-etcd.libsonnet](../../jsonnet/kube-prometheus/addons/static-etcd.libsonnet) mixin prepared.
+
+An example of how to use it can be seen below:
+
+```jsonnet mdox-exec="cat examples/etcd.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') +
            (import 'kube-prometheus/addons/static-etcd.libsonnet') + {
   values+:: {
@@ -52,3 +59,8 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
+```
+
+If you'd like to monitor an etcd instance that lives outside the cluster, see [Monitoring external etcd](../monitoring-external-etcd.md) for more information.
+
+> Note that monitoring etcd in minikube is currently not possible because of how etcd is setup. (minikube's etcd binds to 127.0.0.1:2379 only, and within host networking namespace.)
