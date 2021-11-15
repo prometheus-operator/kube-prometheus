@@ -48,8 +48,8 @@ local defaults = {
       receiver: 'Default',
       routes: [
         { receiver: 'Watchdog', matchers: ['alertname = Watchdog'] },
-        { receiver: 'Critical', matchers: ['severity = critical'] },
         { receiver: 'null', matchers: ['alertname = InfoInhibitor'] },
+        { receiver: 'Critical', matchers: ['severity = critical'] },
       ],
     },
     receivers: [
