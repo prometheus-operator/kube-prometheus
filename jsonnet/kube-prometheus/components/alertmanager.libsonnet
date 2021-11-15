@@ -27,20 +27,12 @@ local defaults = {
       resolve_timeout: '5m',
     },
     inhibit_rules: [{
-      source_match: {
-        severity: 'critical',
-      },
-      target_match_re: {
-        severity: 'warning|info',
-      },
+      source_matchers: ['severity = critical'],
+      target_matchers: ['severity =~ warning|info'],
       equal: ['namespace', 'alertname'],
     }, {
-      source_match: {
-        severity: 'warning',
-      },
-      target_match_re: {
-        severity: 'info',
-      },
+      source_matchers: ['severity = warning'],
+      target_matchers: ['severity = info'],
       equal: ['namespace', 'alertname'],
     }],
     route: {
