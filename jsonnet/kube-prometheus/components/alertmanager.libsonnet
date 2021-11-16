@@ -42,8 +42,8 @@ local defaults = {
       repeat_interval: '12h',
       receiver: 'Default',
       routes: [
-        { receiver: 'Watchdog', match: { alertname: 'Watchdog' } },
-        { receiver: 'Critical', match: { severity: 'critical' } },
+        { receiver: 'Watchdog', matchers: ['alertname = Watchdog'] },
+        { receiver: 'Critical', matchers: ['severity = critical'] },
       ],
     },
     receivers: [
