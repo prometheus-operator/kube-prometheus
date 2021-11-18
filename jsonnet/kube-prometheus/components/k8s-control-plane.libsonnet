@@ -95,7 +95,11 @@ function(params) {
           honorLabels: true,
           tlsConfig: { insecureSkipVerify: true },
           bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-          metricRelabelings: relabelings,
+          metricRelabelings: relabelings + [{
+            sourceLabels: ['url'],
+            targetLabel: 'url',
+            regex: '(.*)\\?.*',
+          }],
           relabelings: [{
             sourceLabels: ['__metrics_path__'],
             targetLabel: 'metrics_path',
