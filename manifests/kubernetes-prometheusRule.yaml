@@ -1251,7 +1251,7 @@ spec:
       record: node_namespace_pod_container:container_memory_swap
     - expr: |
         kube_pod_container_resource_requests{resource="memory",job="kube-state-metrics"}  * on (namespace, pod, cluster)
-        group_left() max by (namespace, pod) (
+        group_left() max by (namespace, pod, cluster) (
           (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
         )
       record: cluster:namespace:pod_memory:active:kube_pod_container_resource_requests
@@ -1268,7 +1268,7 @@ spec:
       record: namespace_memory:kube_pod_container_resource_requests:sum
     - expr: |
         kube_pod_container_resource_requests{resource="cpu",job="kube-state-metrics"}  * on (namespace, pod, cluster)
-        group_left() max by (namespace, pod) (
+        group_left() max by (namespace, pod, cluster) (
           (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
         )
       record: cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests
@@ -1285,7 +1285,7 @@ spec:
       record: namespace_cpu:kube_pod_container_resource_requests:sum
     - expr: |
         kube_pod_container_resource_limits{resource="memory",job="kube-state-metrics"}  * on (namespace, pod, cluster)
-        group_left() max by (namespace, pod) (
+        group_left() max by (namespace, pod, cluster) (
           (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
         )
       record: cluster:namespace:pod_memory:active:kube_pod_container_resource_limits
@@ -1302,7 +1302,7 @@ spec:
       record: namespace_memory:kube_pod_container_resource_limits:sum
     - expr: |
         kube_pod_container_resource_limits{resource="cpu",job="kube-state-metrics"}  * on (namespace, pod, cluster)
-        group_left() max by (namespace, pod) (
+        group_left() max by (namespace, pod, cluster) (
          (kube_pod_status_phase{phase=~"Pending|Running"} == 1)
          )
       record: cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits
