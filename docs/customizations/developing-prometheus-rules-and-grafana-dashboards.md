@@ -18,7 +18,7 @@ All manifests of kube-prometheus are generated using [jsonnet](https://jsonnet.o
 
 For both the Prometheus rules and the Grafana dashboards Kubernetes `ConfigMap`s are generated within kube-prometheus. In order to add additional rules and dashboards simply merge them onto the existing json objects. This document illustrates examples for rules as well as dashboards.
 
-As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](../README.md):
+As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](../../README.md):
 
 ```jsonnet mdox-exec="cat example.jsonnet"
 local kp =
@@ -216,7 +216,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 ### Changing default rules
 
-Along with adding additional rules, we give the user the option to filter or adjust the existing rules imported by `kube-prometheus/main.libsonnet`. The recording rules can be found in [kube-prometheus/components/mixin/rules](../jsonnet/kube-prometheus/components/mixin/rules) and [kubernetes-mixin/rules](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/rules) while the alerting rules can be found in [kube-prometheus/components/mixin/alerts](../jsonnet/kube-prometheus/components/mixin/alerts) and [kubernetes-mixin/alerts](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/alerts).
+Along with adding additional rules, we give the user the option to filter or adjust the existing rules imported by `kube-prometheus/main.libsonnet`. The recording rules can be found in [kube-prometheus/components/mixin/rules](../../jsonnet/kube-prometheus/components/mixin/rules) and [kubernetes-mixin/rules](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/rules) while the alerting rules can be found in [kube-prometheus/components/mixin/alerts](../../jsonnet/kube-prometheus/components/mixin/alerts) and [kubernetes-mixin/alerts](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/alerts).
 
 Knowing which rules to change, the user can now use functions from the [Jsonnet standard library](https://jsonnet.org/ref/stdlib.html) to make these changes. Below are examples of both a filter and an adjustment being made to the default rules. These changes can be assigned to a local variable and then added to the `local kp` object as seen in the examples above.
 
@@ -394,7 +394,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 ### Pre-rendered Grafana dashboards
 
-As jsonnet is a superset of json, the jsonnet `import` function can be used to include Grafana dashboard json blobs. In this example we are importing a [provided example dashboard](../examples/example-grafana-dashboard.json).
+As jsonnet is a superset of json, the jsonnet `import` function can be used to include Grafana dashboard json blobs. In this example we are importing a [provided example dashboard](../../examples/example-grafana-dashboard.json).
 
 ```jsonnet mdox-exec="cat examples/grafana-additional-rendered-dashboard-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
