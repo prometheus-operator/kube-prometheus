@@ -4,7 +4,7 @@
 {
   values+:: {
     prometheusAdapter+: {
-      namespace: $.values.common.namespace,
+      namespace: $.values.prometheusAdapter.namespace,
       // Rules for custom-metrics
       config+:: {
         rules+: [

@@ -59,7 +59,7 @@ local restrictedPodSecurityPolicy = {
       kind: 'Role',
       metadata: {
         name: 'alertmanager-' + $.values.alertmanager.name,
-        namespace: $.values.common.namespace,
+        namespace: $.values.alertmanager.namespace,
       },
       rules: [{
         apiGroups: ['policy'],
@@ -74,7 +74,7 @@ local restrictedPodSecurityPolicy = {
       kind: 'RoleBinding',
       metadata: {
         name: 'alertmanager-' + $.values.alertmanager.name,
-        namespace: $.values.common.namespace,
+        namespace: $.values.alertmanager.namespace,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
@@ -132,7 +132,7 @@ local restrictedPodSecurityPolicy = {
       kind: 'Role',
       metadata: {
         name: 'grafana',
-        namespace: $.values.common.namespace,
+        namespace: $.values.grafana.namespace,
       },
       rules: [{
         apiGroups: ['policy'],
@@ -147,7 +147,7 @@ local restrictedPodSecurityPolicy = {
       kind: 'RoleBinding',
       metadata: {
         name: 'grafana',
-        namespace: $.values.common.namespace,
+        namespace: $.values.grafana.namespace,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',

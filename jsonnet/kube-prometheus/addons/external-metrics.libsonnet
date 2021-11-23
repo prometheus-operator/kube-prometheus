@@ -4,7 +4,6 @@
 {
   values+:: {
     prometheusAdapter+: {
-      namespace: $.values.common.namespace,
       // Rules for external-metrics
       config+:: {
         externalRules+: [
