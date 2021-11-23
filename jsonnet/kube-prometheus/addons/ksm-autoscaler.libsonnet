@@ -30,7 +30,7 @@
         kind: 'ClusterRole',
         name: 'ksm-autoscaler',
       },
-      subjects: [{ kind: 'ServiceAccount', name: 'ksm-autoscaler', namespace: $.values.common.namespace }],
+      subjects: [{ kind: 'ServiceAccount', name: 'ksm-autoscaler', namespace: $.values.kubeStateMetrics.namespace }],
     },
 
     roleBinding: {
@@ -38,7 +38,7 @@
       kind: 'RoleBinding',
       metadata: {
         name: 'ksm-autoscaler',
-        namespace: $.values.common.namespace,
+        namespace: $.values.kubeStateMetrics.namespace,
       },
       roleRef: {
         apiGroup: 'rbac.authorization.k8s.io',
@@ -53,7 +53,7 @@
       kind: 'Role',
       metadata: {
         name: 'ksm-autoscaler',
-        namespace: $.values.common.namespace,
+        namespace: $.values.kubeStateMetrics.namespace,
       },
       rules: [
         {
@@ -76,7 +76,7 @@
       kind: 'ServiceAccount',
       metadata: {
         name: 'ksm-autoscaler',
-        namespace: $.values.common.namespace,
+        namespace: $.values.kubeStateMetrics.namespace,
       },
     },
 
@@ -88,7 +88,7 @@
         args: [
           '/cpvpa',
           '--target=deployment/kube-state-metrics',
-          '--namespace=' + $.values.common.namespace,
+          '--namespace=' + $.values.kubeStateMetrics.namespace,
           '--logtostderr=true',
           '--poll-period-seconds=10',
           '--default-config={"kube-state-metrics":{"requests":{"cpu":{"base":"' + $.values.clusterVerticalAutoscaler.baseCPU +
@@ -110,7 +110,7 @@
         kind: 'Deployment',
         metadata: {
           name: 'ksm-autoscaler',
-          namespace: $.values.common.namespace,
+          namespace: $.values.kubeStateMetrics.namespace,
           labels: podLabels,
         },
         spec: {
