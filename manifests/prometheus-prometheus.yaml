@@ -3,10 +3,10 @@ kind: Prometheus
 metadata:
   labels:
     app.kubernetes.io/component: prometheus
+    app.kubernetes.io/instance: k8s
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 2.31.1
-    prometheus: k8s
   name: k8s
   namespace: monitoring
 spec:
@@ -24,10 +24,10 @@ spec:
   podMetadata:
     labels:
       app.kubernetes.io/component: prometheus
+      app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
       app.kubernetes.io/version: 2.31.1
-      prometheus: k8s
   podMonitorNamespaceSelector: {}
   podMonitorSelector: {}
   probeNamespaceSelector: {}

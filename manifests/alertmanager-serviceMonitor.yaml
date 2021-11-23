@@ -3,6 +3,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     app.kubernetes.io/component: alert-router
+    app.kubernetes.io/instance: main
     app.kubernetes.io/name: alertmanager
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.23.0
@@ -16,7 +17,7 @@ spec:
     port: reloader-web
   selector:
     matchLabels:
-      alertmanager: main
       app.kubernetes.io/component: alert-router
+      app.kubernetes.io/instance: main
       app.kubernetes.io/name: alertmanager
       app.kubernetes.io/part-of: kube-prometheus
