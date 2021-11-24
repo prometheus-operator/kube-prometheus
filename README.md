@@ -110,14 +110,14 @@ Though for a quickstart a compiled version of the Kubernetes [manifests](manifes
 
 ```shell
 # Create the namespace and CRDs, and then wait for them to be available before creating the remaining resources
-kubectl create -f manifests/setup
+kubectl apply --server-side -f manifests/setup
 until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
-kubectl create -f manifests/
+kubectl apply -f manifests/
 ```
 
 We create the namespace and CustomResourceDefinitions first to avoid race conditions when deploying the monitoring components.
 Alternatively, the resources in both folders can be applied with a single command
-`kubectl create -f manifests/setup -f manifests`, but it may be necessary to run the command multiple times for all components to
+`kubectl apply --server-side -f manifests/setup -f manifests`, but it may be necessary to run the command multiple times for all components to
 be created successfullly.
 
 * And to teardown the stack:
@@ -274,12 +274,16 @@ Now simply use `kubectl` to install Prometheus and Grafana as per your configura
 
 ```shell
 # Update the namespace and CRDs, and then wait for them to be available before creating the remaining resources
-$ kubectl apply -f manifests/setup
+$ kubectl apply --server-side -f manifests/setup
 $ kubectl apply -f manifests/
 ```
 
+> Note that due to some CRD size we are using kubeclt server-side apply feature which is generally available since
+> kubernetes 1.22. If you are using previous kubernetes versions this feature may not be available and you would need to
+> use `kubectl create` instead.
+
 Alternatively, the resources in both folders can be applied with a single command
-`kubectl apply -Rf manifests`, but it may be necessary to run the command multiple times for all components to
+`kubectl apply --server-side -Rf manifests`, but it may be necessary to run the command multiple times for all components to
 be created successfullly.
 
 Check the monitoring namespace (or the namespace you have specific in `namespace: `) and make sure the pods are running. Prometheus and Grafana should be up and running soon.
