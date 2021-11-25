@@ -11,6 +11,7 @@ local defaults = {
   },
   commonLabels:: {
     'app.kubernetes.io/name': 'alertmanager',
+    'app.kubernetes.io/instance': defaults.name,
     'app.kubernetes.io/version': defaults.version,
     'app.kubernetes.io/component': 'alert-router',
     'app.kubernetes.io/part-of': 'kube-prometheus',
@@ -100,9 +101,7 @@ function(params) {
     apiVersion: 'v1',
     kind: 'Secret',
     type: 'Opaque',
-    metadata: am._metadata {
-      labels+: { alertmanager: am._config.name },
-    },
+    metadata: am._metadata,
     stringData: {
       'alertmanager.yaml': if std.type(am._config.config) == 'object'
       then
@@ -115,25 +114,19 @@ function(params) {
   serviceAccount: {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
-    metadata: am._metadata {
-      labels+: { alertmanager: am._config.name },
-    },
+    metadata: am._metadata,
   },
 
   service: {
     apiVersion: 'v1',
     kind: 'Service',
-    metadata: am._metadata {
-      labels+: { alertmanager: am._config.name },
-    },
+    metadata: am._metadata,
     spec: {
       ports: [
         { name: 'web', targetPort: 'web', port: 9093 },
         { name: 'reloader-web', port: am._config.reloaderPort, targetPort: 'reloader-web' },
       ],
-      selector: am._config.selectorLabels {
-        alertmanager: am._config.name,
-      },
+      selector: am._config.selectorLabels,
       sessionAffinity: 'ClientIP',
     },
   },
@@ -144,9 +137,7 @@ function(params) {
     metadata: am._metadata,
     spec: {
       selector: {
-        matchLabels: am._config.selectorLabels {
-          alertmanager: am._config.name,
-        },
+        matchLabels: am._config.selectorLabels,
       },
       endpoints: [
         { port: 'web', interval: '30s' },
@@ -162,9 +153,7 @@ function(params) {
     spec: {
       maxUnavailable: 1,
       selector: {
-        matchLabels: am._config.selectorLabels {
-          alertmanager: am._config.name,
-        },
+        matchLabels: am._config.selectorLabels,
       },
     },
   },
@@ -174,9 +163,6 @@ function(params) {
     kind: 'Alertmanager',
     metadata: am._metadata {
       name: am._config.name,
-      labels+: {
-        alertmanager: am._config.name,
-      },
     },
     spec: {
       replicas: am._config.replicas,

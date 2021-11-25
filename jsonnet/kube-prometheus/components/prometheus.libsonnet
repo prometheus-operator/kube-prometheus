@@ -19,6 +19,7 @@ local defaults = {
   ruleSelector: {},
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
+    'app.kubernetes.io/instance': defaults.name,
     'app.kubernetes.io/version': defaults.version,
     'app.kubernetes.io/component': 'prometheus',
     'app.kubernetes.io/part-of': 'kube-prometheus',
@@ -27,7 +28,7 @@ local defaults = {
     [labelName]: defaults.commonLabels[labelName]
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
-  } + { prometheus: defaults.name },
+  },
   mixin:: {
     ruleLabels: {},
     _config: {
@@ -95,9 +96,7 @@ function(params) {
   service: {
     apiVersion: 'v1',
     kind: 'Service',
-    metadata: p._metadata {
-      labels+: { prometheus: p._config.name },
-    },
+    metadata: p._metadata,
     spec: {
       ports: [
                { name: 'web', targetPort: 'web', port: 9090 },
@@ -239,9 +238,7 @@ function(params) {
     spec: {
       minAvailable: 1,
       selector: {
-        matchLabels: p._config.selectorLabels {
-          prometheus: p._config.name,
-        },
+        matchLabels: p._config.selectorLabels,
       },
     },
   },
@@ -251,7 +248,6 @@ function(params) {
     kind: 'Prometheus',
     metadata: p._metadata {
       name: p._config.name,
-      labels+: { prometheus: p._config.name },
     },
     spec: {
       replicas: p._config.replicas,
@@ -327,7 +323,6 @@ function(params) {
     metadata+: p._metadata {
       name: p._metadata.name + '-thanos-sidecar',
       labels+: {
-        prometheus: p._config.name,
         'app.kubernetes.io/component': 'thanos-sidecar',
       },
     },
@@ -337,7 +332,6 @@ function(params) {
         { name: 'http', port: 10902, targetPort: 10902 },
       ],
       selector: p._config.selectorLabels {
-        prometheus: p._config.name,
         'app.kubernetes.io/component': 'prometheus',
       },
       clusterIP: 'None',
@@ -351,7 +345,6 @@ function(params) {
     metadata+: p._metadata {
       name: 'thanos-sidecar',
       labels+: {
-        prometheus: p._config.name,
         'app.kubernetes.io/component': 'thanos-sidecar',
       },
     },
@@ -359,7 +352,6 @@ function(params) {
       jobLabel: 'app.kubernetes.io/component',
       selector: {
         matchLabels: {
-          prometheus: p._config.name,
           'app.kubernetes.io/component': 'thanos-sidecar',
         },
       },
