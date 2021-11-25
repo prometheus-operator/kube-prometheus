@@ -294,9 +294,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecpuquotaovercommit
         summary: Cluster has overcommitted CPU resource requests.
       expr: |
-        sum(kube_resourcequota{job="kube-state-metrics", type="hard", resource="cpu"})
+        sum(min without(resource) (kube_resourcequota{job="kube-state-metrics", type="hard", resource=~"(cpu|requests.cpu)"}))
           /
-        sum(kube_node_status_allocatable{resource="cpu"})
+        sum(kube_node_status_allocatable{resource="cpu", job="kube-state-metrics"})
           > 1.5
       for: 5m
       labels:
@@ -307,9 +307,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubememoryquotaovercommit
         summary: Cluster has overcommitted memory resource requests.
       expr: |
-        sum(kube_resourcequota{job="kube-state-metrics", type="hard", resource="memory"})
+        sum(min without(resource) (kube_resourcequota{job="kube-state-metrics", type="hard", resource=~"(memory|requests.memory)"}))
           /
-        sum(kube_node_status_allocatable{resource="memory",job="kube-state-metrics"})
+        sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"})
           > 1.5
       for: 5m
       labels:
@@ -390,6 +390,8 @@ spec:
         kubelet_volume_stats_used_bytes{job="kubelet", metrics_path="/metrics"} > 0
         unless on(namespace, persistentvolumeclaim)
         kube_persistentvolumeclaim_access_mode{ access_mode="ReadOnlyMany"} == 1
+        unless on(namespace, persistentvolumeclaim)
+        kube_persistentvolumeclaim_labels{label_excluded_from_alerts="true"} == 1
       for: 1m
       labels:
         severity: critical
@@ -413,6 +415,8 @@ spec:
         predict_linear(kubelet_volume_stats_available_bytes{job="kubelet", metrics_path="/metrics"}[6h], 4 * 24 * 3600) < 0
         unless on(namespace, persistentvolumeclaim)
         kube_persistentvolumeclaim_access_mode{ access_mode="ReadOnlyMany"} == 1
+        unless on(namespace, persistentvolumeclaim)
+        kube_persistentvolumeclaim_labels{label_excluded_from_alerts="true"} == 1
       for: 1h
       labels:
         severity: warning
@@ -516,8 +520,8 @@ spec:
     rules:
     - alert: KubeClientCertificateExpiration
       annotations:
-        description: A client certificate used to authenticate to the apiserver is
-          expiring in less than 7.0 days.
+        description: A client certificate used to authenticate to kubernetes apiserver
+          is expiring in less than 7.0 days.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeclientcertificateexpiration
         summary: Client certificate is about to expire.
       expr: |
@@ -526,31 +530,31 @@ spec:
         severity: warning
     - alert: KubeClientCertificateExpiration
       annotations:
-        description: A client certificate used to authenticate to the apiserver is
-          expiring in less than 24.0 hours.
+        description: A client certificate used to authenticate to kubernetes apiserver
+          is expiring in less than 24.0 hours.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeclientcertificateexpiration
         summary: Client certificate is about to expire.
       expr: |
         apiserver_client_certificate_expiration_seconds_count{job="apiserver"} > 0 and on(job) histogram_quantile(0.01, sum by (job, le) (rate(apiserver_client_certificate_expiration_seconds_bucket{job="apiserver"}[5m]))) < 86400
       labels:
         severity: critical
-    - alert: AggregatedAPIErrors
+    - alert: KubeAggregatedAPIErrors
       annotations:
-        description: An aggregated API {{ $labels.name }}/{{ $labels.namespace }}
-          has reported errors. It has appeared unavailable {{ $value | humanize }}
-          times averaged over the past 10m.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/aggregatedapierrors
-        summary: An aggregated API has reported errors.
+        description: Kubernetes aggregated API {{ $labels.name }}/{{ $labels.namespace
+          }} has reported errors. It has appeared unavailable {{ $value | humanize
+          }} times averaged over the past 10m.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeaggregatedapierrors
+        summary: Kubernetes aggregated API has reported errors.
       expr: |
         sum by(name, namespace)(increase(aggregator_unavailable_apiservice_total[10m])) > 4
       labels:
         severity: warning
-    - alert: AggregatedAPIDown
+    - alert: KubeAggregatedAPIDown
       annotations:
-        description: An aggregated API {{ $labels.name }}/{{ $labels.namespace }}
-          has been only {{ $value | humanize }}% available over the last 10m.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/aggregatedapidown
-        summary: An aggregated API is down.
+        description: Kubernetes aggregated API {{ $labels.name }}/{{ $labels.namespace
+          }} has been only {{ $value | humanize }}% available over the last 10m.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeaggregatedapidown
+        summary: Kubernetes aggregated API is down.
       expr: |
         (1 - max by(name, namespace)(avg_over_time(aggregator_unavailable_apiservice[10m]))) * 100 < 85
       for: 5m
@@ -568,11 +572,11 @@ spec:
         severity: critical
     - alert: KubeAPITerminatedRequests
       annotations:
-        description: The apiserver has terminated {{ $value | humanizePercentage }}
-          of its incoming requests.
+        description: The kubernetes apiserver has terminated {{ $value | humanizePercentage
+          }} of its incoming requests.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapiterminatedrequests
-        summary: The apiserver has terminated {{ $value | humanizePercentage }} of
-          its incoming requests.
+        summary: The kubernetes apiserver has terminated {{ $value | humanizePercentage
+          }} of its incoming requests.
       expr: |
         sum(rate(apiserver_request_terminations_total{job="apiserver"}[10m]))  / (  sum(rate(apiserver_request_total{job="apiserver"}[10m])) + sum(rate(apiserver_request_terminations_total{job="apiserver"}[10m])) ) > 0.20
       for: 5m

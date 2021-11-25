@@ -18527,7 +18527,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(kube_pod_info{job=\"kube-state-metrics\"}, cluster=\"$cluster\"}, namespace)",
+                      "query": "label_values(kube_pod_info{job=\"kube-state-metrics\", cluster=\"$cluster\"}, namespace)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
