@@ -13,12 +13,27 @@ local defaults = {
     requests: { cpu: '10m', memory: '190Mi' },
     limits: { cpu: '100m', memory: '250Mi' },
   },
-
   kubeRbacProxyMain:: {
+    name: 'kube-rbac-proxy-main',
+    upstream: 'http://127.0.0.1:8081/',
+    secureListenAddress: ':8443',
+    ports: [
+      { name: 'https-main', containerPort: 8443 },
+    ],
+    image: defaults.kubeRbacProxyImage,
     resources+: {
       limits+: { cpu: '40m' },
       requests+: { cpu: '20m' },
     },
+  },
+  kubeRbacProxySelf:: {
+    name: 'kube-rbac-proxy-self',
+    upstream: 'http://127.0.0.1:8082/',
+    secureListenAddress: ':9443',
+    ports: [
+      { name: 'https-self', containerPort: 9443 },
+    ],
+    image: defaults.kubeRbacProxyImage,
   },
   scrapeInterval:: '30s',
   scrapeTimeout:: '30s',
@@ -98,25 +113,9 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     },
   },
 
-  local kubeRbacProxyMain = krp(ksm._config.kubeRbacProxyMain {
-    name: 'kube-rbac-proxy-main',
-    upstream: 'http://127.0.0.1:8081/',
-    secureListenAddress: ':8443',
-    ports: [
-      { name: 'https-main', containerPort: 8443 },
-    ],
-    image: ksm._config.kubeRbacProxyImage,
-  }),
+  local kubeRbacProxyMain = krp(ksm._config.kubeRbacProxyMain),
 
-  local kubeRbacProxySelf = krp({
-    name: 'kube-rbac-proxy-self',
-    upstream: 'http://127.0.0.1:8082/',
-    secureListenAddress: ':9443',
-    ports: [
-      { name: 'https-self', containerPort: 9443 },
-    ],
-    image: ksm._config.kubeRbacProxyImage,
-  }),
+  local kubeRbacProxySelf = krp(ksm._config.kubeRbacProxySelf),
 
   deployment+: {
     spec+: {

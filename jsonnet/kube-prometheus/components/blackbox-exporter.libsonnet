@@ -11,6 +11,16 @@ local defaults = {
     requests: { cpu: '10m', memory: '20Mi' },
     limits: { cpu: '20m', memory: '40Mi' },
   },
+  kubeRbacProxy:: {
+    name: 'kube-rbac-proxy',
+    upstream: 'http://127.0.0.1:' + defaults.internalPort + '/',
+    resources: defaults.resources,
+    secureListenAddress: ':' + defaults.port,
+    ports: [
+      { name: 'https', containerPort: defaults.port },
+    ],
+    image: defaults.kubeRbacProxyImage,
+  },
   commonLabels:: {
     'app.kubernetes.io/name': 'blackbox-exporter',
     'app.kubernetes.io/version': defaults.version,
@@ -198,16 +208,7 @@ function(params) {
       }],
     };
 
-    local kubeRbacProxy = krp({
-      name: 'kube-rbac-proxy',
-      upstream: 'http://127.0.0.1:' + bb._config.internalPort + '/',
-      resources: bb._config.resources,
-      secureListenAddress: ':' + bb._config.port,
-      ports: [
-        { name: 'https', containerPort: bb._config.port },
-      ],
-      image: bb._config.kubeRbacProxyImage,
-    });
+    local kubeRbacProxy = krp(bb._config.kubeRbacProxy);
 
     {
       apiVersion: 'apps/v1',
