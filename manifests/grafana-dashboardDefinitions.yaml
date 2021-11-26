@@ -670,7 +670,11 @@ items:
 
                           },
                           "id": 3,
-                          "interval": null,
+                          "interval": "1m",
+                          "legend": {
+                              "alignAsTable": true,
+                              "rightSide": true
+                          },
                           "links": [
 
                           ],
@@ -748,13 +752,14 @@ items:
 
                           },
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -866,7 +871,11 @@ items:
 
                           },
                           "id": 5,
-                          "interval": null,
+                          "interval": "1m",
+                          "legend": {
+                              "alignAsTable": true,
+                              "rightSide": true
+                          },
                           "links": [
 
                           ],
@@ -943,13 +952,14 @@ items:
 
                           },
                           "id": 6,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -1052,13 +1062,14 @@ items:
 
                           },
                           "id": 7,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -1146,13 +1157,14 @@ items:
 
                           },
                           "id": 8,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -1262,7 +1274,11 @@ items:
 
                           },
                           "id": 9,
-                          "interval": null,
+                          "interval": "1m",
+                          "legend": {
+                              "alignAsTable": true,
+                              "rightSide": true
+                          },
                           "links": [
 
                           ],
@@ -1339,13 +1355,14 @@ items:
 
                           },
                           "id": 10,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -1448,13 +1465,14 @@ items:
 
                           },
                           "id": 11,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -1542,13 +1560,14 @@ items:
 
                           },
                           "id": 12,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -1648,13 +1667,14 @@ items:
 
                           },
                           "id": 13,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": false,
                               "sideWidth": null,
                               "total": false,
@@ -1741,13 +1761,14 @@ items:
 
                           },
                           "id": 14,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": false,
                               "sideWidth": null,
                               "total": false,
@@ -1834,6 +1855,7 @@ items:
 
                           },
                           "id": 15,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -1940,13 +1962,14 @@ items:
 
                           },
                           "id": 16,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -2033,13 +2056,14 @@ items:
 
                           },
                           "id": 17,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -2126,13 +2150,14 @@ items:
 
                           },
                           "id": 18,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -4257,7 +4282,11 @@ items:
 
                           },
                           "id": 2,
-                          "interval": null,
+                          "interval": "1m",
+                          "legend": {
+                              "alignAsTable": true,
+                              "rightSide": true
+                          },
                           "links": [
 
                           ],
@@ -4333,6 +4362,7 @@ items:
 
                           },
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -4439,6 +4469,7 @@ items:
 
                           },
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -4545,6 +4576,7 @@ items:
 
                           },
                           "id": 5,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -4651,13 +4683,14 @@ items:
 
                           },
                           "id": 6,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -4765,13 +4798,14 @@ items:
 
                           },
                           "id": 7,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -4871,6 +4905,7 @@ items:
 
                           },
                           "id": 8,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -4977,13 +5012,14 @@ items:
 
                           },
                           "id": 9,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -5070,13 +5106,14 @@ items:
 
                           },
                           "id": 10,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -5163,13 +5200,14 @@ items:
 
                           },
                           "id": 11,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -5407,10 +5445,12 @@ items:
                           "id": 1,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -5490,11 +5530,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 2,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -5574,11 +5617,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -5658,11 +5704,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -5742,11 +5791,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 5,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -5826,11 +5878,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 6,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -5921,11 +5976,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 7,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -6019,11 +6077,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 8,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -6348,11 +6409,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 9,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -6446,11 +6510,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 10,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -6777,10 +6844,12 @@ items:
                           "id": 11,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7077,11 +7146,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 12,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7163,11 +7235,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 13,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7261,11 +7336,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 14,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7347,11 +7425,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 15,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7445,11 +7526,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 16,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7531,11 +7615,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 17,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7629,11 +7716,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 18,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7715,11 +7805,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 19,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7814,11 +7907,14 @@ items:
                           "decimals": -1,
                           "fill": 10,
                           "id": 20,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7900,11 +7996,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 21,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -7998,11 +8097,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 22,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -8418,11 +8520,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 1,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -8502,11 +8607,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 2,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -8586,11 +8694,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -8670,11 +8781,14 @@ items:
                           "fill": 1,
                           "format": "percentunit",
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -8765,11 +8879,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 5,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -8900,11 +9017,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 6,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -9173,11 +9293,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 7,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -9308,11 +9431,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 8,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -9667,10 +9793,12 @@ items:
                           "id": 9,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -9967,11 +10095,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 10,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -10053,11 +10184,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 11,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -10151,11 +10285,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 12,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -10237,11 +10374,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 13,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -10335,11 +10475,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 14,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -10421,11 +10564,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 15,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -10520,11 +10666,14 @@ items:
                           "decimals": -1,
                           "fill": 10,
                           "id": 16,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -10606,11 +10755,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 17,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -10704,11 +10856,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 18,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -11150,11 +11305,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 1,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -11248,11 +11406,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 2,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -11521,11 +11682,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -11619,11 +11783,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -12117,11 +12284,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 1,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -12248,11 +12418,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 2,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": true,
                               "max": true,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -12353,11 +12526,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -12626,11 +12802,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -12759,11 +12938,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 5,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13118,10 +13300,12 @@ items:
                           "id": 6,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13205,10 +13389,12 @@ items:
                           "id": 7,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13304,10 +13490,12 @@ items:
                           "id": 8,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13391,10 +13579,12 @@ items:
                           "id": 9,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13490,10 +13680,12 @@ items:
                           "id": 10,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13577,10 +13769,12 @@ items:
                           "id": 11,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13675,11 +13869,14 @@ items:
                           "decimals": -1,
                           "fill": 10,
                           "id": 12,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13769,11 +13966,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 13,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13876,11 +14076,14 @@ items:
                           "decimals": -1,
                           "fill": 10,
                           "id": 14,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -13962,11 +14165,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 15,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -14060,11 +14266,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 16,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -14533,11 +14742,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 1,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -14631,11 +14843,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 2,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -14904,11 +15119,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -15002,11 +15220,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -15277,10 +15498,12 @@ items:
                           "id": 5,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -15577,11 +15800,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 6,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -15663,11 +15889,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 7,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -15761,11 +15990,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 8,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -15847,11 +16079,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 9,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -15945,11 +16180,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 10,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -16031,11 +16269,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 11,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -16129,11 +16370,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 12,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -16215,11 +16459,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 13,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -16508,11 +16755,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 1,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -16643,11 +16893,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 2,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -16963,11 +17216,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -17098,11 +17354,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 1,
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -17420,10 +17679,12 @@ items:
                           "id": 5,
                           "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -17739,11 +18000,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 6,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -17825,11 +18089,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 7,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -17923,11 +18190,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 8,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -18009,11 +18279,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 9,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -18107,11 +18380,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 10,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -18193,11 +18469,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 11,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -18291,11 +18570,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 12,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -18377,11 +18659,14 @@ items:
                           "datasource": "$datasource",
                           "fill": 10,
                           "id": 13,
+                          "interval": "1m",
                           "legend": {
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
+                              "rightSide": true,
                               "show": true,
                               "total": false,
                               "values": false
@@ -27190,13 +27475,14 @@ items:
 
                           },
                           "id": 2,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": true,
                               "current": true,
                               "max": true,
                               "min": true,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -27298,7 +27584,11 @@ items:
 
                           },
                           "id": 3,
-                          "interval": null,
+                          "interval": "1m",
+                          "legend": {
+                              "alignAsTable": true,
+                              "rightSide": true
+                          },
                           "links": [
 
                           ],
@@ -27387,13 +27677,14 @@ items:
 
                           },
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": true,
                               "current": true,
                               "max": true,
                               "min": true,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -27495,7 +27786,11 @@ items:
 
                           },
                           "id": 5,
-                          "interval": null,
+                          "interval": "1m",
+                          "legend": {
+                              "alignAsTable": true,
+                              "rightSide": true
+                          },
                           "links": [
 
                           ],
@@ -31864,7 +32159,11 @@ items:
 
                           },
                           "id": 2,
-                          "interval": null,
+                          "interval": "1m",
+                          "legend": {
+                              "alignAsTable": true,
+                              "rightSide": true
+                          },
                           "links": [
 
                           ],
@@ -31940,13 +32239,14 @@ items:
 
                           },
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -32033,6 +32333,7 @@ items:
 
                           },
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -32139,13 +32440,14 @@ items:
 
                           },
                           "id": 5,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -32232,6 +32534,7 @@ items:
 
                           },
                           "id": 6,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -32338,13 +32641,14 @@ items:
 
                           },
                           "id": 7,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -32452,13 +32756,14 @@ items:
 
                           },
                           "id": 8,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -32558,6 +32863,7 @@ items:
 
                           },
                           "id": 9,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -32664,13 +32970,14 @@ items:
 
                           },
                           "id": 10,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -32757,13 +33064,14 @@ items:
 
                           },
                           "id": 11,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -32850,13 +33158,14 @@ items:
 
                           },
                           "id": 12,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -33110,7 +33419,11 @@ items:
 
                           },
                           "id": 2,
-                          "interval": null,
+                          "interval": "1m",
+                          "legend": {
+                              "alignAsTable": true,
+                              "rightSide": true
+                          },
                           "links": [
 
                           ],
@@ -33186,6 +33499,7 @@ items:
 
                           },
                           "id": 3,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -33300,6 +33614,7 @@ items:
 
                           },
                           "id": 4,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -33427,13 +33742,14 @@ items:
 
                           },
                           "id": 5,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -33541,13 +33857,14 @@ items:
 
                           },
                           "id": 6,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -33647,6 +33964,7 @@ items:
 
                           },
                           "id": 7,
+                          "interval": "1m",
                           "legend": {
                               "alignAsTable": true,
                               "avg": false,
@@ -33753,13 +34071,14 @@ items:
 
                           },
                           "id": 8,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -33846,13 +34165,14 @@ items:
 
                           },
                           "id": 9,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
@@ -33939,13 +34259,14 @@ items:
 
                           },
                           "id": 10,
+                          "interval": "1m",
                           "legend": {
-                              "alignAsTable": false,
+                              "alignAsTable": true,
                               "avg": false,
                               "current": false,
                               "max": false,
                               "min": false,
-                              "rightSide": false,
+                              "rightSide": true,
                               "show": true,
                               "sideWidth": null,
                               "total": false,
