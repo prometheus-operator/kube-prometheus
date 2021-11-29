@@ -4,20 +4,24 @@ local kp =
     values+:: {
       common+: {
         namespace: 'monitoring',
+        versions+: {
+          prometheus: '2.32.0',
+        },
       },
       prometheus+: {
-        version: '2.32.0',
         resources: {
           requests: { memory: '100Mi' },
         },
-        enableFeatures: ['agent']
+        enableFeatures: ['agent'],
       },
     },
     prometheus+: {
       prometheus+: {
-        alerting:: {},
-        remoteWrite: {
-	  // Remote-write config
+        spec+: {
+          alerting:: {},
+          remoteWrite: [{
+            url: 'http://remote-write-url.com',
+          }],
         },
       },
     },
