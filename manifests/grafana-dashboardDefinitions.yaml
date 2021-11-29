@@ -16635,11 +16635,11 @@ items:
                       "includeAll": false,
                       "label": null,
                       "multi": false,
-                      "name": "workload",
+                      "name": "type",
                       "options": [
 
                       ],
-                      "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\"}, workload)",
+                      "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\"}, workload_type)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
@@ -16662,11 +16662,11 @@ items:
                       "includeAll": false,
                       "label": null,
                       "multi": false,
-                      "name": "type",
+                      "name": "workload",
                       "options": [
 
                       ],
-                      "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=\"$workload\"}, workload_type)",
+                      "query": "label_values(namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=\"$type\"}, workload)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 1,
