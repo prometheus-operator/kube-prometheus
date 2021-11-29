@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl apply -f manifests/setup
+kubectl apply --server-side -f manifests/setup
 
 # Safety wait for CRDs to be working
 sleep 30
