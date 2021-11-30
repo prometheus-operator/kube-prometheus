@@ -20,6 +20,7 @@ local kp =
         spec+: {
           replicas: 1,
           alerting:: {},
+          ruleSelector:: {},
           remoteWrite: [{
             url: 'http://remote-write-url.com',
           }],
