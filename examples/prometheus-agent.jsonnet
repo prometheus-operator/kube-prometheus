@@ -5,7 +5,7 @@ local kp =
       common+: {
         namespace: 'monitoring',
         versions+: {
-          prometheus: '2.32.0',
+          prometheus: '2.32.0-beta.0',
         },
       },
       prometheus+: {
@@ -18,10 +18,22 @@ local kp =
     prometheus+: {
       prometheus+: {
         spec+: {
+          replicas: 1,
           alerting:: {},
           remoteWrite: [{
             url: 'http://remote-write-url.com',
           }],
+          containers+: [
+            {
+              name: 'prometheus',
+              args+: [
+                '--config.file=/etc/prometheus/config_out/prometheus.env.yaml',
+                '--storage.agent.path=/prometheus',
+                '--enable-feature=agent',
+                '--web.enable-lifecycle',
+              ],
+            },
+          ],
         },
       },
     },
