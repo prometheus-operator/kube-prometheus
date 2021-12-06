@@ -278,7 +278,7 @@ spec:
     - alert: KubeMemoryOvercommit
       annotations:
         description: Cluster has overcommitted memory resource requests for Pods by
-          {{ $value }} bytes and cannot tolerate node failure.
+          {{ $value | humanize }} bytes and cannot tolerate node failure.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubememoryovercommit
         summary: Cluster has overcommitted memory resource requests.
       expr: |
