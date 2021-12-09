@@ -38,7 +38,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "9927be87af4be9ff6b009e4503868b1b5493011b",
+      "version": "b102f9ac7d1290ac025c2a7ac99f7fd9a9948503",
       "sum": "0KkygBQd/AFzUvVzezE4qF/uDYgrwUXVpZfINBti0oc="
     },
     {
@@ -68,7 +68,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "840d30ce57f75d0ec466a2d612879602c433d5e6",
+      "version": "e3056ae518d0234105276ec916296923968ad294",
       "sum": "U1wzIpTAtOvC1yj43Y8PfvT0JfvnAcMfNH12Wi+ab0Y="
     },
     {
@@ -78,7 +78,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "840d30ce57f75d0ec466a2d612879602c433d5e6",
+      "version": "e3056ae518d0234105276ec916296923968ad294",
       "sum": "u8gaydJoxEjzizQ8jY8xSjYgWooPmxw+wIWdDxifMAk="
     },
     {
@@ -88,7 +88,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "009606736ffdcc14b23c77831a5ded26b3c8db43",
+      "version": "335ebbc2f6ecf10b699821fa8cebcbff4a718ca7",
       "sum": "qZ4WgiweaE6eeKtFK60QUjLO8sf2L9Q8fgafWvDcyfY=",
       "name": "prometheus-operator-mixin"
     },
@@ -99,8 +99,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "009606736ffdcc14b23c77831a5ded26b3c8db43",
-      "sum": "T1NSdVUDjEfANyLi73zS8+ysAXMmoRLObI6vsCnDAJQ="
+      "version": "335ebbc2f6ecf10b699821fa8cebcbff4a718ca7",
+      "sum": "Vr2IY6Uz1lYYyGDF7QaEAVkJwAtOEikCfuXJN2eAUM0="
     },
     {
       "source": {
@@ -130,7 +130,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "14986e52cf256b6ed0590b705fbcbfc938e1c4e4",
+      "version": "c965a7555b7ffcee1a127d782abd5bb478a16750",
       "sum": "ZjQoYhvgKwJNkg+h+m9lW3SYjnjv5Yx5btEipLhru88=",
       "name": "prometheus"
     },
@@ -141,7 +141,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "c0a3f145f8c8aa3f5146d8c5e504aae74c8dfa42",
+      "version": "d1acaea2a11a3e4db6bb435c98dea63c517e3530",
       "sum": "1Y1cPIeoPg2nCAEhKPCt8bAGuwuOP2eZ3kVF432mlMA=",
       "name": "thanos-mixin"
     },
