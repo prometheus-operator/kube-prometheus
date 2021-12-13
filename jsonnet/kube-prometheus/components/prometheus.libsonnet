@@ -34,6 +34,8 @@ local defaults = {
     _config: {
       prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
       prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
+      // TODO: remove `thanosSelector` after 0.10.0 release.
+      thanosSelector: '',
       thanos: {
         targetGroups: {
           namespace: defaults.namespace,
@@ -74,7 +76,8 @@ function(params) {
     (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') + {
       _config+:: p._config.mixin._config,
       targetGroups+: p._config.mixin._config.thanos.targetGroups,
-      sidecar+: p._config.mixin._config.thanos.sidecar,
+      // TODO: remove `_config.thanosSelector` after 0.10.0 release.
+      sidecar+: { selector: p._config.mixin._config.thanosSelector } + p._config.mixin._config.thanos.sidecar,
     },
 
   prometheusRule: {
