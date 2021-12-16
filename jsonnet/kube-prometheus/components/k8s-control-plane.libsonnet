@@ -310,11 +310,22 @@ function(params) {
       namespaceSelector: {
         matchNames: ['kube-system'],
       },
-      endpoints: [{
-        port: 'metrics',
-        interval: '15s',
-        bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-      }],
+      endpoints: [
+        {
+          port: 'metrics',
+          interval: '15s',
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          metricRelabelings: [
+            // Drop deprecated metrics
+            // TODO (pgough) - consolidate how we drop metrics across the project
+            {
+              sourceLabels: ['__name__'],
+              regex: 'coredns_cache_misses_total',
+              action: 'drop',
+            },
+          ],
+        },
+      ],
     },
   },
 

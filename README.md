@@ -91,13 +91,13 @@ $ minikube addons disable metrics-server
 
 The following versions are supported and work as we test against these versions in their respective branches. But note that other versions might work!
 
-| kube-prometheus stack                                                                      | Kubernetes 1.18 | Kubernetes 1.19 | Kubernetes 1.20 | Kubernetes 1.21 | Kubernetes 1.22 | Kubernetes 1.23 |
-|--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| [`release-0.6`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.6)   | ✗               | ✔               | ✗               | ✗               | ✗               | ✗               |
-| [`release-0.7`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.7)   | ✗               | ✔               | ✔               | ✗               | ✗               | ✗               |
-| [`release-0.8`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.8)   | ✗               | ✗               | ✔               | ✔               | ✗               | ✗               |
-| [`release-0.9`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.9)   | ✗               | ✗               | ✗               | ✔               | ✔               | ✗               |
-| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | ✗               | ✗               | ✗               | ✗               | ✔               | ✔               |
+| kube-prometheus stack                                                                    | Kubernetes 1.18 | Kubernetes 1.19 | Kubernetes 1.20 | Kubernetes 1.21 | Kubernetes 1.22 | Kubernetes 1.23 |
+|------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
+| [`release-0.6`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.6) | ✗               | ✔               | ✗               | ✗               | ✗               | ✗               |
+| [`release-0.7`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.7) | ✗               | ✔               | ✔               | ✗               | ✗               | ✗               |
+| [`release-0.8`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.8) | ✗               | ✗               | ✔               | ✔               | ✗               | ✗               |
+| [`release-0.9`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.9) | ✗               | ✗               | ✗               | ✔               | ✔               | ✗               |
+| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)               | ✗               | ✗               | ✗               | ✗               | ✔               | ✔               |
 
 ## Quickstart
 
