@@ -1,0 +1,37 @@
+# to know more about custom template language read alertmanager documentation
+# inspired by : https://gist.github.com/milesbxf/e2744fc90e9c41b47aa47925f8ff6512
+
+{{ define "slack.title" -}}
+    [{{ .Status | toUpper -}}
+    {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+    ] {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }}
+{{- end }}
+
+{{ define "slack.color" -}}
+    {{ if eq .Status "firing" -}}
+        {{ if eq .CommonLabels.severity "warning" -}}
+            warning
+        {{- else if eq .CommonLabels.severity "critical" -}}
+            danger
+        {{- else -}}
+            #439FE0
+        {{- end -}}
+    {{ else -}}
+    good
+    {{- end }}
+{{- end }}
+
+{{ define "slack.icon_emoji" }}:prometheus:{{ end }}
+
+{{/* The test to display in the alert */}}
+  {{ define "slack.text" -}}
+    {{ range .Alerts }}
+        {{- if .Annotations.message }}
+            {{ .Annotations.message }}
+        {{- end }}
+        {{- if .Annotations.description }}
+            {{ .Annotations.description }}
+        {{- end }}
+    {{- end }}
+{{- end }}
+
