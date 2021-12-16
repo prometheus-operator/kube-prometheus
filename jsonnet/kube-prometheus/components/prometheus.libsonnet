@@ -34,7 +34,17 @@ local defaults = {
     _config: {
       prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
       prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
-      thanosSelector: 'job="thanos-sidecar"',
+      // TODO: remove `thanosSelector` after 0.10.0 release.
+      thanosSelector: '',
+      thanos: {
+        targetGroups: {
+          namespace: defaults.namespace,
+        },
+        sidecar: {
+          selector: 'job="thanos-sidecar"',
+          thanosPrometheusCommonDimensions: 'namespace, pod',
+        },
+      },
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/prometheus/%s',
     },
   },
@@ -65,12 +75,9 @@ function(params) {
     (import 'github.com/thanos-io/thanos/mixin/alerts/sidecar.libsonnet') +
     (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') + {
       _config+:: p._config.mixin._config,
-      targetGroups: {},
-      sidecar: {
-        selector: p._config.mixin._config.thanosSelector,
-        thanosPrometheusCommonDimensions: 'namespace, pod',
-        dimensions: std.join(', ', ['job', 'instance']),
-      },
+      targetGroups+: p._config.mixin._config.thanos.targetGroups,
+      // TODO: remove `_config.thanosSelector` after 0.10.0 release.
+      sidecar+: { selector: p._config.mixin._config.thanosSelector } + p._config.mixin._config.thanos.sidecar,
     },
 
   prometheusRule: {
