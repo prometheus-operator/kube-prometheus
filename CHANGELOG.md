@@ -1,3 +1,30 @@
+## release-0.10 / 2021-12-17
+
+* [CHANGE] Adjust node filesystem space filling up warning threshold to 20% [#1357](https://github.com/prometheus-operator/kube-prometheus/pull/1357)
+* [CHANGE] Always generate grafana-config secret [#1373](https://github.com/prometheus-operator/kube-prometheus/pull/1373)
+* [CHANGE] Make filesystem ignored mount points configurable for node-exporter [#1376](https://github.com/prometheus-operator/kube-prometheus/pull/1376)
+* [CHANGE] Drop some high cardinality cAdvisor metrics [#1406](https://github.com/prometheus-operator/kube-prometheus/pull/1406), [#1396](https://github.com/prometheus-operator/kube-prometheus/pull/1396)
+* [CHANGE] Use `--collector.filesystem.mount-points-exclude` instead of deprecated `--collector.filesystem.ignored-mount-points` argument for `node-exporter` [#1407](https://github.com/prometheus-operator/kube-prometheus/pull/1407)
+* [CHANGE] Drop some of prometheus-adapter metrics that are inherited from the apiserver code but aren't useful in the context of prometheus-adapter [#1409](https://github.com/prometheus-operator/kube-prometheus/pull/1409)
+* [CHANGE] Remove "app" label selector deprecated by Prometheus-operator [#1420](https://github.com/prometheus-operator/kube-prometheus/pull/1420)
+* [CHANGE] Use recommended instance label for Prometheus/Alertmanager resources [#1520](https://github.com/prometheus-operator/kube-prometheus/pull/1520)
+* [CHANGE] Drop deprecated apiserver_longrunning_gauge and apiserver_registered_watchers metrics [#1553](https://github.com/prometheus-operator/kube-prometheus/pull/1553)
+* [CHANGE] Drop deprecated coredns_cache_misses_total [#1553](https://github.com/prometheus-operator/kube-prometheus/pull/1553)
+* [ENHANCEMENT] Add support for LDAP authentication in Grafana [#1455](https://github.com/prometheus-operator/kube-prometheus/pull/1445)
+* [ENHANCEMENT] Include rewritten kubernetes-grafana for easier usage of new library features [#1450](https://github.com/prometheus-operator/kube-prometheus/pull/1450)
+* [ENHANCEMENT] Specify default container in node-exporter pod [#1462](https://github.com/prometheus-operator/kube-prometheus/pull/1462)
+* [ENHANCEMENT] Make metadata consistent across objects in the same component [#1471](https://github.com/prometheus-operator/kube-prometheus/pull/1471)
+* [ENHANCEMENT] Establish convention for default field types [#1475](https://github.com/prometheus-operator/kube-prometheus/pull/1475)
+* [ENHANCEMENT] Exclude k3s containerd mountpoints [#1497](https://github.com/prometheus-operator/kube-prometheus/pull/1497)
+* [ENHANCEMENT] Alertmanager now uses the new `matcher` syntax in the routing tree and inhibition rules [#1508](https://github.com/prometheus-operator/kube-prometheus/pull/1508)
+* [ENHANCEMENT] Deprecate `thanosSelector` and expose `mixin._config.thanos` config variable for thanos sidecar [#1543](https://github.com/prometheus-operator/kube-prometheus/pull/1543)
+* [FEATURE] Support scraping config-reloader sidecar for Prometheus and AlertManager StatefulSets [#1344](https://github.com/prometheus-operator/kube-prometheus/pull/1344)
+* [FEATURE] Expose prometheus alerting configuration in $.values.prometheus configuration [#1476](https://github.com/prometheus-operator/kube-prometheus/pull/1476)
+* [BUGFIX] Remove deprecated policy/v1beta1 Kubernetes API [#1433](https://github.com/prometheus-operator/kube-prometheus/pull/1433)
+* [BUGFIX] Fix prometheus URL in prometheus-adapter [#1463](https://github.com/prometheus-operator/kube-prometheus/pull/1463)
+* [BUGFIX] Always use proper values scope for namespace in addons [#1518](https://github.com/prometheus-operator/kube-prometheus/pull/1518)
+* [BUGFIX] Fix default empty groups for k8s PrometheusRule [#1534](https://github.com/prometheus-operator/kube-prometheus/pull/1534)
+
 ## release-0.9 / 2021-08-19
 
 * [CHANGE] Test against Kubernetes 1.21 and 1,22. #1161 #1337
