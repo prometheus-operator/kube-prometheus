@@ -38,7 +38,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "3f17cac91d85f4e79d00373e3a8e7ad82d9cefbf",
+      "version": "264a5c2078c5930af57fe2d107eff83ab63553af",
       "sum": "0KkygBQd/AFzUvVzezE4qF/uDYgrwUXVpZfINBti0oc="
     },
     {
@@ -130,7 +130,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "27343277fa47465e54799e2a0a5356febe697c29",
+      "version": "f5c3ea1bf28de89b195b7e935ac3f5dfcca15358",
       "sum": "ZjQoYhvgKwJNkg+h+m9lW3SYjnjv5Yx5btEipLhru88=",
       "name": "prometheus"
     },
