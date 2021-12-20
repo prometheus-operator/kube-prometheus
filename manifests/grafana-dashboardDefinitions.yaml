@@ -75,7 +75,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(alertmanager_alerts{namespace=\"$namespace\",service=\"$service\"}) by (namespace,service,instance)",
+                                  "expr": "sum(alertmanager_alerts{namespace=~\"$namespace\",service=~\"$service\"}) by (namespace,service,instance)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}}",
@@ -168,14 +168,14 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(rate(alertmanager_alerts_received_total{namespace=\"$namespace\",service=\"$service\"}[5m])) by (namespace,service,instance)",
+                                  "expr": "sum(rate(alertmanager_alerts_received_total{namespace=~\"$namespace\",service=~\"$service\"}[$__rate_interval])) by (namespace,service,instance)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Received",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "sum(rate(alertmanager_alerts_invalid_total{namespace=\"$namespace\",service=\"$service\"}[5m])) by (namespace,service,instance)",
+                                  "expr": "sum(rate(alertmanager_alerts_invalid_total{namespace=~\"$namespace\",service=~\"$service\"}[$__rate_interval])) by (namespace,service,instance)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Invalid",
@@ -280,14 +280,14 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(rate(alertmanager_notifications_total{namespace=\"$namespace\",service=\"$service\", integration=\"$integration\"}[5m])) by (integration,namespace,service,instance)",
+                                  "expr": "sum(rate(alertmanager_notifications_total{namespace=~\"$namespace\",service=~\"$service\", integration=\"$integration\"}[$__rate_interval])) by (integration,namespace,service,instance)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Total",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "sum(rate(alertmanager_notifications_failed_total{namespace=\"$namespace\",service=\"$service\", integration=\"$integration\"}[5m])) by (integration,namespace,service,instance)",
+                                  "expr": "sum(rate(alertmanager_notifications_failed_total{namespace=~\"$namespace\",service=~\"$service\", integration=\"$integration\"}[$__rate_interval])) by (integration,namespace,service,instance)",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Failed",
@@ -379,21 +379,21 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "histogram_quantile(0.99,\n  sum(rate(alertmanager_notification_latency_seconds_bucket{namespace=\"$namespace\",service=\"$service\", integration=\"$integration\"}[5m])) by (le,namespace,service,instance)\n) \n",
+                                  "expr": "histogram_quantile(0.99,\n  sum(rate(alertmanager_notification_latency_seconds_bucket{namespace=~\"$namespace\",service=~\"$service\", integration=\"$integration\"}[$__rate_interval])) by (le,namespace,service,instance)\n) \n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} 99th Percentile",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "histogram_quantile(0.50,\n  sum(rate(alertmanager_notification_latency_seconds_bucket{namespace=\"$namespace\",service=\"$service\", integration=\"$integration\"}[5m])) by (le,namespace,service,instance)\n) \n",
+                                  "expr": "histogram_quantile(0.50,\n  sum(rate(alertmanager_notification_latency_seconds_bucket{namespace=~\"$namespace\",service=~\"$service\", integration=\"$integration\"}[$__rate_interval])) by (le,namespace,service,instance)\n) \n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Median",
                                   "refId": "B"
                               },
                               {
-                                  "expr": "sum(rate(alertmanager_notification_latency_seconds_sum{namespace=\"$namespace\",service=\"$service\", integration=\"$integration\"}[5m])) by (namespace,service,instance)\n/\nsum(rate(alertmanager_notification_latency_seconds_count{namespace=\"$namespace\",service=\"$service\", integration=\"$integration\"}[5m])) by (namespace,service,instance)\n",
+                                  "expr": "sum(rate(alertmanager_notification_latency_seconds_sum{namespace=~\"$namespace\",service=~\"$service\", integration=\"$integration\"}[$__rate_interval])) by (namespace,service,instance)\n/\nsum(rate(alertmanager_notification_latency_seconds_count{namespace=~\"$namespace\",service=~\"$service\", integration=\"$integration\"}[$__rate_interval])) by (namespace,service,instance)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "{{instance}} Average",
@@ -463,7 +463,7 @@ items:
                           "value": "Prometheus"
                       },
                       "hide": 0,
-                      "label": null,
+                      "label": "Data Source",
                       "name": "datasource",
                       "options": [
 
@@ -482,7 +482,7 @@ items:
                       "datasource": "$datasource",
                       "hide": 0,
                       "includeAll": false,
-                      "label": null,
+                      "label": "namespace",
                       "multi": false,
                       "name": "namespace",
                       "options": [
@@ -509,7 +509,7 @@ items:
                       "datasource": "$datasource",
                       "hide": 0,
                       "includeAll": false,
-                      "label": null,
+                      "label": "service",
                       "multi": false,
                       "name": "service",
                       "options": [
@@ -596,7 +596,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-alertmanager-overview
     namespace: monitoring
 - apiVersion: v1
@@ -2357,7 +2357,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -4228,7 +4228,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -5407,7 +5407,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -8484,7 +8484,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -11270,7 +11270,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -12285,7 +12285,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -14743,7 +14743,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-k8s-resources-pod
     namespace: monitoring
 - apiVersion: v1
@@ -16756,7 +16756,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -18934,7 +18934,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-k8s-resources-workloads-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -21177,7 +21177,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -22630,7 +22630,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -24355,7 +24355,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -25407,7 +25407,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -26485,7 +26485,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -27465,7 +27465,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -28041,7 +28041,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -29258,7 +29258,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -30917,7 +30917,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -32141,7 +32141,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -33401,7 +33401,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -34502,7 +34502,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -35929,7 +35929,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.3.2
+      app.kubernetes.io/version: 8.3.3
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList
