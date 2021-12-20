@@ -68,7 +68,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "b550d7a3bce031bdb51c4bf21cc992a785fc3188",
+      "version": "e080c3ce73ad514254e38dccb37c93bec6b257ae",
       "sum": "U1wzIpTAtOvC1yj43Y8PfvT0JfvnAcMfNH12Wi+ab0Y="
     },
     {
@@ -78,7 +78,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "b550d7a3bce031bdb51c4bf21cc992a785fc3188",
+      "version": "e080c3ce73ad514254e38dccb37c93bec6b257ae",
       "sum": "u8gaydJoxEjzizQ8jY8xSjYgWooPmxw+wIWdDxifMAk="
     },
     {
@@ -130,7 +130,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "67a64ee092b79e797ea9aa46856a15c435093c7e",
+      "version": "41f1a8125e664985dd30674e5bdf6b683eff5d32",
       "sum": "ZjQoYhvgKwJNkg+h+m9lW3SYjnjv5Yx5btEipLhru88=",
       "name": "prometheus"
     },
