@@ -38,7 +38,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "3f17cac91d85f4e79d00373e3a8e7ad82d9cefbf",
+      "version": "264a5c2078c5930af57fe2d107eff83ab63553af",
       "sum": "0KkygBQd/AFzUvVzezE4qF/uDYgrwUXVpZfINBti0oc="
     },
     {
@@ -88,7 +88,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "1b4cc829251a4c129615efe707d9403c7248888e",
+      "version": "d8ba1c766a141cb35072ae2f2578ec8588c9efcd",
       "sum": "qZ4WgiweaE6eeKtFK60QUjLO8sf2L9Q8fgafWvDcyfY=",
       "name": "prometheus-operator-mixin"
     },
@@ -99,8 +99,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "1b4cc829251a4c129615efe707d9403c7248888e",
-      "sum": "9R1mw4Tz0/1V1QWkJMzqE4+iXXONEfYVikW8Mj5AOcA="
+      "version": "d8ba1c766a141cb35072ae2f2578ec8588c9efcd",
+      "sum": "yjdwZ+5UXL42EavJleAJmd8Ou6MSDfExvlKAxFCxXVE="
     },
     {
       "source": {
