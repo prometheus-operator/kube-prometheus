@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 8.3.2
+    app.kubernetes.io/version: 8.3.3
   name: grafana
   namespace: monitoring
 spec:
