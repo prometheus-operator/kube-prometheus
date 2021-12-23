@@ -1358,6 +1358,16 @@ spec:
       labels:
         workload_type: statefulset
       record: namespace_workload_pod:kube_pod_owner:relabel
+    - expr: |
+        max by (cluster, namespace, workload, pod) (
+          label_replace(
+            kube_pod_owner{job="kube-state-metrics", owner_kind="Job"},
+            "workload", "$1", "owner_name", "(.*)"
+          )
+        )
+      labels:
+        workload_type: Job
+      record: namespace_workload_pod:kube_pod_owner:relabel
   - name: kube-scheduler.rules
     rules:
     - expr: |
