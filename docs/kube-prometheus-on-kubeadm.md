@@ -49,7 +49,7 @@ imageRepository: "k8s.gcr.io"
 
 Notice the `.scheduler.extraArgs` and `.controllerManager.extraArgs`. This exposes the `kube-controller-manager` and `kube-scheduler` services to the rest of the cluster. If you have kubernetes core components as pods in the kube-system namespace, ensure that the `kube-prometheus-exporter-kube-scheduler` and `kube-prometheus-exporter-kube-controller-manager` services' `spec.selector` values match those of pods.
 
-In previous versions of Kubernetes, we had to make a change to the `kubelet` setting with regard to `cAdvisor` monitoring on the control-plane as well as all the nodes. But this is **no longer required due to [the change of Kubernetes](https://github.com/kubernetes/kubernetes/issues/56523)**
+In previous versions of Kubernetes, we had to make a change to the `kubelet` setting with regard to `cAdvisor` monitoring on the control-plane as well as all the nodes. But this is **no longer required due to [the change of Kubernetes](https://github.com/kubernetes/kubernetes/issues/56523)**.
 
 In case you already have a Kubernetes deployed with kubeadm, change the address kube-controller-manager and kube-scheduler listens in addition to previous kubelet change:
 
