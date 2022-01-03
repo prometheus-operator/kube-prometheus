@@ -16,6 +16,7 @@ local restrictedPodSecurityPolicy = {
       'configMap',
       'emptyDir',
       'secret',
+      'projected',
       // Assume that persistentVolumes set up by the cluster admin are safe to use.
       'persistentVolumeClaim',
     ],
