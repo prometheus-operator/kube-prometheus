@@ -9,9 +9,6 @@ local kp =
     values+:: {
       common+: {
         namespace: 'monitoring',
-        versions+: {
-          prometheus: '2.32.0-beta.0',
-        },
       },
       prometheus+: {
         resources: {
