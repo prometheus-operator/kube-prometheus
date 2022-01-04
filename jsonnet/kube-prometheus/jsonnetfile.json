@@ -13,6 +13,16 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/grafana/grafana",
+          "subdir": "grafana-mixin"
+        }
+      },
+      "version": "main",
+      "name": "grafana-mixin"
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/etcd-io/etcd",
           "subdir": "contrib/mixin"
         }
