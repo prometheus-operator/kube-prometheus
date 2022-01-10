@@ -146,7 +146,9 @@ function(params) {
   clusterRole: {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRole',
-    metadata: p._metadata,
+    metadata: p._metadata {
+      namespace:: null,
+    },
     rules: [
       {
         apiGroups: [''],
@@ -194,7 +196,9 @@ function(params) {
   clusterRoleBinding: {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRoleBinding',
-    metadata: p._metadata,
+    metadata: p._metadata {
+      namespace:: null,
+    },
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
       kind: 'ClusterRole',
