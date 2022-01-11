@@ -75,13 +75,13 @@ jobs:
         version: ${{ env.kind-version }}
         image: ${{ matrix.kind-image }}
         wait: 300s
+    - name: Wait for cluster to finish bootstraping
+      run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
     - name: Create kube-prometheus stack
       run: |
         kubectl create -f manifests/setup
         kubectl create -f manifests/
         until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
-    - name: Wait for cluster to finish bootstraping
-      run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
     - name: Run tests
       run: |
         export KUBECONFIG="${HOME}/.kube/config"
