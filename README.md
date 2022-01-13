@@ -146,7 +146,7 @@ Grafana
 $ kubectl --namespace monitoring port-forward svc/grafana 3000
 ```
 
-Then access via [http://localhost:3000](http://localhost:3000) and use the default grafana user:password of `admin:admin`.
+Then access via [http://localhost:3000](http://localhost:3000) and use the grafana user:password of `admin:prom-operator`.
 
 Alert Manager
 
