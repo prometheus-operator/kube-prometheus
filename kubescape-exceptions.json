@@ -1,0 +1,29 @@
+[
+  {
+    "name": "exclude-node-exporter-host-access-checks",
+    "policyType": "postureExceptionPolicy",
+    "actions": [
+      "alertOnly"
+    ],
+    "resources": [
+      {
+        "designatorType": "Attributes",
+        "attributes": {
+          "kind": "DaemonSet",
+          "name": "node-exporter"
+        }
+      }
+    ],
+    "posturePolicies": [
+      {
+        "controlName": "Container hostPort"
+      },
+      {
+        "controlName": "Host PID/IPC privileges"
+      },
+      {
+        "controlName": "HostNetwork access"
+      }
+    ]
+  }
+]
