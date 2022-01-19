@@ -65,8 +65,8 @@ kubeconform: crdschemas manifests $(KUBECONFORM_BIN)
 	$(KUBECONFORM_BIN) -kubernetes-version $(KUBE_VERSION) -schema-location 'default' -schema-location 'crdschemas/{{ .ResourceKind }}.json' -skip CustomResourceDefinition manifests/
 
 .PHONY: kubescape
-kubescape: $(KUBESCAPE_BIN) ## Runs a security analysis on generated manifests - failing if risk score is above 40%
-	$(KUBESCAPE_BIN) scan -s framework -t 30 nsa manifests/*.yaml
+kubescape: $(KUBESCAPE_BIN) ## Runs a security analysis on generated manifests - failing if risk score is above threshold percentage 't'
+	$(KUBESCAPE_BIN) scan -s framework -t 25 nsa manifests/*.yaml --exceptions 'kubescape-exceptions.json'
 
 .PHONY: fmt
 fmt: $(JSONNETFMT_BIN)
