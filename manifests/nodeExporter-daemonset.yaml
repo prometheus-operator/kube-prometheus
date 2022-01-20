@@ -43,6 +43,8 @@ spec:
           requests:
             cpu: 102m
             memory: 180Mi
+        securityContext:
+          allowPrivilegeEscalation: false
         volumeMounts:
         - mountPath: /host/sys
           mountPropagation: HostToContainer
@@ -76,6 +78,7 @@ spec:
             cpu: 10m
             memory: 20Mi
         securityContext:
+          allowPrivilegeEscalation: false
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532

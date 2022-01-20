@@ -226,6 +226,9 @@ function(params) {
         { name: 'volume-serving-cert', mountPath: '/var/run/serving-cert', readOnly: false },
         { name: 'config', mountPath: '/etc/adapter', readOnly: false },
       ],
+      securityContext: {
+        allowPrivilegeEscalation: false,
+      },
     };
 
     {

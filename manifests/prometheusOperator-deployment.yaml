@@ -61,6 +61,7 @@ spec:
             cpu: 10m
             memory: 20Mi
         securityContext:
+          allowPrivilegeEscalation: false
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532

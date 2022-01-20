@@ -172,6 +172,7 @@ function(params) {
       } else {
         runAsNonRoot: true,
         runAsUser: 65534,
+        allowPrivilegeEscalation: false,
       },
       volumeMounts: [{
         mountPath: '/etc/blackbox_exporter/',
@@ -188,7 +189,11 @@ function(params) {
         '--volume-dir=/etc/blackbox_exporter/',
       ],
       resources: bb._config.resources,
-      securityContext: { runAsNonRoot: true, runAsUser: 65534 },
+      securityContext: {
+        runAsNonRoot: true,
+        runAsUser: 65534,
+        allowPrivilegeEscalation: false,
+      },
       terminationMessagePath: '/dev/termination-log',
       terminationMessagePolicy: 'FallbackToLogsOnError',
       volumeMounts: [{

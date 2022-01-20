@@ -83,4 +83,20 @@ function(params)
         }],
       },
     },
+
+    // FIXME(ArthurSens): The override adding 'allowPrivilegeEscalation: false' can be deleted when
+    // https://github.com/brancz/kubernetes-grafana/pull/128 gets merged.
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+: {
+            containers: std.map(function(c) c {
+              securityContext+: {
+                allowPrivilegeEscalation: false,
+              },
+            }, super.containers),
+          },
+        },
+      },
+    },
   }
