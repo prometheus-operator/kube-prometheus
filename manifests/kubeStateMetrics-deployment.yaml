@@ -42,6 +42,7 @@ spec:
             cpu: 10m
             memory: 190Mi
         securityContext:
+          allowPrivilegeEscalation: false
           runAsUser: 65534
       - args:
         - --logtostderr
@@ -61,6 +62,7 @@ spec:
             cpu: 20m
             memory: 20Mi
         securityContext:
+          allowPrivilegeEscalation: false
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532
@@ -82,6 +84,7 @@ spec:
             cpu: 10m
             memory: 20Mi
         securityContext:
+          allowPrivilegeEscalation: false
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532

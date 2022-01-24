@@ -45,6 +45,8 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
+        securityContext:
+          allowPrivilegeEscalation: false
         volumeMounts:
         - mountPath: /var/lib/grafana
           name: grafana-storage

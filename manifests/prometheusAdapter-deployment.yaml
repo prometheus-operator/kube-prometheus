@@ -47,6 +47,8 @@ spec:
           requests:
             cpu: 102m
             memory: 180Mi
+        securityContext:
+          allowPrivilegeEscalation: false
         volumeMounts:
         - mountPath: /tmp
           name: tmpfs

@@ -181,6 +181,9 @@ function(params) {
         { name: 'root', mountPath: '/host/root', mountPropagation: 'HostToContainer', readOnly: true },
       ],
       resources: ne._config.resources,
+      securityContext: {
+        allowPrivilegeEscalation: false,
+      },
     };
 
     local kubeRbacProxy = krp({
