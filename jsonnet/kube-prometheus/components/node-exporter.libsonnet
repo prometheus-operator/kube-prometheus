@@ -183,6 +183,7 @@ function(params) {
       resources: ne._config.resources,
       securityContext: {
         allowPrivilegeEscalation: false,
+        readOnlyRootFilesystem: true,
       },
     };
 

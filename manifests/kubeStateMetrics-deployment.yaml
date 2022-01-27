@@ -43,6 +43,7 @@ spec:
             memory: 190Mi
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           runAsUser: 65534
       - args:
         - --logtostderr
@@ -63,6 +64,7 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532
@@ -85,6 +87,7 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532

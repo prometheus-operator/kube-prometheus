@@ -62,5 +62,6 @@ function(params) {
     runAsGroup: 65532,
     runAsNonRoot: true,
     allowPrivilegeEscalation: false,
+    readOnlyRootFilesystem: true,
   },
 }
