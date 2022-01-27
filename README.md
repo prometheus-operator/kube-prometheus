@@ -50,6 +50,7 @@ If you are migrating from `release-0.7` branch or earlier please read [what chan
   - [Customization Examples](#customization-examples)
   - [Minikube Example](#minikube-example)
   - [Continuous Delivery](#continuous-delivery)
+  - [Security](docs/security.md)
   - [Troubleshooting](#troubleshooting)
     - [Error retrieving kubelet metrics](#error-retrieving-kubelet-metrics)
       - [Authentication problem](#authentication-problem)
