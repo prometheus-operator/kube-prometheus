@@ -14,7 +14,9 @@ date: "2021-03-08T23:04:32+01:00"
 
 `kube-prometheus` ships with a set of default [Prometheus rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [Grafana](http://grafana.com/) dashboards. At some point one might like to extend them, the purpose of this document is to explain how to do this.
 
-All manifests of kube-prometheus are generated using [jsonnet](https://jsonnet.org/) and Prometheus rules and Grafana dashboards in specific follow the [Prometheus Monitoring Mixins proposal](https://docs.google.com/document/d/1A9xvzwqnFVSOZ5fD3blKODXfsat5fg6ZhnKu9LK3lB4/).
+All manifests of kube-prometheus are generated using [jsonnet](https://jsonnet.org/).
+Prometheus rules and Grafana dashboards in specific follow the
+[Prometheus Monitoring Mixins proposal](https://github.com/monitoring-mixins/docs/blob/master/design.pdf).
 
 For both the Prometheus rules and the Grafana dashboards Kubernetes `ConfigMap`s are generated within kube-prometheus. In order to add additional rules and dashboards simply merge them onto the existing json objects. This document illustrates examples for rules as well as dashboards.
 
@@ -61,11 +63,14 @@ local kp =
 
 ### Alerting rules
 
-According to the [Prometheus Monitoring Mixins proposal](https://docs.google.com/document/d/1A9xvzwqnFVSOZ5fD3blKODXfsat5fg6ZhnKu9LK3lB4/) Prometheus alerting rules are under the key `prometheusAlerts` in the top level object, so in order to add an additional alerting rule, we can simply merge an extra rule into the existing object.
+As per the [Prometheus Monitoring Mixins proposal](https://github.com/monitoring-mixins/docs/blob/master/design.pdf)
+Prometheus alerting rules are under the key `prometheusAlerts` in the top level object.
+Additional alerting rules can be added by merging into the existing object.
 
 The format is exactly the Prometheus format, so there should be no changes necessary should you have existing rules that you want to include.
 
-> Note that alerts can just as well be included into this file, using the jsonnet `import` function. In this example it is just inlined in order to demonstrate their use in a single file.
+> Note that alerts can also be included into this file, using the jsonnet `import` function.
+> In this example it is just inlined in order to demonstrate their use in a single file.
 
 ```jsonnet mdox-exec="cat examples/prometheus-additional-alert-rule-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
@@ -120,7 +125,8 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 In order to add a recording rule, simply do the same with the `prometheusRules` field.
 
-> Note that rules can just as well be included into this file, using the jsonnet `import` function. In this example it is just inlined in order to demonstrate their use in a single file.
+> Note that rules can just as well be included into this file, using the jsonnet `import` function.
+> In this example it is just inlined in order to demonstrate their use in a single file.
 
 ```jsonnet mdox-exec="cat examples/prometheus-additional-recording-rule-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
@@ -216,13 +222,21 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 ### Changing default rules
 
-Along with adding additional rules, we give the user the option to filter or adjust the existing rules imported by `kube-prometheus/main.libsonnet`. The recording rules can be found in [kube-prometheus/components/mixin/rules](../../jsonnet/kube-prometheus/components/mixin/rules) and [kubernetes-mixin/rules](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/rules) while the alerting rules can be found in [kube-prometheus/components/mixin/alerts](../../jsonnet/kube-prometheus/components/mixin/alerts) and [kubernetes-mixin/alerts](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/alerts).
+Along with adding additional rules, we give the user the option to filter or adjust the existing rules imported by `kube-prometheus/main.libsonnet`.
+The recording rules can be found in [kube-prometheus/components/mixin/rules](../../jsonnet/kube-prometheus/components/mixin/rules)
+and [kubernetes-mixin/rules](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/rules).
+The alerting rules can be found in [kube-prometheus/components/mixin/alerts](../../jsonnet/kube-prometheus/components/mixin/alerts)
+and [kubernetes-mixin/alerts](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/alerts).
 
-Knowing which rules to change, the user can now use functions from the [Jsonnet standard library](https://jsonnet.org/ref/stdlib.html) to make these changes. Below are examples of both a filter and an adjustment being made to the default rules. These changes can be assigned to a local variable and then added to the `local kp` object as seen in the examples above.
+Knowing which rules to change, the user can now use functions from the [Jsonnet standard library](https://jsonnet.org/ref/stdlib.html) to make these changes.
+Below are examples of both a filter and an adjustment being made to the default rules.
+These changes can be assigned to a local variable and then added to the `local kp` object as seen in the examples above.
 
 #### Filter
 
-Here the alert `KubeStatefulSetReplicasMismatch` is being filtered out of the group `kubernetes-apps`. The default rule can be seen [here](https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/alerts/apps_alerts.libsonnet). You first need to find out in which component the rule is defined (here it is kuberentesControlPlane).
+Here the alert `KubeStatefulSetReplicasMismatch` is being filtered out of the group `kubernetes-apps`.
+The default rule can be seen [here](https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/alerts/apps_alerts.libsonnet).
+You first need to find out in which component the rule is defined (here it is kuberentesControlPlane).
 
 ```jsonnet
 local filter = {
@@ -251,7 +265,8 @@ local filter = {
 
 #### Adjustment
 
-Here the expression for another alert in the same component is updated from its previous value. The default rule can be seen [here](https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/alerts/apps_alerts.libsonnet).
+Here the expression for another alert in the same component is updated from its previous value.
+The default rule can be seen [here](https://github.com/kubernetes-monitoring/kubernetes-mixin/blob/master/alerts/apps_alerts.libsonnet).
 
 ```jsonnet
 local update = {
@@ -336,9 +351,14 @@ Dashboards can either be added using jsonnet or simply a pre-rendered json dashb
 
 ### Jsonnet dashboard
 
-We recommend using the [grafonnet](https://github.com/grafana/grafonnet-lib/) library for jsonnet, which gives you a simple DSL to generate Grafana dashboards. Following the [Prometheus Monitoring Mixins proposal](https://docs.google.com/document/d/1A9xvzwqnFVSOZ5fD3blKODXfsat5fg6ZhnKu9LK3lB4/) additional dashboards are added to the `grafanaDashboards` key, located in the top level object. To add new jsonnet dashboards, simply add one.
+We recommend using the [grafonnet](https://github.com/grafana/grafonnet-lib/) library for jsonnet,
+which gives you a simple DSL to generate Grafana dashboards.
+Following the [Prometheus Monitoring Mixins proposal](https://github.com/monitoring-mixins/docs/blob/master/design.pdf)
+additional dashboards are added to the `grafanaDashboards` key, located in the top level object.
+To add new jsonnet dashboards, simply add one.
 
-> Note that dashboards can just as well be included into this file, using the jsonnet `import` function. In this example it is just inlined in order to demonstrate their use in a single file.
+> Note that dashboards can just as well be included into this file, using the jsonnet `import` function.
+> In this example it is just inlined in order to demonstrate their use in a single file.
 
 ```jsonnet mdox-exec="cat examples/grafana-additional-jsonnet-dashboard-example.jsonnet"
 local grafana = import 'grafonnet/grafana.libsonnet';
@@ -394,7 +414,8 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 ### Pre-rendered Grafana dashboards
 
-As jsonnet is a superset of json, the jsonnet `import` function can be used to include Grafana dashboard json blobs. In this example we are importing a [provided example dashboard](../../examples/example-grafana-dashboard.json).
+As jsonnet is a superset of json, the jsonnet `import` function can be used to include Grafana dashboard json blobs.
+In this example we are importing a [provided example dashboard](../../examples/example-grafana-dashboard.json).
 
 ```jsonnet mdox-exec="cat examples/grafana-additional-rendered-dashboard-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
@@ -419,7 +440,8 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
 ```
 
-In case you have lots of json dashboard exported out from grafana UI the above approach is going to take lots of time to improve performance we can use `rawDashboards` field and provide it's value as json string by using `importstr`
+In case you have lots of json dashboard exported out from grafana UI the above approach is going to take lots of time.
+To improve performance we can use `rawDashboards` field and provide it's value as json string by using `importstr`
 
 ```jsonnet mdox-exec="cat examples/grafana-additional-rendered-dashboard-example-2.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
@@ -446,7 +468,10 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 
 ### Mixins
 
-Kube-prometheus comes with a couple of default mixins as the Kubernetes-mixin and the Node-exporter mixin, however there [are many more mixins](https://monitoring.mixins.dev/). To use other mixins Kube-prometheus has a jsonnet library for creating a Kubernetes PrometheusRule CRD and Grafana dashboards from a mixin. Below is an example of creating a mixin object that has Prometheus rules and Grafana dashboards:
+Kube-prometheus comes with a couple of default mixins as the Kubernetes-mixin and the Node-exporter mixin,
+however there [are many more mixins](https://monitoring.mixins.dev/).
+To use other mixins, kube-prometheus has a jsonnet library for creating a PrometheusRule CRD and Grafana dashboards from a mixin.
+Below is an example of creating a mixin object that has Prometheus rules and Grafana dashboards:
 
 ```jsonnet
 // Import the library function for adding mixins
@@ -467,7 +492,10 @@ values+:: {
     dashboards+:: myMixin.grafanaDashboards
 ```
 
-The `prometheusRules` object is a PrometheusRule Kubernetes CRD and it should be defined as its own jsonnet object. If you define multiple mixins in a single jsonnet object there is a possibility that they will overwrite each others' configuration and there will be unintended effects. Therefore, use the `prometheusRules` object as its own jsonnet object:
+The `prometheusRules` object is a PrometheusRule CRD. It should be defined as its own jsonnet object.
+If you define multiple mixins in a single jsonnet object, there is a possibility that they will overwrite each others'
+configuration and there will be unintended effects.
+Therefore, use the `prometheusRules` object as its own jsonnet object:
 
 ```jsonnet
 ...
@@ -491,7 +519,8 @@ local myMixin = addMixin({
 });
 ```
 
-The library has also two optional parameters - the namespace for the `PrometheusRule` CRD and the dashboard folder for the Grafana dashboards. The below example shows how to use both:
+The library has also two optional parameters - the namespace for the `PrometheusRule` CRD and the dashboard folder for the Grafana dashboards.
+The below example shows how to use both:
 
 ```jsonnet
 local myMixin = addMixin({
@@ -507,7 +536,8 @@ local myMixin = addMixin({
 });
 ```
 
-The created `prometheusRules` object will have the metadata field `namespace` added and the usage will remain the same. However, the `grafanaDasboards` will be added to the `folderDashboards` field instead of the `dashboards` field as shown in the example below:
+The created `prometheusRules` object will have the metadata field `namespace` added and the usage will remain the same.
+However, the `grafanaDasboards` will be added to the `folderDashboards` field instead of the `dashboards` field as shown in the example below:
 
 ```jsonnet
 values+:: {
