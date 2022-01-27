@@ -35,13 +35,13 @@ local defaults = {
       prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
       prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
       // TODO: remove `thanosSelector` after 0.10.0 release.
-      thanosSelector: '',
+      thanosSelector: 'job="thanos-sidecar"',
       thanos: {
         targetGroups: {
           namespace: defaults.namespace,
         },
         sidecar: {
-          selector: 'job="thanos-sidecar"',
+          selector: defaults.mixin._config.thanosSelector,
           thanosPrometheusCommonDimensions: 'namespace, pod',
         },
       },
