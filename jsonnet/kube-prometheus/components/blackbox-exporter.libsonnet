@@ -169,10 +169,12 @@ function(params) {
       securityContext: if bb._config.privileged then {
         runAsNonRoot: false,
         capabilities: { drop: ['ALL'], add: ['NET_RAW'] },
+        readOnlyRootFilesystem: true,
       } else {
         runAsNonRoot: true,
         runAsUser: 65534,
         allowPrivilegeEscalation: false,
+        readOnlyRootFilesystem: true,
       },
       volumeMounts: [{
         mountPath: '/etc/blackbox_exporter/',
@@ -193,6 +195,7 @@ function(params) {
         runAsNonRoot: true,
         runAsUser: 65534,
         allowPrivilegeEscalation: false,
+        readOnlyRootFilesystem: true,
       },
       terminationMessagePath: '/dev/termination-log',
       terminationMessagePolicy: 'FallbackToLogsOnError',

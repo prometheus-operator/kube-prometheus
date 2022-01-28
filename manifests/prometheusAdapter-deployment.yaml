@@ -49,6 +49,7 @@ spec:
             memory: 180Mi
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /tmp
           name: tmpfs

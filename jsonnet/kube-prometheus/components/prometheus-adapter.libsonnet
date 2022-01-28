@@ -228,6 +228,7 @@ function(params) {
       ],
       securityContext: {
         allowPrivilegeEscalation: false,
+        readOnlyRootFilesystem: true,
       },
     };
 

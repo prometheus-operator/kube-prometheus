@@ -47,6 +47,7 @@ spec:
             memory: 100Mi
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /var/lib/grafana
           name: grafana-storage

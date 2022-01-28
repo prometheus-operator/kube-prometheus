@@ -45,6 +45,7 @@ spec:
             memory: 180Mi
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /host/sys
           mountPropagation: HostToContainer
@@ -79,6 +80,7 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           runAsGroup: 65532
           runAsNonRoot: true
           runAsUser: 65532
