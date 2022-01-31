@@ -8,7 +8,7 @@ items:
       app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.32.1
+      app.kubernetes.io/version: 2.33.0
     name: prometheus-k8s
     namespace: default
   rules:
@@ -46,7 +46,7 @@ items:
       app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.32.1
+      app.kubernetes.io/version: 2.33.0
     name: prometheus-k8s
     namespace: kube-system
   rules:
@@ -84,7 +84,7 @@ items:
       app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.32.1
+      app.kubernetes.io/version: 2.33.0
     name: prometheus-k8s
     namespace: monitoring
   rules:
