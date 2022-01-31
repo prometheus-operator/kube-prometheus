@@ -125,17 +125,11 @@ function(params)
       image: po._config.kubeRbacProxyImage,
     }),
 
-    // FIXME(ArthurSens): The securityContext overrides can be removed after some PRs get merged
-    // 'readOnlyRootFilesystem: true' can be deleted when https://github.com/prometheus-operator/prometheus-operator/pull/4531 gets merged.
     deployment+: {
       spec+: {
         template+: {
           spec+: {
-            containers: std.map(function(c) c {
-              securityContext+: {
-                readOnlyRootFilesystem: true,
-              },
-            }, super.containers) + [kubeRbacProxy],
+            containers+: [kubeRbacProxy],
           },
         },
       },

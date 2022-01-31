@@ -118,9 +118,6 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     image: ksm._config.kubeRbacProxyImage,
   }),
 
-  // FIXME(ArthurSens): The securityContext overrides can be removed after some PRs get merged
-  // 'allowPrivilegeEscalation: false' can be deleted when https://github.com/kubernetes/kube-state-metrics/pull/1668 gets merged.
-  // 'readOnlyRootFilesystem: true' can be deleted when https://github.com/kubernetes/kube-state-metrics/pull/1671 gets merged.
   deployment+: {
     spec+: {
       template+: {
@@ -136,10 +133,6 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
             readinessProbe:: null,
             args: ['--host=127.0.0.1', '--port=8081', '--telemetry-host=127.0.0.1', '--telemetry-port=8082'],
             resources: ksm._config.resources,
-            securityContext+: {
-              allowPrivilegeEscalation: false,
-              readOnlyRootFilesystem: true,
-            },
           }, super.containers) + [kubeRbacProxyMain, kubeRbacProxySelf],
         },
       },
