@@ -87,6 +87,7 @@ function(params)
     // FIXME(ArthurSens): The securityContext overrides can be removed after some PRs get merged
     // 'allowPrivilegeEscalation: false' can be deleted when https://github.com/brancz/kubernetes-grafana/pull/128 gets merged.
     // 'readOnlyRootFilesystem: true' can be deleted when https://github.com/brancz/kubernetes-grafana/pull/129 gets merged.
+    // 'capabilities: { drop: ['ALL'] }' can be deleted when https://github.com/brancz/kubernetes-grafana/pull/130 gets merged.
     deployment+: {
       spec+: {
         template+: {
@@ -95,6 +96,7 @@ function(params)
               securityContext+: {
                 allowPrivilegeEscalation: false,
                 readOnlyRootFilesystem: true,
+                capabilities: { drop: ['ALL'] },
               },
             }, super.containers),
           },

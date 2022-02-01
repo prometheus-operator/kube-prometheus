@@ -45,6 +45,11 @@ spec:
             memory: 180Mi
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - CAP_SYS_TIME
+            drop:
+            - ALL
           readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /host/sys
@@ -80,6 +85,9 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
           readOnlyRootFilesystem: true
           runAsGroup: 65532
           runAsNonRoot: true

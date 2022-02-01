@@ -43,6 +43,9 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
           readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 65534
@@ -64,6 +67,9 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
           readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 65534
@@ -92,6 +98,9 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
           readOnlyRootFilesystem: true
           runAsGroup: 65532
           runAsNonRoot: true

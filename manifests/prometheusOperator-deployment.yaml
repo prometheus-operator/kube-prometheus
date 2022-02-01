@@ -44,6 +44,9 @@ spec:
             memory: 100Mi
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
           readOnlyRootFilesystem: true
       - args:
         - --logtostderr
@@ -64,6 +67,9 @@ spec:
             memory: 20Mi
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
           readOnlyRootFilesystem: true
           runAsGroup: 65532
           runAsNonRoot: true
