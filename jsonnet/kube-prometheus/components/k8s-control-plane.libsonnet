@@ -37,6 +37,14 @@ function(params) {
 
   mixin:: (import 'github.com/kubernetes-monitoring/kubernetes-mixin/mixin.libsonnet') {
     _config+:: k8s._config.mixin._config,
+  } + {
+    // Filter-out alerts related to kube-proxy when `kubeProxy: false`
+    [if !(defaults + params).kubeProxy then 'prometheusAlerts']+:: {
+      groups: std.filter(
+        function(g) !std.member(['kubernetes-system-kube-proxy'], g.name),
+        super.groups
+      ),
+    },
   },
 
   prometheusRule: {
