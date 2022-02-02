@@ -63,5 +63,6 @@ function(params) {
     runAsNonRoot: true,
     allowPrivilegeEscalation: false,
     readOnlyRootFilesystem: true,
+    capabilities: { drop: ['ALL'] },
   },
 }

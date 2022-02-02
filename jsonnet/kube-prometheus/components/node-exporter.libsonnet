@@ -184,6 +184,7 @@ function(params) {
       securityContext: {
         allowPrivilegeEscalation: false,
         readOnlyRootFilesystem: true,
+        capabilities: { drop: ['ALL'], add: ['CAP_SYS_TIME'] },
       },
     };
 

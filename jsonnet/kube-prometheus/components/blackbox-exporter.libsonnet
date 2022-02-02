@@ -175,6 +175,7 @@ function(params) {
         runAsUser: 65534,
         allowPrivilegeEscalation: false,
         readOnlyRootFilesystem: true,
+        capabilities: { drop: ['ALL'] },
       },
       volumeMounts: [{
         mountPath: '/etc/blackbox_exporter/',
@@ -196,6 +197,7 @@ function(params) {
         runAsUser: 65534,
         allowPrivilegeEscalation: false,
         readOnlyRootFilesystem: true,
+        capabilities: { drop: ['ALL'] },
       },
       terminationMessagePath: '/dev/termination-log',
       terminationMessagePolicy: 'FallbackToLogsOnError',
