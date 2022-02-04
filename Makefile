@@ -17,6 +17,8 @@ JSONNETFMT_ARGS=-n 2 --max-blank-lines 2 --string-style s --comment-style s
 MDOX_VALIDATE_CONFIG?=.mdox.validate.yaml
 MD_FILES_TO_FORMAT=$(shell find docs developer-workspace examples experimental jsonnet manifests -name "*.md") $(shell ls *.md)
 
+KUBESCAPE_THRESHOLD=9
+
 all: generate fmt test docs
 
 .PHONY: clean
@@ -66,7 +68,7 @@ kubeconform: crdschemas manifests $(KUBECONFORM_BIN)
 
 .PHONY: kubescape
 kubescape: $(KUBESCAPE_BIN) ## Runs a security analysis on generated manifests - failing if risk score is above threshold percentage 't'
-	$(KUBESCAPE_BIN) scan -s framework -t 17 nsa manifests/*.yaml --exceptions 'kubescape-exceptions.json'
+	$(KUBESCAPE_BIN) scan -s framework -t $(KUBESCAPE_THRESHOLD) nsa manifests/*.yaml --exceptions 'kubescape-exceptions.json'
 
 .PHONY: fmt
 fmt: $(JSONNETFMT_BIN)
