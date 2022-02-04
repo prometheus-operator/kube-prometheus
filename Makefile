@@ -66,7 +66,7 @@ kubeconform: crdschemas manifests $(KUBECONFORM_BIN)
 
 .PHONY: kubescape
 kubescape: $(KUBESCAPE_BIN) ## Runs a security analysis on generated manifests - failing if risk score is above threshold percentage 't'
-	$(KUBESCAPE_BIN) scan -s framework -t 16 nsa manifests/*.yaml --exceptions 'kubescape-exceptions.json'
+	$(KUBESCAPE_BIN) scan -s framework -t 17 nsa manifests/*.yaml --exceptions 'kubescape-exceptions.json'
 
 .PHONY: fmt
 fmt: $(JSONNETFMT_BIN)
