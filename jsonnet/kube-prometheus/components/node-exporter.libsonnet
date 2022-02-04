@@ -13,6 +13,24 @@ local defaults = {
     requests: { cpu: '102m', memory: '180Mi' },
     limits: { cpu: '250m', memory: '180Mi' },
   },
+  kubeRbacProxy:: {
+    name: 'kube-rbac-proxy',
+    //image: krpImage,
+    upstream: 'http://127.0.0.1:' + defaults.port + '/',
+    secureListenAddress: '[$(IP)]:' + defaults.port,
+    // Keep `hostPort` here, rather than in the node-exporter container
+    // because Kubernetes mandates that if you define a `hostPort` then
+    // `containerPort` must match. In our case, we are splitting the
+    // host port and container port between the two containers.
+    // We'll keep the port specification here so that the named port
+    // used by the service is tied to the proxy container. We *could*
+    // forgo declaring the host port, however it is important to declare
+    // it so that the scheduler can decide if the pod is schedulable.
+    ports: [
+      { name: 'https', containerPort: defaults.port, hostPort: defaults.port },
+    ],
+    image: defaults.kubeRbacProxyImage,
+  },
   listenAddress:: '127.0.0.1',
   filesystemMountPointsExclude:: '^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
   port:: 9100,
@@ -188,24 +206,7 @@ function(params) {
       },
     };
 
-    local kubeRbacProxy = krp({
-      name: 'kube-rbac-proxy',
-      //image: krpImage,
-      upstream: 'http://127.0.0.1:' + ne._config.port + '/',
-      secureListenAddress: '[$(IP)]:' + ne._config.port,
-      // Keep `hostPort` here, rather than in the node-exporter container
-      // because Kubernetes mandates that if you define a `hostPort` then
-      // `containerPort` must match. In our case, we are splitting the
-      // host port and container port between the two containers.
-      // We'll keep the port specification here so that the named port
-      // used by the service is tied to the proxy container. We *could*
-      // forgo declaring the host port, however it is important to declare
-      // it so that the scheduler can decide if the pod is schedulable.
-      ports: [
-        { name: 'https', containerPort: ne._config.port, hostPort: ne._config.port },
-      ],
-      image: ne._config.kubeRbacProxyImage,
-    }) + {
+    local kubeRbacProxy = krp(ne._config.kubeRbacProxy) + {
       env: [
         { name: 'IP', valueFrom: { fieldRef: { fieldPath: 'status.podIP' } } },
       ],

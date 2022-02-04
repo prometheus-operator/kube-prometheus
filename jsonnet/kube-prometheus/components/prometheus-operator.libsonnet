@@ -15,6 +15,15 @@ local defaults = {
     limits: { cpu: '200m', memory: '200Mi' },
     requests: { cpu: '100m', memory: '100Mi' },
   },
+  kubeRbacProxy:: {
+    name: 'kube-rbac-proxy',
+    upstream: 'http://127.0.0.1:8080/',
+    secureListenAddress: ':8443',
+    ports: [
+      { name: 'https', containerPort: 8443 },
+    ],
+    image: defaults.kubeRbacProxyImage,
+  },
   commonLabels:: {
     'app.kubernetes.io/name': defaults.name,
     'app.kubernetes.io/version': defaults.version,
@@ -115,15 +124,7 @@ function(params)
       ],
     },
 
-    local kubeRbacProxy = krp({
-      name: 'kube-rbac-proxy',
-      upstream: 'http://127.0.0.1:8080/',
-      secureListenAddress: ':8443',
-      ports: [
-        { name: 'https', containerPort: 8443 },
-      ],
-      image: po._config.kubeRbacProxyImage,
-    }),
+    local kubeRbacProxy = krp(po._config.kubeRbacProxy),
 
     // FIXME(ArthurSens): The securityContext overrides can be removed after some PRs get merged
     // 'capabilities: { drop: ['ALL'] },' can be deleted when https://github.com/prometheus-operator/prometheus-operator/pull/4546 gets merged.
