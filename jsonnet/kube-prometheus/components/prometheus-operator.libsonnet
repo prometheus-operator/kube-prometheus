@@ -131,6 +131,7 @@ function(params)
       spec+: {
         template+: {
           spec+: {
+            automountServiceAccountToken: true,
             containers: std.map(function(c) c {
               securityContext+: {
                 capabilities: { drop: ['ALL'] },

@@ -253,6 +253,7 @@ function(params) {
           spec: {
             containers: [c],
             serviceAccountName: $.serviceAccount.metadata.name,
+            automountServiceAccountToken: true,
             nodeSelector: { 'kubernetes.io/os': 'linux' },
             volumes: [
               { name: 'tmpfs', emptyDir: {} },
@@ -268,6 +269,7 @@ function(params) {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     metadata: pa._metadata,
+    automountServiceAccountToken: false,
   },
 
   clusterRole: {

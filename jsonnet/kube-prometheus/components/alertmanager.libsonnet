@@ -121,6 +121,7 @@ function(params) {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     metadata: am._metadata,
+    automountServiceAccountToken: false,
   },
 
   service: {

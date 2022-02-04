@@ -115,6 +115,7 @@ function(params) {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     metadata: bb._metadata,
+    automountServiceAccountToken: false,
   },
 
   clusterRole: {
@@ -238,6 +239,7 @@ function(params) {
           spec: {
             containers: [blackboxExporter, reloader, kubeRbacProxy],
             nodeSelector: { 'kubernetes.io/os': 'linux' },
+            automountServiceAccountToken: true,
             serviceAccountName: 'blackbox-exporter',
             volumes: [{
               name: 'config',
