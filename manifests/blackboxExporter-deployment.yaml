@@ -25,6 +25,7 @@ spec:
         app.kubernetes.io/part-of: kube-prometheus
         app.kubernetes.io/version: 0.19.0
     spec:
+      automountServiceAccountToken: true
       containers:
       - args:
         - --config.file=/etc/blackbox_exporter/config.yml
