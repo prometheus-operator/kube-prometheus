@@ -129,6 +129,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
           },
         },
         spec+: {
+          automountServiceAccountToken: true,
           containers: std.map(function(c) c {
             ports:: null,
             livenessProbe:: null,

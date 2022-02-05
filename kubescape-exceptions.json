@@ -1,5 +1,54 @@
 [
   {
+    "name": "exclude-automountServiceAccountToken-checks",
+    "policyType": "postureExceptionPolicy",
+    "actions": [
+      "alertOnly"
+    ],
+    "resources": [
+      {
+        "designatorType": "Attributes",
+        "attributes": {
+          "kind": "DaemonSet",
+          "name": "node-exporter"
+        }
+      },
+      {
+        "designatorType": "Attributes",
+        "attributes": {
+          "kind": "Deployment",
+          "name": "blackbox-exporter"
+        }
+      },
+      {
+        "designatorType": "Attributes",
+        "attributes": {
+          "kind": "Deployment",
+          "name": "kube-state-metrics"
+        }
+      },
+      {
+        "designatorType": "Attributes",
+        "attributes": {
+          "kind": "Deployment",
+          "name": "prometheus-adapter"
+        }
+      },
+      {
+        "designatorType": "Attributes",
+        "attributes": {
+          "kind": "Deployment",
+          "name": "prometheus-operator"
+        }
+      }
+    ],
+    "posturePolicies": [
+      {
+        "controlName": "Automatic mapping of service account"
+      }
+    ]
+  },
+  {
     "name": "exclude-node-exporter-host-access-checks",
     "policyType": "postureExceptionPolicy",
     "actions": [

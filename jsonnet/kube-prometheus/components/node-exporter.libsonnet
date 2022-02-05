@@ -114,6 +114,7 @@ function(params) {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
     metadata: ne._metadata,
+    automountServiceAccountToken: false,
   },
 
   service: {
@@ -246,6 +247,7 @@ function(params) {
               { name: 'sys', hostPath: { path: '/sys' } },
               { name: 'root', hostPath: { path: '/' } },
             ],
+            automountServiceAccountToken: true,
             serviceAccountName: ne._config.name,
             securityContext: {
               runAsUser: 65534,
