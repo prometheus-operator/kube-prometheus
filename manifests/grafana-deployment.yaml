@@ -137,6 +137,9 @@ spec:
         - mountPath: /etc/grafana
           name: grafana-config
           readOnly: false
+        - mountPath: /tmp
+          name: tmp-plugins
+          readOnly: false
       nodeSelector:
         kubernetes.io/os: linux
       securityContext:
@@ -228,3 +231,5 @@ spec:
       - name: grafana-config
         secret:
           secretName: grafana-config
+      - emptyDir: {}
+        name: tmp-plugins
