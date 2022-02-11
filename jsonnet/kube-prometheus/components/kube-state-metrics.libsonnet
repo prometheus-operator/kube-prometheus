@@ -20,6 +20,12 @@ local defaults = {
       requests+: { cpu: '20m' },
     },
   },
+  kubeRbacProxySelf:: {
+    resources+: {
+      limits+: { cpu: '20m' },
+      requests+: { cpu: '10m' },
+    },
+  },
   scrapeInterval:: '30s',
   scrapeTimeout:: '30s',
   commonLabels:: {
@@ -108,7 +114,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     image: ksm._config.kubeRbacProxyImage,
   }),
 
-  local kubeRbacProxySelf = krp({
+  local kubeRbacProxySelf = krp(ksm._config.kubeRbacProxySelf {
     name: 'kube-rbac-proxy-self',
     upstream: 'http://127.0.0.1:8082/',
     secureListenAddress: ':9443',
