@@ -119,7 +119,7 @@ kubectl apply -f manifests/
 We create the namespace and CustomResourceDefinitions first to avoid race conditions when deploying the monitoring components.
 Alternatively, the resources in both folders can be applied with a single command
 `kubectl apply --server-side -f manifests/setup -f manifests`, but it may be necessary to run the command multiple times for all components to
-be created successfullly.
+be created successfully.
 
 * And to teardown the stack:
 
@@ -285,7 +285,7 @@ $ kubectl apply -f manifests/
 
 Alternatively, the resources in both folders can be applied with a single command
 `kubectl apply --server-side -Rf manifests`, but it may be necessary to run the command multiple times for all components to
-be created successfullly.
+be created successfully.
 
 Check the monitoring namespace (or the namespace you have specific in `namespace: `) and make sure the pods are running. Prometheus and Grafana should be up and running soon.
 
