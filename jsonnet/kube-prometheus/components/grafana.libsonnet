@@ -100,7 +100,16 @@ function(params)
                 readOnlyRootFilesystem: true,
                 capabilities: { drop: ['ALL'] },
               },
+              volumeMounts+: [{
+                mountPath: '/tmp',
+                name: 'tmp-plugins',
+                readOnly: false,
+              }],
             }, super.containers),
+            volumes+: [{
+              name: 'tmp-plugins',
+              emptyDir: {},
+            }],
           },
         },
       },
