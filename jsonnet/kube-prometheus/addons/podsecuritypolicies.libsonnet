@@ -200,6 +200,9 @@ local restrictedPodSecurityPolicy = {
         name: 'node-exporter-psp',
       },
       spec+: {
+        allowedCapabilities: [
+          'SYS_TIME',
+        ],
         allowedHostPaths+: [
           {
             pathPrefix: '/proc',
