@@ -25,7 +25,7 @@
             record: 'cluster:node_cpu:sum_rate5m',
           },
           {
-            expr: 'cluster:node_cpu_seconds_total:rate5m / count(sum(node_cpu_seconds_total) BY (instance, cpu))',
+            expr: 'cluster:node_cpu:sum_rate5m / count(sum(node_cpu_seconds_total) BY (instance, cpu))',
             record: 'cluster:node_cpu:ratio',
           },
         ],
