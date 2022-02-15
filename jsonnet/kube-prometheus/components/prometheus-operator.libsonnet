@@ -125,18 +125,12 @@ function(params)
       image: po._config.kubeRbacProxyImage,
     }),
 
-    // FIXME(ArthurSens): The securityContext overrides can be removed after some PRs get merged
-    // 'capabilities: { drop: ['ALL'] },' can be deleted when https://github.com/prometheus-operator/prometheus-operator/pull/4546 gets merged.
     deployment+: {
       spec+: {
         template+: {
           spec+: {
             automountServiceAccountToken: true,
-            containers: std.map(function(c) c {
-              securityContext+: {
-                capabilities: { drop: ['ALL'] },
-              },
-            }, super.containers) + [kubeRbacProxy],
+            containers+: [kubeRbacProxy],
           },
         },
       },
