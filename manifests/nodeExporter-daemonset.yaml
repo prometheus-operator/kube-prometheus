@@ -48,7 +48,7 @@ spec:
           allowPrivilegeEscalation: false
           capabilities:
             add:
-            - CAP_SYS_TIME
+            - SYS_TIME
             drop:
             - ALL
           readOnlyRootFilesystem: true
