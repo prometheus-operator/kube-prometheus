@@ -17,7 +17,7 @@ JSONNETFMT_ARGS=-n 2 --max-blank-lines 2 --string-style s --comment-style s
 MDOX_VALIDATE_CONFIG?=.mdox.validate.yaml
 MD_FILES_TO_FORMAT=$(shell find docs developer-workspace examples experimental jsonnet manifests -name "*.md") $(shell ls *.md)
 
-KUBESCAPE_THRESHOLD=9
+KUBESCAPE_THRESHOLD=1
 
 all: generate fmt test docs
 
