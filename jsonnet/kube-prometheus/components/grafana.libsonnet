@@ -84,6 +84,32 @@ function(params)
       },
     },
 
+    networkPolicy: {
+      apiVersion: 'networking.k8s.io/v1',
+      kind: 'NetworkPolicy',
+      metadata: g.service.metadata,
+      spec: {
+        podSelector: {
+          matchLabels: g._config.selectorLabels,
+        },
+        policyTypes: ['Egress', 'Ingress'],
+        egress: [{}],
+        ingress: [{
+          from: [{
+            podSelector: {
+              matchLabels: {
+                'app.kubernetes.io/name': 'prometheus',
+              },
+            },
+          }],
+          ports: std.map(function(o) {
+            port: o.port,
+            protocol: 'TCP',
+          }, g.service.spec.ports),
+        }],
+      },
+    },
+
     // FIXME(ArthurSens): The securityContext overrides can be removed after some PRs get merged
     // 'allowPrivilegeEscalation: false' can be deleted when https://github.com/brancz/kubernetes-grafana/pull/128 gets merged.
     // 'readOnlyRootFilesystem: true' and extra volumeMounts can be deleted when https://github.com/brancz/kubernetes-grafana/pull/129 gets merged.

@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/component: alert-router
+    app.kubernetes.io/instance: main
+    app.kubernetes.io/name: alertmanager
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.23.0
+  name: alertmanager-main
+  namespace: monitoring
+spec:
+  egress:
+  - {}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - port: 9093
+      protocol: TCP
+    - port: 8080
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: alert-router
+      app.kubernetes.io/instance: main
+      app.kubernetes.io/name: alertmanager
+      app.kubernetes.io/part-of: kube-prometheus
+  policyTypes:
+  - Egress
+  - Ingress

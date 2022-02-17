@@ -94,6 +94,32 @@ function(params) {
     },
   },
 
+  networkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: p.service.metadata,
+    spec: {
+      podSelector: {
+        matchLabels: p._config.selectorLabels,
+      },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'prometheus',
+            },
+          },
+        }],
+        ports: std.map(function(o) {
+          port: o.port,
+          protocol: 'TCP',
+        }, p.service.spec.ports),
+      }],
+    },
+  },
+
   serviceAccount: {
     apiVersion: 'v1',
     kind: 'ServiceAccount',
