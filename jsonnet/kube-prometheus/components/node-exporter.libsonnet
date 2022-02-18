@@ -249,6 +249,7 @@ function(params) {
             ],
             automountServiceAccountToken: true,
             serviceAccountName: ne._config.name,
+            priorityClassName: 'system-cluster-critical',
             securityContext: {
               runAsUser: 65534,
               runAsNonRoot: true,
