@@ -18,6 +18,7 @@
 * [ENHANCEMENT] Exclude k3s containerd mountpoints [#1497](https://github.com/prometheus-operator/kube-prometheus/pull/1497)
 * [ENHANCEMENT] Alertmanager now uses the new `matcher` syntax in the routing tree and inhibition rules [#1508](https://github.com/prometheus-operator/kube-prometheus/pull/1508)
 * [ENHANCEMENT] Deprecate `thanosSelector` and expose `mixin._config.thanos` config variable for thanos sidecar [#1543](https://github.com/prometheus-operator/kube-prometheus/pull/1543)
+* [ENHANCEMENT] Added configurable default values for sidecar container kube-rbac-proxy-self in deployment kube-statate-metrics. [#1637](https://github.com/prometheus-operator/kube-prometheus/pull/1637)
 * [FEATURE] Support scraping config-reloader sidecar for Prometheus and AlertManager StatefulSets [#1344](https://github.com/prometheus-operator/kube-prometheus/pull/1344)
 * [FEATURE] Expose prometheus alerting configuration in $.values.prometheus configuration [#1476](https://github.com/prometheus-operator/kube-prometheus/pull/1476)
 * [BUGFIX] Remove deprecated policy/v1beta1 Kubernetes API [#1433](https://github.com/prometheus-operator/kube-prometheus/pull/1433)
