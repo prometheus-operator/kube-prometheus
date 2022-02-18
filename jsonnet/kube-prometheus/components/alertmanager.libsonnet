@@ -113,19 +113,38 @@ function(params) {
       },
       policyTypes: ['Egress', 'Ingress'],
       egress: [{}],
-      ingress: [{
-        from: [{
-          podSelector: {
-            matchLabels: {
-              'app.kubernetes.io/name': 'prometheus',
+      ingress: [
+        {
+          from: [{
+            podSelector: {
+              matchLabels: {
+                'app.kubernetes.io/name': 'prometheus',
+              },
             },
-          },
-        }],
-        ports: std.map(function(o) {
-          port: o.port,
-          protocol: 'TCP',
-        }, am.service.spec.ports),
-      }],
+          }],
+          ports: std.map(function(o) {
+            port: o.port,
+            protocol: 'TCP',
+          }, am.service.spec.ports),
+        },
+        // Alertmanager cluster peer-to-peer communication
+        {
+          from: [{
+            podSelector: {
+              matchLabels: {
+                'app.kubernetes.io/name': 'alertmanager',
+              },
+            },
+          }],
+          ports: [{
+            port: 9094,
+            protocol: 'TCP',
+          }, {
+            port: 9094,
+            protocol: 'UDP',
+          }],
+        },
+      ],
     },
   },
 

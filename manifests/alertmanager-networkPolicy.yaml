@@ -22,6 +22,15 @@ spec:
       protocol: TCP
     - port: 8080
       protocol: TCP
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: alertmanager
+    ports:
+    - port: 9094
+      protocol: TCP
+    - port: 9094
+      protocol: UDP
   podSelector:
     matchLabels:
       app.kubernetes.io/component: alert-router
