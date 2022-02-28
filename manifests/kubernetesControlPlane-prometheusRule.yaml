@@ -1414,6 +1414,10 @@ spec:
           )
         ) by (cluster)
       record: :node_memory_MemAvailable_bytes:sum
+    - expr: |
+        sum(rate(node_cpu_seconds_total{job="node-exporter",mode!="idle",mode!="iowait",mode!="steal"}[5m])) /
+        count(sum(node_cpu_seconds_total{job="node-exporter"}) by (cluster, instance, cpu))
+      record: cluster:node_cpu:ratio_rate5m
   - name: kubelet.rules
     rules:
     - expr: |
