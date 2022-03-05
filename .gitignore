@@ -6,4 +6,4 @@ vendor/
 crdschemas/
 
 developer-workspace/gitpod/_output
-kind
+developer-workspace/codespaces/kind 
