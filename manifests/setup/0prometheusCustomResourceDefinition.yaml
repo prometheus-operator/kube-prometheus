@@ -2693,11 +2693,11 @@ spec:
               enforcedNamespaceLabel:
                 description: "EnforcedNamespaceLabel If set, a label will be added
                   to \n 1. all user-metrics (created by `ServiceMonitor`, `PodMonitor`
-                  and `ProbeConfig` object) and 2. in all `PrometheusRule` objects
-                  (except the ones excluded in `prometheusRulesExcludedFromEnforce`)
-                  to    * alerting & recording rules and    * the metrics used in
-                  their expressions (`expr`). \n Label name is this field's value.
-                  Label value is the namespace of the created object (mentioned above)."
+                  and `Probe` objects) and 2. in all `PrometheusRule` objects (except
+                  the ones excluded in `prometheusRulesExcludedFromEnforce`) to    *
+                  alerting & recording rules and    * the metrics used in their expressions
+                  (`expr`). \n Label name is this field's value. Label value is the
+                  namespace of the created object (mentioned above)."
                 type: string
               enforcedSampleLimit:
                 description: EnforcedSampleLimit defines global limit on number of
@@ -2735,9 +2735,9 @@ spec:
                 type: string
               ignoreNamespaceSelectors:
                 description: IgnoreNamespaceSelectors if set to true will ignore NamespaceSelector
-                  settings from the podmonitor and servicemonitor configs, and they
-                  will only discover endpoints within their current namespace.  Defaults
-                  to false.
+                  settings from all PodMonitor, ServiceMonitor and Probe objects.
+                  They will only discover endpoints within their current namespace.
+                  Defaults to false.
                 type: boolean
               image:
                 description: Image if specified has precedence over baseImage, tag
@@ -4290,9 +4290,13 @@ spec:
                 type: object
               queryLogFile:
                 description: QueryLogFile specifies the file to which PromQL queries
-                  are logged. Note that this location must be writable, and can be
-                  persisted using an attached volume. Alternatively, the location
-                  can be set to a stdout location such as `/dev/stdout` to log querie
+                  are logged. If the filename has an empty path, e.g. 'query.log',
+                  prometheus-operator will mount the file into an emptyDir volume
+                  at `/var/log/prometheus`. If a full path is provided, e.g. /var/log/prometheus/query.log,
+                  you must mount a volume in the specified directory and it must be
+                  writable. This is because the prometheus container runs with a read-only
+                  root filesystem for security reasons. Alternatively, the location
+                  can be set to a stdout location such as `/dev/stdout` to log query
                   information to the default Prometheus log stream. This is only available
                   in versions of Prometheus >= 2.16.0. For more details, see the Prometheus
                   docs (https://prometheus.io/docs/guides/query-log/)
