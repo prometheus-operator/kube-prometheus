@@ -21,6 +21,16 @@ spec:
   image: quay.io/prometheus/prometheus:v2.33.5
   nodeSelector:
     kubernetes.io/os: linux
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - prometheus
+        topologyKey: "kubernetes.io/hostname"
   podMetadata:
     labels:
       app.kubernetes.io/component: prometheus
