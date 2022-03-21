@@ -2660,6 +2660,16 @@ spec:
                 items:
                   type: string
                 type: array
+              enableRemoteWriteReceiver:
+                description: 'Enable Prometheus to be used as a receiver for the Prometheus
+                  remote write protocol. Defaults to the value of `false`. WARNING:
+                  This is not considered an efficient way of ingesting samples. Use
+                  it with caution for specific low-volume use cases. It is not suitable
+                  for replacing the ingestion via scraping and turning Prometheus
+                  into a push-based metrics collection system. For more information
+                  see https://prometheus.io/docs/prometheus/latest/querying/api/#remote-write-receiver
+                  Only valid in Prometheus versions 2.33.0 and newer.'
+                type: boolean
               enforcedBodySizeLimit:
                 description: 'EnforcedBodySizeLimit defines the maximum size of uncompressed
                   response body that will be accepted by Prometheus. Targets responding
@@ -3992,9 +4002,19 @@ spec:
                 type: boolean
               logFormat:
                 description: Log format for Prometheus to be configured with.
+                enum:
+                - ""
+                - logfmt
+                - json
                 type: string
               logLevel:
                 description: Log level for Prometheus to be configured with.
+                enum:
+                - ""
+                - debug
+                - info
+                - warn
+                - error
                 type: string
               minReadySeconds:
                 description: Minimum number of seconds for which a newly created pod
@@ -6301,9 +6321,19 @@ spec:
                     type: boolean
                   logFormat:
                     description: LogFormat for Thanos sidecar to be configured with.
+                    enum:
+                    - ""
+                    - logfmt
+                    - json
                     type: string
                   logLevel:
                     description: LogLevel for Thanos sidecar to be configured with.
+                    enum:
+                    - ""
+                    - debug
+                    - info
+                    - warn
+                    - error
                     type: string
                   minTime:
                     description: MinTime for Thanos sidecar to be configured with.
