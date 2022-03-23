@@ -220,6 +220,26 @@ function(params) {
         '--tls-cipher-suites=' + std.join(',', pa._config.tlsCipherSuites),
       ],
       resources: pa._config.resources,
+      readinessProbe: {
+        httpGet: {
+          path: '/readyz',
+          port: 'https',
+          scheme: 'HTTPS',
+        },
+        initialDelaySeconds: 30,
+        periodSeconds: 5,
+        failureThreshold: 5,
+      },
+      livenessProbe: {
+        httpGet: {
+          path: '/livez',
+          port: 'https',
+          scheme: 'HTTPS',
+        },
+        initialDelaySeconds: 30,
+        periodSeconds: 5,
+        failureThreshold: 5,
+      },
       ports: [{ containerPort: 6443 }],
       volumeMounts: [
         { name: 'tmpfs', mountPath: '/tmp', readOnly: false },
