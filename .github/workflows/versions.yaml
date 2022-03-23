@@ -44,7 +44,7 @@ jobs:
           git checkout -- jsonnetfile.lock.json;
         fi
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
+      uses: peter-evans/create-pull-request@v4
       with:
         commit-message: "[bot] [${{ matrix.branch }}] Automated version update"
         title: "[bot] [${{ matrix.branch }}] Automated version update"
