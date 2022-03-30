@@ -49,6 +49,7 @@ spec:
         name: prometheus-adapter
         ports:
         - containerPort: 6443
+          name: https
         readinessProbe:
           failureThreshold: 5
           httpGet:
