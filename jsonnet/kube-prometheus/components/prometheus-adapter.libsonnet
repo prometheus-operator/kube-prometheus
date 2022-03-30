@@ -240,7 +240,7 @@ function(params) {
         periodSeconds: 5,
         failureThreshold: 5,
       },
-      ports: [{ containerPort: 6443 }],
+      ports: [{ containerPort: 6443, name: 'https' }],
       volumeMounts: [
         { name: 'tmpfs', mountPath: '/tmp', readOnly: false },
         { name: 'volume-serving-cert', mountPath: '/var/run/serving-cert', readOnly: false },
