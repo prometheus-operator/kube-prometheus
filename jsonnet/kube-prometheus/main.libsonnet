@@ -9,11 +9,11 @@ local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
 local prometheusOperator = import './components/prometheus-operator.libsonnet';
 local prometheus = import './components/prometheus.libsonnet';
 
-local platformPatch = import './platforms/platforms.libsonnet';
-
 local utils = import './lib/utils.libsonnet';
 
-{
+local platformPatch = import './platforms/platforms.libsonnet';
+
+platformPatch({
   // using `values` as this is similar to helm
   values:: {
     common: {
@@ -153,4 +153,4 @@ local utils = import './lib/utils.libsonnet';
       },
     },
   },
-} + platformPatch
+})

@@ -6,6 +6,7 @@ local kp =
     values+:: {
       common+: {
         namespace: 'monitoring',
+        platform: 'kubeadm',
       },
       alertmanager+: {
         config: importstr 'alertmanager-config.yaml',
@@ -17,9 +18,6 @@ local kp =
             'auth.anonymous': { enabled: true },
           },
         },
-      },
-      kubePrometheus+: {
-        platform: 'kubeadm',
       },
     },
 
