@@ -147,6 +147,16 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/pyrra-dev/pyrra.git",
+          "subdir": "config/crd/bases"
+        }
+      },
+      "version": "6b0b6c2f362bbbea151a6610e18870e7cb1c2b5b",
+      "sum": "GQ0GFKGdIWKx1b78VRs6jtC4SMqkBjT5jl65QUjPKK4="
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/thanos-io/thanos.git",
           "subdir": "mixin"
         }
