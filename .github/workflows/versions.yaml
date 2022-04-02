@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '37 7 * * 1'
+env:
+  golang-version: '1.17'
 jobs:
   versions:
     runs-on: ubuntu-latest
@@ -21,7 +23,7 @@ jobs:
         ref: ${{ matrix.branch }}
     - uses: actions/setup-go@v2
       with:
-        go-version: 1.16
+        go-version: ${{ env.golang-version }}
     - name: Upgrade versions
       id: versions
       run: |
