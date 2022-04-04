@@ -253,13 +253,26 @@ spec:
         severity: warning
     - alert: PrometheusScrapeBodySizeLimitHit
       annotations:
-        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has dropped
-          {{ printf "%.0f" $value }} targets because some targets exceeded the configured
-          body_size_limit.
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed {{
+          printf "%.0f" $value }} scrapes in the last 5m because some targets exceeded
+          the configured body_size_limit.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusscrapebodysizelimithit
         summary: Prometheus has dropped some targets that exceeded body size limit.
       expr: |
         increase(prometheus_target_scrapes_exceeded_body_size_limit_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
+      for: 15m
+      labels:
+        severity: warning
+    - alert: PrometheusScrapeSampleLimitHit
+      annotations:
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed {{
+          printf "%.0f" $value }} scrapes in the last 5m because some targets exceeded
+          the configured sample_limit.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheusscrapesamplelimithit
+        summary: Prometheus has failed scrapes that have exceeded the configured sample
+          limit.
+      expr: |
+        increase(prometheus_target_scrapes_exceeded_sample_limit_total{job="prometheus-k8s",namespace="monitoring"}[5m]) > 0
       for: 15m
       labels:
         severity: warning
