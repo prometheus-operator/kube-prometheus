@@ -202,15 +202,16 @@ spec:
       for: 15m
       labels:
         severity: warning
-    - alert: KubeJobCompletion
+    - alert: KubeJobNotCompleted
       annotations:
         description: Job {{ $labels.namespace }}/{{ $labels.job_name }} is taking
-          more than 12 hours to complete.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubejobcompletion
+          more than {{ "43200" | humanizeDuration }} to complete.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubejobnotcompleted
         summary: Job did not complete in time
       expr: |
-        kube_job_spec_completions{job="kube-state-metrics"} - kube_job_status_succeeded{job="kube-state-metrics"}  > 0
-      for: 12h
+        time() - max by(namespace, job_name) (kube_job_status_start_time{job="kube-state-metrics"}
+          and
+        kube_job_status_active{job="kube-state-metrics"} > 0) > 43200
       labels:
         severity: warning
     - alert: KubeJobFailed
@@ -451,9 +452,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeclienterrors
         summary: Kubernetes API server client is experiencing errors.
       expr: |
-        (sum(rate(rest_client_requests_total{code=~"5.."}[5m])) by (instance, job, namespace)
+        (sum(rate(rest_client_requests_total{code=~"5.."}[5m])) by (cluster, instance, job, namespace)
           /
-        sum(rate(rest_client_requests_total[5m])) by (instance, job, namespace))
+        sum(rate(rest_client_requests_total[5m])) by (cluster, instance, job, namespace))
         > 0.01
       for: 15m
       labels:
@@ -612,11 +613,11 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubelettoomanypods
         summary: Kubelet is running at capacity.
       expr: |
-        count by(node) (
+        count by(cluster, node) (
           (kube_pod_status_phase{job="kube-state-metrics",phase="Running"} == 1) * on(instance,pod,namespace,cluster) group_left(node) topk by(instance,pod,namespace,cluster) (1, kube_pod_info{job="kube-state-metrics"})
         )
         /
-        max by(node) (
+        max by(cluster, node) (
           kube_node_status_capacity{job="kube-state-metrics",resource="pods"} != 1
         ) > 0.95
       for: 15m
@@ -629,7 +630,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodereadinessflapping
         summary: Node readiness status is flapping.
       expr: |
-        sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (node) > 2
+        sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (cluster, node) > 2
       for: 15m
       labels:
         severity: warning
@@ -1391,8 +1392,8 @@ spec:
   - name: node.rules
     rules:
     - expr: |
-        topk by(namespace, pod) (1,
-          max by (node, namespace, pod) (
+        topk by(cluster, namespace, pod) (1,
+          max by (cluster, node, namespace, pod) (
             label_replace(kube_pod_info{job="kube-state-metrics",node!=""}, "pod", "$1", "pod", "(.*)")
         ))
       record: 'node_namespace_pod:kube_pod_info:'
