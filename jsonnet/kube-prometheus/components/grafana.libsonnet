@@ -110,30 +110,12 @@ function(params)
       },
     },
 
-    // FIXME(ArthurSens): The securityContext overrides can be removed after some PRs get merged
-    // 'allowPrivilegeEscalation: false' can be deleted when https://github.com/brancz/kubernetes-grafana/pull/128 gets merged.
-    // 'readOnlyRootFilesystem: true' and extra volumeMounts can be deleted when https://github.com/brancz/kubernetes-grafana/pull/129 gets merged.
     // FIXME(paulfantom): `automountServiceAccountToken` can be removed after porting to brancz/kuberentes-grafana
     deployment+: {
       spec+: {
         template+: {
           spec+: {
             automountServiceAccountToken: false,
-            containers: std.map(function(c) c {
-              securityContext+: {
-                allowPrivilegeEscalation: false,
-                readOnlyRootFilesystem: true,
-              },
-              volumeMounts+: [{
-                mountPath: '/tmp',
-                name: 'tmp-plugins',
-                readOnly: false,
-              }],
-            }, super.containers),
-            volumes+: [{
-              name: 'tmp-plugins',
-              emptyDir: {},
-            }],
           },
         },
       },

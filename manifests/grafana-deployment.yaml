@@ -62,6 +62,9 @@ spec:
         - mountPath: /etc/grafana/provisioning/dashboards
           name: grafana-dashboards
           readOnly: false
+        - mountPath: /tmp
+          name: tmp-plugins
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/alertmanager-overview
           name: grafana-dashboard-alertmanager-overview
           readOnly: false
@@ -137,9 +140,6 @@ spec:
         - mountPath: /etc/grafana
           name: grafana-config
           readOnly: false
-        - mountPath: /tmp
-          name: tmp-plugins
-          readOnly: false
       nodeSelector:
         kubernetes.io/os: linux
       securityContext:
@@ -156,6 +156,9 @@ spec:
       - configMap:
           name: grafana-dashboards
         name: grafana-dashboards
+      - emptyDir:
+          medium: Memory
+        name: tmp-plugins
       - configMap:
           name: grafana-dashboard-alertmanager-overview
         name: grafana-dashboard-alertmanager-overview
@@ -231,5 +234,3 @@ spec:
       - name: grafana-config
         secret:
           secretName: grafana-config
-      - emptyDir: {}
-        name: tmp-plugins
