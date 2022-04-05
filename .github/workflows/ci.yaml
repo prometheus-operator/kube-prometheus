@@ -97,7 +97,25 @@ jobs:
       with:
         version: ${{ env.kind-version }}
         image: ${{ matrix.kind-image }}
-        wait: 300s
+        wait: 10s # Without default CNI, control-plane doesn't get ready until Cilium is installed
+        config: .github/workflows/kind/config.yml
+    - name: Setup Helm
+      uses: azure/setup-helm@v1
+    - name: Install Cilium
+      run: |
+        helm repo add cilium https://helm.cilium.io/
+        helm install cilium cilium/cilium --version 1.9.13 \
+        --namespace kube-system \
+        --set nodeinit.enabled=true \
+        --set kubeProxyReplacement=partial \
+        --set hostServices.enabled=false \
+        --set externalIPs.enabled=true \
+        --set nodePort.enabled=true \
+        --set hostPort.enabled=true \
+        --set bpf.masquerade=false \
+        --set image.pullPolicy=IfNotPresent \
+        --set ipam.mode=kubernetes \
+        --set operator.replicas=1
     - name: Wait for cluster to finish bootstraping
       run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
     - name: Create kube-prometheus stack

@@ -124,6 +124,32 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     image: ksm._config.kubeRbacProxyImage,
   }),
 
+  networkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: ksm.service.metadata,
+    spec: {
+      podSelector: {
+        matchLabels: ksm._config.selectorLabels,
+      },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
+      ingress: [{
+        from: [{
+          podSelector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'prometheus',
+            },
+          },
+        }],
+        ports: std.map(function(o) {
+          port: o.port,
+          protocol: 'TCP',
+        }, ksm.service.spec.ports),
+      }],
+    },
+  },
+
   deployment+: {
     spec+: {
       template+: {
