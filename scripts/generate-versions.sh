@@ -65,6 +65,7 @@ cat <<-EOF
   "prometheusAdapter": "$(get_version "kubernetes-sigs/prometheus-adapter")",
   "prometheusOperator": "$(get_version "prometheus-operator/prometheus-operator")",
   "kubeRbacProxy": "$(get_version "brancz/kube-rbac-proxy")",
-  "configmapReload": "$(get_version "jimmidyson/configmap-reload")"
+  "configmapReload": "$(get_version "jimmidyson/configmap-reload")",
+  "pyrra": "$(get_version "pyrra-dev/pyrra")"
 }
 EOF
