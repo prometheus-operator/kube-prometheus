@@ -13,6 +13,16 @@ spec:
   image: quay.io/prometheus/alertmanager:v0.24.0
   nodeSelector:
     kubernetes.io/os: linux
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - alertmanager
+        topologyKey: "kubernetes.io/hostname"
   podMetadata:
     labels:
       app.kubernetes.io/component: alert-router
