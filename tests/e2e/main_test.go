@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -23,7 +24,6 @@ import (
 	"time"
 
 	"github.com/Jeffail/gabs"
-	"github.com/pkg/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
@@ -52,7 +52,7 @@ func testMain(m *testing.M) int {
 
 	kubeClient, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		log.Fatal(errors.Wrap(err, "creating kubeClient failed"))
+		log.Fatal(fmt.Errorf("creating kubeClient failed: %w", err))
 	}
 
 	promClient = newPrometheusClient(kubeClient)
@@ -95,7 +95,7 @@ func TestQueryPrometheus(t *testing.T) {
 		return err == nil, nil
 	})
 	if err != nil {
-		t.Fatal(errors.Wrap(err, "wait for prometheus-k8s"))
+		t.Fatal(fmt.Errorf("wait for prometheus-k8s: %w", err))
 	}
 
 	err = wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
@@ -237,7 +237,7 @@ func TestFailedRuleEvaluations(t *testing.T) {
 		}
 
 		if len(groups) == 0 {
-			return false, errors.New("got 0 rule groups")
+			return false, fmt.Errorf("got 0 rule groups")
 		}
 
 		for _, group := range groups {
@@ -263,13 +263,13 @@ func TestFailedRuleEvaluations(t *testing.T) {
 			}
 
 			if len(rules) == 0 {
-				return false, errors.Errorf("got 0 rules in group %s", groupName)
+				return false, fmt.Errorf("got 0 rules in group %s", groupName)
 			}
 
 			for _, rule := range rules {
 				health := rule.Path("health").Data().(string)
 				if health != "ok" {
-					return false, errors.Errorf("error evaluating rule: %v", rule)
+					return false, fmt.Errorf("error evaluating rule: %v", rule)
 				}
 			}
 		}
@@ -281,10 +281,10 @@ func TestFailedRuleEvaluations(t *testing.T) {
 	}
 }
 
-func TestGrafana(t *testing.T){
+func TestGrafana(t *testing.T) {
 	t.Parallel()
 	kClient := promClient.kubeClient
-	
+
 	err := wait.Poll(30*time.Second, 5*time.Minute, func() (bool, error) {
 		grafanaDeployment, err := kClient.AppsV1().Deployments("monitoring").Get(context.Background(), "grafana", metav1.GetOptions{})
 		if err != nil {
@@ -293,6 +293,6 @@ func TestGrafana(t *testing.T){
 		return grafanaDeployment.Status.ReadyReplicas == *grafanaDeployment.Spec.Replicas, nil
 	})
 	if err != nil {
-		t.Fatal(errors.Wrap(err, "Timeout while waiting for deployment ready condition."))
+		t.Fatal(fmt.Errorf("timeout while waiting for deployment ready condition: %w", err))
 	}
 }

@@ -1,5 +1,5 @@
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
 metadata:
   labels:
     app.kubernetes.io/component: exporter
@@ -9,16 +9,23 @@ metadata:
   name: blackbox-exporter
   namespace: monitoring
 spec:
-  endpoints:
-  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
-    interval: 30s
-    path: /metrics
-    port: https
-    scheme: https
-    tlsConfig:
-      insecureSkipVerify: true
-  selector:
+  egress:
+  - {}
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus
+    ports:
+    - port: 9115
+      protocol: TCP
+    - port: 19115
+      protocol: TCP
+  podSelector:
     matchLabels:
       app.kubernetes.io/component: exporter
       app.kubernetes.io/name: blackbox-exporter
       app.kubernetes.io/part-of: kube-prometheus
+  policyTypes:
+  - Egress
+  - Ingress

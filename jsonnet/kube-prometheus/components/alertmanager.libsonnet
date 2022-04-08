@@ -103,6 +103,51 @@ function(params) {
     },
   },
 
+  networkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: am.service.metadata,
+    spec: {
+      podSelector: {
+        matchLabels: am._config.selectorLabels,
+      },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
+      ingress: [
+        {
+          from: [{
+            podSelector: {
+              matchLabels: {
+                'app.kubernetes.io/name': 'prometheus',
+              },
+            },
+          }],
+          ports: std.map(function(o) {
+            port: o.port,
+            protocol: 'TCP',
+          }, am.service.spec.ports),
+        },
+        // Alertmanager cluster peer-to-peer communication
+        {
+          from: [{
+            podSelector: {
+              matchLabels: {
+                'app.kubernetes.io/name': 'alertmanager',
+              },
+            },
+          }],
+          ports: [{
+            port: 9094,
+            protocol: 'TCP',
+          }, {
+            port: 9094,
+            protocol: 'UDP',
+          }],
+        },
+      ],
+    },
+  },
+
   secret: {
     apiVersion: 'v1',
     kind: 'Secret',

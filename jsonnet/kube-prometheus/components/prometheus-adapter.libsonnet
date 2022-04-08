@@ -206,6 +206,21 @@ function(params) {
     },
   },
 
+  networkPolicy: {
+    apiVersion: 'networking.k8s.io/v1',
+    kind: 'NetworkPolicy',
+    metadata: pa.service.metadata,
+    spec: {
+      podSelector: {
+        matchLabels: pa._config.selectorLabels,
+      },
+      policyTypes: ['Egress', 'Ingress'],
+      egress: [{}],
+      // Prometheus-adapter needs ingress allowed so HPAs can request metrics from it.
+      ingress: [{}],
+    },
+  },
+
   deployment:
     local c = {
       name: pa._config.name,
@@ -220,7 +235,27 @@ function(params) {
         '--tls-cipher-suites=' + std.join(',', pa._config.tlsCipherSuites),
       ],
       resources: pa._config.resources,
-      ports: [{ containerPort: 6443 }],
+      readinessProbe: {
+        httpGet: {
+          path: '/readyz',
+          port: 'https',
+          scheme: 'HTTPS',
+        },
+        initialDelaySeconds: 30,
+        periodSeconds: 5,
+        failureThreshold: 5,
+      },
+      livenessProbe: {
+        httpGet: {
+          path: '/livez',
+          port: 'https',
+          scheme: 'HTTPS',
+        },
+        initialDelaySeconds: 30,
+        periodSeconds: 5,
+        failureThreshold: 5,
+      },
+      ports: [{ containerPort: 6443, name: 'https' }],
       volumeMounts: [
         { name: 'tmpfs', mountPath: '/tmp', readOnly: false },
         { name: 'volume-serving-cert', mountPath: '/var/run/serving-cert', readOnly: false },
