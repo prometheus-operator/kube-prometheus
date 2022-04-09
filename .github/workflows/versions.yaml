@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: ${{ matrix.branch }}
-    - uses: actions/setup-go@v2
+    - uses: actions/setup-go@v3
       with:
         go-version: ${{ env.golang-version }}
     - name: Upgrade versions
