@@ -116,6 +116,18 @@ function(params) {
           port: o.port,
           protocol: 'TCP',
         }, p.service.spec.ports),
+      }, {
+        from: [{
+          podSelector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'grafana',
+            },
+          },
+        }],
+        ports: [{
+          port: 9090,
+          protocol: 'TCP',
+        }],
       }],
     },
   },
