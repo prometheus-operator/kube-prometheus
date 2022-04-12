@@ -2,34 +2,34 @@
 
 {
   blackboxExporter+: {
-    networkPolicies:: {},
+    networkPolicy:: {},
   },
 
   kubeStateMetrics+: {
-    networkPolicies:: {},
+    networkPolicy:: {},
   },
 
   nodeExporter+: {
-    networkPolicies:: {},
+    networkPolicy:: {},
   },
 
   prometheusAdapter+: {
-    networkPolicies:: {},
+    networkPolicy:: {},
   },
 
   alertmanager+: {
-    networkPolicies:: {},
+    networkPolicy:: {},
   },
 
   grafana+: {
-    networkPolicies:: {},
+    networkPolicy:: {},
   },
 
   prometheus+: {
-    networkPolicies:: {},
+    networkPolicy:: {},
   },
 
   prometheusOperator+: {
-    networkPolicies:: {},
+    networkPolicy:: {},
   },
 }
