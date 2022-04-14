@@ -16,6 +16,7 @@ local platformPatch(p) = if p != null && std.objectHas(platforms, p) then platfo
 {
   // initialize the object to prevent "Indexed object has no field" lint errors
   local p = {
+    values+:: $.values,
     alertmanager: {},
     blackboxExporter: {},
     grafana: {},
