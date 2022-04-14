@@ -128,6 +128,18 @@ function(params) {
           port: 9090,
           protocol: 'TCP',
         }],
+      }, {
+        from: [{
+          podSelector: {
+            matchLabels: {
+              'app.kubernetes.io/name': 'thanos-query',
+            },
+          },
+        }],
+        ports: [{
+          port: 10901,
+          protocol: 'TCP',
+        }],
       }],
     },
   },
