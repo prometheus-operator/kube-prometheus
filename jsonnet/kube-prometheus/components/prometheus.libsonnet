@@ -128,7 +128,8 @@ function(params) {
           port: 9090,
           protocol: 'TCP',
         }],
-      }, {
+      }] + ( if p._config.thanos != null then
+      [{
         from: [{
           podSelector: {
             matchLabels: {
@@ -140,7 +141,7 @@ function(params) {
           port: 10901,
           protocol: 'TCP',
         }],
-      }],
+      }] else []),
     },
   },
 
