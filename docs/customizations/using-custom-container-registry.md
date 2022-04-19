@@ -5,7 +5,7 @@ Some Kubernetes installations source all their images from an internal registry.
 To produce the `docker pull/tag/push` commands that will synchronize upstream images to `internal-registry.com/organization` (after having run the `jb` command to populate the vendor directory):
 
 ```shell
-$ jsonnet -J vendor -S --tla-str repository=internal-registry.com/organization sync-to-internal-registry.jsonnet
+$ jsonnet -J vendor -S --tla-str repository=internal-registry.com/organization examples/sync-to-internal-registry.jsonnet
 $ docker pull k8s.gcr.io/addon-resizer:1.8.4
 $ docker tag k8s.gcr.io/addon-resizer:1.8.4 internal-registry.com/organization/addon-resizer:1.8.4
 $ docker push internal-registry.com/organization/addon-resizer:1.8.4
