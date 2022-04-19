@@ -16,10 +16,10 @@ local kp =
       prometheus+: {
         thanos: {
           baseImage: 'quay.io/thanos/thanos',
-            version: 'v0.8.1',
-            objectStorageConfig: {
-              key: 'thanos.yaml',
-              name: 'thanos-objstore-config',
+          version: 'v0.8.1',
+          objectStorageConfig: {
+            key: 'thanos.yaml',
+            name: 'thanos-objstore-config',
           },
         },
       },
