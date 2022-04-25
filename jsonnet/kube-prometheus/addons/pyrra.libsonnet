@@ -73,7 +73,7 @@
         args: [
           'api',
           '--api-url=http://%s.%s.svc.cluster.local:9444' % [pyrra.kubernetesService.metadata.name, pyrra.kubernetesService.metadata.namespace],
-          '--prometheus-url=http://prometheus-k8s.monitoring.svc.cluster.local:9090',
+          '--prometheus-url=http://prometheus-k8s.%s.svc.cluster.local:9090' % pyrra._config.namespace,
         ],
         // resources: pyrra._config.resources,
         ports: [{ containerPort: pyrra._config.port }],
