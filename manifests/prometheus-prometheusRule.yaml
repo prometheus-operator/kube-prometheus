@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: k8s
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.34.0
+    app.kubernetes.io/version: 2.35.0
     prometheus: k8s
     role: alert-rules
   name: prometheus-k8s-prometheus-rules
