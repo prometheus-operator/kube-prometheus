@@ -55,7 +55,7 @@ Kubernetes. We need to make sure that the CI on the main branch is testing the
 kube-prometheus configuration against both of these versions by updating the [CI
 worklow](.github/workflows/ci.yaml) to include the latest kind version and the
 2 latest images versions that are attached to the kind release. Once that is
-done, the [compatibility matrix](README.md#kubernetes-compatibility-matrix) in
+done, the [compatibility matrix](README.md#compatibility) in
 the README should also be updated to reflect the CI changes.
 
 ## Create pull request to cut the release
@@ -87,7 +87,7 @@ make generate
 
 ### Update the compatibility matrix
 
-Update the [compatibility matrix](README.md#kubernetes-compatibility-matrix) in
+Update the [compatibility matrix](README.md#compatibility) in
 the README, by adding the new release based on the `main` branch compatibility
 and removing the oldest release branch to only keep the latest 5 branches in the
 matrix.
