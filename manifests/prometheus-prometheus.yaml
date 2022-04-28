@@ -32,3 +32,10 @@ spec:
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
   version: v2.20.0
+#  storage:
+#    volumeClaimTemplate:
+#      spec:
+#        storageClassName: dynamic-ceph-rbd
+#        resources:
+#          requests:
+#            storage: 5Gi

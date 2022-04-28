@@ -121,6 +121,9 @@ spec:
       volumes:
       - emptyDir: {}
         name: grafana-storage
+#      - name: grafana-storage
+#        persistentVolumeClaim:
+#          claimName: grafana-data
       - name: grafana-datasources
         secret:
           secretName: grafana-datasources
