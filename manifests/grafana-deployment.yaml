@@ -37,6 +37,9 @@ spec:
         - mountPath: /var/lib/grafana
           name: grafana-storage
           readOnly: false
+      #  - name: grafana-storage
+      #    persistentVolumeClaim:
+      #      claimName: grafana-data         
         - mountPath: /etc/grafana/provisioning/datasources
           name: grafana-datasources
           readOnly: false

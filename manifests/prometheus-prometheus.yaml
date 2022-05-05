@@ -12,18 +12,18 @@ spec:
   #    namespace: monitoring
   #    port: web
   image: quay.io/prometheus/prometheus:v2.20.0
+  retention: 3d
   nodeSelector:
-    kubernetes.io/os: linux
+  #  kubernetes.io/os: linux
+    kubernetes.io/hostname: k8s-node01
   podMonitorNamespaceSelector: {}
   podMonitorSelector: {}
   replicas: 1
-#  remoteRead: 
-#  - url: http://10.169.170.43:8481/select/0/prometheus
   remoteWrite:
+  - url: http://10.167.169.92:19000/prometheus/v1/write
  # - writeRelabelConfigs:
 #    - sourceLabels: ['prometheus_replica']
  #     action: 'drop'
-  - url: http://10.167.169.92:19000/prometheus/v1/write
   resources:
     requests:
       memory: 400Mi
@@ -45,4 +45,4 @@ spec:
 #        storageClassName: dynamic-ceph-rbd
 #        resources:
 #          requests:
-#            storage: 5Gi
+#           storage: 5Gi
