@@ -6,24 +6,31 @@ metadata:
   name: k8s
   namespace: monitoring
 spec:
-  alerting:
-    alertmanagers:
-    - name: alertmanager-main
-      namespace: monitoring
-      port: web
+ # alerting:
+ #   alertmanagers:
+  #  - name: alertmanager-main
+  #    namespace: monitoring
+  #    port: web
   image: quay.io/prometheus/prometheus:v2.20.0
   nodeSelector:
     kubernetes.io/os: linux
   podMonitorNamespaceSelector: {}
   podMonitorSelector: {}
-  replicas: 2
+  replicas: 1
+#  remoteRead: 
+#  - url: http://10.169.170.43:8481/select/0/prometheus
+  remoteWrite:
+ # - writeRelabelConfigs:
+#    - sourceLabels: ['prometheus_replica']
+ #     action: 'drop'
+  - url: http://10.167.169.92:19000/prometheus/v1/write
   resources:
     requests:
       memory: 400Mi
-  ruleSelector:
-    matchLabels:
-      prometheus: k8s
-      role: alert-rules
+ # ruleSelector:
+ #   matchLabels:
+ #     prometheus: k8s
+ #     role: alert-rules
   securityContext:
     fsGroup: 2000
     runAsNonRoot: true
