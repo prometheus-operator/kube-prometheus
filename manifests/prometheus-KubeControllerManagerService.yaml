@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kube-system
+  name: kube-controller-manager
+  labels:
+    k8s-app: kube-controller-manager
+spec:
+  # 使用了selector不需要指定 endpoints
+  selector:
+    component: kube-controller-manager
+  ports:
+  - name: https-metrics
+    port: 10252
+    targetPort: 10252
+    protocol: TCP
+

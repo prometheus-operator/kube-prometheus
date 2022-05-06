@@ -17,7 +17,7 @@ spec:
       replacement: $1
       sourceLabels:
       - __meta_kubernetes_pod_node_name
-      targetLabel: instance
+      targetLabel: ident
     scheme: https
     tlsConfig:
       insecureSkipVerify: true

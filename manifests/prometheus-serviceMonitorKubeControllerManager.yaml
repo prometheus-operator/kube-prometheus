@@ -47,7 +47,7 @@ spec:
       sourceLabels:
       - __name__
     port: https-metrics
-    scheme: https
+    scheme: http
     tlsConfig:
       insecureSkipVerify: true
   jobLabel: k8s-app

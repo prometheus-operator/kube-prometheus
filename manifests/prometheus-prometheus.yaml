@@ -18,12 +18,14 @@ spec:
     kubernetes.io/hostname: k8s-node01
   podMonitorNamespaceSelector: {}
   podMonitorSelector: {}
-  replicas: 1
+  replicas: 2
   remoteWrite:
-  - url: http://10.167.169.92:19000/prometheus/v1/write
- # - writeRelabelConfigs:
-#    - sourceLabels: ['prometheus_replica']
- #     action: 'drop'
+  - url:  http://10.167.170.47:19000/prometheus/v1/write  #http://10.167.170.43:8480/insert/0/prometheus/api/v1/write  # http://10.167.170.42:19000/prometheus/v1/write
+    writeRelabelConfigs:
+    - regex: "prometheus_replica"
+      action: labeldrop
+#  replicaExternalLabelName: 'prometheus_replica'
+#  replicaExternalLabelNameClear: true
   resources:
     requests:
       memory: 400Mi
