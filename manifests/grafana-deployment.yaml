@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 8.5.1
+    app.kubernetes.io/version: 8.5.2
   name: grafana
   namespace: monitoring
 spec:
@@ -18,19 +18,19 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: bd42af310155ce6179e8abe6138cdedf
-        checksum/grafana-dashboardproviders: ef785ea500f9e9f410bea8d2b13fd62f
-        checksum/grafana-datasources: 66671eedc46d960cb443c19b630deb08
+        checksum/grafana-config: 5f279df903e38638229127f90a091717
+        checksum/grafana-dashboardproviders: 8a7c78f55f8e6d6898950c942de022cc
+        checksum/grafana-datasources: 5977512275d77354ed993a3d0d4ee737
       labels:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 8.5.1
+        app.kubernetes.io/version: 8.5.2
     spec:
       automountServiceAccountToken: false
       containers:
       - env: []
-        image: grafana/grafana:8.5.1
+        image: grafana/grafana:8.5.2
         name: grafana
         ports:
         - containerPort: 3000
@@ -112,6 +112,9 @@ spec:
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/node-rsrc-use
           name: grafana-dashboard-node-rsrc-use
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/nodes-darwin
+          name: grafana-dashboard-nodes-darwin
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/nodes
           name: grafana-dashboard-nodes
@@ -207,6 +210,9 @@ spec:
       - configMap:
           name: grafana-dashboard-node-rsrc-use
         name: grafana-dashboard-node-rsrc-use
+      - configMap:
+          name: grafana-dashboard-nodes-darwin
+        name: grafana-dashboard-nodes-darwin
       - configMap:
           name: grafana-dashboard-nodes
         name: grafana-dashboard-nodes
