@@ -35,9 +35,12 @@ local defaults = {
       // GC values,
       // imageGCLowThresholdPercent: 80
       // imageGCHighThresholdPercent: 85
+      // GC kicks in when imageGCHighThresholdPercent is hit and attempts to free upto imageGCLowThresholdPercent.
       // See https://kubernetes.io/docs/reference/config-api/kubelet-config.v1beta1/ for more details.
-      fsSpaceFillingUpWarningThreshold: 20,
-      fsSpaceFillingUpCriticalThreshold: 15,
+      // Warn only after imageGCHighThresholdPercent is hit, but filesystem is not freed up for a prolonged duration.
+      fsSpaceFillingUpWarningThreshold: 15,
+      // Send critical alert only after (imageGCHighThresholdPercent + 5) is hit, but filesystem is not freed up for a prolonged duration.
+      fsSpaceFillingUpCriticalThreshold: 10,
       diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/node/%s',
     },
