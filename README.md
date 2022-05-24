@@ -44,7 +44,7 @@ The following Kubernetes versions are supported and work as we test against thes
 | [`release-0.8`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.8)   | ✗               | ✔               | ✔               | ✗               | ✗               |
 | [`release-0.9`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.9)   | ✗               | ✗               | ✔               | ✔               | ✗               |
 | [`release-0.10`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.10) | ✗               | ✗               | ✗               | ✔               | ✔               |
-| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | ✗               | ✗               | ✗               | ✔               | ✔               |
+| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | ✗               | ✗               | ✗               | ✗               | ✔               |
 
 ## Quickstart
 
