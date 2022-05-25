@@ -17,6 +17,7 @@ resources:
 - ./manifests/blackboxExporter-service.yaml
 - ./manifests/blackboxExporter-serviceAccount.yaml
 - ./manifests/blackboxExporter-serviceMonitor.yaml
+- ./manifests/etcd-prometheusRule.yaml
 - ./manifests/grafana-config.yaml
 - ./manifests/grafana-dashboardDatasources.yaml
 - ./manifests/grafana-dashboardDefinitions.yaml

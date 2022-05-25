@@ -1,5 +1,6 @@
 local alertmanager = import './components/alertmanager.libsonnet';
 local blackboxExporter = import './components/blackbox-exporter.libsonnet';
+local etcd = import './components/etcd.libsonnet';
 local grafana = import './components/grafana.libsonnet';
 local kubernetesControlPlane = import './components/k8s-control-plane.libsonnet';
 local kubeStateMetrics = import './components/kube-state-metrics.libsonnet';
@@ -63,6 +64,10 @@ local utils = import './lib/utils.libsonnet';
       image: $.values.common.images.blackboxExporter,
       kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
       configmapReloaderImage: $.values.common.images.configmapReload,
+    },
+    etcd: {
+      namespace: $.values.common.namespace,
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
     grafana: {
       namespace: $.values.common.namespace,
@@ -132,6 +137,7 @@ local utils = import './lib/utils.libsonnet';
 
   alertmanager: alertmanager($.values.alertmanager),
   blackboxExporter: blackboxExporter($.values.blackboxExporter),
+  etcd: etcd($.values.etcd),
   grafana: grafana($.values.grafana),
   kubeStateMetrics: kubeStateMetrics($.values.kubeStateMetrics),
   nodeExporter: nodeExporter($.values.nodeExporter),
