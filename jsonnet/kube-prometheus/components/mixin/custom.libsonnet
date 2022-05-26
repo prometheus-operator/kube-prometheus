@@ -20,7 +20,9 @@ function(params) {
   local m = self,
   _config:: defaults + params,
 
-  local alertsandrules = (import './alerts/alerts.libsonnet') + (import './rules/rules.libsonnet'),
+  local alertsandrules = (import './alerts/alerts.libsonnet') + (import './rules/rules.libsonnet') {
+    _config+:: m._config.mixin._config,
+  },
 
   mixin:: alertsandrules +
           (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') {
