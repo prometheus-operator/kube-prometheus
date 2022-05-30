@@ -30,11 +30,11 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubepodnotready
         summary: Pod has been in a non-ready state for more than 15 minutes.
       expr: |
-        sum by (namespace, pod) (
-          max by(namespace, pod) (
+        sum by (namespace, pod, cluster) (
+          max by(namespace, pod, cluster) (
             kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown"}
-          ) * on(namespace, pod) group_left(owner_kind) topk by(namespace, pod) (
-            1, max by(namespace, pod, owner_kind) (kube_pod_owner{owner_kind!="Job"})
+          ) * on(namespace, pod, cluster) group_left(owner_kind) topk by(namespace, pod, cluster) (
+            1, max by(namespace, pod, owner_kind, cluster) (kube_pod_owner{owner_kind!="Job"})
           )
         ) > 0
       for: 15m
@@ -174,7 +174,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecontainerwaiting
         summary: Pod container waiting longer than 1 hour
       expr: |
-        sum by (namespace, pod, container) (kube_pod_container_status_waiting_reason{job="kube-state-metrics"}) > 0
+        sum by (namespace, pod, container, cluster) (kube_pod_container_status_waiting_reason{job="kube-state-metrics"}) > 0
       for: 1h
       labels:
         severity: warning
@@ -209,7 +209,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubejobnotcompleted
         summary: Job did not complete in time
       expr: |
-        time() - max by(namespace, job_name) (kube_job_status_start_time{job="kube-state-metrics"}
+        time() - max by(namespace, job_name, cluster) (kube_job_status_start_time{job="kube-state-metrics"}
           and
         kube_job_status_active{job="kube-state-metrics"} > 0) > 43200
       labels:
@@ -488,7 +488,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeversionmismatch
         summary: Different semantic versions of Kubernetes components running.
       expr: |
-        count(count by (git_version) (label_replace(kubernetes_build_info{job!~"kube-dns|coredns"},"git_version","$1","git_version","(v[0-9]*.[0-9]*).*"))) > 1
+        count by (cluster) (count by (git_version, cluster) (label_replace(kubernetes_build_info{job!~"kube-dns|coredns"},"git_version","$1","git_version","(v[0-9]*.[0-9]*).*"))) > 1
       for: 15m
       labels:
         severity: warning
@@ -594,7 +594,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeaggregatedapierrors
         summary: Kubernetes aggregated API has reported errors.
       expr: |
-        sum by(name, namespace)(increase(aggregator_unavailable_apiservice_total[10m])) > 4
+        sum by(name, namespace, cluster)(increase(aggregator_unavailable_apiservice_total[10m])) > 4
       labels:
         severity: warning
     - alert: KubeAggregatedAPIDown
@@ -604,7 +604,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeaggregatedapidown
         summary: Kubernetes aggregated API is down.
       expr: |
-        (1 - max by(name, namespace)(avg_over_time(aggregator_unavailable_apiservice[10m]))) * 100 < 85
+        (1 - max by(name, namespace, cluster)(avg_over_time(aggregator_unavailable_apiservice[10m]))) * 100 < 85
       for: 5m
       labels:
         severity: warning
