@@ -18,6 +18,7 @@ spec:
       port: web
   enableFeatures: []
   externalLabels: {}
+  retention: 1y
   image: quay.io/prometheus/prometheus:v2.35.0
   nodeSelector:
     kubernetes.io/os: linux
