@@ -596,7 +596,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-alertmanager-overview
     namespace: monitoring
 - apiVersion: v1
@@ -2357,7 +2357,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -4228,7 +4228,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -5407,7 +5407,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -6032,7 +6032,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-grafana-overview
     namespace: monitoring
 - apiVersion: v1
@@ -9109,7 +9109,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -11895,7 +11895,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -12910,7 +12910,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -15368,7 +15368,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-k8s-resources-pod
     namespace: monitoring
 - apiVersion: v1
@@ -17381,7 +17381,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -19559,7 +19559,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-k8s-resources-workloads-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -21802,7 +21802,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -23255,7 +23255,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -24980,7 +24980,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -26032,7 +26032,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -27110,7 +27110,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -27653,111 +27653,223 @@ items:
                           ]
                       },
                       {
-                          "aliasColors": {
-
-                          },
-                          "bars": false,
-                          "dashLength": 10,
-                          "dashes": false,
                           "datasource": "$datasource",
-                          "fill": 1,
-                          "fillGradient": 0,
+                          "fieldConfig": {
+                              "defaults": {
+                                  "custom": {
+
+                                  },
+                                  "thresholds": {
+                                      "mode": "absolute",
+                                      "steps": [
+                                          {
+                                              "color": "green"
+                                          },
+                                          {
+                                              "color": "yellow",
+                                              "value": 0.8
+                                          },
+                                          {
+                                              "color": "red",
+                                              "value": 0.9
+                                          }
+                                      ]
+                                  },
+                                  "unit": "decbytes"
+                              },
+                              "overrides": [
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Mounted on"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "custom.width",
+                                              "value": 260
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Size"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "custom.width",
+                                              "value": 93
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Used"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "custom.width",
+                                              "value": 72
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Available"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "custom.width",
+                                              "value": 88
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Used, %"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "unit",
+                                              "value": "percentunit"
+                                          },
+                                          {
+                                              "id": "custom.displayMode",
+                                              "value": "gradient-gauge"
+                                          },
+                                          {
+                                              "id": "max",
+                                              "value": 1
+                                          },
+                                          {
+                                              "id": "min",
+                                              "value": 0
+                                          }
+                                      ]
+                                  }
+                              ]
+                          },
                           "gridPos": {
 
                           },
                           "id": 7,
-                          "legend": {
-                              "alignAsTable": false,
-                              "avg": false,
-                              "current": false,
-                              "max": false,
-                              "min": false,
-                              "rightSide": false,
-                              "show": true,
-                              "sideWidth": null,
-                              "total": false,
-                              "values": false
-                          },
-                          "lines": true,
-                          "linewidth": 1,
-                          "links": [
-
-                          ],
-                          "nullPointMode": "null",
-                          "percentage": false,
-                          "pointradius": 5,
-                          "points": false,
-                          "renderer": "flot",
-                          "repeat": null,
-                          "seriesOverrides": [
-                              {
-                                  "alias": "used",
-                                  "color": "#E0B400"
-                              },
-                              {
-                                  "alias": "available",
-                                  "color": "#73BF69"
-                              }
-                          ],
-                          "spaceLength": 10,
                           "span": 6,
-                          "stack": true,
-                          "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(\n  max by (device) (\n    node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"}\n  -\n    node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"}\n  )\n)\n",
-                                  "format": "time_series",
+                                  "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"})\n",
+                                  "format": "table",
+                                  "instant": true,
                                   "intervalFactor": 2,
-                                  "legendFormat": "used",
-                                  "refId": "A"
+                                  "legendFormat": ""
                               },
                               {
-                                  "expr": "sum(\n  max by (device) (\n    node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"}\n  )\n)\n",
-                                  "format": "time_series",
+                                  "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"})\n",
+                                  "format": "table",
+                                  "instant": true,
                                   "intervalFactor": 2,
-                                  "legendFormat": "available",
-                                  "refId": "B"
+                                  "legendFormat": ""
                               }
                           ],
-                          "thresholds": [
-
-                          ],
-                          "timeFrom": null,
-                          "timeShift": null,
                           "title": "Disk Space Usage",
-                          "tooltip": {
-                              "shared": true,
-                              "sort": 0,
-                              "value_type": "individual"
-                          },
-                          "type": "graph",
-                          "xaxis": {
-                              "buckets": null,
-                              "mode": "time",
-                              "name": null,
-                              "show": true,
-                              "values": [
-
-                              ]
-                          },
-                          "yaxes": [
+                          "transformations": [
                               {
-                                  "format": "bytes",
-                                  "label": null,
-                                  "logBase": 1,
-                                  "max": null,
-                                  "min": 0,
-                                  "show": true
+                                  "id": "groupBy",
+                                  "options": {
+                                      "fields": {
+                                          "Value #A": {
+                                              "aggregations": [
+                                                  "lastNotNull"
+                                              ],
+                                              "operation": "aggregate"
+                                          },
+                                          "Value #B": {
+                                              "aggregations": [
+                                                  "lastNotNull"
+                                              ],
+                                              "operation": "aggregate"
+                                          },
+                                          "mountpoint": {
+                                              "aggregations": [
+
+                                              ],
+                                              "operation": "groupby"
+                                          }
+                                      }
+                                  }
                               },
                               {
-                                  "format": "bytes",
-                                  "label": null,
-                                  "logBase": 1,
-                                  "max": null,
-                                  "min": 0,
-                                  "show": true
+                                  "id": "merge",
+                                  "options": {
+
+                                  }
+                              },
+                              {
+                                  "id": "calculateField",
+                                  "options": {
+                                      "alias": "Used",
+                                      "binary": {
+                                          "left": "Value #A (lastNotNull)",
+                                          "operator": "-",
+                                          "reducer": "sum",
+                                          "right": "Value #B (lastNotNull)"
+                                      },
+                                      "mode": "binary",
+                                      "reduce": {
+                                          "reducer": "sum"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": "calculateField",
+                                  "options": {
+                                      "alias": "Used, %",
+                                      "binary": {
+                                          "left": "Used",
+                                          "operator": "/",
+                                          "reducer": "sum",
+                                          "right": "Value #A (lastNotNull)"
+                                      },
+                                      "mode": "binary",
+                                      "reduce": {
+                                          "reducer": "sum"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": "organize",
+                                  "options": {
+                                      "excludeByName": {
+
+                                      },
+                                      "indexByName": {
+
+                                      },
+                                      "renameByName": {
+                                          "Value #A (lastNotNull)": "Size",
+                                          "Value #B (lastNotNull)": "Available",
+                                          "mountpoint": "Mounted on"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": "sortBy",
+                                  "options": {
+                                      "fields": {
+
+                                      },
+                                      "sort": [
+                                          {
+                                              "field": "Mounted on"
+                                          }
+                                      ]
+                                  }
                               }
-                          ]
+                          ],
+                          "transparent": false,
+                          "type": "table"
                       }
                   ],
                   "repeat": null,
@@ -28058,7 +28170,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-nodes-darwin
     namespace: monitoring
 - apiVersion: v1
@@ -28594,111 +28706,223 @@ items:
                           ]
                       },
                       {
-                          "aliasColors": {
-
-                          },
-                          "bars": false,
-                          "dashLength": 10,
-                          "dashes": false,
                           "datasource": "$datasource",
-                          "fill": 1,
-                          "fillGradient": 0,
+                          "fieldConfig": {
+                              "defaults": {
+                                  "custom": {
+
+                                  },
+                                  "thresholds": {
+                                      "mode": "absolute",
+                                      "steps": [
+                                          {
+                                              "color": "green"
+                                          },
+                                          {
+                                              "color": "yellow",
+                                              "value": 0.8
+                                          },
+                                          {
+                                              "color": "red",
+                                              "value": 0.9
+                                          }
+                                      ]
+                                  },
+                                  "unit": "decbytes"
+                              },
+                              "overrides": [
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Mounted on"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "custom.width",
+                                              "value": 260
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Size"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "custom.width",
+                                              "value": 93
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Used"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "custom.width",
+                                              "value": 72
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Available"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "custom.width",
+                                              "value": 88
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "matcher": {
+                                          "id": "byName",
+                                          "options": "Used, %"
+                                      },
+                                      "properties": [
+                                          {
+                                              "id": "unit",
+                                              "value": "percentunit"
+                                          },
+                                          {
+                                              "id": "custom.displayMode",
+                                              "value": "gradient-gauge"
+                                          },
+                                          {
+                                              "id": "max",
+                                              "value": 1
+                                          },
+                                          {
+                                              "id": "min",
+                                              "value": 0
+                                          }
+                                      ]
+                                  }
+                              ]
+                          },
                           "gridPos": {
 
                           },
                           "id": 7,
-                          "legend": {
-                              "alignAsTable": false,
-                              "avg": false,
-                              "current": false,
-                              "max": false,
-                              "min": false,
-                              "rightSide": false,
-                              "show": true,
-                              "sideWidth": null,
-                              "total": false,
-                              "values": false
-                          },
-                          "lines": true,
-                          "linewidth": 1,
-                          "links": [
-
-                          ],
-                          "nullPointMode": "null",
-                          "percentage": false,
-                          "pointradius": 5,
-                          "points": false,
-                          "renderer": "flot",
-                          "repeat": null,
-                          "seriesOverrides": [
-                              {
-                                  "alias": "used",
-                                  "color": "#E0B400"
-                              },
-                              {
-                                  "alias": "available",
-                                  "color": "#73BF69"
-                              }
-                          ],
-                          "spaceLength": 10,
                           "span": 6,
-                          "stack": true,
-                          "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "sum(\n  max by (device) (\n    node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"}\n  -\n    node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"}\n  )\n)\n",
-                                  "format": "time_series",
+                                  "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"})\n",
+                                  "format": "table",
+                                  "instant": true,
                                   "intervalFactor": 2,
-                                  "legendFormat": "used",
-                                  "refId": "A"
+                                  "legendFormat": ""
                               },
                               {
-                                  "expr": "sum(\n  max by (device) (\n    node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"}\n  )\n)\n",
-                                  "format": "time_series",
+                                  "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\"})\n",
+                                  "format": "table",
+                                  "instant": true,
                                   "intervalFactor": 2,
-                                  "legendFormat": "available",
-                                  "refId": "B"
+                                  "legendFormat": ""
                               }
                           ],
-                          "thresholds": [
-
-                          ],
-                          "timeFrom": null,
-                          "timeShift": null,
                           "title": "Disk Space Usage",
-                          "tooltip": {
-                              "shared": true,
-                              "sort": 0,
-                              "value_type": "individual"
-                          },
-                          "type": "graph",
-                          "xaxis": {
-                              "buckets": null,
-                              "mode": "time",
-                              "name": null,
-                              "show": true,
-                              "values": [
-
-                              ]
-                          },
-                          "yaxes": [
+                          "transformations": [
                               {
-                                  "format": "bytes",
-                                  "label": null,
-                                  "logBase": 1,
-                                  "max": null,
-                                  "min": 0,
-                                  "show": true
+                                  "id": "groupBy",
+                                  "options": {
+                                      "fields": {
+                                          "Value #A": {
+                                              "aggregations": [
+                                                  "lastNotNull"
+                                              ],
+                                              "operation": "aggregate"
+                                          },
+                                          "Value #B": {
+                                              "aggregations": [
+                                                  "lastNotNull"
+                                              ],
+                                              "operation": "aggregate"
+                                          },
+                                          "mountpoint": {
+                                              "aggregations": [
+
+                                              ],
+                                              "operation": "groupby"
+                                          }
+                                      }
+                                  }
                               },
                               {
-                                  "format": "bytes",
-                                  "label": null,
-                                  "logBase": 1,
-                                  "max": null,
-                                  "min": 0,
-                                  "show": true
+                                  "id": "merge",
+                                  "options": {
+
+                                  }
+                              },
+                              {
+                                  "id": "calculateField",
+                                  "options": {
+                                      "alias": "Used",
+                                      "binary": {
+                                          "left": "Value #A (lastNotNull)",
+                                          "operator": "-",
+                                          "reducer": "sum",
+                                          "right": "Value #B (lastNotNull)"
+                                      },
+                                      "mode": "binary",
+                                      "reduce": {
+                                          "reducer": "sum"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": "calculateField",
+                                  "options": {
+                                      "alias": "Used, %",
+                                      "binary": {
+                                          "left": "Used",
+                                          "operator": "/",
+                                          "reducer": "sum",
+                                          "right": "Value #A (lastNotNull)"
+                                      },
+                                      "mode": "binary",
+                                      "reduce": {
+                                          "reducer": "sum"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": "organize",
+                                  "options": {
+                                      "excludeByName": {
+
+                                      },
+                                      "indexByName": {
+
+                                      },
+                                      "renameByName": {
+                                          "Value #A (lastNotNull)": "Size",
+                                          "Value #B (lastNotNull)": "Available",
+                                          "mountpoint": "Mounted on"
+                                      }
+                                  }
+                              },
+                              {
+                                  "id": "sortBy",
+                                  "options": {
+                                      "fields": {
+
+                                      },
+                                      "sort": [
+                                          {
+                                              "field": "Mounted on"
+                                          }
+                                      ]
+                                  }
                               }
-                          ]
+                          ],
+                          "transparent": false,
+                          "type": "table"
                       }
                   ],
                   "repeat": null,
@@ -28999,7 +29223,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -29575,7 +29799,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -30792,7 +31016,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -32451,7 +32675,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -33675,7 +33899,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -34935,7 +35159,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -36036,7 +36260,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -37463,7 +37687,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 8.5.4
+      app.kubernetes.io/version: 8.5.5
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList
