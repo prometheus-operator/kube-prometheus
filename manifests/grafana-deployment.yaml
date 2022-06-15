@@ -113,9 +113,6 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/node-rsrc-use
           name: grafana-dashboard-node-rsrc-use
           readOnly: false
-        - mountPath: /grafana-dashboard-definitions/0/nodes-darwin
-          name: grafana-dashboard-nodes-darwin
-          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/nodes
           name: grafana-dashboard-nodes
           readOnly: false
@@ -210,9 +207,6 @@ spec:
       - configMap:
           name: grafana-dashboard-node-rsrc-use
         name: grafana-dashboard-node-rsrc-use
-      - configMap:
-          name: grafana-dashboard-nodes-darwin
-        name: grafana-dashboard-nodes-darwin
       - configMap:
           name: grafana-dashboard-nodes
         name: grafana-dashboard-nodes
