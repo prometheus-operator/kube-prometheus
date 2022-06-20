@@ -12,10 +12,10 @@ jobs:
     strategy:
       matrix:
         branch:
-          - 'release-0.7'
           - 'release-0.8'
           - 'release-0.9'
           - 'release-0.10'
+          - 'release-0.11'
           - 'main'
     steps:
     - uses: actions/checkout@v3
@@ -67,7 +67,7 @@ jobs:
           - [x] `NONE` (if none of the other choices apply. Example, tooling, build system, CI, docs, etc.)
 
           ## Changelog entry
-          
+
           ```release-note
 
           ```
