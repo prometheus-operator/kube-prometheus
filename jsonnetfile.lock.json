@@ -18,7 +18,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "0be65da6cc9905d93554bfdf51e1faaeae1149a4",
+      "version": "4443e14dcd7e50cce71c20c5857c139d9993fa14",
       "sum": "W/Azptf1PoqjyMwJON96UY69MFugDA4IAYiKURscryc="
     },
     {
@@ -48,7 +48,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "9e9d5cddd4f02a25b9dec09a5910878a8ba8e045",
+      "version": "1ddfda8ac51edb0adc38516b9a2435d6abcfc9f0",
       "sum": "TieGrr7GyKjURk1+wXHFpdoCiwNaIVfZvyc5mbI9OM0="
     },
     {
@@ -140,7 +140,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "3c0a100dec2950f23e91f7efbf8867750960807d",
+      "version": "9f1a3970b24e09bd65e189e39920652133a02b38",
       "sum": "APXOIP3B3dZ3Tyh7L2UhyWR8Vbf5+9adTLz/ya7n6uU=",
       "name": "prometheus"
     },
@@ -151,7 +151,7 @@
           "subdir": "config/crd/bases"
         }
       },
-      "version": "1f6478a3e69cf77bef556672d8c037c96ec10306",
+      "version": "b715a9b3e1894962f910c10dc4999dda22fabc26",
       "sum": "GQ0GFKGdIWKx1b78VRs6jtC4SMqkBjT5jl65QUjPKK4="
     },
     {
