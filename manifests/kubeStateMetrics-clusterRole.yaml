@@ -109,3 +109,11 @@ rules:
   verbs:
   - list
   - watch
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterroles
+  - roles
+  verbs:
+  - list
+  - watch
