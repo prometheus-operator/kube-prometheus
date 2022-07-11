@@ -100,7 +100,7 @@ jobs:
         wait: 10s # Without default CNI, control-plane doesn't get ready until Cilium is installed
         config: .github/workflows/kind/config.yml
     - name: Setup Helm
-      uses: azure/setup-helm@v2.1
+      uses: azure/setup-helm@v3.1
     - name: Install Cilium
       run: |
         helm repo add cilium https://helm.cilium.io/
