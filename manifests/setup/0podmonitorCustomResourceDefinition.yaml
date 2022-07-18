@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
+    controller-gen.kubebuilder.io/version: v0.9.2
   creationTimestamp: null
   name: podmonitors.monitoring.coreos.com
 spec:
@@ -110,6 +110,7 @@ spec:
                           required:
                           - key
                           type: object
+                          x-kubernetes-map-type: atomic
                         type:
                           description: Set the authentication type. Defaults to Bearer,
                             Basic will cause an error
@@ -138,6 +139,7 @@ spec:
                           required:
                           - key
                           type: object
+                          x-kubernetes-map-type: atomic
                         username:
                           description: The secret in the service monitor namespace
                             that contains the username for authentication.
@@ -157,6 +159,7 @@ spec:
                           required:
                           - key
                           type: object
+                          x-kubernetes-map-type: atomic
                       type: object
                     bearerTokenSecret:
                       description: Secret to mount to read bearer token for scraping
@@ -178,6 +181,7 @@ spec:
                       required:
                       - key
                       type: object
+                      x-kubernetes-map-type: atomic
                     enableHttp2:
                       description: Whether to enable HTTP2.
                       type: boolean
@@ -296,6 +300,7 @@ spec:
                               required:
                               - key
                               type: object
+                              x-kubernetes-map-type: atomic
                             secret:
                               description: Secret containing data to use for the targets.
                               properties:
@@ -315,6 +320,7 @@ spec:
                               required:
                               - key
                               type: object
+                              x-kubernetes-map-type: atomic
                           type: object
                         clientSecret:
                           description: The secret containing the OAuth2 client secret
@@ -334,6 +340,7 @@ spec:
                           required:
                           - key
                           type: object
+                          x-kubernetes-map-type: atomic
                         endpointParams:
                           additionalProperties:
                             type: string
@@ -486,6 +493,7 @@ spec:
                               required:
                               - key
                               type: object
+                              x-kubernetes-map-type: atomic
                             secret:
                               description: Secret containing data to use for the targets.
                               properties:
@@ -505,6 +513,7 @@ spec:
                               required:
                               - key
                               type: object
+                              x-kubernetes-map-type: atomic
                           type: object
                         cert:
                           description: Struct containing the client cert file for
@@ -529,6 +538,7 @@ spec:
                               required:
                               - key
                               type: object
+                              x-kubernetes-map-type: atomic
                             secret:
                               description: Secret containing data to use for the targets.
                               properties:
@@ -548,6 +558,7 @@ spec:
                               required:
                               - key
                               type: object
+                              x-kubernetes-map-type: atomic
                           type: object
                         insecureSkipVerify:
                           description: Disable target certificate validation.
@@ -571,6 +582,7 @@ spec:
                           required:
                           - key
                           type: object
+                          x-kubernetes-map-type: atomic
                         serverName:
                           description: Used to verify the hostname for the targets.
                           type: string
@@ -632,6 +644,7 @@ spec:
                       are ANDed.
                     type: object
                 type: object
+                x-kubernetes-map-type: atomic
               targetLimit:
                 description: TargetLimit defines a limit on the number of scraped
                   targets that will be accepted.
@@ -646,9 +659,3 @@ spec:
         type: object
     served: true
     storage: true
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
