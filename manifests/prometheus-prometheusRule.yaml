@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: k8s
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.36.2
+    app.kubernetes.io/version: 2.37.0
     prometheus: k8s
     role: alert-rules
   name: prometheus-k8s-prometheus-rules
@@ -287,6 +287,17 @@ spec:
       for: 5m
       labels:
         severity: critical
+    - alert: PrometheusHighQueryLoad
+      annotations:
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} query API has
+          less than 20% available capacity in its query engine for the last 15 minutes.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheushighqueryload
+        summary: Prometheus is reaching its maximum capacity serving concurrent requests.
+      expr: |
+        avg_over_time(prometheus_engine_queries{job="prometheus-k8s"}[5m]) / max_over_time(prometheus_engine_queries_concurrent_max{job="prometheus-k8s"}[5m]) > 0.8
+      for: 15m
+      labels:
+        severity: warning
     - alert: PrometheusErrorSendingAlertsToAnyAlertmanager
       annotations:
         description: '{{ printf "%.1f" $value }}% minimum errors while sending alerts
