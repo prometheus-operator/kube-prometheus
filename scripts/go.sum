@@ -963,8 +963,8 @@ github.com/xeipuuv/gojsonschema v1.2.0 h1:LhYJRs+L4fBtjZUfuSZIKGeVu0QRy8e5Xi7D17
 github.com/xeipuuv/gojsonschema v1.2.0/go.mod h1:anYRn/JVcOK2ZgGU+IjEV4nwlhoK5sQluxsYJ78Id3Y=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77/go.mod h1:aYKd//L2LvnjZzWKhF00oedf4jCCReLcmhLdhm1A27Q=
-github.com/yannh/kubeconform v0.4.13 h1:TDKRtnXRI4vBywX63hxjd6EncW5u9fIbROoc/v4Mt5w=
-github.com/yannh/kubeconform v0.4.13/go.mod h1:5md2J7KvQFj+sICN5Je5ckhUcgPoPISuntVJr4Hnr08=
+github.com/yannh/kubeconform v0.4.14 h1:EXCt51sbvESYBxCpfHWhTek3GOj5VsGMB1dxU31HO+Y=
+github.com/yannh/kubeconform v0.4.14/go.mod h1:5md2J7KvQFj+sICN5Je5ckhUcgPoPISuntVJr4Hnr08=
 github.com/yashtewari/glob-intersection v0.0.0-20180916065949-5c77d914dd0b h1:vVRagRXf67ESqAb72hG2C/ZwI8NtJF2u2V76EsuOHGY=
 github.com/yashtewari/glob-intersection v0.0.0-20180916065949-5c77d914dd0b/go.mod h1:HptNXiXVDcJjXe9SqMd0v2FsL9f8dz4GnXgltU6q/co=
 github.com/yuin/goldmark v1.1.22/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
