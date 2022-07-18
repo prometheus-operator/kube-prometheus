@@ -7,7 +7,7 @@ require (
 	github.com/brancz/gojsontoyaml v0.0.0-20200602132005-3697ded27e8c
 	github.com/bwplotka/mdox v0.9.0
 	github.com/google/go-jsonnet v0.18.0
-	github.com/jsonnet-bundler/jsonnet-bundler v0.4.0
+	github.com/jsonnet-bundler/jsonnet-bundler v0.5.1
 	github.com/yannh/kubeconform v0.4.13
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
@@ -26,7 +26,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.5.1 // indirect
 	github.com/alecthomas/chroma v0.8.2 // indirect
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
-	github.com/alecthomas/units v0.0.0-20210208195552-ff826a37aa15 // indirect
+	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
 	github.com/andybalholm/cascadia v1.2.0 // indirect
 	github.com/antchfx/htmlquery v1.2.3 // indirect
 	github.com/antchfx/xmlquery v1.3.4 // indirect
@@ -82,7 +82,7 @@ require (
 	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/kennygrant/sanitize v1.2.4 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
-	github.com/mattn/go-colorable v0.1.9 // indirect
+	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/mattn/go-shellwords v1.0.10 // indirect
@@ -130,7 +130,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	golang.org/x/net v0.0.0-20210825183410-e898025ed96a // indirect
 	golang.org/x/oauth2 v0.0.0-20211005180243-6b3c2da341f1 // indirect
-	golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf // indirect
+	golang.org/x/sys v0.0.0-20220615213510-4f61da869c0c // indirect
 	golang.org/x/term v0.0.0-20210220032956-6a3ed077a48d // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
@@ -144,7 +144,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/api v0.22.2 // indirect
 	k8s.io/apimachinery v0.22.2 // indirect
 	k8s.io/client-go v0.22.2 // indirect
