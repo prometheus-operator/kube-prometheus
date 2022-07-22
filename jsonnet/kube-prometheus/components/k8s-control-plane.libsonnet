@@ -20,7 +20,7 @@ local defaults = {
       kubeApiserverSelector: 'job="apiserver"',
       podLabel: 'pod',
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/kubernetes/%s',
-      diskDeviceSelector: 'device=~"mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+"',
+      diskDeviceSelector: 'device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"',
       hostNetworkInterfaceSelector: 'device!~"veth.+"',
     },
   },
