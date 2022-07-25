@@ -19,7 +19,7 @@ Prometheus rules and Grafana dashboards in specific follow the
 
 For both the Prometheus rules and the Grafana dashboards Kubernetes `ConfigMap`s are generated within kube-prometheus. In order to add additional rules and dashboards simply merge them onto the existing json objects. This document illustrates examples for rules as well as dashboards.
 
-As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](https://github.com/prometheus-operator/prometheus-operator/blob/main/README.md):
+As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](https://github.com/prometheus-operator/kube-prometheus/blob/main/README.md):
 
 ```jsonnet mdox-exec="cat example.jsonnet"
 local kp =
