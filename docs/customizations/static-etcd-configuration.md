@@ -1,6 +1,6 @@
 ### Static etcd configuration
 
-In order to configure a static etcd cluster to scrape there is a simple [static-etcd.libsonnet](../../jsonnet/kube-prometheus/addons/static-etcd.libsonnet) mixin prepared.
+In order to configure a static etcd cluster to scrape there is a simple [static-etcd.libsonnet](https://github.com/prometheus-operator/kube-prometheus/tree/main/jsonnet/kube-prometheus/addons/static-etcd.libsonnet) mixin prepared.
 
 An example of how to use it can be seen below:
 

@@ -19,7 +19,7 @@ Prometheus rules and Grafana dashboards in specific follow the
 
 For both the Prometheus rules and the Grafana dashboards Kubernetes `ConfigMap`s are generated within kube-prometheus. In order to add additional rules and dashboards simply merge them onto the existing json objects. This document illustrates examples for rules as well as dashboards.
 
-As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](../../README.md):
+As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](https://github.com/prometheus-operator/kube-prometheus/blob/main/README.md):
 
 ```jsonnet mdox-exec="cat example.jsonnet"
 local kp =
@@ -225,9 +225,9 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 ### Changing default rules
 
 Along with adding additional rules, we give the user the option to filter or adjust the existing rules imported by `kube-prometheus/main.libsonnet`.
-The recording rules can be found in [kube-prometheus/components/mixin/rules](../../jsonnet/kube-prometheus/components/mixin/rules)
+The recording rules can be found in [kube-prometheus/components/mixin/rules](https://github.com/prometheus-operator/kube-prometheus/tree/main/jsonnet/kube-prometheus/components/mixin/rules)
 and [kubernetes-mixin/rules](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/rules).
-The alerting rules can be found in [kube-prometheus/components/mixin/alerts](../../jsonnet/kube-prometheus/components/mixin/alerts)
+The alerting rules can be found in [kube-prometheus/components/mixin/alerts](https://github.com/prometheus-operator/kube-prometheus/tree/main/jsonnet/kube-prometheus/components/mixin/alerts)
 and [kubernetes-mixin/alerts](https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/alerts).
 
 Knowing which rules to change, the user can now use functions from the [Jsonnet standard library](https://jsonnet.org/ref/stdlib.html) to make these changes.
@@ -417,7 +417,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') + {
 ### Pre-rendered Grafana dashboards
 
 As jsonnet is a superset of json, the jsonnet `import` function can be used to include Grafana dashboard json blobs.
-In this example we are importing a [provided example dashboard](../../examples/example-grafana-dashboard.json).
+In this example we are importing a [provided example dashboard](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples/example-grafana-dashboard.json).
 
 ```jsonnet mdox-exec="cat examples/grafana-additional-rendered-dashboard-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
