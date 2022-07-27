@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: '37 7 * * 1'
 env:
-  golang-version: '1.17'
+  golang-version: '1.18'
 jobs:
   versions:
     runs-on: ubuntu-latest
