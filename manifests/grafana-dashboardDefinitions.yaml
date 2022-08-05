@@ -600,7 +600,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-alertmanager-overview
     namespace: monitoring
 - apiVersion: v1
@@ -2361,7 +2361,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -4232,7 +4232,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -5411,7 +5411,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -6036,7 +6036,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-grafana-overview
     namespace: monitoring
 - apiVersion: v1
@@ -9113,7 +9113,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -11899,7 +11899,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -12914,7 +12914,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -15372,7 +15372,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-k8s-resources-pod
     namespace: monitoring
 - apiVersion: v1
@@ -17385,7 +17385,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -19563,7 +19563,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-k8s-resources-workloads-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -21806,7 +21806,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -23259,7 +23259,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -24984,7 +24984,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -26036,7 +26036,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -27114,7 +27114,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -27597,21 +27597,21 @@ items:
                               {
                                   "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}} read",
                                   "refId": "A"
                               },
                               {
                                   "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}} written",
                                   "refId": "B"
                               },
                               {
                                   "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}} io time",
                                   "refId": "C"
                               }
@@ -27639,7 +27639,7 @@ items:
                           },
                           "yaxes": [
                               {
-                                  "format": "bytes",
+                                  "format": "Bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -27647,7 +27647,7 @@ items:
                                   "show": true
                               },
                               {
-                                  "format": "s",
+                                  "format": "percentunit",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -27896,6 +27896,7 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
+                          "description": "Network received (bits/s)",
                           "fill": 0,
                           "fillGradient": 0,
                           "gridPos": {
@@ -27934,9 +27935,9 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval])",
+                                  "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}}",
                                   "refId": "A"
                               }
@@ -27964,7 +27965,7 @@ items:
                           },
                           "yaxes": [
                               {
-                                  "format": "bytes",
+                                  "format": "bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -27972,7 +27973,7 @@ items:
                                   "show": true
                               },
                               {
-                                  "format": "bytes",
+                                  "format": "bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -27989,6 +27990,7 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
+                          "description": "Network transmitted (bits/s)",
                           "fill": 0,
                           "fillGradient": 0,
                           "gridPos": {
@@ -28027,9 +28029,9 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval])",
+                                  "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}}",
                                   "refId": "A"
                               }
@@ -28057,7 +28059,7 @@ items:
                           },
                           "yaxes": [
                               {
-                                  "format": "bytes",
+                                  "format": "bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -28065,7 +28067,7 @@ items:
                                   "show": true
                               },
                               {
-                                  "format": "bytes",
+                                  "format": "bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -28174,7 +28176,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-nodes-darwin
     namespace: monitoring
 - apiVersion: v1
@@ -28650,21 +28652,21 @@ items:
                               {
                                   "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}} read",
                                   "refId": "A"
                               },
                               {
                                   "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}} written",
                                   "refId": "B"
                               },
                               {
                                   "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}} io time",
                                   "refId": "C"
                               }
@@ -28692,7 +28694,7 @@ items:
                           },
                           "yaxes": [
                               {
-                                  "format": "bytes",
+                                  "format": "Bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -28700,7 +28702,7 @@ items:
                                   "show": true
                               },
                               {
-                                  "format": "s",
+                                  "format": "percentunit",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -28949,6 +28951,7 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
+                          "description": "Network received (bits/s)",
                           "fill": 0,
                           "fillGradient": 0,
                           "gridPos": {
@@ -28987,9 +28990,9 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval])",
+                                  "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}}",
                                   "refId": "A"
                               }
@@ -29017,7 +29020,7 @@ items:
                           },
                           "yaxes": [
                               {
-                                  "format": "bytes",
+                                  "format": "bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -29025,7 +29028,7 @@ items:
                                   "show": true
                               },
                               {
-                                  "format": "bytes",
+                                  "format": "bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -29042,6 +29045,7 @@ items:
                           "dashLength": 10,
                           "dashes": false,
                           "datasource": "$datasource",
+                          "description": "Network transmitted (bits/s)",
                           "fill": 0,
                           "fillGradient": 0,
                           "gridPos": {
@@ -29080,9 +29084,9 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval])",
+                                  "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8",
                                   "format": "time_series",
-                                  "intervalFactor": 2,
+                                  "intervalFactor": 1,
                                   "legendFormat": "{{device}}",
                                   "refId": "A"
                               }
@@ -29110,7 +29114,7 @@ items:
                           },
                           "yaxes": [
                               {
-                                  "format": "bytes",
+                                  "format": "bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -29118,7 +29122,7 @@ items:
                                   "show": true
                               },
                               {
-                                  "format": "bytes",
+                                  "format": "bps",
                                   "label": null,
                                   "logBase": 1,
                                   "max": null,
@@ -29227,7 +29231,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -29803,7 +29807,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -31020,7 +31024,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -32679,7 +32683,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -33903,7 +33907,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -35163,7 +35167,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -36264,7 +36268,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -37691,7 +37695,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 9.0.4
+      app.kubernetes.io/version: 9.0.5
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList
