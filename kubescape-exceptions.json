@@ -40,6 +40,13 @@
           "kind": "Deployment",
           "name": "prometheus-operator"
         }
+      },
+      {
+        "designatorType": "Attributes",
+        "attributes": {
+          "kind": "ServiceAccount",
+          "name": "prometheus-k8s"
+        }
       }
     ],
     "posturePolicies": [
