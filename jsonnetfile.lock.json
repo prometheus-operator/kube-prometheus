@@ -18,7 +18,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "a1405e9633a8b50d1542b293d7e54b921a276e7e",
+      "version": "192d635da91f0f87b7c031aedb87a75fecc01811",
       "sum": "IkDHlaE0gvvcPjSNurFT+jQ2aCOAbqHF1WVmXbAgkds="
     },
     {
@@ -78,8 +78,8 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "767af98d2f8eaba93d8834b56dc346b4235c043e",
-      "sum": "dFXBd/OAQREzokDmW+6Wnp28KrjK5ZLUz4YX7GO4/m0="
+      "version": "f1d56534651990ed434aac4e4dc86766d83004a4",
+      "sum": "evJ+PXRzuM1tezCG5WzpAn4Lk3YJfMvDFcs+45fsscU="
     },
     {
       "source": {
@@ -88,7 +88,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "767af98d2f8eaba93d8834b56dc346b4235c043e",
+      "version": "f1d56534651990ed434aac4e4dc86766d83004a4",
       "sum": "u8gaydJoxEjzizQ8jY8xSjYgWooPmxw+wIWdDxifMAk="
     },
     {
@@ -98,7 +98,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "9f64561535810a9a3e4862beeb72577044be993f",
+      "version": "03b531ff8024617e07c668f5fcd19fd25cfe342c",
       "sum": "GQmaVFJwKMiD/P4n3N2LrAZVcwutriWrP8joclDtBYQ=",
       "name": "prometheus-operator-mixin"
     },
@@ -109,7 +109,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "9f64561535810a9a3e4862beeb72577044be993f",
+      "version": "03b531ff8024617e07c668f5fcd19fd25cfe342c",
       "sum": "hV3FK2ekNFLUlKnj5chRp8WKKxZemfbwynYWK5RkY1E="
     },
     {
@@ -140,7 +140,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "0fa8469f76107dc12e949164fc174a4098aedb19",
+      "version": "8b863c42dd956d35d18a7a0b39c89c86adf7cebf",
       "sum": "crD6rsagAMJFnVRw4pO63z3LLYfz4QFIiMR14zjjIfY=",
       "name": "prometheus"
     },
@@ -151,7 +151,7 @@
           "subdir": "config/crd/bases"
         }
       },
-      "version": "dc85a954055e7893d31fa2a1e6b04f0d9c04051c",
+      "version": "e9fbdfcd9213415bef43f762ff7bd2145a8ef930",
       "sum": "d1550yhsX4VxdVN7b0gWT0cido/W90P6OGLzLqPwZcs="
     },
     {
@@ -161,7 +161,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "cbe66572419153e8ee180e97565c4f8afd63a4b2",
+      "version": "6e6a48672f95e19d7c15e5f6473702516c531c0f",
       "sum": "oksO55VdKbsLAVA3vl7b1woE9TLmfvH7sz5+1A7iOBE=",
       "name": "thanos-mixin"
     },
