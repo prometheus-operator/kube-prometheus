@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: k8s
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.37.0
+    app.kubernetes.io/version: 2.38.0
   name: prometheus-k8s
 roleRef:
   apiGroup: rbac.authorization.k8s.io
