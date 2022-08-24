@@ -5,7 +5,7 @@ labels: kind/support
 ---
 
 This repository now has the new GitHub Discussions enabled: 
-https://github.com/coreos/kube-prometheus/discussions
+https://github.com/prometheus-operator/kube-prometheus/discussions
 
 Please create a new discussion to ask for any kind of support, which is not a Bug or Feature Request.
 
