@@ -17,6 +17,10 @@ spec:
     relabelings:
     - action: labeldrop
       regex: (pod|service|endpoint|namespace)
+    - action: drop
+      regex: kube_endpoint_address_not_ready|kube_endpoint_address_available
+      sourceLabels:
+      - __name__
     scheme: https
     scrapeTimeout: 30s
     tlsConfig:
