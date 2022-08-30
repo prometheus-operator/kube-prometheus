@@ -13,14 +13,15 @@ spec:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     honorLabels: true
     interval: 30s
-    port: https-main
-    relabelings:
-    - action: labeldrop
-      regex: (pod|service|endpoint|namespace)
+    metricRelabelings:
     - action: drop
       regex: kube_endpoint_address_not_ready|kube_endpoint_address_available
       sourceLabels:
       - __name__
+    port: https-main
+    relabelings:
+    - action: labeldrop
+      regex: (pod|service|endpoint|namespace)
     scheme: https
     scrapeTimeout: 30s
     tlsConfig:
