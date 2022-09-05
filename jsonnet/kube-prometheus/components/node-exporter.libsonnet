@@ -14,9 +14,9 @@ local defaults = {
     limits: { cpu: '250m', memory: '180Mi' },
   },
   kubeRbacProxyMain: {
-      resources+: {
-        limits+: { memory: '180Mi' },
-        requests+: { cpu: '204m', memory: '180Mi' },
+      resources: {
+        limits: { memory: '40Mi' },
+        requests: { cpu: '20m', memory: '40Mi' },
       },
   },
   listenAddress:: '127.0.0.1',
