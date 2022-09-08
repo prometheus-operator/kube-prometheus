@@ -195,6 +195,14 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
                 action: 'labeldrop',
               },
             ],
+            metricRelabelings: [
+              {
+                // Dropping metric deprecated from kube-state-metrics 2.6.0 version
+                sourceLabels: ['__name__'],
+                regex: 'kube_endpoint_address_not_ready|kube_endpoint_address_available',
+                action: 'drop',
+              },
+            ],
             tlsConfig: {
               insecureSkipVerify: true,
             },

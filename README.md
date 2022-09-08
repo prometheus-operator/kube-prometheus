@@ -59,10 +59,13 @@ Though for a quickstart a compiled version of the Kubernetes [manifests](manifes
 
 ```shell
 # Create the namespace and CRDs, and then wait for them to be available before creating the remaining resources
-# Note that due to some CRD size we are using kubectl server-side apply feature which is generally available since kubernetes 1.22. 
+# Note that due to some CRD size we are using kubectl server-side apply feature which is generally available since kubernetes 1.22.
 # If you are using previous kubernetes versions this feature may not be available and you would need to use kubectl create instead.
 kubectl apply --server-side -f manifests/setup
-until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
+kubectl wait \
+	--for condition=Established \
+	--all CustomResourceDefinition \
+	--namespace=monitoring
 kubectl apply -f manifests/
 ```
 
