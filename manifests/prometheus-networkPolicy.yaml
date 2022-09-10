@@ -26,6 +26,9 @@ spec:
     - podSelector:
         matchLabels:
           app.kubernetes.io/name: grafana
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: prometheus-adapter
     ports:
     - port: 9090
       protocol: TCP
