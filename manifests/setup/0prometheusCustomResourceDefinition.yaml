@@ -1457,7 +1457,10 @@ spec:
               configMaps:
                 description: ConfigMaps is a list of ConfigMaps in the same namespace
                   as the Prometheus object, which shall be mounted into the Prometheus
-                  Pods. The ConfigMaps are mounted into /etc/prometheus/configmaps/<configmap-name>.
+                  Pods. Each ConfigMap is added to the StatefulSet definition as a
+                  volume named `configmap-<configmap-name>`. The ConfigMaps are mounted
+                  into /etc/prometheus/configmaps/<configmap-name> in the 'prometheus'
+                  container.
                 items:
                   type: string
                 type: array
@@ -5512,7 +5515,9 @@ spec:
               secrets:
                 description: Secrets is a list of Secrets in the same namespace as
                   the Prometheus object, which shall be mounted into the Prometheus
-                  Pods. The Secrets are mounted into /etc/prometheus/secrets/<secret-name>.
+                  Pods. Each Secret is added to the StatefulSet definition as a volume
+                  named `secret-<secret-name>`. The Secrets are mounted into /etc/prometheus/secrets/<secret-name>
+                  in the 'prometheus' container.
                 items:
                   type: string
                 type: array
@@ -8708,6 +8713,14 @@ spec:
                       description: Human-readable message indicating details for the
                         condition's last transition.
                       type: string
+                    observedGeneration:
+                      description: ObservedGeneration represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.conditions[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
                     reason:
                       description: Reason for the condition's last transition.
                       type: string
