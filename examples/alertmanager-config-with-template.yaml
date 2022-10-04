@@ -24,4 +24,4 @@ slack_configs:
     text: '{{ template "slack.text" . }}
 
 templates:
-- '/etc/alertmanager/configmaps/alertmanager-alert-template.tmpl'
+- '/etc/alertmanager/configmaps/alert-templates/*.tmpl'
