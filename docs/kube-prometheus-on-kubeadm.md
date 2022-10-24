@@ -43,7 +43,7 @@ kubernetesVersion: "v1.23.1"
 networking:
   dnsDomain: "cluster.local"
   serviceSubnet: "10.96.0.0/12"
-imageRepository: "k8s.gcr.io"
+imageRepository: "registry.k8s.io"
 ```
 
 Notice the `.scheduler.extraArgs` and `.controllerManager.extraArgs`. This exposes the `kube-controller-manager` and `kube-scheduler` services to the rest of the cluster. If you have kubernetes core components as pods in the kube-system namespace, ensure that the `kube-prometheus-exporter-kube-scheduler` and `kube-prometheus-exporter-kube-controller-manager` services' `spec.selector` values match those of pods.

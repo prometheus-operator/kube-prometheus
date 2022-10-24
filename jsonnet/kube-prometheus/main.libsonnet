@@ -40,7 +40,7 @@ local utils = import './lib/utils.libsonnet';
         alertmanager: 'quay.io/prometheus/alertmanager:v' + $.values.common.versions.alertmanager,
         blackboxExporter: 'quay.io/prometheus/blackbox-exporter:v' + $.values.common.versions.blackboxExporter,
         grafana: 'grafana/grafana:' + $.values.common.versions.grafana,
-        kubeStateMetrics: 'k8s.gcr.io/kube-state-metrics/kube-state-metrics:v' + $.values.common.versions.kubeStateMetrics,
+        kubeStateMetrics: 'registry.k8s.io/kube-state-metrics/kube-state-metrics:v' + $.values.common.versions.kubeStateMetrics,
         nodeExporter: 'quay.io/prometheus/node-exporter:v' + $.values.common.versions.nodeExporter,
         prometheus: 'quay.io/prometheus/prometheus:v' + $.values.common.versions.prometheus,
         prometheusAdapter: 'registry.k8s.io/prometheus-adapter/prometheus-adapter:v' + $.values.common.versions.prometheusAdapter,
