@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "master"
+      "version": "d039275e4916aceae1c137120882e01d857787ac"
     },
     {
       "source": {
@@ -17,7 +17,7 @@
           "subdir": "grafana-mixin"
         }
       },
-      "version": "main",
+      "version": "release-9.3.0",
       "name": "grafana-mixin"
     },
     {
@@ -27,7 +27,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "main"
+      "version": "release-3.5"
     },
     {
       "source": {
@@ -36,7 +36,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "main"
+      "version": "release-0.62"
     },
     {
       "source": {
@@ -45,7 +45,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "main",
+      "version": "release-0.62",
       "name": "prometheus-operator-mixin"
     },
     {
@@ -55,7 +55,7 @@
           "subdir": ""
         }
       },
-      "version": "master"
+      "version": "release-0.12"
     },
     {
       "source": {
@@ -64,7 +64,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "main"
+      "version": "release-2.7"
     },
     {
       "source": {
@@ -73,7 +73,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "main"
+      "version": "release-2.7"
     },
     {
       "source": {
@@ -82,7 +82,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "master"
+      "version": "release-1.4"
     },
     {
       "source": {
@@ -91,7 +91,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "main",
+      "version": "release-2.41",
       "name": "prometheus"
     },
     {
@@ -101,7 +101,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "main",
+      "version": "release-0.25",
       "name": "alertmanager"
     },
     {
@@ -111,7 +111,7 @@
           "subdir": "config/crd/bases"
         }
       },
-      "version": "main"
+      "version": "release-0.5"
     },
     {
       "source": {
@@ -120,7 +120,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "main",
+      "version": "release-0.30",
       "name": "thanos-mixin"
     }
   ],
