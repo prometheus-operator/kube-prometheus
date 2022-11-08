@@ -51,10 +51,10 @@ data:
           )
         "resources":
           "overrides":
-            "instance":
-              "resource": "node"
             "namespace":
               "resource": "namespace"
+            "node":
+              "resource": "node"
             "pod":
               "resource": "pod"
       "window": "5m"

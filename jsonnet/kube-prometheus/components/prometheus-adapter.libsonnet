@@ -88,7 +88,7 @@ local defaults = {
         ||| % { containerMetricsPrefix: $.containerMetricsPrefix },
         resources: {
           overrides: {
-            instance: { resource: 'node' },
+            node: { resource: 'node' },
             namespace: { resource: 'namespace' },
             pod: { resource: 'pod' },
           },
