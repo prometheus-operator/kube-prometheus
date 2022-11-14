@@ -30,6 +30,7 @@ spec:
         - --web.listen-address=127.0.0.1:9100
         - --path.sysfs=/host/sys
         - --path.rootfs=/host/root
+        - --path.udev.data=/host/root/run/udev/data
         - --no-collector.wifi
         - --no-collector.hwmon
         - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)

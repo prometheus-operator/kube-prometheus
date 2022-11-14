@@ -201,6 +201,7 @@ function(params) {
         '--web.listen-address=' + std.join(':', [ne._config.listenAddress, std.toString(ne._config.port)]),
         '--path.sysfs=/host/sys',
         '--path.rootfs=/host/root',
+        '--path.udev.data=/host/root/run/udev/data',
         '--no-collector.wifi',
         '--no-collector.hwmon',
         '--collector.filesystem.mount-points-exclude=' + ne._config.filesystemMountPointsExclude,
