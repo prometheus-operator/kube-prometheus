@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 9.2.3
+    app.kubernetes.io/version: 9.2.4
   name: grafana
   namespace: monitoring
 spec:
@@ -18,19 +18,19 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: fdf6f4168cf0c2006f9f9ee38740384d
-        checksum/grafana-dashboardproviders: bd2505a955b6b74b07c7d294b2ecc138
-        checksum/grafana-datasources: ffb85116948c65ff51e950d00c67b139
+        checksum/grafana-config: 1954a63c98056c3651467b6a60726838
+        checksum/grafana-dashboardproviders: 69477611c9a997ab461695b341756174
+        checksum/grafana-datasources: f30af2f8290a9644a51ca154e5222fdb
       labels:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 9.2.3
+        app.kubernetes.io/version: 9.2.4
     spec:
       automountServiceAccountToken: false
       containers:
       - env: []
-        image: grafana/grafana:9.2.3
+        image: grafana/grafana:9.2.4
         name: grafana
         ports:
         - containerPort: 3000
