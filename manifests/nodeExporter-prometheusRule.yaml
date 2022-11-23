@@ -228,7 +228,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/noderaiddegraded
         summary: RAID Array is degraded
       expr: |
-        node_md_disks_required{job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"} - ignoring (state) (node_md_disks{state="active",job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"}) > 0
+        node_md_disks_required{job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"} - ignoring (state) (node_md_disks{state="active",job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"}) > 0
       for: 15m
       labels:
         severity: critical
@@ -239,7 +239,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/noderaiddiskfailure
         summary: Failed device in RAID array
       expr: |
-        node_md_disks{state="failed",job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"} > 0
+        node_md_disks{state="failed",job="node-exporter",device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"} > 0
       labels:
         severity: warning
     - alert: NodeFileDescriptorLimit
@@ -310,10 +310,10 @@ spec:
         rate(node_vmstat_pgmajfault{job="node-exporter"}[5m])
       record: instance:node_vmstat_pgmajfault:rate5m
     - expr: |
-        rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"}[5m])
+        rate(node_disk_io_time_seconds_total{job="node-exporter", device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"}[5m])
       record: instance_device:node_disk_io_time_seconds:rate5m
     - expr: |
-        rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"}[5m])
+        rate(node_disk_io_time_weighted_seconds_total{job="node-exporter", device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"}[5m])
       record: instance_device:node_disk_io_time_weighted_seconds:rate5m
     - expr: |
         sum without (device) (

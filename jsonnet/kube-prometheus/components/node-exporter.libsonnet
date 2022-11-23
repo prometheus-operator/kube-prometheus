@@ -45,7 +45,7 @@ local defaults = {
       fsSpaceFillingUpWarningThreshold: 15,
       // Send critical alert only after (imageGCHighThresholdPercent + 5) is hit, but filesystem is not freed up for a prolonged duration.
       fsSpaceFillingUpCriticalThreshold: 10,
-      diskDeviceSelector: 'device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+)"',
+      diskDeviceSelector: 'device=~"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)"',
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/node/%s',
     },
   },
