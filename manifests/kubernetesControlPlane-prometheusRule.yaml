@@ -773,7 +773,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletdown
         summary: Target disappeared from Prometheus target discovery.
       expr: |
-        absent(up{job="kubelet", metrics_path="/metrics"} == 1)
+        up{job="kubelet", metrics_path="/metrics"} == 0
       for: 15m
       labels:
         severity: critical
