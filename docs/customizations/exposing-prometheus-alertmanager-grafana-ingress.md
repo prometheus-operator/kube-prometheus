@@ -105,7 +105,7 @@ In order to expose Alertmanager and Grafana, simply create additional fields con
 
 In order to render the ingress objects similar to the other objects use as demonstrated in the [main readme](https://github.com/prometheus-operator/kube-prometheus/tree/main/README.md):
 
-```
+```jsonnet
 { ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
 { ['0prometheus-operator-' + name]: kp.prometheusOperator[name] for name in std.objectFields(kp.prometheusOperator) } +
 { ['node-exporter-' + name]: kp.nodeExporter[name] for name in std.objectFields(kp.nodeExporter) } +
@@ -119,3 +119,35 @@ In order to render the ingress objects similar to the other objects use as demon
 Note, that in comparison only the last line was added, the rest is identical to the original.
 
 See [ingress.jsonnet](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples/ingress.jsonnet) for an example implementation.
+
+## Adding Ingress namespace to NetworkPolicies
+
+NetworkPolicies restricting access to the components are added by default. These can either be removed as in
+[networkpolicies-disabled.jsonnet](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples/networkpolicies-disabled.jsonnet) or modified as
+described here.
+
+This is an example for grafana, but the same can be applied to alertmanager and prometheus.
+
+```jsonnet
+{
+  alertmanager+:: {
+    networkPolicy+: {
+      spec+: {
+        ingress: [
+          super.ingress[0] + {
+            from+: [
+              {
+                namespaceSelector: {
+                  matchLabels: {
+                    'app.kubernetes.io/name': 'ingress-nginx',
+                  },
+                },
+              },
+            ],
+          },
+        ] + super.ingress[1:],
+      },
+    },
+  },
+}
+```
