@@ -36,7 +36,7 @@ There is also a #prometheus channel on the [CNCF Slack](https://slack.cncf.io/).
 
 ## kube-state-metrics
 
-For documentation, see the project's [docs directory](https://github.com/kubernetes/kube-state-metrics/tree/master/docs).
+For documentation, see the project's [docs directory](https://github.com/kubernetes/kube-state-metrics/tree/main/docs).
 
 For questions, use the #kube-state-metrics channel on the [Kubernetes Slack](https://slack.k8s.io/).
 
