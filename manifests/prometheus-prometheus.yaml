@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: k8s
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 2.40.5
+    app.kubernetes.io/version: 2.40.7
   name: k8s
   namespace: monitoring
 spec:
@@ -18,7 +18,7 @@ spec:
       port: web
   enableFeatures: []
   externalLabels: {}
-  image: quay.io/prometheus/prometheus:v2.40.5
+  image: quay.io/prometheus/prometheus:v2.40.7
   nodeSelector:
     kubernetes.io/os: linux
   podMetadata:
@@ -27,7 +27,7 @@ spec:
       app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.40.5
+      app.kubernetes.io/version: 2.40.7
   podMonitorNamespaceSelector: {}
   podMonitorSelector: {}
   probeNamespaceSelector: {}
@@ -45,4 +45,4 @@ spec:
   serviceAccountName: prometheus-k8s
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
-  version: 2.40.5
+  version: 2.40.7
