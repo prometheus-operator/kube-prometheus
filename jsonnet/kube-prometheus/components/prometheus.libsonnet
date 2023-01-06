@@ -120,6 +120,18 @@ function(params) {
         from: [{
           podSelector: {
             matchLabels: {
+              'app.kubernetes.io/name': 'prometheus-adapter',
+            },
+          },
+        }],
+        ports: [{
+          port: 9090,
+          protocol: 'TCP',
+        }],
+      }, {
+        from: [{
+          podSelector: {
+            matchLabels: {
               'app.kubernetes.io/name': 'grafana',
             },
           },
