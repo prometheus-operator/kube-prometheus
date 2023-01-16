@@ -13,6 +13,12 @@ local defaults = {
     requests: { cpu: '102m', memory: '180Mi' },
     limits: { cpu: '250m', memory: '180Mi' },
   },
+  kubeRbacProxy:: {
+    resources+: {
+      requests: { cpu: '10m', memory: '20Mi' },
+      limits: { cpu: '20m', memory: '40Mi' },
+    },
+  },
   listenAddress:: '127.0.0.1',
   filesystemMountPointsExclude:: '^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
   // NOTE: ignore veth network interface associated with containers.
@@ -220,7 +226,7 @@ function(params) {
       },
     };
 
-    local kubeRbacProxy = krp({
+    local kubeRbacProxy = krp(ne._config.kubeRbacProxy {
       name: 'kube-rbac-proxy',
       //image: krpImage,
       upstream: 'http://127.0.0.1:' + ne._config.port + '/',
