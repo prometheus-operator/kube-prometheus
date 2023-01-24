@@ -1,3 +1,16 @@
+## release-0.12 / 2023-01-19
+
+* [CHANGE] Updates Prometheus Adapater version to 0.10.0 [#1865](https://github.com/prometheus-operator/kube-prometheus/pull/1865)
+* [FEATURE] Added a AKS platform [#1869](https://github.com/prometheus-operator/kube-prometheus/pull/1869)
+* [BUGFIX] Update Pyrra to 0.4.2 [#1800](https://github.com/prometheus-operator/kube-prometheus/pull/1800)
+* [BUGFIX] Jsonnet: enable automountServiceAccountToken for prometheus service account [#1808](https://github.com/prometheus-operator/kube-prometheus/pull/1808)
+* [BUGFIX] Fix diskDeviceSelector regex for aks and eks [#1810](https://github.com/prometheus-operator/kube-prometheus/pull/1810)
+* [BUGFIX] Set path.udev.data Argument of Node Exporter [#1913](https://github.com/prometheus-operator/kube-prometheus/pull/1913)
+* [BUGFIX] Include RAID device md.* in disk seletor [#1945](https://github.com/prometheus-operator/kube-prometheus/pull/1945)
+* [ENHANCEMENT] Prometheus-adapter: add prefix option to config for container metrics [#1844](https://github.com/prometheus-operator/kube-prometheus/pull/1844)
+* [ENHANCEMENT] Switch kube-state-metrics registry to registry.k8s.io [#1914](https://github.com/prometheus-operator/kube-prometheus/pull/1914)
+* [ENHANCEMENT] Node Exporter: add parameter for ignored network devices [#1887](https://github.com/prometheus-operator/kube-prometheus/pull/1887)
+
 ## release-0.11 / 2022-06-15
 
 * [CHANGE] Disable injecting unnecessary variables allowing access to k8s API [#1591](https://github.com/prometheus-operator/kube-prometheus/pull/1591)
