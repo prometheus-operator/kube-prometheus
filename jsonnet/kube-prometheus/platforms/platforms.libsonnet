@@ -1,4 +1,5 @@
 local platforms = {
+  aks: import './aks.libsonnet',
   aws: import './aws.libsonnet',
   bootkube: import './bootkube.libsonnet',
   gke: import './gke.libsonnet',
