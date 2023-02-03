@@ -34,20 +34,24 @@ local defaults = {
   containerMetricsPrefix:: '',
 
   prometheusURL:: error 'must provide prometheusURL',
+  containerQuerySelector:: '',
+  nodeQuerySelector:: '',
   config:: {
+    local containerSelector = if $.containerQuerySelector != '' then ',' + $.containerQuerySelector else '',
+    local nodeSelector = if $.nodeQuerySelector != '' then ',' + $.nodeQuerySelector else '',
     resourceRules: {
       cpu: {
         containerQuery: |||
           sum by (<<.GroupBy>>) (
             irate (
-                %(containerMetricsPrefix)scontainer_cpu_usage_seconds_total{<<.LabelMatchers>>,container!="",pod!=""}[%(kubelet)s]
+                %(containerMetricsPrefix)scontainer_cpu_usage_seconds_total{<<.LabelMatchers>>,container!="",pod!=""%(addtionalSelector)s}[%(kubelet)s]
             )
           )
-        ||| % { kubelet: $.rangeIntervals.kubelet, containerMetricsPrefix: $.containerMetricsPrefix },
+        ||| % { kubelet: $.rangeIntervals.kubelet, containerMetricsPrefix: $.containerMetricsPrefix, addtionalSelector: containerSelector },
         nodeQuery: |||
           sum by (<<.GroupBy>>) (
             1 - irate(
-              node_cpu_seconds_total{mode="idle"}[%(nodeExporter)s]
+              node_cpu_seconds_total{mode="idle"%(addtionalSelector)s}[%(nodeExporter)s]
             )
             * on(namespace, pod) group_left(node) (
               node_namespace_pod:kube_pod_info:{<<.LabelMatchers>>}
@@ -55,10 +59,10 @@ local defaults = {
           )
           or sum by (<<.GroupBy>>) (
             1 - irate(
-              windows_cpu_time_total{mode="idle", job="windows-exporter",<<.LabelMatchers>>}[%(windowsExporter)s]
+              windows_cpu_time_total{mode="idle", job="windows-exporter",<<.LabelMatchers>>%(addtionalSelector)s}[%(windowsExporter)s]
             )
           )
-        ||| % { nodeExporter: $.rangeIntervals.nodeExporter, windowsExporter: $.rangeIntervals.windowsExporter, containerMetricsPrefix: $.containerMetricsPrefix },
+        ||| % { nodeExporter: $.rangeIntervals.nodeExporter, windowsExporter: $.rangeIntervals.windowsExporter, containerMetricsPrefix: $.containerMetricsPrefix, addtionalSelector: nodeSelector },
         resources: {
           overrides: {
             node: { resource: 'node' },
@@ -71,21 +75,21 @@ local defaults = {
       memory: {
         containerQuery: |||
           sum by (<<.GroupBy>>) (
-            %(containerMetricsPrefix)scontainer_memory_working_set_bytes{<<.LabelMatchers>>,container!="",pod!=""}
+            %(containerMetricsPrefix)scontainer_memory_working_set_bytes{<<.LabelMatchers>>,container!="",pod!=""%(addtionalSelector)s}
           )
-        ||| % { containerMetricsPrefix: $.containerMetricsPrefix },
+        ||| % { containerMetricsPrefix: $.containerMetricsPrefix, addtionalSelector: containerSelector },
         nodeQuery: |||
           sum by (<<.GroupBy>>) (
-            node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>}
+            node_memory_MemTotal_bytes{job="node-exporter",<<.LabelMatchers>>%(addtionalSelector)s}
             -
-            node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>}
+            node_memory_MemAvailable_bytes{job="node-exporter",<<.LabelMatchers>>%(addtionalSelector)s}
           )
           or sum by (<<.GroupBy>>) (
-            windows_cs_physical_memory_bytes{job="windows-exporter",<<.LabelMatchers>>}
+            windows_cs_physical_memory_bytes{job="windows-exporter",<<.LabelMatchers>>%(addtionalSelector)s}
             -
-            windows_memory_available_bytes{job="windows-exporter",<<.LabelMatchers>>}
+            windows_memory_available_bytes{job="windows-exporter",<<.LabelMatchers>>%(addtionalSelector)s}
           )
-        ||| % { containerMetricsPrefix: $.containerMetricsPrefix },
+        ||| % { containerMetricsPrefix: $.containerMetricsPrefix, addtionalSelector: nodeSelector },
         resources: {
           overrides: {
             instance: { resource: 'node' },
