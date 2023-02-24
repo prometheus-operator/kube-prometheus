@@ -43,7 +43,6 @@ The following Kubernetes versions are supported and work as we test against thes
 | kube-prometheus stack                                                                      | Kubernetes 1.20 | Kubernetes 1.21 | Kubernetes 1.22 | Kubernetes 1.23 | Kubernetes 1.24 | Kubernetes 1.23 | Kubernetes 1.24 |
 |--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
 
-
 | kube-prometheus stack                                                                      | Kubernetes 1.20 | Kubernetes 1.21 | Kubernetes 1.22 | Kubernetes 1.23 | Kubernetes 1.24 | Kubernetes 1.25 | Kubernetes 1.26 |
 |--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
 | [`release-0.8`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.8)   | ✔               | ✔               | ✗               | ✗               | ✗               | ✗               | ✗               |
@@ -60,6 +59,7 @@ The following Kubernetes versions are supported and work as we test against thes
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 
 Though for a quickstart a compiled version of the Kubernetes [manifests](manifests) generated with this library (specifically with `example.jsonnet`) is checked into this repository in order to try the content out quickly. To try out the stack un-customized run:
+
 * Create the monitoring stack using the config in the `manifests` directory:
 
 ```shell
@@ -68,9 +68,9 @@ Though for a quickstart a compiled version of the Kubernetes [manifests](manifes
 # If you are using previous kubernetes versions this feature may not be available and you would need to use kubectl create instead.
 kubectl apply --server-side -f manifests/setup
 kubectl wait \
-	--for condition=Established \
-	--all CustomResourceDefinition \
-	--namespace=monitoring
+    --for condition=Established \
+    --all CustomResourceDefinition \
+    --namespace=monitoring
 kubectl apply -f manifests/
 ```
 
