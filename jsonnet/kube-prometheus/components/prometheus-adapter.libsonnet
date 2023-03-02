@@ -236,13 +236,21 @@ function(params) {
         '--tls-cipher-suites=' + std.join(',', pa._config.tlsCipherSuites),
       ],
       resources: pa._config.resources,
+      startupProbe: {
+        httpGet: {
+          path: '/livez',
+          port: 'https',
+          scheme: 'HTTPS',
+        },
+        periodSeconds: 10,
+        failureThreshold: 18,
+      },
       readinessProbe: {
         httpGet: {
           path: '/readyz',
           port: 'https',
           scheme: 'HTTPS',
         },
-        initialDelaySeconds: 30,
         periodSeconds: 5,
         failureThreshold: 5,
       },
@@ -252,7 +260,6 @@ function(params) {
           port: 'https',
           scheme: 'HTTPS',
         },
-        initialDelaySeconds: 30,
         periodSeconds: 5,
         failureThreshold: 5,
       },
