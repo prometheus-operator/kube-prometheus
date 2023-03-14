@@ -44,7 +44,6 @@ spec:
             path: /livez
             port: https
             scheme: HTTPS
-          initialDelaySeconds: 30
           periodSeconds: 5
         name: prometheus-adapter
         ports:
@@ -56,7 +55,6 @@ spec:
             path: /readyz
             port: https
             scheme: HTTPS
-          initialDelaySeconds: 30
           periodSeconds: 5
         resources:
           limits:
@@ -71,6 +69,13 @@ spec:
             drop:
             - ALL
           readOnlyRootFilesystem: true
+        startupProbe:
+          failureThreshold: 18
+          httpGet:
+            path: /livez
+            port: https
+            scheme: HTTPS
+          periodSeconds: 10
         volumeMounts:
         - mountPath: /tmp
           name: tmpfs
