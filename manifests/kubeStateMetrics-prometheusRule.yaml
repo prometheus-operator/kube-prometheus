@@ -16,9 +16,7 @@ spec:
     rules:
     - alert: KubeStateMetricsListErrors
       annotations:
-        description: kube-state-metrics is experiencing errors at an elevated rate
-          in list operations. This is likely causing it to not be able to expose metrics
-          about Kubernetes objects correctly or at all.
+        description: kube-state-metrics is experiencing errors at an elevated rate in list operations. This is likely causing it to not be able to expose metrics about Kubernetes objects correctly or at all.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/kubestatemetricslisterrors
         summary: kube-state-metrics is experiencing errors in list operations.
       expr: |
@@ -31,9 +29,7 @@ spec:
         severity: critical
     - alert: KubeStateMetricsWatchErrors
       annotations:
-        description: kube-state-metrics is experiencing errors at an elevated rate
-          in watch operations. This is likely causing it to not be able to expose
-          metrics about Kubernetes objects correctly or at all.
+        description: kube-state-metrics is experiencing errors at an elevated rate in watch operations. This is likely causing it to not be able to expose metrics about Kubernetes objects correctly or at all.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/kubestatemetricswatcherrors
         summary: kube-state-metrics is experiencing errors in watch operations.
       expr: |
@@ -46,9 +42,7 @@ spec:
         severity: critical
     - alert: KubeStateMetricsShardingMismatch
       annotations:
-        description: kube-state-metrics pods are running with different --total-shards
-          configuration, some Kubernetes objects may be exposed multiple times or
-          not exposed at all.
+        description: kube-state-metrics pods are running with different --total-shards configuration, some Kubernetes objects may be exposed multiple times or not exposed at all.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/kubestatemetricsshardingmismatch
         summary: kube-state-metrics sharding is misconfigured.
       expr: |
@@ -58,8 +52,7 @@ spec:
         severity: critical
     - alert: KubeStateMetricsShardsMissing
       annotations:
-        description: kube-state-metrics shards are missing, some Kubernetes objects
-          are not being exposed.
+        description: kube-state-metrics shards are missing, some Kubernetes objects are not being exposed.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/kubestatemetricsshardsmissing
         summary: kube-state-metrics shards are missing.
       expr: |
