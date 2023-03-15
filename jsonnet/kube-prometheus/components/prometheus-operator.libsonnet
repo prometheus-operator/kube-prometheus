@@ -15,6 +15,12 @@ local defaults = {
     limits: { cpu: '200m', memory: '200Mi' },
     requests: { cpu: '100m', memory: '100Mi' },
   },
+  kubeRbacProxy:: {
+    resources+: {
+      requests: { cpu: '10m', memory: '20Mi' },
+      limits: { cpu: '20m', memory: '40Mi' },
+    },
+  },
   commonLabels:: {
     'app.kubernetes.io/name': defaults.name,
     'app.kubernetes.io/version': defaults.version,
@@ -141,7 +147,7 @@ function(params)
       ],
     },
 
-    local kubeRbacProxy = krp({
+    local kubeRbacProxy = krp(po._config.kubeRbacProxy {
       name: 'kube-rbac-proxy',
       upstream: 'http://127.0.0.1:8080/',
       secureListenAddress: ':8443',
