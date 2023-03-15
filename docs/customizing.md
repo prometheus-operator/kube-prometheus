@@ -18,6 +18,7 @@ $ jb install github.com/prometheus-operator/kube-prometheus/jsonnet/kube-prometh
 
 $ wget https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/example.jsonnet -O example.jsonnet
 $ wget https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/build.sh -O build.sh
+$ chmod +x build.sh
 ```
 
 > `jb` can be installed with `go install -a github.com/jsonnet-bundler/jsonnet-bundler/cmd/jb@latest`
