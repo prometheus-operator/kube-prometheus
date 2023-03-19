@@ -21,3 +21,22 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
 ```
 
 [Containerd](https://github.com/prometheus-community/windows_exporter/blob/master/kubernetes/kubernetes.md) version can run as pod.
+
+
+
+```
+local kp = (import 'kube-prometheus/main.libsonnet') +
+  (import 'kube-prometheus/addons/windows-hostprocess.libsonnet') +
+  {
+    values+:: {
+      windowsExporter+:: {
+        image: "ghcr.io/prometheus-community/windows-exporter",
+        version: "0.21.0",
+      },
+    },
+  };
+
+{ ['windows-exporter-' + name]: kp.windowsExporter[name] for name in std.objectFields(kp.windowsExporter) }
+```
+
+See the [full example](../examples/windows-hostprocess.jsonnet) for setup.
