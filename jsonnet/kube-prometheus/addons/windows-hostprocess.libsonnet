@@ -10,9 +10,12 @@ local defaults = {
   version:: error 'must provide version',
   image:: error 'must provide version',
   resources:: {
-    requests: { cpu: '10m', memory: '50Mi' },
-    limits: { cpu: '20m', memory: '100Mi' },
+    requests: { cpu: '300m', memory: '200Mi' },
+    limits: { memory: '200Mi' },
   },
+  collectorsEnabled:: 'cpu,logical_disk,net,os,system,container,memory',
+  scrapeTimeout:: '15s',
+  interval:: '30s',
   listenAddress:: '127.0.0.1',
   port:: 9182,
   commonLabels:: {
@@ -47,6 +50,10 @@ local windowsExporter = function(params) {
       selector: {
         matchLabels: we._config.selectorLabels,
       },
+      updateStrategy: {
+          type: 'RollingUpdate',
+          rollingUpdate: { maxUnavailable: '10%' },
+      },
       template: {
         metadata: we._metadata,
         spec: {
@@ -61,6 +68,7 @@ local windowsExporter = function(params) {
             {
               name: 'configure-firewall',
               image: 'mcr.microsoft.com/windows/nanoserver:1809',
+              resources: we._config.resources,
               command: [
                 'powershell',
               ],
@@ -90,6 +98,7 @@ local windowsExporter = function(params) {
               name: we._config.name,
               image: we._config.image + ":" + we._config.version,
               imagePullPolicy: 'Always',
+              resources: we._config.resources,
               ports: [
                 {
                   containerPort: we._config.port,
@@ -126,7 +135,7 @@ local windowsExporter = function(params) {
     apiVersion: 'v1',
     metadata: we._metadata,
     data: {
-      'config.yml': "collectors:\n  enabled: '[defaults],container,memory'\ncollector:\n  service:\n    services-where: \"Name='containerd' or Name='kubelet'\"",
+      'config.yml': "collectors:\n  enabled: '" + we._config.collectorsEnabled + "'",
     },
   },
   podmonitor: {
@@ -142,6 +151,8 @@ local windowsExporter = function(params) {
         {
           port: 'http',
           scheme: 'http',
+          scrapeTimeout: we._config.scrapeTimeout,
+          interval: we._config.interval,
           relabelings: [
             {
               action: 'replace',
