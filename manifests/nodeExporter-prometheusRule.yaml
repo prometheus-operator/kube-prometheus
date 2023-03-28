@@ -134,6 +134,28 @@ spec:
       for: 1h
       labels:
         severity: critical
+
+    - alert: NodesMemoryFillingUp
+      annotations:
+        description: Average nodes memory utilization is {{ printf "%.2f" $value }}% and is filling up.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/nodesmemoryfillingup
+        summary: Average nodes memory utilization is high.
+      expr: |
+        ((Sum(node_memory_MemTotal_bytes) - Sum(node_memory_MemAvailable_bytes)) / Sum(node_memory_MemAvailable_bytes) * 100) > 80
+      for: 15m
+      labels:
+        severity: warning
+    - alert: NodesMemoryFillingUp
+      annotations:
+        description: Average nodes memory utilization is {{ printf "%.2f" $value }}% and is filling up.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/nodesmemoryfillingup
+        summary: Average nodes memory utilization is high.
+      expr: |
+        ((Sum(node_memory_MemTotal_bytes) - Sum(node_memory_MemAvailable_bytes)) / Sum(node_memory_MemAvailable_bytes) * 100) > 90
+      for: 15m
+      labels:
+        severity: critical
+
     - alert: NodeNetworkReceiveErrs
       annotations:
         description: '{{ $labels.instance }} interface {{ $labels.device }} has encountered {{ printf "%.0f" $value }} receive errors in the last two minutes.'
