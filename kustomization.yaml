@@ -90,6 +90,7 @@ resources:
 - ./manifests/setup/0podmonitorCustomResourceDefinition.yaml
 - ./manifests/setup/0probeCustomResourceDefinition.yaml
 - ./manifests/setup/0prometheusCustomResourceDefinition.yaml
+- ./manifests/setup/0prometheusagentCustomResourceDefinition.yaml
 - ./manifests/setup/0prometheusruleCustomResourceDefinition.yaml
 - ./manifests/setup/0servicemonitorCustomResourceDefinition.yaml
 - ./manifests/setup/0thanosrulerCustomResourceDefinition.yaml
