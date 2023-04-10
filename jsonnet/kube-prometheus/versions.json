@@ -7,7 +7,7 @@
   "prometheus": "2.43.0",
   "prometheusAdapter": "0.10.0",
   "prometheusOperator": "0.64.0",
-  "kubeRbacProxy": "0.14.0",
+  "kubeRbacProxy": "0.14.1",
   "configmapReload": "0.5.0",
   "pyrra": "0.5.7"
 }
