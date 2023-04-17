@@ -47,7 +47,10 @@ spec:
             drop:
             - ALL
           readOnlyRootFilesystem: true
+          runAsNonRoot: true
           runAsUser: 65534
+          seccompProfile:
+            type: RuntimeDefault
       - args:
         - --logtostderr
         - --secure-listen-address=:8443
