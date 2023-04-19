@@ -210,6 +210,7 @@ function(params) {
         '--path.udev.data=/host/root/run/udev/data',
         '--no-collector.wifi',
         '--no-collector.hwmon',
+        '--no-collector.btrfs',
         '--collector.filesystem.mount-points-exclude=' + ne._config.filesystemMountPointsExclude,
         '--collector.netclass.ignored-devices=' + ne._config.ignoredNetworkDevices,
         '--collector.netdev.device-exclude=' + ne._config.ignoredNetworkDevices,
