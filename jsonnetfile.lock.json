@@ -18,7 +18,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "53b48bbd5795210af2620ac757d9529b34a09e48",
+      "version": "211b4320c38873c5274a19a282810341e1311e4d",
       "sum": "QTzBqwjnM6cGGVBhOiVJyA+ZVTkmCTuH6C6YW7XKRFw="
     },
     {
@@ -58,7 +58,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "e0b90a4435817ad642d8d049e7dd975264cb960e",
+      "version": "9ef5dc7124e7292c48bbf0e5a69be1e9548e522d",
       "sum": "tDR6yT2GVfw0wTU12iZH+m01HrbIr6g/xN+/8nzNkU0="
     },
     {
@@ -98,7 +98,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "27943fe43862d313a63b518b6ee67b59d7680c1d",
+      "version": "fc5e61f37e6c91cd8fe6ca0fd6369c0863c8deab",
       "sum": "GQmaVFJwKMiD/P4n3N2LrAZVcwutriWrP8joclDtBYQ=",
       "name": "prometheus-operator-mixin"
     },
@@ -109,7 +109,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "27943fe43862d313a63b518b6ee67b59d7680c1d",
+      "version": "fc5e61f37e6c91cd8fe6ca0fd6369c0863c8deab",
       "sum": "MpwZP536iD8seLAuqyfynaNRvtURDgvGEVSR38HxZIg="
     },
     {
@@ -140,7 +140,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "7309ac272195cb856b879306d6a27af7641d3346",
+      "version": "7cd9f8a34030a0bdd56a49e80cc0d4f915f80deb",
       "sum": "LRx0tbMnoE1p8KEn+i81j2YsA5Sgt3itE5Y6jBf5eOQ=",
       "name": "prometheus"
     },
@@ -151,7 +151,7 @@
           "subdir": "config/crd/bases"
         }
       },
-      "version": "ffb5f03ca7a99a31be783472e3411df2c1d09ab7",
+      "version": "a12715da8cf17682879cddcc8631adafb718a457",
       "sum": "bY/Pcrrbynguq8/HaI88cQ3B2hLv/xc+76QILY7IL+g="
     },
     {
@@ -161,7 +161,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "9388bbc4f261ce9bc052ae14f069567efeb7f177",
+      "version": "6d838e7142d97cce81bcaada932992a4c40a5d80",
       "sum": "zSLNV/0bN4DcVKojzCqjmhfjtzTY4pDKZXqbAUzw5R0=",
       "name": "thanos-mixin"
     },
