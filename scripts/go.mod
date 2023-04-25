@@ -6,7 +6,7 @@ require (
 	github.com/armosec/kubescape v1.0.139
 	github.com/brancz/gojsontoyaml v0.1.0
 	github.com/bwplotka/mdox v0.9.1-0.20220718065926-6a6aac7d5d30
-	github.com/google/go-jsonnet v0.19.1
+	github.com/google/go-jsonnet v0.20.0
 	github.com/jsonnet-bundler/jsonnet-bundler v0.5.1
 	github.com/yannh/kubeconform v0.6.1
 	sigs.k8s.io/yaml v1.3.0 // indirect
