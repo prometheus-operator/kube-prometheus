@@ -11,6 +11,7 @@ local defaults = {
   mixin:: {
     ruleLabels: {},
     _config: {
+      showMultiCluster: true,
       cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
       kubeletSelector: 'job="kubelet", metrics_path="/metrics"',
       kubeStateMetricsSelector: 'job="kube-state-metrics"',

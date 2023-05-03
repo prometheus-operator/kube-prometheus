@@ -38,6 +38,7 @@ local defaults = {
       prometheus: defaults.name,
     },
     _config: {
+      groupLabels: 'cluster,controller,namespace',
       prometheusOperatorSelector: 'job="prometheus-operator",namespace="' + defaults.namespace + '"',
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/%s',
     },
