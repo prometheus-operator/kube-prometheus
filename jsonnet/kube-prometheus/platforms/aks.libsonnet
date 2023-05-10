@@ -12,7 +12,7 @@
   },
 
   kubernetesControlPlane+: {
-    kubeDnsPrometheusDiscoveryService: {
+    kubeDnsPrometheusStackService: {
       apiVersion: 'v1',
       kind: 'Service',
       metadata: {
