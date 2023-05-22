@@ -83,6 +83,9 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-cluster
           name: grafana-dashboard-k8s-resources-cluster
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/k8s-resources-multicluster
+          name: grafana-dashboard-k8s-resources-multicluster
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-namespace
           name: grafana-dashboard-k8s-resources-namespace
           readOnly: false
@@ -180,6 +183,9 @@ spec:
       - configMap:
           name: grafana-dashboard-k8s-resources-cluster
         name: grafana-dashboard-k8s-resources-cluster
+      - configMap:
+          name: grafana-dashboard-k8s-resources-multicluster
+        name: grafana-dashboard-k8s-resources-multicluster
       - configMap:
           name: grafana-dashboard-k8s-resources-namespace
         name: grafana-dashboard-k8s-resources-namespace
