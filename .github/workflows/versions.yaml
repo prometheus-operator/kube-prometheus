@@ -5,17 +5,17 @@ on:
   schedule:
     - cron: '37 7 * * 1'
 env:
-  golang-version: '1.18'
+  golang-version: '1.19'
 jobs:
   versions:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         branch:
-          - 'release-0.8'
           - 'release-0.9'
           - 'release-0.10'
           - 'release-0.11'
+          - 'release-0.12'
           - 'main'
     steps:
     - uses: actions/checkout@v3
