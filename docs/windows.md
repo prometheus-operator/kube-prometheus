@@ -22,8 +22,6 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
 
 [Containerd](https://github.com/prometheus-community/windows_exporter/blob/master/kubernetes/kubernetes.md) version can run as pod.
 
-
-
 ```
 local kp = (import 'kube-prometheus/main.libsonnet') +
   (import 'kube-prometheus/addons/windows-hostprocess.libsonnet') +
