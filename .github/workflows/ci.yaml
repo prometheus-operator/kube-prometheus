@@ -3,8 +3,8 @@ on:
   - push
   - pull_request
 env:
-  golang-version: '1.18'
-  kind-version: 'v0.16.0'
+  golang-version: '1.19'
+  kind-version: 'v0.19.0'
 jobs:
   generate:
     runs-on: ${{ matrix.os }}
@@ -83,8 +83,8 @@ jobs:
     strategy:
       matrix:
         kind-image:
-          - 'kindest/node:v1.25.2'
-          - 'kindest/node:v1.24.6'
+          - 'kindest/node:v1.27.1'
+          - 'kindest/node:v1.26.4'
     steps:
     - uses: actions/checkout@v3
       with:
