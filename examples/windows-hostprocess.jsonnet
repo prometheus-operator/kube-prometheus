@@ -7,8 +7,8 @@ local kp =
         namespace: 'monitoring',
       },
       windowsExporter+:: {
-        image: "ghcr.io/prometheus-community/windows-exporter",
-        version: "0.21.0",
+        image: 'ghcr.io/prometheus-community/windows-exporter',
+        version: '0.21.0',
       },
     },
   };

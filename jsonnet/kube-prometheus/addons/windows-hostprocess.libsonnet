@@ -51,8 +51,8 @@ local windowsExporter = function(params) {
         matchLabels: we._config.selectorLabels,
       },
       updateStrategy: {
-          type: 'RollingUpdate',
-          rollingUpdate: { maxUnavailable: '10%' },
+        type: 'RollingUpdate',
+        rollingUpdate: { maxUnavailable: '10%' },
       },
       template: {
         metadata: we._metadata,
@@ -93,10 +93,10 @@ local windowsExporter = function(params) {
             {
               args: [
                 '--config.file=%CONTAINER_SANDBOX_MOUNT_POINT%/config.yml',
-                '--collector.textfile.directory=%CONTAINER_SANDBOX_MOUNT_POINT%'
+                '--collector.textfile.directory=%CONTAINER_SANDBOX_MOUNT_POINT%',
               ],
               name: we._config.name,
-              image: we._config.image + ":" + we._config.version,
+              image: we._config.image + ':' + we._config.version,
               imagePullPolicy: 'Always',
               resources: we._config.resources,
               ports: [
@@ -144,7 +144,7 @@ local windowsExporter = function(params) {
     metadata: we._metadata,
     spec: {
       jobLabel: 'app.kubernetes.io/name',
-      selector: { 
+      selector: {
         matchLabels: we._config.selectorLabels,
       },
       podMetricsEndpoints: [
