@@ -1,0 +1,57 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: cadvisor
+    app.kubernetes.io/part-of: kube-prometheus
+  name: cadvisor
+  namespace: monitoring
+spec:
+  endpoints:
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    honorLabels: true
+    honorTimestamps: false
+    interval: 30s
+    metricRelabelings:
+    - sourceLabels:
+      - container_label_io_kubernetes_pod_name
+      targetLabel: pod
+    - sourceLabels:
+      - container_label_io_kubernetes_container_name
+      targetLabel: container
+    - sourceLabels:
+      - container_label_io_kubernetes_pod_namespace
+      targetLabel: namespace
+    - action: labeldrop
+      regex: (container_label_io_kubernetes_pod_name|container_label_io_kubernetes_container_name|container_label_io_kubernetes_pod_namespace)
+    - action: drop
+      regex: container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: (container_spec_.*|container_file_descriptors|container_sockets|container_threads_max|container_threads|container_start_time_seconds|container_last_seen);;
+      sourceLabels:
+      - __name__
+      - pod
+      - namespace
+    - action: drop
+      regex: (container_blkio_device_usage_total);.+
+      sourceLabels:
+      - __name__
+      - container
+    port: http
+    relabelings:
+    - sourceLabels:
+      - __metrics_path__
+      targetLabel: metrics_path
+    - sourceLabels:
+      - __meta_kubernetes_pod_node_name
+      targetLabel: node
+    scheme: http
+  jobLabel: app.kubernetes.io/name
+  namespaceSelector:
+    matchNames:
+    - monitoring
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cadvisor

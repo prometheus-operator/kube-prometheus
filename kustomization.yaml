@@ -17,6 +17,11 @@ resources:
 - ./manifests/blackboxExporter-service.yaml
 - ./manifests/blackboxExporter-serviceAccount.yaml
 - ./manifests/blackboxExporter-serviceMonitor.yaml
+- ./manifests/cAdvisor-clusterRole.yaml
+- ./manifests/cAdvisor-clusterRoleBinding.yaml
+- ./manifests/cAdvisor-daemonset.yaml
+- ./manifests/cAdvisor-service.yaml
+- ./manifests/cAdvisor-serviceAccount.yaml
 - ./manifests/grafana-config.yaml
 - ./manifests/grafana-dashboardDatasources.yaml
 - ./manifests/grafana-dashboardDefinitions.yaml
@@ -42,6 +47,7 @@ resources:
 - ./manifests/kubernetesControlPlane-serviceMonitorKubeControllerManager.yaml
 - ./manifests/kubernetesControlPlane-serviceMonitorKubeScheduler.yaml
 - ./manifests/kubernetesControlPlane-serviceMonitorKubelet.yaml
+- ./manifests/kubernetesControlPlane-serviceMonitorcAdvisor.yaml
 - ./manifests/nodeExporter-clusterRole.yaml
 - ./manifests/nodeExporter-clusterRoleBinding.yaml
 - ./manifests/nodeExporter-daemonset.yaml

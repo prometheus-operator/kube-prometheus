@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app.kubernetes.io/component: exporter
+    app.kubernetes.io/name: cadvisor
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.45.0
+  name: cadvisor
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: exporter
+      app.kubernetes.io/name: cadvisor
+      app.kubernetes.io/part-of: kube-prometheus
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/default-container: cadvisor
+      labels:
+        app.kubernetes.io/component: exporter
+        app.kubernetes.io/name: cadvisor
+        app.kubernetes.io/part-of: kube-prometheus
+        app.kubernetes.io/version: 0.45.0
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - args:
+        - --housekeeping_interval=10s
+        - --max_housekeeping_interval=15s
+        - --event_storage_event_limit=default=0
+        - --event_storage_age_limit=default=0
+        - --enable_metrics=app,cpu,disk,diskIO,memory,network,process
+        - --docker_only
+        - --store_container_labels=false
+        - --whitelisted_container_labels=io.kubernetes.container.name,io.kubernetes.pod.name,io.kubernetes.pod.namespace
+        image: gcr.io/cadvisor/cadvisor:v0.45.0
+        name: cadvisor
+        ports:
+        - containerPort: 8080
+          name: http
+        resources:
+          limits:
+            cpu: 800m
+            memory: 2000Mi
+          requests:
+            cpu: 400m
+            memory: 400Mi
+        volumeMounts:
+        - mountPath: /rootfs
+          name: rootfs
+          readOnly: true
+        - mountPath: /var/run
+          name: var-run
+          readOnly: true
+        - mountPath: /sys
+          name: sys
+          readOnly: true
+        - mountPath: /var/lib/docker
+          name: docker
+          readOnly: true
+        - mountPath: /dev/disk
+          name: disk
+          readOnly: true
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: system-cluster-critical
+      serviceAccountName: cadvisor
+      tolerations:
+      - operator: Exists
+      volumes:
+      - hostPath:
+          path: /
+        name: rootfs
+      - hostPath:
+          path: /var/run
+        name: var-run
+      - hostPath:
+          path: /sys
+        name: sys
+      - hostPath:
+          path: /var/lib/docker
+        name: docker
+      - hostPath:
+          path: /dev/disk
+        name: disk
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 10%
+    type: RollingUpdate
