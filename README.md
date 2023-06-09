@@ -4,6 +4,8 @@
 [![Slack](https://img.shields.io/badge/join%20slack-%23prometheus--operator-brightgreen.svg)](http://slack.k8s.io/)
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/prometheus-operator/kube-prometheus)
 
+> **Origin kube-prometheus of Kubernetes>=1.24 does not support docker based(cri-dockerd) container monitoring. Kubernetes direct use containerd is a poop. This project use cadvisor to support docker back base on [this](https://github.com/rancher/rancher/issues/38934)**
+
 > Note that everything is experimental and may change significantly at any time.
 
 This repository collects Kubernetes manifests, [Grafana](http://grafana.com/) dashboards, and [Prometheus rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with [Prometheus](https://prometheus.io/) using the Prometheus Operator.
