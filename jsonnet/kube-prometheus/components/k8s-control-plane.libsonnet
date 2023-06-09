@@ -11,7 +11,7 @@ local defaults = {
   mixin:: {
     ruleLabels: {},
     _config: {
-      cadvisorSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
+      cadvisorSelector: 'job="cadvisor"',
       kubeletSelector: 'job="kubelet", metrics_path="/metrics"',
       kubeStateMetricsSelector: 'job="kube-state-metrics"',
       nodeExporterSelector: 'job="node-exporter"',
@@ -112,19 +112,70 @@ function(params) {
         {
           port: 'https-metrics',
           scheme: 'https',
-          path: '/metrics/cadvisor',
+          path: '/metrics/probes',
           interval: '30s',
           honorLabels: true,
-          honorTimestamps: false,
-          tlsConfig: {
-            insecureSkipVerify: true,
-          },
+          tlsConfig: { insecureSkipVerify: true },
           bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
           relabelings: [{
             sourceLabels: ['__metrics_path__'],
             targetLabel: 'metrics_path',
           }],
+        },
+      ],
+      selector: {
+        matchLabels: { 'app.kubernetes.io/name': 'kubelet' },
+      },
+      namespaceSelector: {
+        matchNames: ['kube-system'],
+      },
+    },
+  },
+
+  serviceMonitorcAdvisor: {
+    apiVersion: 'monitoring.coreos.com/v1',
+    kind: 'ServiceMonitor',
+    metadata: k8s._metadata {
+      name: 'cadvisor',
+      labels+: { 'app.kubernetes.io/name': 'cadvisor' },
+    },
+    spec: {
+      jobLabel: 'app.kubernetes.io/name',
+      endpoints: [
+        {
+          port: 'http',
+          scheme: 'http',
+          interval: '30s',
+          honorLabels: true,
+          honorTimestamps: false,
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          relabelings: [
+            {
+              sourceLabels: ['__metrics_path__'],
+              targetLabel: 'metrics_path',
+            },
+            {
+              sourceLabels: ['__meta_kubernetes_pod_node_name'],
+              targetLabel: 'node',
+            },
+          ],
           metricRelabelings: [
+            {
+              sourceLabels: ['container_label_io_kubernetes_pod_name'],
+              targetLabel: 'pod',
+            },
+            {
+              sourceLabels: ['container_label_io_kubernetes_container_name'],
+              targetLabel: 'container',
+            },
+            {
+              sourceLabels: ['container_label_io_kubernetes_pod_namespace'],
+              targetLabel: 'namespace',
+            },
+            {
+              regex: '(container_label_io_kubernetes_pod_name|container_label_io_kubernetes_container_name|container_label_io_kubernetes_pod_namespace)',
+              action: 'labeldrop',
+            },
             // Drop a bunch of metrics which are disabled but still sent, see
             // https://github.com/google/cadvisor/issues/1925.
             {
@@ -157,25 +208,12 @@ function(params) {
             },
           ],
         },
-        {
-          port: 'https-metrics',
-          scheme: 'https',
-          path: '/metrics/probes',
-          interval: '30s',
-          honorLabels: true,
-          tlsConfig: { insecureSkipVerify: true },
-          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-          relabelings: [{
-            sourceLabels: ['__metrics_path__'],
-            targetLabel: 'metrics_path',
-          }],
-        },
       ],
       selector: {
-        matchLabels: { 'app.kubernetes.io/name': 'kubelet' },
+        matchLabels: { 'app.kubernetes.io/name': 'cadvisor' },
       },
       namespaceSelector: {
-        matchNames: ['kube-system'],
+        matchNames: ['monitoring'],
       },
     },
   },

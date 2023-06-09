@@ -2,6 +2,7 @@ local alertmanager = import './components/alertmanager.libsonnet';
 local blackboxExporter = import './components/blackbox-exporter.libsonnet';
 local grafana = import './components/grafana.libsonnet';
 local kubernetesControlPlane = import './components/k8s-control-plane.libsonnet';
+local cAdvisor = import './components/cadvisor.libsonnet';
 local kubeStateMetrics = import './components/kube-state-metrics.libsonnet';
 local customMixin = import './components/mixin/custom.libsonnet';
 local nodeExporter = import './components/node-exporter.libsonnet';
@@ -30,6 +31,7 @@ local utils = import './lib/utils.libsonnet';
         grafana: error 'must provide version',
         kubeStateMetrics: error 'must provide version',
         nodeExporter: error 'must provide version',
+        cAdvisor: error 'must provide version',
         prometheus: error 'must provide version',
         prometheusAdapter: error 'must provide version',
         prometheusOperator: error 'must provide version',
@@ -42,6 +44,7 @@ local utils = import './lib/utils.libsonnet';
         grafana: 'grafana/grafana:' + $.values.common.versions.grafana,
         kubeStateMetrics: 'registry.k8s.io/kube-state-metrics/kube-state-metrics:v' + $.values.common.versions.kubeStateMetrics,
         nodeExporter: 'quay.io/prometheus/node-exporter:v' + $.values.common.versions.nodeExporter,
+        cAdvisor: 'gcr.io/cadvisor/cadvisor:v' + $.values.common.versions.cAdvisor,
         prometheus: 'quay.io/prometheus/prometheus:v' + $.values.common.versions.prometheus,
         prometheusAdapter: 'registry.k8s.io/prometheus-adapter/prometheus-adapter:v' + $.values.common.versions.prometheusAdapter,
         prometheusOperator: 'quay.io/prometheus-operator/prometheus-operator:v' + $.values.common.versions.prometheusOperator,
@@ -91,6 +94,12 @@ local utils = import './lib/utils.libsonnet';
       mixin+: { ruleLabels: $.values.common.ruleLabels },
       kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
     },
+    cAdvisor: {
+      namespace: $.values.common.namespace,
+      version: $.values.common.versions.cAdvisor,
+      image: $.values.common.images.cAdvisor,
+      kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
+    },
     prometheus: {
       namespace: $.values.common.namespace,
       version: $.values.common.versions.prometheus,
@@ -135,6 +144,7 @@ local utils = import './lib/utils.libsonnet';
   grafana: grafana($.values.grafana),
   kubeStateMetrics: kubeStateMetrics($.values.kubeStateMetrics),
   nodeExporter: nodeExporter($.values.nodeExporter),
+  cAdvisor: cAdvisor($.values.cAdvisor),
   prometheus: prometheus($.values.prometheus),
   prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
   prometheusOperator: prometheusOperator($.values.prometheusOperator),
