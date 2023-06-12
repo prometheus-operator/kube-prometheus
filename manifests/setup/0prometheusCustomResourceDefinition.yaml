@@ -812,7 +812,7 @@ spec:
                 - alertmanagers
                 type: object
               allowOverlappingBlocks:
-                description: AllowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus. This is still experimental in Prometheus so it may change in any upcoming release.
+                description: 'AllowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus. Deprecated: this flag has no effect for Prometheus >= 2.39.0 where overlapping blocks are enabled by default.'
                 type: boolean
               apiserverConfig:
                 description: APIServerConfig allows specifying a host and auth methods to access apiserver. If left empty, Prometheus is assumed to run inside of the cluster and will discover API servers automatically and use the pod's CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.
@@ -4863,18 +4863,19 @@ spec:
                 description: TracingConfig configures tracing in Prometheus. This is an experimental feature, it may change in any upcoming release in a breaking way.
                 properties:
                   clientType:
-                    description: Client used to export the traces. Options are "http" or "grpc".
+                    description: Client used to export the traces. Supported values are `http` or `grpc`.
                     enum:
                     - http
                     - grpc
                     type: string
                   compression:
-                    description: 'Compression key for supported compression types. Supported compression: gzip'
+                    description: Compression key for supported compression types. The only supported value is `gzip`.
                     enum:
                     - gzip
                     type: string
                   endpoint:
                     description: Endpoint to send the traces to. Should be provided in format <host>:<port>.
+                    minLength: 1
                     type: string
                   headers:
                     additionalProperties:
@@ -4892,7 +4893,7 @@ spec:
                     pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                     x-kubernetes-int-or-string: true
                   timeout:
-                    description: Maximum time the exporter will wait for each batch export. Default '10s'
+                    description: Maximum time the exporter will wait for each batch export.
                     pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
                     type: string
                   tlsConfig:
@@ -5996,7 +5997,7 @@ spec:
                   type: object
                 type: array
               walCompression:
-                description: Enable compression of the write-ahead log using Snappy. This flag is only available in versions of Prometheus >= 2.11.0.
+                description: Configures compression of the write-ahead log using Snappy. This flag is only available in versions of Prometheus >= 2.11.0. WAL compression is enabled by default for Prometheus >= 2.20.0
                 type: boolean
               web:
                 description: Defines the web command line flags when starting Prometheus.
