@@ -27,6 +27,16 @@ spec:
       for: 10m
       labels:
         severity: critical
+    - alert: PrometheusSDRefreshFailure
+      annotations:
+        description: Prometheus {{$labels.namespace}}/{{$labels.pod}} has failed to refresh SD with mechanism {{$labels.mechanism}}.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheussdrefreshfailure
+        summary: Failed Prometheus SD refresh.
+      expr: |
+        increase(prometheus_sd_refresh_failures_total{job="prometheus-k8s",namespace="monitoring"}[10m]) > 0
+      for: 20m
+      labels:
+        severity: warning
     - alert: PrometheusNotificationQueueRunningFull
       annotations:
         description: Alert notification queue of Prometheus {{$labels.namespace}}/{{$labels.pod}} is running full.
