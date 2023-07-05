@@ -7,7 +7,6 @@ metadata:
     app.kubernetes.io/part-of: kube-prometheus
     app.kubernetes.io/version: 0.10.0
   name: resource-metrics-server-resources
-  namespace: monitoring
 rules:
 - apiGroups:
   - metrics.k8s.io
