@@ -92,7 +92,10 @@ function(params) {
   clusterRoleBinding: {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRoleBinding',
-    metadata: ne._metadata,
+    metadata: {
+      name: ne._config.name,
+      labels: ne._config.commonLabels,
+    },
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
       kind: 'ClusterRole',
@@ -108,7 +111,10 @@ function(params) {
   clusterRole: {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRole',
-    metadata: ne._metadata,
+    metadata: {
+      name: ne._config.name,
+      labels: ne._config.commonLabels,
+    },
     rules: [
       {
         apiGroups: ['authentication.k8s.io'],
