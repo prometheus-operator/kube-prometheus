@@ -33,7 +33,7 @@ jobs:
         mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
         # Get the links to the changelogs of the updated versions and make them
         # available to the reviewers
-        echo ::set-output name=new_changelogs::$(scripts/get-new-changelogs.sh)
+        echo "new_changelogs=$(scripts/get-new-changelogs.sh)" >> $GITHUB_OUTPUT
       if: matrix.branch == 'main'
     - name: Update jsonnet dependencies
       run: |
