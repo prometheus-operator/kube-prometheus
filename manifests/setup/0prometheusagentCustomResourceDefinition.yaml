@@ -755,6 +755,10 @@ spec:
                   deny:
                     type: boolean
                 type: object
+              bodySizeLimit:
+                description: BodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer.
+                pattern: (^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$
+                type: string
               configMaps:
                 description: ConfigMaps is a list of ConfigMaps in the same namespace as the Prometheus object, which shall be mounted into the Prometheus Pods. Each ConfigMap is added to the StatefulSet definition as a volume named `configmap-<configmap-name>`. The ConfigMaps are mounted into /etc/prometheus/configmaps/<configmap-name> in the 'prometheus' container.
                 items:
@@ -2519,6 +2523,18 @@ spec:
                   - name
                   type: object
                 type: array
+              labelLimit:
+                description: Per-scrape limit on number of labels that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.
+                format: int64
+                type: integer
+              labelNameLengthLimit:
+                description: Per-scrape limit on length of labels name that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.
+                format: int64
+                type: integer
+              labelValueLengthLimit:
+                description: Per-scrape limit on length of labels value that will be accepted for a sample. Only valid in Prometheus versions 2.45.0 and newer.
+                format: int64
+                type: integer
               listenLocal:
                 description: When true, the Prometheus server listens on the loopback address instead of the Pod IP's address.
                 type: boolean
@@ -3185,6 +3201,10 @@ spec:
               routePrefix:
                 description: "The route prefix Prometheus registers HTTP handlers for. \n This is useful when using `spec.externalURL`, and a proxy is rewriting HTTP routes of a request, and the actual ExternalURL is still true, but the server serves requests under a different route prefix. For example for use with `kubectl proxy`."
                 type: string
+              sampleLimit:
+                description: SampleLimit defines per-scrape limit on number of scraped samples that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.
+                format: int64
+                type: integer
               scrapeConfigNamespaceSelector:
                 description: Namespaces to match for ScrapeConfig discovery. An empty label selector matches all namespaces. A null label selector matches the current current namespace only.
                 properties:
@@ -3785,6 +3805,10 @@ spec:
                         type: object
                     type: object
                 type: object
+              targetLimit:
+                description: TargetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.
+                format: int64
+                type: integer
               tolerations:
                 description: Defines the Pods' tolerations if specified.
                 items:
