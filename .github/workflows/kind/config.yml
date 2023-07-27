@@ -1,6 +1,15 @@
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 networking:
-  disableDefaultCNI: true
   podSubnet: "10.10.0.0/16"
   serviceSubnet: "10.11.0.0/16"
+nodes:
+  - role: control-plane
+    extraMounts:
+      - hostPath: /home/runner/work/kube-prometheus/kube-prometheus/.github/workflows/kind/patches
+        containerPath: /patches
+kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    patches:
+      directory: /patches
