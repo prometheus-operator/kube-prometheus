@@ -3,8 +3,8 @@ on:
   - push
   - pull_request
 env:
-  golang-version: '1.17'
-  kind-version: 'v0.14.0'
+  golang-version: '1.19'
+  kind-version: 'v0.19.0'
 jobs:
   generate:
     runs-on: ${{ matrix.os }}
@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v3
+    - uses: actions/setup-go@v4
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make generate validate && git diff --exit-code
@@ -29,7 +29,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v3
+    - uses: actions/setup-go@v4
       with:
         go-version: ${{ env.golang-version }}
     - run: make check-docs
@@ -40,7 +40,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v3
+    - uses: actions/setup-go@v4
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make lint
@@ -51,7 +51,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v3
+    - uses: actions/setup-go@v4
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make fmt && git diff --exit-code
@@ -62,7 +62,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v3
+    - uses: actions/setup-go@v4
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make test
@@ -73,7 +73,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v3
+    - uses: actions/setup-go@v4
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make kubescape
@@ -89,7 +89,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v3
+    - uses: actions/setup-go@v4
       with:
         go-version: ${{ env.golang-version }}
     - name: Start KinD
@@ -99,23 +99,9 @@ jobs:
         image: ${{ matrix.kind-image }}
         wait: 10s # Without default CNI, control-plane doesn't get ready until Cilium is installed
         config: .github/workflows/kind/config.yml
-    - name: Setup Helm
-      uses: azure/setup-helm@v2.1
-    - name: Install Cilium
+    - name: Install kube-router for NetworkPolicy support
       run: |
-        helm repo add cilium https://helm.cilium.io/
-        helm install cilium cilium/cilium --version 1.9.13 \
-        --namespace kube-system \
-        --set nodeinit.enabled=true \
-        --set kubeProxyReplacement=partial \
-        --set hostServices.enabled=false \
-        --set externalIPs.enabled=true \
-        --set nodePort.enabled=true \
-        --set hostPort.enabled=true \
-        --set bpf.masquerade=false \
-        --set image.pullPolicy=IfNotPresent \
-        --set ipam.mode=kubernetes \
-        --set operator.replicas=1
+        kubectl apply -f .github/workflows/kind/kube-router.yaml
     - name: Wait for cluster to finish bootstraping
       run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
     - name: Create kube-prometheus stack
