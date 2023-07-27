@@ -14,11 +14,13 @@ date: "2021-03-08T23:04:32+01:00"
 
 `kube-prometheus` ships with a set of default [Prometheus rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) and [Grafana](http://grafana.com/) dashboards. At some point one might like to extend them, the purpose of this document is to explain how to do this.
 
-All manifests of kube-prometheus are generated using [jsonnet](https://jsonnet.org/) and Prometheus rules and Grafana dashboards in specific follow the [Prometheus Monitoring Mixins proposal](https://docs.google.com/document/d/1A9xvzwqnFVSOZ5fD3blKODXfsat5fg6ZhnKu9LK3lB4/).
+All manifests of kube-prometheus are generated using [jsonnet](https://jsonnet.org/).
+Prometheus rules and Grafana dashboards in specific follow the
+[Prometheus Monitoring Mixins proposal](https://github.com/monitoring-mixins/docs/blob/master/design.pdf).
 
 For both the Prometheus rules and the Grafana dashboards Kubernetes `ConfigMap`s are generated within kube-prometheus. In order to add additional rules and dashboards simply merge them onto the existing json objects. This document illustrates examples for rules as well as dashboards.
 
-As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](../../README.md):
+As a basis, all examples in this guide are based on the base example of the kube-prometheus [readme](https://github.com/prometheus-operator/kube-prometheus/blob/main/README.md):
 
 ```jsonnet mdox-exec="cat example.jsonnet"
 local kp =
@@ -61,11 +63,14 @@ local kp =
 
 ### Alerting rules
 
-According to the [Prometheus Monitoring Mixins proposal](https://docs.google.com/document/d/1A9xvzwqnFVSOZ5fD3blKODXfsat5fg6ZhnKu9LK3lB4/) Prometheus alerting rules are under the key `prometheusAlerts` in the top level object, so in order to add an additional alerting rule, we can simply merge an extra rule into the existing object.
+As per the [Prometheus Monitoring Mixins proposal](https://github.com/monitoring-mixins/docs/blob/master/design.pdf)
+Prometheus alerting rules are under the key `prometheusAlerts` in the top level object.
+Additional alerting rules can be added by merging into the existing object.
 
 The format is exactly the Prometheus format, so there should be no changes necessary should you have existing rules that you want to include.
 
-> Note that alerts can just as well be included into this file, using the jsonnet `import` function. In this example it is just inlined in order to demonstrate their use in a single file.
+> Note that alerts can also be included into this file, using the jsonnet `import` function.
+> In this example it is just inlined in order to demonstrate their use in a single file.
 
 ```jsonnet mdox-exec="cat examples/prometheus-additional-alert-rule-example.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {
@@ -336,9 +341,14 @@ Dashboards can either be added using jsonnet or simply a pre-rendered json dashb
 
 ### Jsonnet dashboard
 
-We recommend using the [grafonnet](https://github.com/grafana/grafonnet-lib/) library for jsonnet, which gives you a simple DSL to generate Grafana dashboards. Following the [Prometheus Monitoring Mixins proposal](https://docs.google.com/document/d/1A9xvzwqnFVSOZ5fD3blKODXfsat5fg6ZhnKu9LK3lB4/) additional dashboards are added to the `grafanaDashboards` key, located in the top level object. To add new jsonnet dashboards, simply add one.
+We recommend using the [grafonnet](https://github.com/grafana/grafonnet-lib/) library for jsonnet,
+which gives you a simple DSL to generate Grafana dashboards.
+Following the [Prometheus Monitoring Mixins proposal](https://github.com/monitoring-mixins/docs/blob/master/design.pdf)
+additional dashboards are added to the `grafanaDashboards` key, located in the top level object.
+To add new jsonnet dashboards, simply add one.
 
-> Note that dashboards can just as well be included into this file, using the jsonnet `import` function. In this example it is just inlined in order to demonstrate their use in a single file.
+> Note that dashboards can just as well be included into this file, using the jsonnet `import` function.
+> In this example it is just inlined in order to demonstrate their use in a single file.
 
 ```jsonnet mdox-exec="cat examples/grafana-additional-jsonnet-dashboard-example.jsonnet"
 local grafana = import 'grafonnet/grafana.libsonnet';
