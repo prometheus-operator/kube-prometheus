@@ -82,7 +82,7 @@
           readOnlyRootFilesystem: true,
           runAsNonRoot: true,
           capabilities: { drop: ['ALL'] },
-          seccompProfile: { type: 'RuntimeDefault' },  
+          seccompProfile: { type: 'RuntimeDefault' },
         },
       };
 
