@@ -12,10 +12,6 @@ jobs:
     strategy:
       matrix:
         branch:
-          - 'release-0.9'
-          - 'release-0.10'
-          - 'release-0.11'
-          - 'release-0.12'
           - 'main'
     steps:
     - uses: actions/checkout@v3
@@ -34,8 +30,11 @@ jobs:
         # Get the links to the changelogs of the updated versions and make them
         # available to the reviewers
         new_changelogs=$(scripts/get-new-changelogs.sh)
+        echo "test"
+        echo "$new_changelogs"
         echo "new_changelogs=$new_changelogs" >> $GITHUB_OUTPUT
-      if: matrix.branch == 'main'
+        echo "EOF" >> $GITHUB_OUTPUT
+
     - name: Update jsonnet dependencies
       run: |
         make update
