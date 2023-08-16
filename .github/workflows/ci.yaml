@@ -92,13 +92,14 @@ jobs:
     - uses: actions/setup-go@v4
       with:
         go-version: ${{ env.golang-version }}
-    - name: Start KinD
-      uses: engineerd/setup-kind@v0.5.0
+    - name: Start kind cluster
+      uses: helm/kind-action@v1.7.0
       with:
         version: ${{ env.kind-version }}
-        image: ${{ matrix.kind-image }}
+        node_image: ${{ matrix.kind-image }}
         wait: 10s # Without default CNI, control-plane doesn't get ready until Cilium is installed
         config: .github/workflows/kind/config.yml
+        cluster_name: e2e
     - name: Install kube-router for NetworkPolicy support
       run: |
         kubectl apply -f .github/workflows/kind/kube-router.yaml
