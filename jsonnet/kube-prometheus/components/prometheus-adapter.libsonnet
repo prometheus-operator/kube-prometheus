@@ -238,7 +238,6 @@ function(params) {
       args: [
         '--cert-dir=/var/run/serving-cert',
         '--config=/etc/adapter/config.yaml',
-        '--logtostderr=true',
         '--metrics-relist-interval=1m',
         '--prometheus-url=' + pa._config.prometheusURL,
         '--secure-port=6443',
