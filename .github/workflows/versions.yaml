@@ -31,10 +31,15 @@ jobs:
         # Write to temporary file to make update atomic
         scripts/generate-versions.sh > /tmp/versions.json
         mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
+        # Display the raw diff between versions.
+        git diff
         # Get the links to the changelogs of the updated versions and make them
         # available to the reviewers
-        new_changelogs=$(scripts/get-new-changelogs.sh)
-        echo "new_changelogs=$new_changelogs" >> $GITHUB_OUTPUT
+        {
+          echo 'new_changelogs<<EOF'
+          echo $(scripts/get-new-changelogs.sh)
+          echo EOF
+        } >> $GITHUB_OUTPUT
       if: matrix.branch == 'main'
     - name: Update jsonnet dependencies
       run: |
