@@ -15,6 +15,9 @@ local kp =
       common+: {
         namespace: 'monitoring',
       },
+      alertmanager+: {
+        config: importstr 'alertmanager-config.yaml',
+      },
     },
     alertmanager+:: {
       alertmanager+: {
@@ -26,9 +29,9 @@ local kp =
     },
     configmap+:: {
       'alert-templates': configmap(
-        'alertmanager-alert-template.tmpl',
+        'alert-templates',
         $.values.common.namespace,  // could be $._config.namespace to assign namespace once
-        { data: importstr 'alertmanager-alert-template.tmpl' },
+        { 'alertmanager-alert-template.tmpl': importstr 'alertmanager-alert-template.tmpl' },
       ),
     },
   };
