@@ -302,9 +302,9 @@ function(params) {
         template: {
           metadata: {
             annotations: {
-              'checksum.config/md5': std.md5(pa.config.ConfigMap)
+              'checksum.config/md5': std.md5(std.manifestYamlDoc(pa._config.config)),
             },
-            labels: pa._config.commonLabels
+            labels: pa._config.commonLabels,
           },
           spec: {
             containers: [c],

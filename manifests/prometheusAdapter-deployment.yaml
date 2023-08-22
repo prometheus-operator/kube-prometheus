@@ -21,6 +21,8 @@ spec:
       maxUnavailable: 1
   template:
     metadata:
+      annotations:
+        checksum.config/md5: 3b1ebf7df0232d1675896f67b66373db
       labels:
         app.kubernetes.io/component: metrics-adapter
         app.kubernetes.io/name: prometheus-adapter
