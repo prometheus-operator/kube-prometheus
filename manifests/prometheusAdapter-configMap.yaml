@@ -64,6 +64,6 @@ metadata:
     app.kubernetes.io/component: metrics-adapter
     app.kubernetes.io/name: prometheus-adapter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.11.0
+    app.kubernetes.io/version: 0.11.1
   name: adapter-config
   namespace: monitoring
