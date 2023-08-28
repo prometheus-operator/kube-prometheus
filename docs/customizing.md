@@ -155,7 +155,7 @@ $ kubectl apply --server-side -f manifests/setup
 $ kubectl apply -f manifests/
 ```
 
-> Note that due to some CRD size we are using kubeclt server-side apply feature which is generally available since
+> Note that due to some CRD size we are using kubectl server-side apply feature which is generally available since
 > kubernetes 1.22. If you are using previous kubernetes versions this feature may not be available and you would need to
 > use `kubectl create` instead.
 
