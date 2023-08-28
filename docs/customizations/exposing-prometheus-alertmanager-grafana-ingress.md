@@ -39,10 +39,12 @@ Also, the applications provide external links to themselves in alerts and variou
 
 ```jsonnet
 local kp =
-  (import 'kube-prometheus/kube-prometheus.libsonnet') +
+  (import 'kube-prometheus/main.libsonnet') +
   {
-    _config+:: {
-      namespace: 'monitoring',
+    values+:: {
+      common+: {
+        namespace: 'monitoring',
+      },
     },
     prometheus+:: {
       prometheus+: {
@@ -95,6 +97,7 @@ local kp =
     },
   };
 
+// Output a kubernetes List object with both ingresses (k8s-libsonnet)
 k.core.v1.list.new([
   kp.ingress['prometheus-k8s'],
   kp.ingress['basic-auth-secret'],
