@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "master"
+      "version": "5698c8940b6dadca3f42107b7839557bc041761f"
     },
     {
       "source": {
@@ -17,7 +17,7 @@
           "subdir": "grafana-mixin"
         }
       },
-      "version": "main",
+      "version": "v10.1.0",
       "name": "grafana-mixin"
     },
     {
@@ -27,7 +27,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "main"
+      "version": "60051be9908649b1a0f2d000dc75b3bd0822d53c"
     },
     {
       "source": {
@@ -36,7 +36,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "main"
+      "version": "v0.67.1"
     },
     {
       "source": {
@@ -45,7 +45,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "main",
+      "version": "v0.67.1",
       "name": "prometheus-operator-mixin"
     },
     {
@@ -55,7 +55,7 @@
           "subdir": ""
         }
       },
-      "version": "master"
+      "version": "63337d921db856bbcd2e91814a0ac90c250410d6"
     },
     {
       "source": {
@@ -64,7 +64,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "main"
+      "version": "v2.9.2"
     },
     {
       "source": {
@@ -73,7 +73,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "main"
+      "version": "v2.9.2"
     },
     {
       "source": {
@@ -91,7 +91,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "main",
+      "version": "v2.46.0",
       "name": "prometheus"
     },
     {
@@ -101,7 +101,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "main",
+      "version": "v0.26.0",
       "name": "alertmanager"
     },
     {
@@ -111,7 +111,7 @@
           "subdir": "config/crd/bases"
         }
       },
-      "version": "main"
+      "version": "v0.6.4"
     },
     {
       "source": {
@@ -120,7 +120,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "main",
+      "version": "v0.32.2",
       "name": "thanos-mixin"
     }
   ],
