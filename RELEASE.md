@@ -1,10 +1,13 @@
 # Release schedule
 
 Kube-prometheus has a somehow predictable release schedule, releases were
-historically cut in sync with OpenShift releases as per downstream needs. So
-far there hasn't been any problem with this schedule since it is also in sync
-with Kubernetes releases. So for every new Kubernetes release, there is a new
-release of kube-prometheus, although it tends to happen later.
+historically cut in sync with OpenShift releases as per downstream needs.
+
+This has been changed in favour of tracking upstream Kubernetes releases due
+to changing needs and requirements in the OpenShift release process.
+
+For every new Kubernetes release, there will be a corresponding new release
+of kube-prometheus, although it tends to happen later.
 
 # How to cut a new release
 
@@ -29,12 +32,6 @@ master. Try to avoid that situation.
 
 Maintaining the release branches for older minor releases happens on a best
 effort basis.
-
-## Cut a release of kubernetes-mixins
-
-kube-prometheus and kubernetes-mixins releases are tied, so before cutting the
-release of kube-prometheus we should make sure that the same release of
-kubernetes-mixins exists.
 
 ## Update components version
 
