@@ -15,7 +15,7 @@ jobs:
           - ubuntu-latest
     name: Generate
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         persist-credentials: false
     - uses: actions/setup-go@v4
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check Documentation formatting and links
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         persist-credentials: false
     - uses: actions/setup-go@v4
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Jsonnet linter
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         persist-credentials: false
     - uses: actions/setup-go@v4
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Jsonnet formatter
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         persist-credentials: false
     - uses: actions/setup-go@v4
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Unit tests
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         persist-credentials: false
     - uses: actions/setup-go@v4
@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Run security analysis on manifests
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         persist-credentials: false
     - uses: actions/setup-go@v4
@@ -86,7 +86,7 @@ jobs:
           - 'kindest/node:v1.28.0'
           - 'kindest/node:v1.27.3'
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         persist-credentials: false
     - uses: actions/setup-go@v4
