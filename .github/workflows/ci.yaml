@@ -85,6 +85,7 @@ jobs:
         kind-image:
           - 'kindest/node:v1.28.0'
           - 'kindest/node:v1.27.3'
+          - 'kindest/node:v1.26.6'
     steps:
     - uses: actions/checkout@v3
       with:
