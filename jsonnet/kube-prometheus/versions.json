@@ -4,10 +4,10 @@
   "grafana": "9.5.3",
   "kubeStateMetrics": "2.9.2",
   "nodeExporter": "1.6.1",
-  "prometheus": "2.46.0",
+  "prometheus": "2.47.0",
   "prometheusAdapter": "0.11.1",
-  "prometheusOperator": "0.67.1",
-  "kubeRbacProxy": "0.14.2",
+  "prometheusOperator": "0.68.0",
+  "kubeRbacProxy": "0.14.3",
   "configmapReload": "0.5.0",
   "pyrra": "0.6.4"
 }
