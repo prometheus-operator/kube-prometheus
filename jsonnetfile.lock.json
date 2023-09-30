@@ -151,8 +151,9 @@
           "subdir": "config/crd/bases"
         }
       },
-      "version": "8ef5703723f0a4079d7d9ad15ca1fb6bda430a8e",
-      "sum": "v0uv2DLx8qjW+OviUfzTFOzZ+0IizXqBhuglGHIhGmo="
+      "version": "551856d42dff02ec38c5b0ea6a2d99c4cb127e82",
+      "sum": "bY/Pcrrbynguq8/HaI88cQ3B2hLv/xc+76QILY7IL+g=",
+      "name": "pyrra"
     },
     {
       "source": {

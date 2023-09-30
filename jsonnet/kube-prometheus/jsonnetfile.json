@@ -111,7 +111,8 @@
           "subdir": "config/crd/bases"
         }
       },
-      "version": "main"
+      "version": "release-0.6",
+      "name": "pyrra"
     },
     {
       "source": {
