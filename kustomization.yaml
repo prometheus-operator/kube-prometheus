@@ -37,11 +37,13 @@ resources:
 - ./manifests/kubeStateMetrics-serviceAccount.yaml
 - ./manifests/kubeStateMetrics-serviceMonitor.yaml
 - ./manifests/kubernetesControlPlane-prometheusRule.yaml
+- ./manifests/kubernetesControlPlane-scrapeConfigKubelet.yaml
+- ./manifests/kubernetesControlPlane-scrapeConfigKubeletCadvisor.yaml
+- ./manifests/kubernetesControlPlane-scrapeConfigKubeletProbes.yaml
 - ./manifests/kubernetesControlPlane-serviceMonitorApiserver.yaml
 - ./manifests/kubernetesControlPlane-serviceMonitorCoreDNS.yaml
 - ./manifests/kubernetesControlPlane-serviceMonitorKubeControllerManager.yaml
 - ./manifests/kubernetesControlPlane-serviceMonitorKubeScheduler.yaml
-- ./manifests/kubernetesControlPlane-serviceMonitorKubelet.yaml
 - ./manifests/nodeExporter-clusterRole.yaml
 - ./manifests/nodeExporter-clusterRoleBinding.yaml
 - ./manifests/nodeExporter-daemonset.yaml
