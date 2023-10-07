@@ -215,11 +215,6 @@ function(params) {
     },
     rules: [
       {
-        apiGroups: [''],
-        resources: ['nodes/metrics'],
-        verbs: ['get'],
-      },
-      {
         nonResourceURLs: ['/metrics'],
         verbs: ['get'],
       },
@@ -285,7 +280,7 @@ function(params) {
       rules: [
         {
           apiGroups: [''],
-          resources: ['services', 'endpoints', 'pods'],
+          resources: ['services', 'endpoints', 'pods', 'nodes'],
           verbs: ['get', 'list', 'watch'],
         },
         {
