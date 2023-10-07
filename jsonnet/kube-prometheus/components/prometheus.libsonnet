@@ -164,6 +164,18 @@ function(params) {
     automountServiceAccountToken: true,
   },
 
+  serviceAccountToken: {
+    apiVersion: 'v1',
+    kind: 'Secret',
+    metadata: p._metadata {
+      name: p._metadata.name + '-token',
+      annotations: {
+        'kubernetes.io/service-account.name': p.serviceAccount.metadata.name,
+      },
+    },
+    type: 'kubernetes.io/service-account-token',
+  },
+
   service: {
     apiVersion: 'v1',
     kind: 'Service',
