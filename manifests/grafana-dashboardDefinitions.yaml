@@ -2253,6 +2253,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -4150,6 +4151,7 @@ items:
                   },
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -5303,6 +5305,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -22871,6 +22874,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -24238,6 +24242,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -25931,6 +25936,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -30846,6 +30852,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -31971,6 +31978,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -36217,6 +36225,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -37318,6 +37327,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
@@ -38595,6 +38605,7 @@ items:
               "list": [
                   {
                       "current": {
+                          "selected": true,
                           "text": "default",
                           "value": "default"
                       },
