@@ -18,8 +18,8 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "569640f278e5ee731e80448a395b3398851199b7",
-      "sum": "LTbR+JGJ0gW3AdJQRl24VIKyKnPlPFaB+d+iysj4IU0="
+      "version": "7f2936dfba80f9d62aa0de1f5ae21b4731187cb7",
+      "sum": "xuUBd2vqF7asyVDe5CE08uPT/RxAdy8O75EjFJoMXXU="
     },
     {
       "source": {
@@ -58,8 +58,8 @@
           "subdir": "gen/grafonnet-v10.0.0"
         }
       },
-      "version": "16f374fcebd987bc1d8bc526f433a75e2e5dcb28",
-      "sum": "oteDmtf/QpAaG1F+lDtEhf0AYWKa+6cGVv41ncaSdh4="
+      "version": "9e217263ac4b922ca2e00bc5cc36ada2311bb5a6",
+      "sum": "gj/20VIGucG2vDGjG7YdHLC4yUUfrpuaneUYaRmymOM="
     },
     {
       "source": {
@@ -68,7 +68,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "981fe02c0ac0421b74db444de6b9f9b012b3f67c",
+      "version": "280304aaf0d65d24e69cc964d801e790652a73c8",
       "sum": "xEFMv4+ObwP5L1Wu0XK5agWci4AJzNApys6iKAQxLlQ="
     },
     {
@@ -78,8 +78,8 @@
           "subdir": "doc-util"
         }
       },
-      "version": "fd8de9039b3c06da77d635a3a8289809a5bfb542",
-      "sum": "mFebrE9fhyAKW4zbnidcjVFupziN5LPA/Z7ii94uCzs="
+      "version": "503e5c8fe96d6b55775037713ac10b184709ad93",
+      "sum": "BY4u0kLF3Qf/4IB4HnX9S5kEQIpHb4MUrppp6WLDtlU="
     },
     {
       "source": {
@@ -88,8 +88,8 @@
           "subdir": ""
         }
       },
-      "version": "0256a910ac71f0f842696d7bca0bf01ea77eb654",
-      "sum": "zBOpb1oTNvXdq9RF6yzTHill5r1YTJLBBoqyx4JYtAg="
+      "version": "42adb4b347a89c8e07f7ea7d459dee50fe56afe3",
+      "sum": "V1fCscAmNomABItd9KJUYj1hcy/yXR4elCrGVE/JLlw="
     },
     {
       "source": {
@@ -108,7 +108,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "5c71459a614eaf8370bed2f406899f2269edff66",
+      "version": "eac6d3b1c994bd7dbd76026188d2b374bf000f20",
       "sum": "+dOzAK+fwsFf97uZpjcjTcEJEC1H8hh/j8f5uIQK/5g="
     },
     {
@@ -118,7 +118,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "5c71459a614eaf8370bed2f406899f2269edff66",
+      "version": "eac6d3b1c994bd7dbd76026188d2b374bf000f20",
       "sum": "qclI7LwucTjBef3PkGBkKxF0mfZPbHnn4rlNWKGtR4c="
     },
     {
@@ -128,7 +128,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "75f05e1988716d8610e4aa513437e271443964e9",
+      "version": "5c45e5ed091675dd2fa425df1d3b9e4acf59bf8e",
       "sum": "n3flMIzlADeyygb0uipZ4KPp2uNSjdtkrwgHjTC7Ca4=",
       "name": "prometheus-operator-mixin"
     },
@@ -139,8 +139,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "75f05e1988716d8610e4aa513437e271443964e9",
-      "sum": "gl4yvv+WLjt+CaTW4/urKAMx8fs9I4K8PgZ4PyOMD58="
+      "version": "5c45e5ed091675dd2fa425df1d3b9e4acf59bf8e",
+      "sum": "qaOMdU1XG3MTGzZ504Ug4cDR0RODOLcU/BdfY0PDs/E="
     },
     {
       "source": {
@@ -149,7 +149,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "acb58400fd2b324dd4cc56110c8e891e8b1c0420",
+      "version": "280a742b766d0b4079b02be100cf9541e29f0a20",
       "sum": "1d7ZKYArJKacAWXLUz0bRC1uOkozee/PPw97/W5zGhc=",
       "name": "alertmanager"
     },
@@ -160,7 +160,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "0f6a4d8c3970f452131a97f14ca200660f46fc2b",
+      "version": "6122cee47a39ef35de5698b348fc5cf9343f28a5",
       "sum": "By6n6U10hYDogUsyhsaKZehbhzxBZZobJloiKyKadgM="
     },
     {
@@ -170,7 +170,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "dcaca86958531929752d9cb5f52eb03d390a3b8f",
+      "version": "a807dd16160f0816d5f03bfed72a5321372b0de4",
       "sum": "8OngT76gVXOUROOOeP9yTe6E/dn+2D2J34Dn690QCG0=",
       "name": "prometheus"
     },
@@ -192,7 +192,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "77fac932094be5cac69c9ea0c5c85c3f4ac0e5be",
+      "version": "5c983470903b2521ce1db1f848539b7390bcb91f",
       "sum": "HhSSbGGCNHCMy1ee5jElYDm0yS9Vesa7QB2/SHKdjsY=",
       "name": "thanos-mixin"
     },
