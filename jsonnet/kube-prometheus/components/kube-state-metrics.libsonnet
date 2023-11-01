@@ -7,7 +7,7 @@ local defaults = {
   name:: 'kube-state-metrics',
   namespace:: error 'must provide namespace',
   version:: error 'must provide version',
-  image:: error 'must provide version',
+  image:: error 'must provide image',
   kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
   resources:: {
     requests: { cpu: '10m', memory: '190Mi' },
