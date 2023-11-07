@@ -7,7 +7,7 @@ local defaults = {
   name:: 'node-exporter',
   namespace:: error 'must provide namespace',
   version:: error 'must provide version',
-  image:: error 'must provide version',
+  image:: error 'must provide image',
   kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
   resources:: {
     requests: { cpu: '102m', memory: '180Mi' },

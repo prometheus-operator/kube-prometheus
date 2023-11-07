@@ -8,7 +8,7 @@ local defaults = {
   name:: 'windows-exporter',
   namespace:: error 'must provide namespace',
   version:: error 'must provide version',
-  image:: error 'must provide version',
+  image:: error 'must provide image',
   resources:: {
     requests: { cpu: '300m', memory: '200Mi' },
     limits: { memory: '200Mi' },

@@ -6,7 +6,7 @@ local defaults = {
   // If there is no CRD for the component, everything is hidden in defaults.
   namespace:: error 'must provide namespace',
   version:: error 'must provide version',
-  image:: error 'must provide version',
+  image:: error 'must provide image',
   resources:: {
     requests: { cpu: '10m', memory: '20Mi' },
     limits: { cpu: '20m', memory: '40Mi' },
