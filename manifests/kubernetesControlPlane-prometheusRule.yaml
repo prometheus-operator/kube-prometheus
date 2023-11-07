@@ -351,9 +351,9 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/cputhrottlinghigh
         summary: Processes experience elevated CPU throttling.
       expr: |
-        sum(increase(container_cpu_cfs_throttled_periods_total{container!="", }[5m])) by (container, pod, namespace)
+        sum(increase(container_cpu_cfs_throttled_periods_total{container!="", }[5m])) by (cluster, container, pod, namespace)
           /
-        sum(increase(container_cpu_cfs_periods_total{}[5m])) by (container, pod, namespace)
+        sum(increase(container_cpu_cfs_periods_total{}[5m])) by (cluster, container, pod, namespace)
           > ( 25 / 100 )
       for: 15m
       labels:
