@@ -34,8 +34,8 @@ get_version() {
   fi
 
   # Use higher version from new version and current version
-  v=$(printf '%s\n' "$v" "$cv" | sort -r | head -n1)
-  
+  v=$(printf '%s\n' "$v" "$cv" | sort -n -r | head -n1)
+
   echo "$v"
 }
 
