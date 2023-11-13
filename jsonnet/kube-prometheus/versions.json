@@ -3,10 +3,10 @@
   "blackboxExporter": "0.24.0",
   "grafana": "10.2.0",
   "kubeStateMetrics": "2.9.2",
-  "nodeExporter": "1.6.1",
+  "nodeExporter": "1.7.0",
   "prometheus": "2.47.2",
   "prometheusAdapter": "0.11.1",
-  "prometheusOperator": "0.69.0",
+  "prometheusOperator": "0.69.1",
   "kubeRbacProxy": "0.15.0",
   "configmapReload": "0.5.0",
   "pyrra": "0.6.4"
