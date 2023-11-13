@@ -316,6 +316,16 @@ spec:
       for: 5m
       labels:
         severity: warning
+    - alert: NodeBondingDegraded
+      annotations:
+        description: Bonding interface {{ $labels.master }} on {{ $labels.instance }} is in degraded state due to one or more slave failures.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/nodebondingdegraded
+        summary: Bonding interface is degraded
+      expr: |
+        (node_bonding_slaves - node_bonding_active) != 0
+      for: 5m
+      labels:
+        severity: warning
   - name: node-exporter.rules
     rules:
     - expr: |
