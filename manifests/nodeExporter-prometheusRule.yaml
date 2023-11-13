@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.6.1
+    app.kubernetes.io/version: 1.7.0
     prometheus: k8s
     role: alert-rules
   name: node-exporter-rules
@@ -313,6 +313,16 @@ spec:
         summary: Systemd service has entered failed state.
       expr: |
         node_systemd_unit_state{job="node-exporter", state="failed"} == 1
+      for: 5m
+      labels:
+        severity: warning
+    - alert: NodeBondingDegraded
+      annotations:
+        description: Bonding interface {{ $labels.master }} on {{ $labels.instance }} is in degraded state due to one or more slave failures.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/nodebondingdegraded
+        summary: Bonding interface is degraded
+      expr: |
+        (node_bonding_slaves - node_bonding_active) != 0
       for: 5m
       labels:
         severity: warning
