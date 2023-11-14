@@ -3135,7 +3135,7 @@
       ],
       "targets": [
         {
-          "expr": "sort_desc(floor(label_replace(max by(node) (max by(instance) (kubelet_running_pod_count{job=\"kubelet\",metrics_path=\"/metrics\"}) * on(instance) group_left(node) kubelet_node_name{job=\"kubelet\",metrics_path=\"/metrics\"}) / max by(node) (kube_node_status_capacity_pods{job=\"kube-state-metrics\"}) , \"node_ip\", \"$1.$2.$3.$4\", \"node\", \"^ip-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+).*$\") * 100))",
+          "expr": "sort_desc(floor(label_replace(max by(node) (max by(instance) (kubelet_running_pod_count{job=\"kubelet\",metrics_path=\"/metrics\"}) * on(instance) group_left(node) kubelet_node_name{job=\"kubelet\",metrics_path=\"/metrics\"}) / max by(node) (kube_node_status_capacity{resource=\"pods\",unit=\"integer\",job=\"kube-state-metrics\"}) , \"node_ip\", \"$1.$2.$3.$4\", \"node\", \"^ip-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+).*$\") * 100))",
           "format": "time_series",
           "hide": false,
           "instant": true,
