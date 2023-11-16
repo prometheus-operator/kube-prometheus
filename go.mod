@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Jeffail/gabs v1.4.0
 	github.com/prometheus/client_golang v1.17.0
-	k8s.io/apimachinery v0.28.3
+	k8s.io/apimachinery v0.28.4
 	k8s.io/client-go v0.28.2
 )
 
