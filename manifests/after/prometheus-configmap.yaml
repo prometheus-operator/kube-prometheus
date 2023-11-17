@@ -1,0 +1,1647 @@
+# Prometheus configuration format https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+  labels:
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode: EnsureExists
+data:
+  prometheus.yml: |
+    global:
+      evaluation_interval: 15s
+      scrape_interval: 15s
+      external_labels:
+        prometheus: monitoring/k8s
+        prometheus_replica: prometheus-k8s-0
+    rule_files:
+    - /etc/prometheus/rules/prometheus-k8s-rulefiles-0/*.yaml
+    scrape_configs:
+    - job_name: serviceMonitor/monitoring/alertmanager-main/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (alert-router);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_instance
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_instance
+        regex: (main);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (alertmanager);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: web
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: web
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/alertmanager-main/1
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (alert-router);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_instance
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_instance
+        regex: (main);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (alertmanager);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: reloader-web
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: reloader-web
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/blackbox-exporter/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      metrics_path: /metrics
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (exporter);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (blackbox-exporter);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/coredns/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - kube-system
+      scrape_interval: 15s
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_k8s_app
+        - __meta_kubernetes_service_labelpresent_k8s_app
+        regex: (kube-dns);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: metrics
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: metrics
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs:
+      - source_labels:
+        - __name__
+        regex: coredns_cache_misses_total
+        action: drop
+    - job_name: serviceMonitor/monitoring/grafana/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (grafana);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: http
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: http
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/kube-apiserver/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - default
+      scrape_interval: 15s
+      scheme: https
+      tls_config:
+        insecure_skip_verify: false
+        server_name: kubernetes
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_component
+        - __meta_kubernetes_service_labelpresent_component
+        regex: (apiserver);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_provider
+        - __meta_kubernetes_service_labelpresent_provider
+        regex: (kubernetes);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_component
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs:
+      - source_labels:
+        - __name__
+        regex: kubelet_(pod_worker_latency_microseconds|pod_start_latency_microseconds|cgroup_manager_latency_microseconds|pod_worker_start_latency_microseconds|pleg_relist_latency_microseconds|pleg_relist_interval_microseconds|runtime_operations|runtime_operations_latency_microseconds|runtime_operations_errors|eviction_stats_age_microseconds|device_plugin_registration_count|device_plugin_alloc_latency_microseconds|network_plugin_operations_latency_microseconds)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: scheduler_(e2e_scheduling_latency_microseconds|scheduling_algorithm_predicate_evaluation|scheduling_algorithm_priority_evaluation|scheduling_algorithm_preemption_evaluation|scheduling_algorithm_latency_microseconds|binding_latency_microseconds|scheduling_latency_seconds)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: kubelet_docker_(operations|operations_latency_microseconds|operations_errors|operations_timeout)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: reflector_(items_per_list|items_per_watch|list_duration_seconds|lists_total|short_watches_total|watch_duration_seconds|watches_total)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: etcd_(helper_cache_hit_count|helper_cache_miss_count|helper_cache_entry_count|object_counts|request_cache_get_latencies_summary|request_cache_add_latencies_summary|request_latencies_summary)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: transformation_(transformation_latencies_microseconds|failures_total)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: (admission_quota_controller_adds|admission_quota_controller_depth|admission_quota_controller_longest_running_processor_microseconds|admission_quota_controller_queue_latency|admission_quota_controller_unfinished_work_seconds|admission_quota_controller_work_duration|APIServiceOpenAPIAggregationControllerQueue1_adds|APIServiceOpenAPIAggregationControllerQueue1_depth|APIServiceOpenAPIAggregationControllerQueue1_longest_running_processor_microseconds|APIServiceOpenAPIAggregationControllerQueue1_queue_latency|APIServiceOpenAPIAggregationControllerQueue1_retries|APIServiceOpenAPIAggregationControllerQueue1_unfinished_work_seconds|APIServiceOpenAPIAggregationControllerQueue1_work_duration|APIServiceRegistrationController_adds|APIServiceRegistrationController_depth|APIServiceRegistrationController_longest_running_processor_microseconds|APIServiceRegistrationController_queue_latency|APIServiceRegistrationController_retries|APIServiceRegistrationController_unfinished_work_seconds|APIServiceRegistrationController_work_duration|autoregister_adds|autoregister_depth|autoregister_longest_running_processor_microseconds|autoregister_queue_latency|autoregister_retries|autoregister_unfinished_work_seconds|autoregister_work_duration|AvailableConditionController_adds|AvailableConditionController_depth|AvailableConditionController_longest_running_processor_microseconds|AvailableConditionController_queue_latency|AvailableConditionController_retries|AvailableConditionController_unfinished_work_seconds|AvailableConditionController_work_duration|crd_autoregistration_controller_adds|crd_autoregistration_controller_depth|crd_autoregistration_controller_longest_running_processor_microseconds|crd_autoregistration_controller_queue_latency|crd_autoregistration_controller_retries|crd_autoregistration_controller_unfinished_work_seconds|crd_autoregistration_controller_work_duration|crdEstablishing_adds|crdEstablishing_depth|crdEstablishing_longest_running_processor_microseconds|crdEstablishing_queue_latency|crdEstablishing_retries|crdEstablishing_unfinished_work_seconds|crdEstablishing_work_duration|crd_finalizer_adds|crd_finalizer_depth|crd_finalizer_longest_running_processor_microseconds|crd_finalizer_queue_latency|crd_finalizer_retries|crd_finalizer_unfinished_work_seconds|crd_finalizer_work_duration|crd_naming_condition_controller_adds|crd_naming_condition_controller_depth|crd_naming_condition_controller_longest_running_processor_microseconds|crd_naming_condition_controller_queue_latency|crd_naming_condition_controller_retries|crd_naming_condition_controller_unfinished_work_seconds|crd_naming_condition_controller_work_duration|crd_openapi_controller_adds|crd_openapi_controller_depth|crd_openapi_controller_longest_running_processor_microseconds|crd_openapi_controller_queue_latency|crd_openapi_controller_retries|crd_openapi_controller_unfinished_work_seconds|crd_openapi_controller_work_duration|DiscoveryController_adds|DiscoveryController_depth|DiscoveryController_longest_running_processor_microseconds|DiscoveryController_queue_latency|DiscoveryController_retries|DiscoveryController_unfinished_work_seconds|DiscoveryController_work_duration|kubeproxy_sync_proxy_rules_latency_microseconds|non_structural_schema_condition_controller_adds|non_structural_schema_condition_controller_depth|non_structural_schema_condition_controller_longest_running_processor_microseconds|non_structural_schema_condition_controller_queue_latency|non_structural_schema_condition_controller_retries|non_structural_schema_condition_controller_unfinished_work_seconds|non_structural_schema_condition_controller_work_duration|rest_client_request_latency_seconds|storage_operation_errors_total|storage_operation_status_count)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: etcd_(debugging|disk|server).*
+        action: drop
+      - source_labels:
+        - __name__
+        regex: apiserver_admission_controller_admission_latencies_seconds_.*
+        action: drop
+      - source_labels:
+        - __name__
+        regex: apiserver_admission_step_admission_latencies_seconds_.*
+        action: drop
+      - source_labels:
+        - __name__
+        - le
+        regex: apiserver_request_duration_seconds_bucket;(0.15|0.25|0.3|0.35|0.4|0.45|0.6|0.7|0.8|0.9|1.25|1.5|1.75|2.5|3|3.5|4.5|6|7|8|9|15|25|30|50)
+        action: drop
+    - job_name: serviceMonitor/monitoring/kube-controller-manager/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - kube-system
+      scrape_interval: 15s
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (kube-controller-manager);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https-metrics
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https-metrics
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs:
+      - source_labels:
+        - __name__
+        regex: kubelet_(pod_worker_latency_microseconds|pod_start_latency_microseconds|cgroup_manager_latency_microseconds|pod_worker_start_latency_microseconds|pleg_relist_latency_microseconds|pleg_relist_interval_microseconds|runtime_operations|runtime_operations_latency_microseconds|runtime_operations_errors|eviction_stats_age_microseconds|device_plugin_registration_count|device_plugin_alloc_latency_microseconds|network_plugin_operations_latency_microseconds)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: scheduler_(e2e_scheduling_latency_microseconds|scheduling_algorithm_predicate_evaluation|scheduling_algorithm_priority_evaluation|scheduling_algorithm_preemption_evaluation|scheduling_algorithm_latency_microseconds|binding_latency_microseconds|scheduling_latency_seconds)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: kubelet_docker_(operations|operations_latency_microseconds|operations_errors|operations_timeout)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: reflector_(items_per_list|items_per_watch|list_duration_seconds|lists_total|short_watches_total|watch_duration_seconds|watches_total)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: etcd_(helper_cache_hit_count|helper_cache_miss_count|helper_cache_entry_count|object_counts|request_cache_get_latencies_summary|request_cache_add_latencies_summary|request_latencies_summary)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: transformation_(transformation_latencies_microseconds|failures_total)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: (admission_quota_controller_adds|admission_quota_controller_depth|admission_quota_controller_longest_running_processor_microseconds|admission_quota_controller_queue_latency|admission_quota_controller_unfinished_work_seconds|admission_quota_controller_work_duration|APIServiceOpenAPIAggregationControllerQueue1_adds|APIServiceOpenAPIAggregationControllerQueue1_depth|APIServiceOpenAPIAggregationControllerQueue1_longest_running_processor_microseconds|APIServiceOpenAPIAggregationControllerQueue1_queue_latency|APIServiceOpenAPIAggregationControllerQueue1_retries|APIServiceOpenAPIAggregationControllerQueue1_unfinished_work_seconds|APIServiceOpenAPIAggregationControllerQueue1_work_duration|APIServiceRegistrationController_adds|APIServiceRegistrationController_depth|APIServiceRegistrationController_longest_running_processor_microseconds|APIServiceRegistrationController_queue_latency|APIServiceRegistrationController_retries|APIServiceRegistrationController_unfinished_work_seconds|APIServiceRegistrationController_work_duration|autoregister_adds|autoregister_depth|autoregister_longest_running_processor_microseconds|autoregister_queue_latency|autoregister_retries|autoregister_unfinished_work_seconds|autoregister_work_duration|AvailableConditionController_adds|AvailableConditionController_depth|AvailableConditionController_longest_running_processor_microseconds|AvailableConditionController_queue_latency|AvailableConditionController_retries|AvailableConditionController_unfinished_work_seconds|AvailableConditionController_work_duration|crd_autoregistration_controller_adds|crd_autoregistration_controller_depth|crd_autoregistration_controller_longest_running_processor_microseconds|crd_autoregistration_controller_queue_latency|crd_autoregistration_controller_retries|crd_autoregistration_controller_unfinished_work_seconds|crd_autoregistration_controller_work_duration|crdEstablishing_adds|crdEstablishing_depth|crdEstablishing_longest_running_processor_microseconds|crdEstablishing_queue_latency|crdEstablishing_retries|crdEstablishing_unfinished_work_seconds|crdEstablishing_work_duration|crd_finalizer_adds|crd_finalizer_depth|crd_finalizer_longest_running_processor_microseconds|crd_finalizer_queue_latency|crd_finalizer_retries|crd_finalizer_unfinished_work_seconds|crd_finalizer_work_duration|crd_naming_condition_controller_adds|crd_naming_condition_controller_depth|crd_naming_condition_controller_longest_running_processor_microseconds|crd_naming_condition_controller_queue_latency|crd_naming_condition_controller_retries|crd_naming_condition_controller_unfinished_work_seconds|crd_naming_condition_controller_work_duration|crd_openapi_controller_adds|crd_openapi_controller_depth|crd_openapi_controller_longest_running_processor_microseconds|crd_openapi_controller_queue_latency|crd_openapi_controller_retries|crd_openapi_controller_unfinished_work_seconds|crd_openapi_controller_work_duration|DiscoveryController_adds|DiscoveryController_depth|DiscoveryController_longest_running_processor_microseconds|DiscoveryController_queue_latency|DiscoveryController_retries|DiscoveryController_unfinished_work_seconds|DiscoveryController_work_duration|kubeproxy_sync_proxy_rules_latency_microseconds|non_structural_schema_condition_controller_adds|non_structural_schema_condition_controller_depth|non_structural_schema_condition_controller_longest_running_processor_microseconds|non_structural_schema_condition_controller_queue_latency|non_structural_schema_condition_controller_retries|non_structural_schema_condition_controller_unfinished_work_seconds|non_structural_schema_condition_controller_work_duration|rest_client_request_latency_seconds|storage_operation_errors_total|storage_operation_status_count)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: etcd_(debugging|disk|request|server).*
+        action: drop
+    - job_name: serviceMonitor/monitoring/kube-scheduler/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - kube-system
+      scrape_interval: 15s
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (kube-scheduler);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https-metrics
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https-metrics
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/kube-state-metrics/0
+      honor_labels: true
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (exporter);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (kube-state-metrics);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https-main
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https-main
+      - regex: (pod|service|endpoint|namespace)
+        action: labeldrop
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs:
+      - source_labels:
+        - __name__
+        regex: kube_endpoint_address_not_ready|kube_endpoint_address_available
+        action: drop
+    - job_name: serviceMonitor/monitoring/kube-state-metrics/1
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (exporter);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (kube-state-metrics);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https-self
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https-self
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/kubelet/0
+      honor_labels: true
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - kube-system
+      scrape_interval: 15s
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (kubelet);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https-metrics
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https-metrics
+      - source_labels:
+        - __metrics_path__
+        target_label: metrics_path
+        action: replace
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs:
+      - source_labels:
+        - __name__
+        regex: kubelet_(pod_worker_latency_microseconds|pod_start_latency_microseconds|cgroup_manager_latency_microseconds|pod_worker_start_latency_microseconds|pleg_relist_latency_microseconds|pleg_relist_interval_microseconds|runtime_operations|runtime_operations_latency_microseconds|runtime_operations_errors|eviction_stats_age_microseconds|device_plugin_registration_count|device_plugin_alloc_latency_microseconds|network_plugin_operations_latency_microseconds)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: scheduler_(e2e_scheduling_latency_microseconds|scheduling_algorithm_predicate_evaluation|scheduling_algorithm_priority_evaluation|scheduling_algorithm_preemption_evaluation|scheduling_algorithm_latency_microseconds|binding_latency_microseconds|scheduling_latency_seconds)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: kubelet_docker_(operations|operations_latency_microseconds|operations_errors|operations_timeout)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: reflector_(items_per_list|items_per_watch|list_duration_seconds|lists_total|short_watches_total|watch_duration_seconds|watches_total)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: etcd_(helper_cache_hit_count|helper_cache_miss_count|helper_cache_entry_count|object_counts|request_cache_get_latencies_summary|request_cache_add_latencies_summary|request_latencies_summary)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: transformation_(transformation_latencies_microseconds|failures_total)
+        action: drop
+      - source_labels:
+        - __name__
+        regex: (admission_quota_controller_adds|admission_quota_controller_depth|admission_quota_controller_longest_running_processor_microseconds|admission_quota_controller_queue_latency|admission_quota_controller_unfinished_work_seconds|admission_quota_controller_work_duration|APIServiceOpenAPIAggregationControllerQueue1_adds|APIServiceOpenAPIAggregationControllerQueue1_depth|APIServiceOpenAPIAggregationControllerQueue1_longest_running_processor_microseconds|APIServiceOpenAPIAggregationControllerQueue1_queue_latency|APIServiceOpenAPIAggregationControllerQueue1_retries|APIServiceOpenAPIAggregationControllerQueue1_unfinished_work_seconds|APIServiceOpenAPIAggregationControllerQueue1_work_duration|APIServiceRegistrationController_adds|APIServiceRegistrationController_depth|APIServiceRegistrationController_longest_running_processor_microseconds|APIServiceRegistrationController_queue_latency|APIServiceRegistrationController_retries|APIServiceRegistrationController_unfinished_work_seconds|APIServiceRegistrationController_work_duration|autoregister_adds|autoregister_depth|autoregister_longest_running_processor_microseconds|autoregister_queue_latency|autoregister_retries|autoregister_unfinished_work_seconds|autoregister_work_duration|AvailableConditionController_adds|AvailableConditionController_depth|AvailableConditionController_longest_running_processor_microseconds|AvailableConditionController_queue_latency|AvailableConditionController_retries|AvailableConditionController_unfinished_work_seconds|AvailableConditionController_work_duration|crd_autoregistration_controller_adds|crd_autoregistration_controller_depth|crd_autoregistration_controller_longest_running_processor_microseconds|crd_autoregistration_controller_queue_latency|crd_autoregistration_controller_retries|crd_autoregistration_controller_unfinished_work_seconds|crd_autoregistration_controller_work_duration|crdEstablishing_adds|crdEstablishing_depth|crdEstablishing_longest_running_processor_microseconds|crdEstablishing_queue_latency|crdEstablishing_retries|crdEstablishing_unfinished_work_seconds|crdEstablishing_work_duration|crd_finalizer_adds|crd_finalizer_depth|crd_finalizer_longest_running_processor_microseconds|crd_finalizer_queue_latency|crd_finalizer_retries|crd_finalizer_unfinished_work_seconds|crd_finalizer_work_duration|crd_naming_condition_controller_adds|crd_naming_condition_controller_depth|crd_naming_condition_controller_longest_running_processor_microseconds|crd_naming_condition_controller_queue_latency|crd_naming_condition_controller_retries|crd_naming_condition_controller_unfinished_work_seconds|crd_naming_condition_controller_work_duration|crd_openapi_controller_adds|crd_openapi_controller_depth|crd_openapi_controller_longest_running_processor_microseconds|crd_openapi_controller_queue_latency|crd_openapi_controller_retries|crd_openapi_controller_unfinished_work_seconds|crd_openapi_controller_work_duration|DiscoveryController_adds|DiscoveryController_depth|DiscoveryController_longest_running_processor_microseconds|DiscoveryController_queue_latency|DiscoveryController_retries|DiscoveryController_unfinished_work_seconds|DiscoveryController_work_duration|kubeproxy_sync_proxy_rules_latency_microseconds|non_structural_schema_condition_controller_adds|non_structural_schema_condition_controller_depth|non_structural_schema_condition_controller_longest_running_processor_microseconds|non_structural_schema_condition_controller_queue_latency|non_structural_schema_condition_controller_retries|non_structural_schema_condition_controller_unfinished_work_seconds|non_structural_schema_condition_controller_work_duration|rest_client_request_latency_seconds|storage_operation_errors_total|storage_operation_status_count)
+        action: drop
+    - job_name: serviceMonitor/monitoring/kubelet/1
+      honor_labels: true
+      honor_timestamps: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - kube-system
+      scrape_interval: 15s
+      metrics_path: /metrics/cadvisor
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (kubelet);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https-metrics
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https-metrics
+      - source_labels:
+        - __metrics_path__
+        target_label: metrics_path
+        action: replace
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs:
+      - source_labels:
+        - __name__
+        regex: container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)
+        action: drop
+      - source_labels:
+        - __name__
+        - pod
+        - namespace
+        regex: (container_spec_.*|container_file_descriptors|container_sockets|container_threads_max|container_threads|container_start_time_seconds|container_last_seen);;
+        action: drop
+      - source_labels:
+        - __name__
+        - container
+        regex: (container_blkio_device_usage_total);.+
+        action: drop
+    - job_name: serviceMonitor/monitoring/kubelet/2
+      honor_labels: true
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - kube-system
+      scrape_interval: 15s
+      metrics_path: /metrics/probes
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (kubelet);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https-metrics
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https-metrics
+      - source_labels:
+        - __metrics_path__
+        target_label: metrics_path
+        action: replace
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/node-exporter/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (exporter);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (node-exporter);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        target_label: job
+        regex: (.+)
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https
+      - source_labels:
+        - __meta_kubernetes_pod_node_name
+        target_label: instance
+        regex: (.*)
+        replacement: $1
+        action: replace
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/prometheus-adapter/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (metrics-adapter);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (prometheus-adapter);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs:
+      - source_labels:
+        - __name__
+        regex: (apiserver_client_certificate_.*|apiserver_envelope_.*|apiserver_flowcontrol_.*|apiserver_storage_.*|apiserver_webhooks_.*|workqueue_.*)
+        action: drop
+    - job_name: serviceMonitor/monitoring/prometheus-k8s/0
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_instance
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_instance
+        regex: (k8s);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: web
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: web
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/prometheus-k8s/1
+      honor_labels: false
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scrape_interval: 15s
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_instance
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_instance
+        regex: (k8s);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: reloader-web
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: reloader-web
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    - job_name: serviceMonitor/monitoring/prometheus-operator/0
+      honor_labels: true
+      kubernetes_sd_configs:
+      - role: endpoints
+        namespaces:
+          names:
+          - monitoring
+      scheme: https
+      tls_config:
+        insecure_skip_verify: true
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      relabel_configs:
+      - source_labels:
+        - job
+        target_label: __tmp_prometheus_job_name
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_component
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_component
+        regex: (controller);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_name
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_name
+        regex: (prometheus-operator);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_part_of
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_part_of
+        regex: (kube-prometheus);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_service_label_app_kubernetes_io_version
+        - __meta_kubernetes_service_labelpresent_app_kubernetes_io_version
+        regex: (0.69.1);true
+      - action: keep
+        source_labels:
+        - __meta_kubernetes_endpoint_port_name
+        regex: https
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Node;(.*)
+        replacement: ${1}
+        target_label: node
+      - source_labels:
+        - __meta_kubernetes_endpoint_address_target_kind
+        - __meta_kubernetes_endpoint_address_target_name
+        separator: ;
+        regex: Pod;(.*)
+        replacement: ${1}
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - source_labels:
+        - __meta_kubernetes_pod_container_name
+        target_label: container
+      - action: drop
+        source_labels:
+        - __meta_kubernetes_pod_phase
+        regex: (Failed|Succeeded)
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: job
+        replacement: ${1}
+      - target_label: endpoint
+        replacement: https
+      - source_labels:
+        - __address__
+        target_label: __tmp_hash
+        modulus: 1
+        action: hashmod
+      - source_labels:
+        - __tmp_hash
+        regex: 0
+        action: keep
+      metric_relabel_configs: []
+    alerting:
+      alert_relabel_configs:
+      - action: labeldrop
+        regex: prometheus_replica
+      alertmanagers:
+      - path_prefix: /
+        scheme: http
+        kubernetes_sd_configs:
+        - role: endpoints
+          namespaces:
+            names:
+            - monitoring
+        api_version: v2
+        relabel_configs:
+        - action: keep
+          source_labels:
+          - __meta_kubernetes_service_name
+          regex: alertmanager-main
+        - action: keep
+          source_labels:
+          - __meta_kubernetes_endpoint_port_name
+          regex: web
