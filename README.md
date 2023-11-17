@@ -1,3 +1,7 @@
+安装时按照原文档安装完后再允许after里的prometheus-k8s-statefulSet.yaml，将配置方法改为通过configmap配置文件
+
+修改：将grafana和prometheus端口暴露，并关掉二者网络策略
+
 # kube-prometheus
 
 [![Build Status](https://github.com/prometheus-operator/kube-prometheus/workflows/ci/badge.svg)](https://github.com/prometheus-operator/kube-prometheus/actions)

@@ -10,10 +10,12 @@ metadata:
   name: prometheus-k8s
   namespace: monitoring
 spec:
+  type: NodePort
   ports:
   - name: web
     port: 9090
     targetPort: web
+    nodePort: 30090
   - name: reloader-web
     port: 8080
     targetPort: reloader-web
