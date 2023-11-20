@@ -1,6 +1,6 @@
 local filter = {
   kubernetesControlPlane+: {
-    prometheusRule+:: {
+    prometheusRule+: {
       spec+: {
         groups: std.map(
           function(group)
@@ -22,7 +22,7 @@ local filter = {
 };
 local update = {
   kubernetesControlPlane+: {
-    prometheusRule+:: {
+    prometheusRule+: {
       spec+: {
         groups: std.map(
           function(group)
