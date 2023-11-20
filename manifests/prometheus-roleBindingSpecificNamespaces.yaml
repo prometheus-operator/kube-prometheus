@@ -8,7 +8,7 @@ items:
       app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.47.2
+      app.kubernetes.io/version: 2.48.0
     name: prometheus-k8s
     namespace: default
   roleRef:
@@ -27,7 +27,7 @@ items:
       app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.47.2
+      app.kubernetes.io/version: 2.48.0
     name: prometheus-k8s
     namespace: kube-system
   roleRef:
@@ -46,7 +46,7 @@ items:
       app.kubernetes.io/instance: k8s
       app.kubernetes.io/name: prometheus
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 2.47.2
+      app.kubernetes.io/version: 2.48.0
     name: prometheus-k8s
     namespace: monitoring
   roleRef:
