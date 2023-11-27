@@ -1,7 +1,7 @@
 {
   "alertmanager": "0.26.0",
   "blackboxExporter": "0.24.0",
-  "grafana": "10.2.1",
+  "grafana": "10.2.2",
   "kubeStateMetrics": "2.9.2",
   "nodeExporter": "1.7.0",
   "prometheus": "2.48.0",
