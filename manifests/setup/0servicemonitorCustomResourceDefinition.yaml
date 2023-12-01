@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-    operator.prometheus.io/version: 0.69.1
+    operator.prometheus.io/version: 0.70.0
   name: servicemonitors.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -471,7 +471,7 @@ spec:
                           type: string
                       type: object
                     trackTimestampsStaleness:
-                      description: "`trackTimestampsStaleness` defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. \n It requires Prometheus >= v2.48.0."
+                      description: "`trackTimestampsStaleness` defines whether Prometheus tracks staleness of the metrics that have an explicit timestamp present in scraped data. Has no effect if `honorTimestamps` is false. \n It requires Prometheus >= v2.48.0."
                       type: boolean
                   type: object
                 type: array

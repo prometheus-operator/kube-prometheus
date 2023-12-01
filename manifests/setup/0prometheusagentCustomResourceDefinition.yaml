@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-    operator.prometheus.io/version: 0.69.1
+    operator.prometheus.io/version: 0.70.0
   name: prometheusagents.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -2752,6 +2752,12 @@ spec:
                 x-kubernetes-map-type: atomic
               prometheusExternalLabelName:
                 description: "Name of Prometheus external label used to denote the Prometheus instance name. The external label will _not_ be added when the field is set to the empty string (`\"\"`). \n Default: \"prometheus\""
+                type: string
+              reloadStrategy:
+                description: Defines the strategy used to reload the Prometheus configuration. If not specified, the configuration is reloaded using the /-/reload HTTP endpoint.
+                enum:
+                - HTTP
+                - ProcessSignal
                 type: string
               remoteWrite:
                 description: Defines the list of remote write configurations.
