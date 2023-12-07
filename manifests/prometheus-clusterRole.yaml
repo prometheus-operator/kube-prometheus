@@ -19,3 +19,11 @@ rules:
   - /metrics
   verbs:
   - get
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
