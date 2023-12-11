@@ -18,7 +18,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make generate validate && git diff --exit-code
@@ -29,7 +29,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: ${{ env.golang-version }}
     - run: make check-docs
@@ -40,7 +40,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make lint
@@ -51,7 +51,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make fmt && git diff --exit-code
@@ -62,7 +62,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make test
@@ -73,7 +73,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: ${{ env.golang-version }}
     - run: make --always-make kubescape
@@ -89,7 +89,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         persist-credentials: false
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: ${{ env.golang-version }}
     - name: Start kind cluster
