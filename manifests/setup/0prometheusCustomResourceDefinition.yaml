@@ -668,7 +668,7 @@ spec:
                               x-kubernetes-map-type: atomic
                           type: object
                         bearerTokenFile:
-                          description: "File to read bearer token for Alertmanager. \n Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`. \n *Deprecated: this will be removed in a future release. Prefer using `authorization`.*"
+                          description: "File to read bearer token for Alertmanager. \n Cannot be set at the same time as `basicAuth`, `authorization`, or `sigv4`. \n Deprecated: this will be removed in a future release. Prefer using `authorization`."
                           type: string
                         enableHttp2:
                           description: Whether to enable HTTP2.
@@ -857,7 +857,7 @@ spec:
                 - alertmanagers
                 type: object
               allowOverlappingBlocks:
-                description: "AllowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus. \n *Deprecated: this flag has no effect for Prometheus >= 2.39.0 where overlapping blocks are enabled by default.*"
+                description: "AllowOverlappingBlocks enables vertical compaction and vertical query merge in Prometheus. \n Deprecated: this flag has no effect for Prometheus >= 2.39.0 where overlapping blocks are enabled by default."
                 type: boolean
               apiserverConfig:
                 description: 'APIServerConfig allows specifying a host and auth methods to access the Kuberntees API server. If null, Prometheus is assumed to run inside of the cluster: it will discover the API servers automatically and use the Pod''s CA certificate and bearer token file at /var/run/secrets/kubernetes.io/serviceaccount/.'
@@ -925,10 +925,10 @@ spec:
                         x-kubernetes-map-type: atomic
                     type: object
                   bearerToken:
-                    description: "*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* \n *Deprecated: this will be removed in a future release.*"
+                    description: "*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* \n Deprecated: this will be removed in a future release."
                     type: string
                   bearerTokenFile:
-                    description: "File to read bearer token for accessing apiserver. \n Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`. \n *Deprecated: this will be removed in a future release. Prefer using `authorization`.*"
+                    description: "File to read bearer token for accessing apiserver. \n Cannot be set at the same time as `basicAuth`, `authorization`, or `bearerToken`. \n Deprecated: this will be removed in a future release. Prefer using `authorization`."
                     type: string
                   host:
                     description: Kubernetes API address consisting of a hostname or IP address followed by an optional port number.
@@ -1050,7 +1050,7 @@ spec:
                     type: boolean
                 type: object
               baseImage:
-                description: '*Deprecated: use ''spec.image'' instead.*'
+                description: 'Deprecated: use ''spec.image'' instead.'
                 type: string
               bodySizeLimit:
                 description: BodySizeLimit defines per-scrape on response body size. Only valid in Prometheus versions 2.45.0 and newer.
@@ -3070,7 +3070,7 @@ spec:
                 description: "Name of Prometheus external label used to denote the Prometheus instance name. The external label will _not_ be added when the field is set to the empty string (`\"\"`). \n Default: \"prometheus\""
                 type: string
               prometheusRulesExcludedFromEnforce:
-                description: 'Defines the list of PrometheusRule objects to which the namespace label enforcement doesn''t apply. This is only relevant when `spec.enforcedNamespaceLabel` is set to true. *Deprecated: use `spec.excludedFromEnforcement` instead.*'
+                description: 'Defines the list of PrometheusRule objects to which the namespace label enforcement doesn''t apply. This is only relevant when `spec.enforcedNamespaceLabel` is set to true. Deprecated: use `spec.excludedFromEnforcement` instead.'
                 items:
                   description: PrometheusRuleExcludeConfig enables users to configure excluded PrometheusRule names and their namespaces to be ignored while enforcing namespace label for alerts and metrics.
                   properties:
@@ -3182,10 +3182,10 @@ spec:
                           x-kubernetes-map-type: atomic
                       type: object
                     bearerToken:
-                      description: "*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* \n *Deprecated: this will be removed in a future release.*"
+                      description: "*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* \n Deprecated: this will be removed in a future release."
                       type: string
                     bearerTokenFile:
-                      description: "File from which to read the bearer token for the URL. \n *Deprecated: this will be removed in a future release. Prefer using `authorization`.*"
+                      description: "File from which to read the bearer token for the URL. \n Deprecated: this will be removed in a future release. Prefer using `authorization`."
                       type: string
                     filterExternalLabels:
                       description: "Whether to use the external labels as selectors for the remote read endpoint. \n It requires Prometheus >= v2.34.0."
@@ -3525,10 +3525,10 @@ spec:
                           x-kubernetes-map-type: atomic
                       type: object
                     bearerToken:
-                      description: "*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* \n *Deprecated: this will be removed in a future release.*"
+                      description: "*Warning: this field shouldn't be used because the token value appears in clear-text. Prefer using `authorization`.* \n Deprecated: this will be removed in a future release."
                       type: string
                     bearerTokenFile:
-                      description: "File from which to read bearer token for the URL. \n *Deprecated: this will be removed in a future release. Prefer using `authorization`.*"
+                      description: "File from which to read bearer token for the URL. \n Deprecated: this will be removed in a future release. Prefer using `authorization`."
                       type: string
                     headers:
                       additionalProperties:
@@ -4251,7 +4251,7 @@ spec:
                 type: object
                 x-kubernetes-map-type: atomic
               sha:
-                description: '*Deprecated: use ''spec.image'' instead. The image''s digest can be specified as part of the image name.*'
+                description: 'Deprecated: use ''spec.image'' instead. The image''s digest can be specified as part of the image name.'
                 type: string
               shards:
                 description: "EXPERIMENTAL: Number of shards to distribute targets onto. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created. \n Note that scaling down shards will not reshard data onto remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use Thanos sidecar and Thanos querier or remote write data to a central location. \n Sharding is performed on the content of the `__address__` target meta-label for PodMonitors and ServiceMonitors and `__param_target__` for Probes. \n Default: 1"
@@ -4261,7 +4261,7 @@ spec:
                 description: Storage defines the storage used by Prometheus.
                 properties:
                   disableMountSubPath:
-                    description: '*Deprecated: subPath usage will be removed in a future release.*'
+                    description: 'Deprecated: subPath usage will be removed in a future release.'
                     type: boolean
                   emptyDir:
                     description: 'EmptyDirVolumeSource to be used by the StatefulSet. If specified, it takes precedence over `ephemeral` and `volumeClaimTemplate`. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir'
@@ -4561,7 +4561,7 @@ spec:
                             type: string
                         type: object
                       status:
-                        description: '*Deprecated: this field is never set.*'
+                        description: 'Deprecated: this field is never set.'
                         properties:
                           accessModes:
                             description: 'accessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1'
@@ -4629,7 +4629,7 @@ spec:
                     type: object
                 type: object
               tag:
-                description: '*Deprecated: use ''spec.image'' instead. The image''s tag can be specified as part of the image name.*'
+                description: 'Deprecated: use ''spec.image'' instead. The image''s tag can be specified as part of the image name.'
                 type: string
               targetLimit:
                 description: TargetLimit defines a limit on the number of scraped targets that will be accepted. Only valid in Prometheus versions 2.45.0 and newer.
@@ -4655,7 +4655,7 @@ spec:
                       type: object
                     type: array
                   baseImage:
-                    description: '*Deprecated: use ''image'' instead.*'
+                    description: 'Deprecated: use ''image'' instead.'
                     type: string
                   blockSize:
                     default: 2h
@@ -4787,7 +4787,7 @@ spec:
                     description: "Container image name for Thanos. If specified, it takes precedence over the `spec.thanos.baseImage`, `spec.thanos.tag` and `spec.thanos.sha` fields. \n Specifying `spec.thanos.version` is still necessary to ensure the Prometheus Operator knows which version of Thanos is being configured. \n If neither `spec.thanos.image` nor `spec.thanos.baseImage` are defined, the operator will use the latest upstream version of Thanos available at the time when the operator was released."
                     type: string
                   listenLocal:
-                    description: '*Deprecated: use `grpcListenLocal` and `httpListenLocal` instead.*'
+                    description: 'Deprecated: use `grpcListenLocal` and `httpListenLocal` instead.'
                     type: boolean
                   logFormat:
                     description: Log format for the Thanos sidecar.
@@ -4869,10 +4869,10 @@ spec:
                         type: object
                     type: object
                   sha:
-                    description: '*Deprecated: use ''image'' instead.  The image digest can be specified as part of the image name.*'
+                    description: 'Deprecated: use ''image'' instead.  The image digest can be specified as part of the image name.'
                     type: string
                   tag:
-                    description: '*Deprecated: use ''image'' instead. The image''s tag can be specified as part of the image name.*'
+                    description: 'Deprecated: use ''image'' instead. The image''s tag can be specified as as part of the image name.'
                     type: string
                   tracingConfig:
                     description: "Defines the tracing configuration for the Thanos sidecar. \n More info: https://thanos.io/tip/thanos/tracing.md/ \n This is an experimental feature, it may change in any upcoming release in a breaking way. \n tracingConfigFile takes precedence over this field."

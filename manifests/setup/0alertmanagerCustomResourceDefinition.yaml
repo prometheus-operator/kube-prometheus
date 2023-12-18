@@ -1044,7 +1044,7 @@ spec:
                 description: 'AutomountServiceAccountToken indicates whether a service account token should be automatically mounted in the pod. If the service account has `automountServiceAccountToken: true`, set the field to `false` to opt out of automounting API credentials.'
                 type: boolean
               baseImage:
-                description: 'Base image that is used to deploy pods, without tag. Deprecated: use ''image'' instead'
+                description: 'Base image that is used to deploy pods, without tag. Deprecated: use ''image'' instead.'
                 type: string
               clusterAdvertiseAddress:
                 description: 'ClusterAdvertiseAddress is the explicit address to advertise in cluster. Needs to be provided for non RFC1918 [1] (public) addresses. [1] RFC1918: https://tools.ietf.org/html/rfc1918'
@@ -2961,13 +2961,13 @@ spec:
                 description: ServiceAccountName is the name of the ServiceAccount to use to run the Prometheus Pods.
                 type: string
               sha:
-                description: 'SHA of Alertmanager container image to be deployed. Defaults to the value of `version`. Similar to a tag, but the SHA explicitly deploys an immutable container image. Version and Tag are ignored if SHA is set. Deprecated: use ''image'' instead.  The image digest can be specified as part of the image URL.'
+                description: 'SHA of Alertmanager container image to be deployed. Defaults to the value of `version`. Similar to a tag, but the SHA explicitly deploys an immutable container image. Version and Tag are ignored if SHA is set. Deprecated: use ''image'' instead. The image digest can be specified as part of the image URL.'
                 type: string
               storage:
                 description: Storage is the definition of how storage will be used by the Alertmanager instances.
                 properties:
                   disableMountSubPath:
-                    description: '*Deprecated: subPath usage will be removed in a future release.*'
+                    description: 'Deprecated: subPath usage will be removed in a future release.'
                     type: boolean
                   emptyDir:
                     description: 'EmptyDirVolumeSource to be used by the StatefulSet. If specified, it takes precedence over `ephemeral` and `volumeClaimTemplate`. More info: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir'
@@ -3267,7 +3267,7 @@ spec:
                             type: string
                         type: object
                       status:
-                        description: '*Deprecated: this field is never set.*'
+                        description: 'Deprecated: this field is never set.'
                         properties:
                           accessModes:
                             description: 'accessModes contains the actual access modes the volume backing the PVC has. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#access-modes-1'
@@ -3335,7 +3335,7 @@ spec:
                     type: object
                 type: object
               tag:
-                description: 'Tag of Alertmanager container image to be deployed. Defaults to the value of `version`. Version is ignored if Tag is set. Deprecated: use ''image'' instead.  The image tag can be specified as part of the image URL.'
+                description: 'Tag of Alertmanager container image to be deployed. Defaults to the value of `version`. Version is ignored if Tag is set. Deprecated: use ''image'' instead. The image tag can be specified as part of the image URL.'
                 type: string
               tolerations:
                 description: If specified, the pod's tolerations.
