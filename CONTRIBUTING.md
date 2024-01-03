@@ -20,7 +20,7 @@ Channel used for project developers discussions
 
 **Discussion forum**: [GitHub discussions](https://github.com/prometheus-operator/kube-prometheus/discussions)
 
-**Twitter**: [@PromOperator](https://twitter.com/promoperator)
+**Twitter**: [@PromOperator](https://twitter.com/PromOperator)
 
 **GitHub**: To file bugs and feature requests. For questions and discussions use the GitHub discussions. Generally,
 the other community channels listed here are best suited to get support or discuss overarching topics.
