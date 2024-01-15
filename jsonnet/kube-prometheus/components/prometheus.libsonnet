@@ -175,7 +175,10 @@ function(params) {
              ] +
              (
                if p._config.thanos != null then
-                 [{ name: 'grpc', port: 10901, targetPort: 10901 }]
+                 [
+                   { name: 'grpc', port: 10901, targetPort: 10901 },
+                   { name: 'http', port: 10902, targetPort: 10902 },
+                 ]
                else []
              ),
       selector: p._config.selectorLabels,
