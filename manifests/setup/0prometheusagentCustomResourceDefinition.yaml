@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-    operator.prometheus.io/version: 0.70.0
+    operator.prometheus.io/version: 0.71.0
   name: prometheusagents.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -2890,7 +2890,7 @@ spec:
                     bearerTokenFile:
                       description: "File from which to read bearer token for the URL. \n Deprecated: this will be removed in a future release. Prefer using `authorization`."
                       type: string
-                    enableHttp2:
+                    enableHTTP2:
                       description: Whether to enable HTTP2.
                       type: boolean
                     headers:
@@ -5344,6 +5344,9 @@ spec:
                 description: Total number of non-terminated pods targeted by this Prometheus deployment (their labels match the selector).
                 format: int32
                 type: integer
+              selector:
+                description: The selector used to match the pods targeted by this Prometheus resource.
+                type: string
               shardStatuses:
                 description: The list has one entry per shard. Each entry provides a summary of the shard status.
                 items:
@@ -5378,6 +5381,10 @@ spec:
                 x-kubernetes-list-map-keys:
                 - shardID
                 x-kubernetes-list-type: map
+              shards:
+                description: Shards is the most recently observed number of shards.
+                format: int32
+                type: integer
               unavailableReplicas:
                 description: Total number of unavailable pods targeted by this Prometheus deployment.
                 format: int32
@@ -5399,4 +5406,8 @@ spec:
     served: true
     storage: true
     subresources:
+      scale:
+        labelSelectorPath: .status.selector
+        specReplicasPath: .spec.shards
+        statusReplicasPath: .status.shards
       status: {}
