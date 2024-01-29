@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-    operator.prometheus.io/version: 0.71.0
+    operator.prometheus.io/version: 0.71.2
   name: scrapeconfigs.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -750,12 +750,13 @@ spec:
                       pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
                       type: string
                     type:
-                      description: The type of DNS query to perform. One of SRV, A, AAAA or MX. If not set, Prometheus uses its default value.
+                      description: "The type of DNS query to perform. One of SRV, A, AAAA, MX or NS. If not set, Prometheus uses its default value. \n When set to NS, It requires Prometheus >= 2.49.0."
                       enum:
                       - SRV
                       - A
                       - AAAA
                       - MX
+                      - NS
                       type: string
                   required:
                   - names
@@ -1825,6 +1826,18 @@ spec:
                 description: ScrapeInterval is the interval between consecutive scrapes.
                 pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
                 type: string
+              scrapeProtocols:
+                description: "The protocols to negotiate during a scrape. It tells clients the protocols supported by Prometheus in order of preference (from most to least preferred). \n If unset, Prometheus uses its default value. \n It requires Prometheus >= v2.49.0."
+                items:
+                  description: 'ScrapeProtocol represents a protocol used by Prometheus for scraping metrics. Supported values are: * `OpenMetricsText0.0.1` * `OpenMetricsText1.0.0` * `PrometheusProto` * `PrometheusText0.0.4`'
+                  enum:
+                  - PrometheusProto
+                  - OpenMetricsText0.0.1
+                  - OpenMetricsText1.0.0
+                  - PrometheusText0.0.4
+                  type: string
+                type: array
+                x-kubernetes-list-type: set
               scrapeTimeout:
                 description: ScrapeTimeout is the number of seconds to wait until a scrape request times out.
                 pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
