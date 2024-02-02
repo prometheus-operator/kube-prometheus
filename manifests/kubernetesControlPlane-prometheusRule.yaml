@@ -217,7 +217,7 @@ spec:
         summary: Job failed to complete.
       expr: |
         kube_job_failed{job="kube-state-metrics"}  > 0
-      for: 15m
+      for: 1m
       labels:
         severity: warning
     - alert: KubeHpaReplicasMismatch
