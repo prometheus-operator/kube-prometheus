@@ -108,7 +108,7 @@ spec:
         summary: Prometheus is not ingesting samples.
       expr: |
         (
-          rate(prometheus_tsdb_head_samples_appended_total{job="prometheus-k8s",namespace="monitoring"}[5m]) <= 0
+          sum without(type) (rate(prometheus_tsdb_head_samples_appended_total{job="prometheus-k8s",namespace="monitoring"}[5m])) <= 0
         and
           (
             sum without(scrape_job) (prometheus_target_metadata_cache_entries{job="prometheus-k8s",namespace="monitoring"}) > 0
