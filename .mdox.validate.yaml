@@ -10,3 +10,7 @@ validators:
   # Twitter changed their policy and now returns 403 if not authenticated. We can guarantee this link since we own the account.
   - regex: 'https:\/\/twitter.com\/PromOperator'
     type: "ignore"
+  # the www.weave.works domain returns 404 for many pages.
+  # Ignoring for now but we need remove the related content if it persists.
+  - regex: 'https:\/\/www.weave.works.*'
+    type: "ignore"
