@@ -600,7 +600,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-alertmanager-overview
     namespace: monitoring
 - apiVersion: v1
@@ -1469,7 +1469,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -3341,7 +3341,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -4505,7 +4505,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -5130,7 +5130,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-grafana-overview
     namespace: monitoring
 - apiVersion: v1
@@ -8060,7 +8060,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -9375,7 +9375,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-k8s-resources-multicluster
     namespace: monitoring
 - apiVersion: v1
@@ -12025,7 +12025,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -12994,7 +12994,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -15328,7 +15328,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-k8s-resources-pod
     namespace: monitoring
 - apiVersion: v1
@@ -17250,7 +17250,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -19325,7 +19325,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-k8s-resources-workloads-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -21569,7 +21569,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -23023,7 +23023,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -24749,7 +24749,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -25801,7 +25801,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -26879,7 +26879,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -26957,7 +26957,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\"})\n)\n",
+                                  "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\", cluster=\"$cluster\"})\n)\n",
                                   "format": "time_series",
                                   "intervalFactor": 5,
                                   "legendFormat": "{{cpu}}",
@@ -27050,28 +27050,28 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "1m load average",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "5m load average",
                                   "refId": "B"
                               },
                               {
-                                  "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "15m load average",
                                   "refId": "C"
                               },
                               {
-                                  "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", mode=\"idle\"})",
+                                  "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "logical cores",
@@ -27177,35 +27177,35 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Physical Memory",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "(\n    node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\"} +\n    node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\"} +\n    node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\"}\n)\n",
+                                  "expr": "(\n    node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} +\n    node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} +\n    node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Memory Used",
                                   "refId": "B"
                               },
                               {
-                                  "expr": "(\n    node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\"}\n)\n",
+                                  "expr": "(\n    node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "App Memory",
                                   "refId": "C"
                               },
                               {
-                                  "expr": "node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Wired Memory",
                                   "refId": "D"
                               },
                               {
-                                  "expr": "node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "Compressed",
@@ -27284,7 +27284,7 @@ items:
                           "span": 3,
                           "targets": [
                               {
-                                  "expr": "(\n    (\n      avg(node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\"}) -\n      avg(node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\"}) +\n      avg(node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\"}) +\n      avg(node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\"})\n    ) /\n    avg(node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\"})\n)\n*\n100\n",
+                                  "expr": "(\n    (\n      avg(node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) -\n      avg(node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) +\n      avg(node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) +\n      avg(node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"})\n    ) /\n    avg(node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"})\n)\n*\n100\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": ""
@@ -27360,21 +27360,21 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                                  "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}} read",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                                  "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}} written",
                                   "refId": "B"
                               },
                               {
-                                  "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                                  "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}} io time",
@@ -27528,14 +27528,14 @@ items:
                           "span": 6,
                           "targets": [
                               {
-                                  "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\", mountpoint!=\"\"})\n",
+                                  "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
                                   "legendFormat": ""
                               },
                               {
-                                  "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\", mountpoint!=\"\"})\n",
+                                  "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -27700,7 +27700,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8",
+                                  "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}}",
@@ -27794,7 +27794,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8",
+                                  "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}}",
@@ -27880,6 +27880,32 @@ items:
 
                       },
                       "datasource": "$datasource",
+                      "hide": 2,
+                      "includeAll": false,
+                      "label": "Cluster",
+                      "multi": false,
+                      "name": "cluster",
+                      "options": [
+
+                      ],
+                      "query": "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"}, cluster)",
+                      "refresh": 2,
+                      "regex": "",
+                      "sort": 0,
+                      "tagValuesQuery": "",
+                      "tags": [
+
+                      ],
+                      "tagsQuery": "",
+                      "type": "query",
+                      "useTags": false
+                  },
+                  {
+                      "allValue": null,
+                      "current": {
+
+                      },
+                      "datasource": "$datasource",
                       "hide": 0,
                       "includeAll": false,
                       "label": "Instance",
@@ -27888,7 +27914,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"}, instance)",
+                      "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname=\"Darwin\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 0,
@@ -27941,7 +27967,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-nodes-darwin
     namespace: monitoring
 - apiVersion: v1
@@ -28019,7 +28045,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\"})\n)\n",
+                                  "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\", cluster=\"$cluster\"})\n)\n",
                                   "format": "time_series",
                                   "intervalFactor": 5,
                                   "legendFormat": "{{cpu}}",
@@ -28112,28 +28138,28 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "1m load average",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "5m load average",
                                   "refId": "B"
                               },
                               {
-                                  "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "15m load average",
                                   "refId": "C"
                               },
                               {
-                                  "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", mode=\"idle\"})",
+                                  "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "logical cores",
@@ -28239,28 +28265,28 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "(\n  node_memory_MemTotal_bytes{job=\"node-exporter\", instance=\"$instance\"}\n-\n  node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\"}\n-\n  node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\"}\n-\n  node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\"}\n)\n",
+                                  "expr": "(\n  node_memory_MemTotal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n-\n  node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n-\n  node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n-\n  node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "memory used",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "memory buffers",
                                   "refId": "B"
                               },
                               {
-                                  "expr": "node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "memory cached",
                                   "refId": "C"
                               },
                               {
-                                  "expr": "node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\"}",
+                                  "expr": "node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": "memory free",
@@ -28339,7 +28365,7 @@ items:
                           "span": 3,
                           "targets": [
                               {
-                                  "expr": "100 -\n(\n  avg(node_memory_MemAvailable_bytes{job=\"node-exporter\", instance=\"$instance\"}) /\n  avg(node_memory_MemTotal_bytes{job=\"node-exporter\", instance=\"$instance\"})\n* 100\n)\n",
+                                  "expr": "100 -\n(\n  avg(node_memory_MemAvailable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) /\n  avg(node_memory_MemTotal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"})\n* 100\n)\n",
                                   "format": "time_series",
                                   "intervalFactor": 2,
                                   "legendFormat": ""
@@ -28415,21 +28441,21 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                                  "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}} read",
                                   "refId": "A"
                               },
                               {
-                                  "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                                  "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}} written",
                                   "refId": "B"
                               },
                               {
-                                  "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                                  "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}} io time",
@@ -28583,14 +28609,14 @@ items:
                           "span": 6,
                           "targets": [
                               {
-                                  "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\", mountpoint!=\"\"})\n",
+                                  "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
                                   "legendFormat": ""
                               },
                               {
-                                  "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", fstype!=\"\", mountpoint!=\"\"})\n",
+                                  "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                                   "format": "table",
                                   "instant": true,
                                   "intervalFactor": 2,
@@ -28755,7 +28781,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8",
+                                  "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}}",
@@ -28849,7 +28875,7 @@ items:
                           "steppedLine": false,
                           "targets": [
                               {
-                                  "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", device!=\"lo\"}[$__rate_interval]) * 8",
+                                  "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                                   "format": "time_series",
                                   "intervalFactor": 1,
                                   "legendFormat": "{{device}}",
@@ -28935,6 +28961,32 @@ items:
 
                       },
                       "datasource": "$datasource",
+                      "hide": 2,
+                      "includeAll": false,
+                      "label": "Cluster",
+                      "multi": false,
+                      "name": "cluster",
+                      "options": [
+
+                      ],
+                      "query": "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)",
+                      "refresh": 2,
+                      "regex": "",
+                      "sort": 0,
+                      "tagValuesQuery": "",
+                      "tags": [
+
+                      ],
+                      "tagsQuery": "",
+                      "type": "query",
+                      "useTags": false
+                  },
+                  {
+                      "allValue": null,
+                      "current": {
+
+                      },
+                      "datasource": "$datasource",
                       "hide": 0,
                       "includeAll": false,
                       "label": "Instance",
@@ -28943,7 +28995,7 @@ items:
                       "options": [
 
                       ],
-                      "query": "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, instance)",
+                      "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)",
                       "refresh": 2,
                       "regex": "",
                       "sort": 0,
@@ -28996,7 +29048,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -29557,7 +29609,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -30775,7 +30827,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -32434,7 +32486,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -33675,7 +33727,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -34919,7 +34971,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -36006,7 +36058,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -37434,7 +37486,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 10.3.3
+      app.kubernetes.io/version: 10.4.0
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList
