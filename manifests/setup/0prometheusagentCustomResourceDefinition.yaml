@@ -1685,7 +1685,7 @@ spec:
                 description: "When not empty, a label will be added to \n 1. All metrics scraped from `ServiceMonitor`, `PodMonitor`, `Probe` and `ScrapeConfig` objects. 2. All metrics generated from recording rules defined in `PrometheusRule` objects. 3. All alerts generated from alerting rules defined in `PrometheusRule` objects. 4. All vector selectors of PromQL expressions defined in `PrometheusRule` objects. \n The label will not added for objects referenced in `spec.excludedFromEnforcement`. \n The label's name is this field's value. The label's value is the namespace of the `ServiceMonitor`, `PodMonitor`, `Probe` or `PrometheusRule` object."
                 type: string
               enforcedSampleLimit:
-                description: "When defined, enforcedSampleLimit specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than than `spec.enforcedSampleLimit`. \n It is meant to be used by admins to keep the overall number of samples/series under a desired limit."
+                description: "When defined, enforcedSampleLimit specifies a global limit on the number of scraped samples that will be accepted. This overrides any `spec.sampleLimit` set by ServiceMonitor, PodMonitor, Probe objects unless `spec.sampleLimit` is greater than zero and less than `spec.enforcedSampleLimit`. \n It is meant to be used by admins to keep the overall number of samples/series under a desired limit."
                 format: int64
                 type: integer
               enforcedTargetLimit:
@@ -3403,6 +3403,63 @@ spec:
                       description: Name of the scrape class.
                       minLength: 1
                       type: string
+                    relabelings:
+                      description: "Relabelings configures the relabeling rules to apply to all scrape targets. \n The Operator automatically adds relabelings for a few standard Kubernetes fields like `__meta_kubernetes_namespace` and `__meta_kubernetes_service_name`. Then the Operator adds the scrape class relabelings defined here. Then the Operator adds the target-specific relabelings defined in the scrape object. \n More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+                      items:
+                        description: "RelabelConfig allows dynamic rewriting of the label set for targets, alerts, scraped samples and remote write samples. \n More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+                        properties:
+                          action:
+                            default: replace
+                            description: "Action to perform based on the regex matching. \n `Uppercase` and `Lowercase` actions require Prometheus >= v2.36.0. `DropEqual` and `KeepEqual` actions require Prometheus >= v2.41.0. \n Default: \"Replace\""
+                            enum:
+                            - replace
+                            - Replace
+                            - keep
+                            - Keep
+                            - drop
+                            - Drop
+                            - hashmod
+                            - HashMod
+                            - labelmap
+                            - LabelMap
+                            - labeldrop
+                            - LabelDrop
+                            - labelkeep
+                            - LabelKeep
+                            - lowercase
+                            - Lowercase
+                            - uppercase
+                            - Uppercase
+                            - keepequal
+                            - KeepEqual
+                            - dropequal
+                            - DropEqual
+                            type: string
+                          modulus:
+                            description: "Modulus to take of the hash of the source label values. \n Only applicable when the action is `HashMod`."
+                            format: int64
+                            type: integer
+                          regex:
+                            description: Regular expression against which the extracted value is matched.
+                            type: string
+                          replacement:
+                            description: "Replacement value against which a Replace action is performed if the regular expression matches. \n Regex capture groups are available."
+                            type: string
+                          separator:
+                            description: Separator is the string between concatenated SourceLabels.
+                            type: string
+                          sourceLabels:
+                            description: The source labels select values from existing labels. Their content is concatenated using the configured Separator and matched against the configured regular expression.
+                            items:
+                              description: LabelName is a valid Prometheus label name which may only contain ASCII letters, numbers, as well as underscores.
+                              pattern: ^[a-zA-Z_][a-zA-Z0-9_]*$
+                              type: string
+                            type: array
+                          targetLabel:
+                            description: "Label to which the resulting string is written in a replacement. \n It is mandatory for `Replace`, `HashMod`, `Lowercase`, `Uppercase`, `KeepEqual` and `DropEqual` actions. \n Regex capture groups are available."
+                            type: string
+                        type: object
+                      type: array
                     tlsConfig:
                       description: TLSConfig section for scrapes.
                       properties:
@@ -3759,7 +3816,7 @@ spec:
                 type: object
                 x-kubernetes-map-type: atomic
               shards:
-                description: "EXPERIMENTAL: Number of shards to distribute targets onto. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created. \n Note that scaling down shards will not reshard data onto remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use Thanos sidecar and Thanos querier or remote write data to a central location. \n Sharding is performed on the content of the `__address__` target meta-label for PodMonitors and ServiceMonitors and `__param_target__` for Probes. \n Default: 1"
+                description: "Number of shards to distribute targets onto. `spec.replicas` multiplied by `spec.shards` is the total number of Pods created. \n Note that scaling down shards will not reshard data onto remaining instances, it must be manually moved. Increasing shards will not reshard data either but it will continue to be available from the same instances. To query globally, use Thanos sidecar and Thanos querier or remote write data to a central location. \n Sharding is performed on the content of the `__address__` target meta-label for PodMonitors and ServiceMonitors and `__param_target__` for Probes. \n Default: 1"
                 format: int32
                 type: integer
               storage:
