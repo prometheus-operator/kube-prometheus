@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-    operator.prometheus.io/version: 0.72.0
+    operator.prometheus.io/version: 0.73.0
   name: thanosrulers.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -3292,7 +3292,7 @@ spec:
                   type: object
                 type: array
               tracingConfig:
-                description: TracingConfig configures tracing in Thanos. This is an experimental feature, it may change in any upcoming release in a breaking way.
+                description: "TracingConfig configures tracing in Thanos. \n `tracingConfigFile` takes precedence over this field. \n This is an *experimental feature*, it may change in any upcoming release in a breaking way."
                 properties:
                   key:
                     description: The key of the secret to select from.  Must be a valid secret key.
@@ -3308,7 +3308,7 @@ spec:
                 type: object
                 x-kubernetes-map-type: atomic
               tracingConfigFile:
-                description: TracingConfig specifies the path of the tracing configuration file. When used alongside with TracingConfig, TracingConfigFile takes precedence.
+                description: "TracingConfig specifies the path of the tracing configuration file. \n This field takes precedence over `tracingConfig`. \n This is an *experimental feature*, it may change in any upcoming release in a breaking way."
                 type: string
               version:
                 description: Version of Thanos to be deployed.

@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-    operator.prometheus.io/version: 0.72.0
+    operator.prometheus.io/version: 0.73.0
   name: alertmanagers.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -660,7 +660,7 @@ spec:
                 type: object
                 x-kubernetes-map-type: atomic
               alertmanagerConfiguration:
-                description: 'EXPERIMENTAL: alertmanagerConfiguration specifies the configuration of Alertmanager. If defined, it takes precedence over the `configSecret` field. This field may change in future releases.'
+                description: "alertmanagerConfiguration specifies the configuration of Alertmanager. \n If defined, it takes precedence over the `configSecret` field. \n This is an *experimental feature*, it may change in any upcoming release in a breaking way."
                 properties:
                   global:
                     description: Defines the global parameters of the Alertmanager configuration.
