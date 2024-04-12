@@ -94,6 +94,16 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/grafana/jsonnet-libs.git",
+          "subdir": "mixin-utils"
+        }
+      },
+      "version": "cee0123922f4877b37804d95f3ee2c975a66b31e",
+      "sum": "wi1o6t5nUZVcsatqMdGLOWIv1HxNnlaE84oRE0Cl0ec="
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/jsonnet-libs/docsonnet.git",
           "subdir": "doc-util"
         }
