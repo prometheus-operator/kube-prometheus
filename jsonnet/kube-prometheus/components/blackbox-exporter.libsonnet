@@ -183,6 +183,7 @@ function(params) {
       } else {
         runAsNonRoot: true,
         runAsUser: 65534,
+        runAsGroup: 65534,
         allowPrivilegeEscalation: false,
         readOnlyRootFilesystem: true,
         capabilities: { drop: ['ALL'] },
@@ -205,6 +206,7 @@ function(params) {
       securityContext: {
         runAsNonRoot: true,
         runAsUser: 65534,
+        runAsGroup: 65534,
         allowPrivilegeEscalation: false,
         readOnlyRootFilesystem: true,
         capabilities: { drop: ['ALL'] },
