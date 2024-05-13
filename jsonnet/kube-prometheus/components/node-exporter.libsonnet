@@ -295,6 +295,7 @@ function(params) {
             serviceAccountName: ne._config.name,
             priorityClassName: 'system-cluster-critical',
             securityContext: {
+              runAsGroup: 65534,
               runAsUser: 65534,
               runAsNonRoot: true,
             },
