@@ -116,6 +116,9 @@ function(params)
         template+: {
           spec+: {
             automountServiceAccountToken: false,
+            securityContext+: {
+              runAsGroup: 65534,
+            },
           },
         },
       },
