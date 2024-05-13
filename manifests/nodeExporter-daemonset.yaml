@@ -102,6 +102,7 @@ spec:
         kubernetes.io/os: linux
       priorityClassName: system-cluster-critical
       securityContext:
+        runAsGroup: 65534
         runAsNonRoot: true
         runAsUser: 65534
       serviceAccountName: node-exporter
