@@ -163,6 +163,9 @@ function(params)
         template+: {
           spec+: {
             automountServiceAccountToken: true,
+            securityContext+: {
+              runAsGroup: 65534,
+            },
             containers+: [kubeRbacProxy],
           },
         },
