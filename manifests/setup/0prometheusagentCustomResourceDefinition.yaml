@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-    operator.prometheus.io/version: 0.73.2
+    operator.prometheus.io/version: 0.74.0
   name: prometheusagents.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -4588,7 +4588,7 @@ spec:
                         managedIdentity:
                           description: |-
                             ManagedIdentity defines the Azure User-assigned Managed identity.
-                            Cannot be set at the same time as `oauth`.
+                            Cannot be set at the same time as `oauth` or `sdk`.
                           properties:
                             clientId:
                               description: The client id
@@ -4599,7 +4599,7 @@ spec:
                         oauth:
                           description: |-
                             OAuth defines the oauth config that is being used to authenticate.
-                            Cannot be set at the same time as `managedIdentity`.
+                            Cannot be set at the same time as `managedIdentity` or `sdk`.
 
 
                             It requires Prometheus >= v2.48.0.
@@ -4628,7 +4628,7 @@ spec:
                               type: object
                               x-kubernetes-map-type: atomic
                             tenantId:
-                              description: '`tenantID` is the tenant ID of the Azure Active Directory application that is being used to authenticate.'
+                              description: '`tenantId` is the tenant ID of the Azure Active Directory application that is being used to authenticate.'
                               minLength: 1
                               pattern: ^[0-9a-zA-Z-.]+$
                               type: string
@@ -4636,6 +4636,20 @@ spec:
                           - clientId
                           - clientSecret
                           - tenantId
+                          type: object
+                        sdk:
+                          description: |-
+                            SDK defines the Azure SDK config that is being used to authenticate.
+                            See https://learn.microsoft.com/en-us/azure/developer/go/azure-sdk-authentication
+                            Cannot be set at the same time as `oauth` or `managedIdentity`.
+
+
+                            It requires Prometheus >= 2.52.0.
+                          properties:
+                            tenantId:
+                              description: '`tenantId` is the tenant ID of the azure active directory application that is being used to authenticate.'
+                              pattern: ^[0-9a-zA-Z-.]+$
+                              type: string
                           type: object
                       type: object
                     basicAuth:
@@ -5287,10 +5301,11 @@ spec:
                   properties:
                     default:
                       description: |-
-                        Default indicates that the scrape applies to all scrape objects that don't configure an explicit scrape class name.
+                        Default indicates that the scrape applies to all scrape objects that
+                        don't configure an explicit scrape class name.
 
 
-                        Only one scrape class can be set as default.
+                        Only one scrape class can be set as the default.
                       type: boolean
                     name:
                       description: Name of the scrape class.
@@ -5399,7 +5414,13 @@ spec:
                         type: object
                       type: array
                     tlsConfig:
-                      description: TLSConfig section for scrapes.
+                      description: |-
+                        TLSConfig defines the TLS settings to use for the scrape. When the
+                        scrape objects define their own CA, certificate and/or key, they take
+                        precedence over the corresponding scrape class fields.
+
+
+                        For now only the `caFile`, `certFile` and `keyFile` fields are supported.
                       properties:
                         ca:
                           description: Certificate authority used when verifying server certificates.

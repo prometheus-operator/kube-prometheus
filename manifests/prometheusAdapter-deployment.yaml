@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: metrics-adapter
     app.kubernetes.io/name: prometheus-adapter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 0.11.2
+    app.kubernetes.io/version: 0.12.0
   name: prometheus-adapter
   namespace: monitoring
 spec:
@@ -27,7 +27,7 @@ spec:
         app.kubernetes.io/component: metrics-adapter
         app.kubernetes.io/name: prometheus-adapter
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 0.11.2
+        app.kubernetes.io/version: 0.12.0
     spec:
       automountServiceAccountToken: true
       containers:
@@ -38,7 +38,7 @@ spec:
         - --prometheus-url=http://prometheus-k8s.monitoring.svc:9090/
         - --secure-port=6443
         - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA
-        image: registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.11.2
+        image: registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.12.0
         livenessProbe:
           failureThreshold: 5
           httpGet:
