@@ -18,7 +18,7 @@ Then access via [http://localhost:9090](http://localhost:9090)
 $ kubectl --namespace monitoring port-forward svc/grafana 3000
 ```
 
-Then access via [http://localhost:3000](http://localhost:3000) and use the default grafana user:password of `admin:admin`.
+Then access via [http://localhost:3000](http://localhost:3000) with the user `admin`, and password `admin`. If you used the Helm chart instead, the password is set by grafana.adminPassword and defaults to `prom-operator`.
 
 ## Alert Manager
 
