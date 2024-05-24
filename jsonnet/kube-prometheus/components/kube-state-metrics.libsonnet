@@ -164,6 +164,9 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
             ports:: null,
             livenessProbe:: null,
             readinessProbe:: null,
+            securityContext+: {
+              runAsGroup: 65534,
+            },
             args: ['--host=127.0.0.1', '--port=8081', '--telemetry-host=127.0.0.1', '--telemetry-port=8082'],
             resources: ksm._config.resources,
           }, super.containers) + [kubeRbacProxyMain, kubeRbacProxySelf],
