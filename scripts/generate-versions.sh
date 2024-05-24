@@ -5,7 +5,12 @@ set -euo pipefail
 # Get component version from GitHub API
 get_latest_version() {
   echo >&2 "Checking release version for ${1}"
-  curl --retry 5 --silent --fail -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/${1}/releases/latest" | jq '.tag_name' | tr -d '"v'
+  v=$(curl --retry 5 --silent --fail -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/${1}/releases/latest" | jq '.tag_name' | tr -d '"v')
+  if [ "${v}" == "" ]; then
+    # Get latest tag if no release is generated
+    v=$(curl --retry 5 --silent --fail -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/${1}/tags" | jq '.[].name' | head -n1 | tr -d '"v')
+  fi
+  echo "$v"
 }
 
 # Get component version from version file
