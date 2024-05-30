@@ -3,7 +3,7 @@
   "blackboxExporter": "0.25.0",
   "grafana": "11.0.0",
   "kubeStateMetrics": "2.12.0",
-  "nodeExporter": "1.8.0",
+  "nodeExporter": "1.8.1",
   "prometheus": "2.52.0",
   "prometheusAdapter": "0.12.0",
   "prometheusOperator": "0.74.0",
