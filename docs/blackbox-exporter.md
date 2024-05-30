@@ -30,7 +30,7 @@ The `prometheus-operator` defines a `Probe` resource type that can be used to de
 * `_config.namespace`: the namespace where the various generated resources (`ConfigMap`, `Deployment`, `Service`, `ServiceAccount` and `ServiceMonitor`) will reside. This does not affect where you can place `Probe` objects; that is determined by the configuration of the `Prometheus` resource. This option is shared with other `kube-prometheus` components; defaults to `default`.
 * `_config.imageRepos.blackboxExporter`: the name of the blackbox exporter image to deploy. Defaults to `quay.io/prometheus/blackbox-exporter`.
 * `_config.versions.blackboxExporter`: the tag of the blackbox exporter image to deploy. Defaults to the version `kube-prometheus` was tested with.
-* `_config.imageRepos.configmapReloader`: the name of the ConfigMap reloader image to deploy. Defaults to `jimmidyson/configmap-reload`.
+* `_config.imageRepos.configmapReloader`: the name of the ConfigMap reloader image to deploy. Defaults to `ghcr.io/jimmidyson/configmap-reload`.
 * `_config.versions.configmapReloader`: the tag of the ConfigMap reloader image to deploy. Defaults to the version `kube-prometheus` was tested with.
 * `_config.resources.blackbox-exporter.requests`: the requested resources; this is used for each container. Defaults to `10m` CPU and `20Mi` RAM. See https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ for details.
 * `_config.resources.blackbox-exporter.limits`: the resource limits; this is used for each container. Defaults to `20m` CPU and `40Mi` RAM. See https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ for details.
