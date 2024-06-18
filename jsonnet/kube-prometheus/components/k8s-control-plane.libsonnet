@@ -26,6 +26,7 @@ local defaults = {
     },
   },
   kubeProxy:: false,
+  prometheusServiceAccountTokenSecretName: 'prometheus-k8s-token',
 };
 
 function(params) {
@@ -87,102 +88,114 @@ function(params) {
     },
   },
 
-  serviceMonitorKubelet: {
-    apiVersion: 'monitoring.coreos.com/v1',
-    kind: 'ServiceMonitor',
+  scrapeConfigKubelet: {
+    apiVersion: 'monitoring.coreos.com/v1alpha1',
+    kind: 'ScrapeConfig',
     metadata: k8s._metadata {
       name: 'kubelet',
       labels+: { 'app.kubernetes.io/name': 'kubelet' },
     },
     spec: {
-      jobLabel: 'app.kubernetes.io/name',
-      endpoints: [
+      authorization: {
+        credentials: {
+          key: 'token',
+          name: k8s._config.prometheusServiceAccountTokenSecretName,
+        },
+        type: 'Bearer',
+      },
+      honorLabels: true,
+      kubernetesSDConfigs: [{ role: 'Node' }],
+      metricRelabelings: relabelings,
+      metricsPath: '/metrics',
+      // Majority of those relabelings are here to preserve as much backwards compatibility as possible
+      // with the old ServiceMonitor scrape configuration.
+      relabelings: [
         {
-          port: 'https-metrics',
-          scheme: 'https',
-          interval: '30s',
-          honorLabels: true,
-          tlsConfig: { insecureSkipVerify: true },
-          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-          metricRelabelings: relabelings,
-          relabelings: [{
-            action: 'replace',
-            sourceLabels: ['__metrics_path__'],
-            targetLabel: 'metrics_path',
-          }],
+          action: 'replace',
+          sourceLabels: ['__metrics_path__'],
+          targetLabel: 'metrics_path',
         },
         {
-          port: 'https-metrics',
-          scheme: 'https',
-          path: '/metrics/cadvisor',
-          interval: '30s',
-          honorLabels: true,
-          honorTimestamps: false,
-          tlsConfig: {
-            insecureSkipVerify: true,
-          },
-          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-          relabelings: [{
-            action: 'replace',
-            sourceLabels: ['__metrics_path__'],
-            targetLabel: 'metrics_path',
-          }],
-          metricRelabelings: [
-            // Drop a bunch of metrics which are disabled but still sent, see
-            // https://github.com/google/cadvisor/issues/1925.
-            {
-              sourceLabels: ['__name__'],
-              regex: 'container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)',
-              action: 'drop',
-            },
-            // Drop cAdvisor metrics with no (pod, namespace) labels while preserving ability to monitor system services resource usage (cardinality estimation)
-            {
-              sourceLabels: ['__name__', 'pod', 'namespace'],
-              action: 'drop',
-              regex: '(' + std.join('|',
-                                    [
-                                      'container_spec_.*',  // everything related to cgroup specification and thus static data (nodes*services*5)
-                                      'container_file_descriptors',  // file descriptors limits and global numbers are exposed via (nodes*services)
-                                      'container_sockets',  // used sockets in cgroup. Usually not important for system services (nodes*services)
-                                      'container_threads_max',  // max number of threads in cgroup. Usually for system services it is not limited (nodes*services)
-                                      'container_threads',  // used threads in cgroup. Usually not important for system services (nodes*services)
-                                      'container_start_time_seconds',  // container start. Possibly not needed for system services (nodes*services)
-                                      'container_last_seen',  // not needed as system services are always running (nodes*services)
-                                    ]) + ');;',
-            },
-            {
-              sourceLabels: ['__name__', 'container'],
-              action: 'drop',
-              regex: '(' + std.join('|',
-                                    [
-                                      'container_blkio_device_usage_total',
-                                    ]) + ');.+',
-            },
-          ],
+          action: 'replace',
+          replacement: 'kube-system',
+          targetLabel: 'namespace',
         },
         {
-          port: 'https-metrics',
-          scheme: 'https',
-          path: '/metrics/probes',
-          interval: '30s',
-          honorLabels: true,
-          tlsConfig: { insecureSkipVerify: true },
-          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-          relabelings: [{
-            action: 'replace',
-            sourceLabels: ['__metrics_path__'],
-            targetLabel: 'metrics_path',
-          }],
+          action: 'replace',
+          sourceLabels: ['__meta_kubernetes_node_name'],
+          targetLabel: 'node',
+        },
+        {
+          targetLabel: 'job',
+          replacement: 'kubelet',
         },
       ],
-      selector: {
-        matchLabels: { 'app.kubernetes.io/name': 'kubelet' },
-      },
-      namespaceSelector: {
-        matchNames: ['kube-system'],
+      scheme: 'HTTPS',
+      scrapeInterval: '30s',
+      tlsConfig: {
+        insecureSkipVerify: true,
       },
     },
   },
+  scrapeConfigKubeletCadvisor: k8s.scrapeConfigKubelet {
+    metadata+: {
+      name: 'kubelet-cadvisor',
+    },
+    spec+: {
+      honorTimestamps: false,
+      metricsPath: '/metrics/cadvisor',
+    },
+  },
+  scrapeConfigKubeletProbes: k8s.scrapeConfigKubelet {
+    metadata+: {
+      name: 'kubelet-probes',
+    },
+    spec+: {
+      metricsPath: '/metrics/probes',
+      metricRelabelings: [
+        // Drop a bunch of metrics which are disabled but still sent, see
+        // https://github.com/google/cadvisor/issues/1925.
+        {
+          sourceLabels: ['__name__'],
+          regex: 'container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)',
+          action: 'drop',
+        },
+        // Drop cAdvisor metrics with no (pod, namespace) labels while preserving ability to monitor system services resource usage (cardinality estimation)
+        {
+          sourceLabels: ['__name__', 'pod', 'namespace'],
+          action: 'drop',
+          regex: '(' + std.join('|',
+                                [
+                                  'container_spec_.*',  // everything related to cgroup specification and thus static data (nodes*services*5)
+                                  'container_file_descriptors',  // file descriptors limits and global numbers are exposed via (nodes*services)
+                                  'container_sockets',  // used sockets in cgroup. Usually not important for system services (nodes*services)
+                                  'container_threads_max',  // max number of threads in cgroup. Usually for system services it is not limited (nodes*services)
+                                  'container_threads',  // used threads in cgroup. Usually not important for system services (nodes*services)
+                                  'container_start_time_seconds',  // container start. Possibly not needed for system services (nodes*services)
+                                  'container_last_seen',  // not needed as system services are always running (nodes*services)
+                                ]) + ');;',
+        },
+        {
+          sourceLabels: ['__name__', 'container'],
+          action: 'drop',
+          regex: '(' + std.join('|',
+                                [
+                                  'container_blkio_device_usage_total',
+                                ]) + ');.+',
+        },
+      ],
+    },
+  },
+  /*scrapeConfigKubeletSLIs: k8s.scrapeConfigKubelet {
+    metadata+: {
+      name: 'kubelet-slis',
+    },
+    spec+: {
+      metricsPath: '/metrics/slis',
+      scrapeInterval: '5s',
+      scrapeTimeout: '5s',
+    },
+  },*/
 
   serviceMonitorKubeControllerManager: {
     apiVersion: 'monitoring.coreos.com/v1',
