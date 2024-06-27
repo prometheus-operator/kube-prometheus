@@ -67,7 +67,7 @@ local windowsExporter = function(params) {
           initContainers: [
             {
               name: 'configure-firewall',
-              image: 'mcr.microsoft.com/windows/powershell:nanoserver-lts',
+              image: 'mcr.microsoft.com/powershell:nanoserver-lts',
               resources: we._config.resources,
               command: [
                 'powershell',
