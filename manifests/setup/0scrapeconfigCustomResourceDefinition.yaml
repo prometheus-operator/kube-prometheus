@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.15.0
-    operator.prometheus.io/version: 0.74.0
+    operator.prometheus.io/version: 0.75.0
   name: scrapeconfigs.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -1664,19 +1664,25 @@ spec:
                     filters:
                       description: Optional filters to limit the discovery process to a subset of the available resources.
                       items:
-                        description: DockerFilter is the configuration to limit the discovery process to a subset of available resources.
+                        description: Filter name and value pairs to limit the discovery process to a subset of available resources.
                         properties:
                           name:
+                            description: Name of the Filter.
                             type: string
                           values:
+                            description: Value to filter on.
                             items:
                               type: string
+                            minItems: 1
                             type: array
                         required:
                         - name
                         - values
                         type: object
                       type: array
+                      x-kubernetes-list-map-keys:
+                      - name
+                      x-kubernetes-list-type: map
                     followRedirects:
                       description: Configure whether HTTP requests follow HTTP 3xx redirects.
                       type: boolean
@@ -2005,6 +2011,9 @@ spec:
               dockerSwarmSDConfigs:
                 description: DockerswarmSDConfigs defines a list of Dockerswarm service discovery configurations.
                 items:
+                  description: |-
+                    DockerSwarmSDConfig configurations allow retrieving scrape targets from Docker Swarm engine.
+                    See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#dockerswarm_sd_config
                   properties:
                     authorization:
                       description: Authorization header configuration to authenticate against the target HTTP endpoint.
@@ -2112,13 +2121,13 @@ spec:
                         Tasks: https://docs.docker.com/engine/api/v1.40/#operation/TaskList
                         Nodes: https://docs.docker.com/engine/api/v1.40/#operation/NodeList
                       items:
-                        description: Filter is the configuration to limit the discovery process to a subset of available resources.
+                        description: Filter name and value pairs to limit the discovery process to a subset of available resources.
                         properties:
                           name:
-                            description: Name is the key of the field to check against.
+                            description: Name of the Filter.
                             type: string
                           values:
-                            description: Values is the value or set of values to check for a match.
+                            description: Value to filter on.
                             items:
                               type: string
                             minItems: 1
@@ -2128,6 +2137,9 @@ spec:
                         - values
                         type: object
                       type: array
+                      x-kubernetes-list-map-keys:
+                      - name
+                      x-kubernetes-list-type: map
                     followRedirects:
                       description: Configure whether HTTP requests follow HTTP 3xx redirects.
                       type: boolean
@@ -2503,19 +2515,25 @@ spec:
                         https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html
                         Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html
                       items:
-                        description: EC2Filter is the configuration for filtering EC2 instances.
+                        description: Filter name and value pairs to limit the discovery process to a subset of available resources.
                         properties:
                           name:
+                            description: Name of the Filter.
                             type: string
                           values:
+                            description: Value to filter on.
                             items:
                               type: string
+                            minItems: 1
                             type: array
                         required:
                         - name
                         - values
                         type: object
                       type: array
+                      x-kubernetes-list-map-keys:
+                      - name
+                      x-kubernetes-list-type: map
                     port:
                       description: |-
                         The port to scrape metrics from. If using the public IP address, this must
@@ -4799,7 +4817,10 @@ spec:
               lightSailSDConfigs:
                 description: LightsailSDConfigs defines a list of Lightsail service discovery configurations.
                 items:
-                  description: 'TODO: Need to document that we will not be supporting the `_file` fields.'
+                  description: |-
+                    LightSailSDConfig configurations allow retrieving scrape targets from AWS Lightsail instances.
+                    See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#lightsail_sd_config
+                    TODO: Need to document that we will not be supporting the `_file` fields.
                   properties:
                     accessKey:
                       description: AccessKey is the AWS API key.
@@ -5285,6 +5306,9 @@ spec:
               linodeSDConfigs:
                 description: LinodeSDConfigs defines a list of Linode service discovery configurations.
                 items:
+                  description: |-
+                    LinodeSDConfig configurations allow retrieving scrape targets from Linode's Linode APIv4.
+                    See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#linode_sd_config
                   properties:
                     authorization:
                       description: Authorization header configuration.
@@ -6039,6 +6063,90 @@ spec:
                   - role
                   type: object
                 type: array
+              ovhcloudSDConfigs:
+                description: OVHCloudSDConfigs defines a list of OVHcloud service discovery configurations.
+                items:
+                  description: |-
+                    OVHCloudSDConfig configurations allow retrieving scrape targets from OVHcloud's dedicated servers and VPS using their API.
+                    See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ovhcloud_sd_config
+                  properties:
+                    applicationKey:
+                      description: Access key to use. https://api.ovh.com.
+                      minLength: 1
+                      type: string
+                    applicationSecret:
+                      description: SecretKeySelector selects a key of a Secret.
+                      properties:
+                        key:
+                          description: The key of the secret to select from.  Must be a valid secret key.
+                          type: string
+                        name:
+                          default: ""
+                          description: |-
+                            Name of the referent.
+                            This field is effectively required, but due to backwards compatibility is
+                            allowed to be empty. Instances of this type with an empty value here are
+                            almost certainly wrong.
+                            TODO: Add other useful fields. apiVersion, kind, uid?
+                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                            TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+                          type: string
+                        optional:
+                          description: Specify whether the Secret or its key must be defined
+                          type: boolean
+                      required:
+                      - key
+                      type: object
+                      x-kubernetes-map-type: atomic
+                    consumerKey:
+                      description: SecretKeySelector selects a key of a Secret.
+                      properties:
+                        key:
+                          description: The key of the secret to select from.  Must be a valid secret key.
+                          type: string
+                        name:
+                          default: ""
+                          description: |-
+                            Name of the referent.
+                            This field is effectively required, but due to backwards compatibility is
+                            allowed to be empty. Instances of this type with an empty value here are
+                            almost certainly wrong.
+                            TODO: Add other useful fields. apiVersion, kind, uid?
+                            More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                            TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+                          type: string
+                        optional:
+                          description: Specify whether the Secret or its key must be defined
+                          type: boolean
+                      required:
+                      - key
+                      type: object
+                      x-kubernetes-map-type: atomic
+                    endpoint:
+                      description: Custom endpoint to be used.
+                      minLength: 1
+                      type: string
+                    refreshInterval:
+                      description: Refresh interval to re-read the resources list.
+                      pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
+                      type: string
+                    service:
+                      allOf:
+                      - enum:
+                        - VPS
+                        - DedicatedServer
+                      - enum:
+                        - VPS
+                        - DedicatedServer
+                      description: Service of the targets to retrieve. Must be `VPS` or `DedicatedServer`.
+                      type: string
+                  required:
+                  - applicationKey
+                  - applicationSecret
+                  - consumerKey
+                  - service
+                  type: object
+                type: array
               params:
                 additionalProperties:
                   items:
@@ -6101,6 +6209,9 @@ spec:
               puppetDBSDConfigs:
                 description: PuppetDBSDConfigs defines a list of PuppetDB service discovery configurations.
                 items:
+                  description: |-
+                    PuppetDBSDConfig configurations allow retrieving scrape targets from PuppetDB resources.
+                    See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#puppetdb_sd_config
                   properties:
                     authorization:
                       description: |-
