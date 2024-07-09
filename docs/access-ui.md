@@ -11,11 +11,11 @@ draft: false
 
 This page assumes that you have installed Prometheus Operator using Kube-Prometheus and want to learn how to access Prometheus, Grafana and Alertmanager dashboards.
 
-Prometheus, Grafana, and Alertmanager dashboards can be accessed quickly using `kubectl port-forward` after running the quickstart via the commands below. 
+Prometheus, Grafana, and Alertmanager dashboards can be accessed quickly using `kubectl port-forward` after running the quickstart via the commands below.
 
 > Kubernetes 1.10 or later is required.
 
-You can also learn how to [expose Prometheus/Alertmanager/Grafana via Ingress ->](customization/exposing-prometheus-alertmanager-grafana-ingress.md)
+You can also learn how to [expose Prometheus/Alertmanager/Grafana via Ingress ->]({{<ref "kube-prometheus/kube/exposing-prometheus-alertmanager-grafana-ingress">}})
 
 ## Prometheus
 
