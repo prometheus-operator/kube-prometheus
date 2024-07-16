@@ -112,7 +112,7 @@ local utils = import './lib/utils.libsonnet';
       image: $.values.common.images.prometheusAdapter,
       prometheusURL: 'http://prometheus-' + $.values.prometheus.name + '.' + $.values.prometheus.namespace + '.svc:9090/',
       rangeIntervals+: {
-        kubelet: utils.rangeInterval($.kubernetesControlPlane.serviceMonitorKubelet.spec.endpoints[0].interval),
+        kubelet: utils.rangeInterval($.kubernetesControlPlane.scrapeConfigKubelet.spec.scrapeInterval),
         nodeExporter: utils.rangeInterval($.nodeExporter.serviceMonitor.spec.endpoints[0].interval),
       },
     },
@@ -127,6 +127,7 @@ local utils = import './lib/utils.libsonnet';
     kubernetesControlPlane: {
       namespace: $.values.common.namespace,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
+      prometheusServiceAccountTokenSecretName: 'prometheus-' + $.values.prometheus.name + '-token',
     },
   },
 
