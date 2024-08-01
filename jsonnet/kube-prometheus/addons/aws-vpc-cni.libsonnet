@@ -1,15 +1,19 @@
-{
-  values+:: {
-    awsVpcCni: {
-      // `minimumWarmIPs` should be inferior or equal to `WARM_IP_TARGET`.
-      //
-      // References:
-      // https://github.com/aws/amazon-vpc-cni-k8s/blob/v1.9.0/docs/eni-and-ip-target.md
-      // https://github.com/aws/amazon-vpc-cni-k8s/blob/v1.9.0/pkg/ipamd/ipamd.go#L61-L71
-      minimumWarmIPs: 10,
-      minimumWarmIPsTime: '10m',
-    },
+local defaults = {
+  awsVpcCni:: {
+    // `minimumWarmIPs` should be inferior or equal to `WARM_IP_TARGET`.
+    //
+    // References:
+    // https://github.com/aws/amazon-vpc-cni-k8s/blob/v1.9.0/docs/eni-and-ip-target.md
+    // https://github.com/aws/amazon-vpc-cni-k8s/blob/v1.9.0/pkg/ipamd/ipamd.go#L61-L71
+    minimumWarmIPs: 10,
+    minimumWarmIPsTime: '10m',
   },
+};
+
+{
+  local a = self,
+  _config:: defaults + $.values,
+
   kubernetesControlPlane+: {
     serviceAwsVpcCni: {
       apiVersion: 'v1',
@@ -91,7 +95,7 @@
             name: 'aws-vpc-cni.rules',
             rules: [
               {
-                expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % $.values.awsVpcCni.minimumWarmIPs,
+                expr: 'sum by(instance) (awscni_total_ip_addresses) - sum by(instance) (awscni_assigned_ip_addresses) < %s' % a._config.awsVpcCni.minimumWarmIPs,
                 labels: {
                   severity: 'critical',
                 },
@@ -100,9 +104,9 @@
                   description: |||
                     Instance {{ $labels.instance }} has only {{ $value }} warm IPs which is lower than set threshold of %s.
                     It could mean the current subnet is out of available IP addresses or the CNI is unable to request them from the EC2 API.
-                  ||| % $.values.awsVpcCni.minimumWarmIPs,
+                  ||| % a._config.awsVpcCni.minimumWarmIPs,
                 },
-                'for': $.values.awsVpcCni.minimumWarmIPsTime,
+                'for': a._config.awsVpcCni.minimumWarmIPsTime,
                 alert: 'AwsVpcCniWarmIPsLow',
               },
             ],
