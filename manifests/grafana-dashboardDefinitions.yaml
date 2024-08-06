@@ -3502,7 +3502,7 @@ items:
                   },
                   "fieldConfig": {
                       "defaults": {
-                          "unit": "none"
+                          "unit": "percentunit"
                       }
                   },
                   "gridPos": {
@@ -15124,6 +15124,7 @@ items:
           },
           "timezone": "utc",
           "title": "Node Exporter / USE Method / Cluster",
+          "uid": "3e97d1d02672cdd0861f4c97c64f89b2",
           "version": 0
       }
   kind: ConfigMap
@@ -16202,6 +16203,7 @@ items:
           },
           "timezone": "utc",
           "title": "Node Exporter / USE Method / Node",
+          "uid": "fac67cfbe174d3ef53eb473d73d9212f",
           "version": 0
       }
   kind: ConfigMap
@@ -17290,6 +17292,7 @@ items:
           },
           "timezone": "utc",
           "title": "Node Exporter / MacOS",
+          "uid": "629701ea43bf69291922ea45f4a87d37",
           "version": 0
       }
   kind: ConfigMap
@@ -18371,6 +18374,7 @@ items:
           },
           "timezone": "utc",
           "title": "Node Exporter / Nodes",
+          "uid": "7d57716318ee0dddbac5a7f451fb7753",
           "version": 0
       }
   kind: ConfigMap
