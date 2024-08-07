@@ -7,3 +7,7 @@ validators:
   # Ignore release links.
   - regex: 'https:\/\/github\.com\/prometheus-operator\/kube-prometheus\/releases'
     type: "ignore"
+  # the www.weave.works domain returns 404 for many pages.
+  # Ignoring for now but we need remove the related content if it persists.
+  - regex: 'https:\/\/www.weave.works.*'
+    type: "ignore"
