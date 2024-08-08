@@ -13,7 +13,7 @@ Prometheus, Grafana, and Alertmanager dashboards can be accessed quickly using `
 
 > Kubernetes 1.10 or later is required.
 
-You can also learn how to [expose Prometheus/Alertmanager/Grafana via Ingress ->]({{<ref "kube-prometheus/kube/exposing-prometheus-alertmanager-grafana-ingress">}})
+You can also learn how to [expose Prometheus/Alertmanager/Grafana via Ingress](customizations/exposing-prometheus-alertmanager-grafana-ingress.md)
 
 ## Prometheus
 
