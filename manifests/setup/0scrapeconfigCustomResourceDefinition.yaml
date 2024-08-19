@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.15.0
-    operator.prometheus.io/version: 0.75.2
+    operator.prometheus.io/version: 0.76.0
   name: scrapeconfigs.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -313,11 +313,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -542,11 +538,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -1176,11 +1168,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -1408,11 +1396,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -1847,11 +1831,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -2079,11 +2059,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -2441,6 +2417,12 @@ spec:
                     hostNetworkingHost:
                       description: The host to use if the container is in host networking mode.
                       type: string
+                    matchFirstNetwork:
+                      description: |-
+                        Configure whether to match the first network if the container has multiple networks defined.
+                        If unset, Prometheus uses true by default.
+                        It requires Prometheus >= v2.54.0.
+                      type: boolean
                     noProxy:
                       description: |-
                         `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
@@ -2595,11 +2577,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -2827,11 +2805,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -3297,11 +3271,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -3534,11 +3504,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -3727,6 +3693,10 @@ spec:
                     The private IP address is used by default, but may be changed to the public IP address with relabeling.
                     The IAM credentials used must have the ec2:DescribeInstances permission to discover scrape targets
                     See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#ec2_sd_config
+
+
+                    The EC2 service discovery requires AWS API keys or role ARN for authentication.
+                    BasicAuth, Authorization and OAuth2 fields are not present on purpose.
                   properties:
                     accessKey:
                       description: AccessKey is the AWS API key.
@@ -3752,12 +3722,18 @@ spec:
                       - key
                       type: object
                       x-kubernetes-map-type: atomic
+                    enableHTTP2:
+                      description: |-
+                        Whether to enable HTTP2.
+                        It requires Prometheus >= v2.41.0
+                      type: boolean
                     filters:
                       description: |-
                         Filters can be used optionally to filter the instance list by other criteria.
                         Available filter criteria can be found here:
                         https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html
                         Filter API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Filter.html
+                        It requires Prometheus >= v2.3.0
                       items:
                         description: Filter name and value pairs to limit the discovery process to a subset of available resources.
                         properties:
@@ -3778,20 +3754,86 @@ spec:
                       x-kubernetes-list-map-keys:
                       - name
                       x-kubernetes-list-type: map
+                    followRedirects:
+                      description: |-
+                        Configure whether HTTP requests follow HTTP 3xx redirects.
+                        It requires Prometheus >= v2.41.0
+                      type: boolean
+                    noProxy:
+                      description: |-
+                        `noProxy` is a comma-separated string that can contain IPs, CIDR notation, domain names
+                        that should be excluded from proxying. IP and domain names can
+                        contain port numbers.
+
+
+                        It requires Prometheus >= v2.43.0.
+                      type: string
                     port:
                       description: |-
                         The port to scrape metrics from. If using the public IP address, this must
                         instead be specified in the relabeling rule.
+                      format: int32
+                      maximum: 65535
+                      minimum: 0
                       type: integer
+                    proxyConnectHeader:
+                      additionalProperties:
+                        items:
+                          description: SecretKeySelector selects a key of a Secret.
+                          properties:
+                            key:
+                              description: The key of the secret to select from.  Must be a valid secret key.
+                              type: string
+                            name:
+                              default: ""
+                              description: |-
+                                Name of the referent.
+                                This field is effectively required, but due to backwards compatibility is
+                                allowed to be empty. Instances of this type with an empty value here are
+                                almost certainly wrong.
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+                              type: string
+                            optional:
+                              description: Specify whether the Secret or its key must be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        type: array
+                      description: |-
+                        ProxyConnectHeader optionally specifies headers to send to
+                        proxies during CONNECT requests.
+
+
+                        It requires Prometheus >= v2.43.0.
+                      type: object
+                      x-kubernetes-map-type: atomic
+                    proxyFromEnvironment:
+                      description: |-
+                        Whether to use the proxy configuration defined by environment variables (HTTP_PROXY, HTTPS_PROXY, and NO_PROXY).
+                        If unset, Prometheus uses its default value.
+
+
+                        It requires Prometheus >= v2.43.0.
+                      type: boolean
+                    proxyUrl:
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
+                      pattern: ^http(s)?://.+$
+                      type: string
                     refreshInterval:
                       description: RefreshInterval configures the refresh interval at which Prometheus will re-read the instance list.
                       pattern: ^(0|(([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?)$
                       type: string
                     region:
-                      description: The AWS region
+                      description: The AWS region.
+                      minLength: 1
                       type: string
                     roleARN:
                       description: AWS Role ARN, an alternative to using AWS API keys.
+                      minLength: 1
                       type: string
                     secretKey:
                       description: SecretKey is the AWS API secret.
@@ -3817,6 +3859,170 @@ spec:
                       - key
                       type: object
                       x-kubernetes-map-type: atomic
+                    tlsConfig:
+                      description: |-
+                        TLS configuration to connect to the AWS EC2 API.
+                        It requires Prometheus >= v2.41.0
+                      properties:
+                        ca:
+                          description: Certificate authority used when verifying server certificates.
+                          properties:
+                            configMap:
+                              description: ConfigMap containing data to use for the targets.
+                              properties:
+                                key:
+                                  description: The key to select.
+                                  type: string
+                                name:
+                                  default: ""
+                                  description: |-
+                                    Name of the referent.
+                                    This field is effectively required, but due to backwards compatibility is
+                                    allowed to be empty. Instances of this type with an empty value here are
+                                    almost certainly wrong.
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+                                  type: string
+                                optional:
+                                  description: Specify whether the ConfigMap or its key must be defined
+                                  type: boolean
+                              required:
+                              - key
+                              type: object
+                              x-kubernetes-map-type: atomic
+                            secret:
+                              description: Secret containing data to use for the targets.
+                              properties:
+                                key:
+                                  description: The key of the secret to select from.  Must be a valid secret key.
+                                  type: string
+                                name:
+                                  default: ""
+                                  description: |-
+                                    Name of the referent.
+                                    This field is effectively required, but due to backwards compatibility is
+                                    allowed to be empty. Instances of this type with an empty value here are
+                                    almost certainly wrong.
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+                                  type: string
+                                optional:
+                                  description: Specify whether the Secret or its key must be defined
+                                  type: boolean
+                              required:
+                              - key
+                              type: object
+                              x-kubernetes-map-type: atomic
+                          type: object
+                        cert:
+                          description: Client certificate to present when doing client-authentication.
+                          properties:
+                            configMap:
+                              description: ConfigMap containing data to use for the targets.
+                              properties:
+                                key:
+                                  description: The key to select.
+                                  type: string
+                                name:
+                                  default: ""
+                                  description: |-
+                                    Name of the referent.
+                                    This field is effectively required, but due to backwards compatibility is
+                                    allowed to be empty. Instances of this type with an empty value here are
+                                    almost certainly wrong.
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+                                  type: string
+                                optional:
+                                  description: Specify whether the ConfigMap or its key must be defined
+                                  type: boolean
+                              required:
+                              - key
+                              type: object
+                              x-kubernetes-map-type: atomic
+                            secret:
+                              description: Secret containing data to use for the targets.
+                              properties:
+                                key:
+                                  description: The key of the secret to select from.  Must be a valid secret key.
+                                  type: string
+                                name:
+                                  default: ""
+                                  description: |-
+                                    Name of the referent.
+                                    This field is effectively required, but due to backwards compatibility is
+                                    allowed to be empty. Instances of this type with an empty value here are
+                                    almost certainly wrong.
+                                    TODO: Add other useful fields. apiVersion, kind, uid?
+                                    More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                    TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+                                  type: string
+                                optional:
+                                  description: Specify whether the Secret or its key must be defined
+                                  type: boolean
+                              required:
+                              - key
+                              type: object
+                              x-kubernetes-map-type: atomic
+                          type: object
+                        insecureSkipVerify:
+                          description: Disable target certificate validation.
+                          type: boolean
+                        keySecret:
+                          description: Secret containing the client key file for the targets.
+                          properties:
+                            key:
+                              description: The key of the secret to select from.  Must be a valid secret key.
+                              type: string
+                            name:
+                              default: ""
+                              description: |-
+                                Name of the referent.
+                                This field is effectively required, but due to backwards compatibility is
+                                allowed to be empty. Instances of this type with an empty value here are
+                                almost certainly wrong.
+                                TODO: Add other useful fields. apiVersion, kind, uid?
+                                More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Drop `kubebuilder:default` when controller-gen doesn't need it https://github.com/kubernetes-sigs/kubebuilder/issues/3896.
+                              type: string
+                            optional:
+                              description: Specify whether the Secret or its key must be defined
+                              type: boolean
+                          required:
+                          - key
+                          type: object
+                          x-kubernetes-map-type: atomic
+                        maxVersion:
+                          description: |-
+                            Maximum acceptable TLS version.
+
+
+                            It requires Prometheus >= v2.41.0.
+                          enum:
+                          - TLS10
+                          - TLS11
+                          - TLS12
+                          - TLS13
+                          type: string
+                        minVersion:
+                          description: |-
+                            Minimum acceptable TLS version.
+
+
+                            It requires Prometheus >= v2.35.0.
+                          enum:
+                          - TLS10
+                          - TLS11
+                          - TLS12
+                          - TLS13
+                          type: string
+                        serverName:
+                          description: Used to verify the hostname for the targets.
+                          type: string
+                      type: object
                   type: object
                 type: array
               enableCompression:
@@ -4091,11 +4297,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -4320,11 +4522,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -4845,11 +5043,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -5077,11 +5271,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -5424,11 +5614,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -5930,11 +6116,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -6159,11 +6341,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     role:
@@ -6650,11 +6828,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -6879,11 +7053,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -7372,11 +7542,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -7609,11 +7775,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -8020,11 +8182,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -8255,11 +8413,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
@@ -8685,11 +8839,7 @@ spec:
                       It requires Prometheus >= v2.43.0.
                     type: boolean
                   proxyUrl:
-                    description: |-
-                      `proxyURL` defines the HTTP proxy server to use.
-
-
-                      It requires Prometheus >= v2.43.0.
+                    description: '`proxyURL` defines the HTTP proxy server to use.'
                     pattern: ^http(s)?://.+$
                     type: string
                   scopes:
@@ -9311,11 +9461,7 @@ spec:
                   It requires Prometheus >= v2.43.0.
                 type: boolean
               proxyUrl:
-                description: |-
-                  `proxyURL` defines the HTTP proxy server to use.
-
-
-                  It requires Prometheus >= v2.43.0.
+                description: '`proxyURL` defines the HTTP proxy server to use.'
                 pattern: ^http(s)?://.+$
                 type: string
               puppetDBSDConfigs:
@@ -9589,11 +9735,7 @@ spec:
                             It requires Prometheus >= v2.43.0.
                           type: boolean
                         proxyUrl:
-                          description: |-
-                            `proxyURL` defines the HTTP proxy server to use.
-
-
-                            It requires Prometheus >= v2.43.0.
+                          description: '`proxyURL` defines the HTTP proxy server to use.'
                           pattern: ^http(s)?://.+$
                           type: string
                         scopes:
@@ -9824,11 +9966,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     query:
@@ -10202,11 +10340,7 @@ spec:
                         It requires Prometheus >= v2.43.0.
                       type: boolean
                     proxyUrl:
-                      description: |-
-                        `proxyURL` defines the HTTP proxy server to use.
-
-
-                        It requires Prometheus >= v2.43.0.
+                      description: '`proxyURL` defines the HTTP proxy server to use.'
                       pattern: ^http(s)?://.+$
                       type: string
                     refreshInterval:
