@@ -19,7 +19,7 @@ stringData:
                 "name": "prometheus",
                 "orgId": 1,
                 "type": "prometheus",
-                "url": "http://prometheus-k8s.monitoring.svc:9090",
+                "url": "http://prometheus-operated.monitoring.svc:9090",
                 "version": 1
             }
         ]
