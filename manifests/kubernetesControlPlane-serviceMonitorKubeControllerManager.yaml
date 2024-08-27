@@ -51,6 +51,13 @@ spec:
     scheme: https
     tlsConfig:
       insecureSkipVerify: true
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 5s
+    path: /metrics/slis
+    port: https-metrics
+    scheme: https
+    tlsConfig:
+      insecureSkipVerify: true
   jobLabel: app.kubernetes.io/name
   namespaceSelector:
     matchNames:
