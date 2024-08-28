@@ -223,7 +223,7 @@ function(params) {
         verbs: ['get'],
       },
       {
-        nonResourceURLs: ['/metrics'],
+        nonResourceURLs: ['/metrics', '/metrics/slis'],
         verbs: ['get'],
       },
     ],

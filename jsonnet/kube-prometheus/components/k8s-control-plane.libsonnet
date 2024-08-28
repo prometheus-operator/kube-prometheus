@@ -71,13 +71,23 @@ function(params) {
     },
     spec: {
       jobLabel: 'app.kubernetes.io/name',
-      endpoints: [{
-        port: 'https-metrics',
-        interval: '30s',
-        scheme: 'https',
-        bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-        tlsConfig: { insecureSkipVerify: true },
-      }],
+      endpoints: [
+        {
+          port: 'https-metrics',
+          interval: '30s',
+          scheme: 'https',
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          tlsConfig: { insecureSkipVerify: true },
+        },
+        {
+          port: 'https-metrics',
+          interval: '5s',
+          scheme: 'https',
+          path: '/metrics/slis',
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          tlsConfig: { insecureSkipVerify: true },
+        },
+      ],
       selector: {
         matchLabels: { 'app.kubernetes.io/name': 'kube-scheduler' },
       },
@@ -174,6 +184,20 @@ function(params) {
             targetLabel: 'metrics_path',
           }],
         },
+        {
+          port: 'https-metrics',
+          scheme: 'https',
+          path: '/metrics/slis',
+          interval: '5s',
+          honorLabels: true,
+          tlsConfig: { insecureSkipVerify: true },
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          relabelings: [{
+            action: 'replace',
+            sourceLabels: ['__metrics_path__'],
+            targetLabel: 'metrics_path',
+          }],
+        },
       ],
       selector: {
         matchLabels: { 'app.kubernetes.io/name': 'kubelet' },
@@ -193,22 +217,34 @@ function(params) {
     },
     spec: {
       jobLabel: 'app.kubernetes.io/name',
-      endpoints: [{
-        port: 'https-metrics',
-        interval: '30s',
-        scheme: 'https',
-        bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-        tlsConfig: {
-          insecureSkipVerify: true,
-        },
-        metricRelabelings: relabelings + [
-          {
-            sourceLabels: ['__name__'],
-            regex: 'etcd_(debugging|disk|request|server).*',
-            action: 'drop',
+      endpoints: [
+        {
+          port: 'https-metrics',
+          interval: '30s',
+          scheme: 'https',
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          tlsConfig: {
+            insecureSkipVerify: true,
           },
-        ],
-      }],
+          metricRelabelings: relabelings + [
+            {
+              sourceLabels: ['__name__'],
+              regex: 'etcd_(debugging|disk|request|server).*',
+              action: 'drop',
+            },
+          ],
+        },
+        {
+          port: 'https-metrics',
+          interval: '5s',
+          scheme: 'https',
+          path: '/metrics/slis',
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          tlsConfig: {
+            insecureSkipVerify: true,
+          },
+        },
+      ],
       selector: {
         matchLabels: { 'app.kubernetes.io/name': 'kube-controller-manager' },
       },
@@ -236,38 +272,51 @@ function(params) {
       namespaceSelector: {
         matchNames: ['default'],
       },
-      endpoints: [{
-        port: 'https',
-        interval: '30s',
-        scheme: 'https',
-        tlsConfig: {
-          caFile: '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt',
-          serverName: 'kubernetes',
+      endpoints: [
+        {
+          port: 'https',
+          interval: '30s',
+          scheme: 'https',
+          tlsConfig: {
+            caFile: '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt',
+            serverName: 'kubernetes',
+          },
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          metricRelabelings: relabelings + [
+            {
+              sourceLabels: ['__name__'],
+              regex: 'etcd_(debugging|disk|server).*',
+              action: 'drop',
+            },
+            {
+              sourceLabels: ['__name__'],
+              regex: 'apiserver_admission_controller_admission_latencies_seconds_.*',
+              action: 'drop',
+            },
+            {
+              sourceLabels: ['__name__'],
+              regex: 'apiserver_admission_step_admission_latencies_seconds_.*',
+              action: 'drop',
+            },
+            {
+              sourceLabels: ['__name__', 'le'],
+              regex: 'apiserver_request_duration_seconds_bucket;(0.15|0.25|0.3|0.35|0.4|0.45|0.6|0.7|0.8|0.9|1.25|1.5|1.75|2.5|3|3.5|4.5|6|7|8|9|15|25|30|50)',
+              action: 'drop',
+            },
+          ],
         },
-        bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-        metricRelabelings: relabelings + [
-          {
-            sourceLabels: ['__name__'],
-            regex: 'etcd_(debugging|disk|server).*',
-            action: 'drop',
+        {
+          port: 'https',
+          interval: '5s',
+          scheme: 'https',
+          path: '/metrics/slis',
+          tlsConfig: {
+            caFile: '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt',
+            serverName: 'kubernetes',
           },
-          {
-            sourceLabels: ['__name__'],
-            regex: 'apiserver_admission_controller_admission_latencies_seconds_.*',
-            action: 'drop',
-          },
-          {
-            sourceLabels: ['__name__'],
-            regex: 'apiserver_admission_step_admission_latencies_seconds_.*',
-            action: 'drop',
-          },
-          {
-            sourceLabels: ['__name__', 'le'],
-            regex: 'apiserver_request_duration_seconds_bucket;(0.15|0.25|0.3|0.35|0.4|0.45|0.6|0.7|0.8|0.9|1.25|1.5|1.75|2.5|3|3.5|4.5|6|7|8|9|15|25|30|50)',
-            action: 'drop',
-          },
-        ],
-      }],
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+        },
+      ],
     },
   },
 
