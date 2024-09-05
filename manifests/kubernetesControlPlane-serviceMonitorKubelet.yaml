@@ -106,6 +106,10 @@ spec:
       sourceLabels:
       - __metrics_path__
       targetLabel: metrics_path
+    - action: drop
+      regex: process_start_time_seconds
+      sourceLabels:
+      - __name__
     scheme: https
     tlsConfig:
       insecureSkipVerify: true

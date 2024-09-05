@@ -86,6 +86,13 @@ function(params) {
           path: '/metrics/slis',
           bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
           tlsConfig: { insecureSkipVerify: true },
+          metricRelabelings: [
+            {
+              sourceLabels: ['__name__'],
+              regex: 'process_start_time_seconds',
+              action: 'drop',
+            },
+          ],
         },
       ],
       selector: {
@@ -192,11 +199,18 @@ function(params) {
           honorLabels: true,
           tlsConfig: { insecureSkipVerify: true },
           bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
-          relabelings: [{
-            action: 'replace',
-            sourceLabels: ['__metrics_path__'],
-            targetLabel: 'metrics_path',
-          }],
+          relabelings: [
+            {
+              action: 'replace',
+              sourceLabels: ['__metrics_path__'],
+              targetLabel: 'metrics_path',
+            },
+            {
+              sourceLabels: ['__name__'],
+              regex: 'process_start_time_seconds',
+              action: 'drop',
+            },
+          ],
         },
       ],
       selector: {
@@ -243,6 +257,13 @@ function(params) {
           tlsConfig: {
             insecureSkipVerify: true,
           },
+          metricRelabelings: [
+            {
+              sourceLabels: ['__name__'],
+              regex: 'process_start_time_seconds',
+              action: 'drop',
+            },
+          ],
         },
       ],
       selector: {
@@ -315,6 +336,13 @@ function(params) {
             serverName: 'kubernetes',
           },
           bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          metricRelabelings: [
+            {
+              sourceLabels: ['__name__'],
+              regex: 'process_start_time_seconds',
+              action: 'drop',
+            },
+          ],
         },
       ],
     },
