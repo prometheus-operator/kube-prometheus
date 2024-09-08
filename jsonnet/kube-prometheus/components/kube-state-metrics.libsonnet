@@ -46,6 +46,8 @@ local defaults = {
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/%s',
     },
   },
+  // `enableProbes` allows users to opt-into upstream definitions for health probes.
+  enableProbes:: false,
 };
 
 function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics/kube-state-metrics.libsonnet') {
@@ -112,6 +114,8 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       { name: 'https-main', containerPort: 8443 },
     ],
     image: ksm._config.kubeRbacProxyImage,
+    // When enabling probes, kube-rbac-proxy needs to always allow the /livez endpoint.
+    ignorePaths: if ksm._config.enableProbes then ['/livez'] else super.ignorePaths,
   }),
 
   local kubeRbacProxySelf = krp(ksm._config.kubeRbacProxySelf {
@@ -122,6 +126,8 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
       { name: 'https-self', containerPort: 9443 },
     ],
     image: ksm._config.kubeRbacProxyImage,
+    // When enabling probes, kube-rbac-proxy needs to always allow the /readyz endpoint.
+    ignorePaths: if ksm._config.enableProbes then ['/readyz'] else super.ignorePaths,
   }),
 
   networkPolicy: {
@@ -162,14 +168,15 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
           automountServiceAccountToken: true,
           containers: std.map(function(c) c {
             ports:: null,
-            livenessProbe:: null,
-            readinessProbe:: null,
             securityContext+: {
               runAsGroup: 65534,
             },
             args: ['--host=127.0.0.1', '--port=8081', '--telemetry-host=127.0.0.1', '--telemetry-port=8082'],
             resources: ksm._config.resources,
-          }, super.containers) + [kubeRbacProxyMain, kubeRbacProxySelf],
+          } + if !ksm._config.enableProbes then {
+            livenessProbe:: null,
+            readinessProbe:: null,
+          } else {}, super.containers) + [kubeRbacProxyMain, kubeRbacProxySelf],
         },
       },
     },
