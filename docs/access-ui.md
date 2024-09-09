@@ -18,7 +18,7 @@ You can also learn how to [expose Prometheus/Alertmanager/Grafana via Ingress](c
 ## Prometheus
 
 ```shell
-$ kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090
+kubectl --namespace monitoring port-forward svc/prometheus-k8s 9090
 ```
 
 Open Prometheus on [http://localhost:9090](http://localhost:9090) in your browser.
@@ -31,7 +31,7 @@ For your own applications we recommend running one or more other instances.
 ## Grafana
 
 ```shell
-$ kubectl --namespace monitoring port-forward svc/grafana 3000
+kubectl --namespace monitoring port-forward svc/grafana 3000
 ```
 
 Open Grafana on [localhost:3000](https://localhost:3000) in your browser.
@@ -40,7 +40,7 @@ You can login with the username `admin` and password `admin`.
 ## Alertmanager
 
 ```shell
-$ kubectl --namespace monitoring port-forward svc/alertmanager-main 9093
+kubectl --namespace monitoring port-forward svc/alertmanager-main 9093
 ```
 
 Open Alertmanager on [localhost:9093](http://localhost:9093) in your browser.
