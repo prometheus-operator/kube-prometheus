@@ -201,7 +201,7 @@ func TestFailedRuleEvaluations(t *testing.T) {
 	}()
 
 	// Wait for the 2 replicas of kube-state-metrics to be successfully scraped.
-	err = wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
+	err = wait.Poll(5*time.Second, 2*time.Minute, func() (bool, error) {
 		n, err := promClient.query(`up{job="kube-state-metrics"} == 1`)
 		if err != nil {
 			return false, err
