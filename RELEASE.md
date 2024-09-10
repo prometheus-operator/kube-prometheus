@@ -1,13 +1,12 @@
 # Release schedule
 
-Kube-prometheus has a somehow predictable release schedule, releases were
-historically cut in sync with OpenShift releases as per downstream needs.
+kube-prometheus will follow the Kubernetes release schedule.
+For every new Kubernetes release, there will be a corresponding minor release of
+kube-prometheus, although it may not be immediate.
 
-This has been changed in favour of tracking upstream Kubernetes releases due
-to changing needs and requirements in the OpenShift release process.
+We do not guarantee backports from the `main` branch to older release branches.
 
-For every new Kubernetes release, there will be a corresponding new release
-of kube-prometheus, although it tends to happen later.
+This differs from the previous release schedule, which was driven by OpenShift releases.
 
 # How to cut a new release
 
@@ -21,17 +20,9 @@ We use [Semantic Versioning](http://semver.org/).
 We maintain a separate branch for each minor release, named
 `release-<major>.<minor>`, e.g. `release-1.1`, `release-2.0`.
 
-The usual flow is to merge new features and changes into the master branch and
-to merge bug fixes into the latest release branch. Bug fixes are then merged
-into master from the latest release branch. The master branch should always
-contain all commits from the latest release branch.
-
-If a bug fix got accidentally merged into master, cherry-pick commits have to be
-created in the latest release branch, which then has to be merged back into
-master. Try to avoid that situation.
-
-Maintaining the release branches for older minor releases happens on a best
-effort basis.
+The usual flow is to merge new features, changes and bug fixes into the `main` branch.
+The decision to backport bugfixes into release branches is made on a case-by-case basis.
+Maintaining the release branches for older minor releases is best-effort.
 
 ## Update components version
 
@@ -47,7 +38,7 @@ failed or because the main branch was already up-to-date.
 
 ## Update Kubernetes supported versions
 
-The main branch of kube-prometheus should support the last 2 versions of
+The `main` branch of kube-prometheus should support the last 2 versions of
 Kubernetes. We need to make sure that the CI on the main branch is testing the
 kube-prometheus configuration against both of these versions by updating the [CI
 worklow](.github/workflows/ci.yaml) to include the latest kind version and the
