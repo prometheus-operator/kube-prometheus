@@ -3,7 +3,7 @@ on:
   - push
   - pull_request
 env:
-  golang-version: '1.21'
+  golang-version: '1.22'
   kind-version: 'v0.24.0'
 jobs:
   generate:
