@@ -608,6 +608,19 @@ items:
     apiserver.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -1477,6 +1490,19 @@ items:
     cluster-total.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -2278,6 +2304,19 @@ items:
     controller-manager.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -3494,6 +3533,19 @@ items:
     k8s-resources-cluster.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -5068,6 +5120,19 @@ items:
     k8s-resources-multicluster.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -5696,6 +5761,19 @@ items:
     k8s-resources-namespace.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -7201,6 +7279,19 @@ items:
     k8s-resources-node.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -7766,6 +7857,19 @@ items:
     k8s-resources-pod.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -9137,6 +9241,19 @@ items:
     k8s-resources-workload.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -10190,6 +10307,19 @@ items:
     k8s-resources-workloads-namespace.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -11440,6 +11570,19 @@ items:
     kubelet.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -12680,6 +12823,19 @@ items:
     namespace-by-pod.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -13305,6 +13461,19 @@ items:
     namespace-by-workload.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -18391,6 +18560,19 @@ items:
     persistentvolumesusage.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -18700,6 +18882,19 @@ items:
     pod-total.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -22079,6 +22274,19 @@ items:
     proxy.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -22721,6 +22929,19 @@ items:
     scheduler.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -23309,6 +23530,19 @@ items:
     workload-total.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
