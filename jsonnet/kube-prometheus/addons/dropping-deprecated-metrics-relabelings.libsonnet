@@ -14,7 +14,7 @@
   // Drop all apiserver metrics which are deprecated in kubernetes.
   {
     sourceLabels: ['__name__'],
-    regex: 'apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes|flowcontrol_request_concurrency_limit)',
+    regex: 'apiserver_(request_count|request_latencies|request_latencies_summary|dropped_requests|storage_data_key_generation_latencies_microseconds|storage_transformation_failures_total|storage_transformation_latencies_microseconds|proxy_tunnel_sync_latency_secs|longrunning_gauge|registered_watchers|storage_db_total_size_in_bytes|flowcontrol_request_concurrency_limit|flowcontrol_request_concurrency_in_use)',
     action: 'drop',
   },
   // Drop all docker metrics which are deprecated in kubernetes.
