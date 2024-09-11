@@ -1,3 +1,14 @@
+## release-0.14 / 2024-09-12
+
+* [CHANGE] Prefer new form for `kube_node_status_capacity_pods` metric [#2269](https://github.com/prometheus-operator/kube-prometheus/pull/2269)
+* [CHANGE] Add runAsGroup to all components [#2424](https://github.com/prometheus-operator/kube-prometheus/pull/2424)
+* [FEATURE] Add support for ScrapeConfig [#2232](https://github.com/prometheus-operator/kube-prometheus/pull/2232)
+* [FEATURE] Add Kubernetes components SLI metrics [#2496](https://github.com/prometheus-operator/kube-prometheus/pull/2496)
+* [FEATURE] Add monitor and rules resources to user-facing roles add-on [#2238](https://github.com/prometheus-operator/kube-prometheus/pull/2238)
+* [BUGFIX] Add thanos-sidecar metrics port to Prometheus Service and NetworkPolicy [#2330](https://github.com/prometheus-operator/kube-prometheus/pull/2330)
+* [ENHANCEMENT] Add ability to inject Secrets into alertmanager [#2206](https://github.com/prometheus-operator/kube-prometheus/pull/2206)
+* [ENHANCEMENT] Add securityContext items and Pod security labels [#2178](https://github.com/prometheus-operator/kube-prometheus/pull/2178)
+
 ## release-0.13 / 2023-08-31
 
 * [CHANGE] Added a AKS platform to `platforms.libsonnet` [#1997](https://github.com/prometheus-operator/kube-prometheus/pull/1997)
