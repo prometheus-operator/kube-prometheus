@@ -108,10 +108,10 @@
       "source": {
         "git": {
           "remote": "https://github.com/pyrra-dev/pyrra.git",
-          "subdir": "config/crd/bases"
+          "subdir": "jsonnet/controller-gen"
         }
       },
-      "version": "release-0.6",
+      "version": "release-0.7",
       "name": "pyrra"
     },
     {
