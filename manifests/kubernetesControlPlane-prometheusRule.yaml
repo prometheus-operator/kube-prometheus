@@ -116,7 +116,7 @@ spec:
         summary: StatefulSet update has not been rolled out.
       expr: |
         (
-          max by(namespace, statefulset) (
+          max by(namespace, statefulset, job, cluster) (
             kube_statefulset_status_current_revision{job="kube-state-metrics"}
               unless
             kube_statefulset_status_update_revision{job="kube-state-metrics"}
@@ -1238,7 +1238,7 @@ spec:
           max by(cluster, namespace, pod, node) (kube_pod_info{node!=""})
         )
       record: node_namespace_pod_container:container_memory_swap
-  - name: k8s.rules.container_resource
+  - name: k8s.rules.container_memory_requests
     rules:
     - expr: |
         kube_pod_container_resource_requests{resource="memory",job="kube-state-metrics"}  * on (namespace, pod, cluster)
@@ -1257,6 +1257,8 @@ spec:
             )
         )
       record: namespace_memory:kube_pod_container_resource_requests:sum
+  - name: k8s.rules.container_cpu_requests
+    rules:
     - expr: |
         kube_pod_container_resource_requests{resource="cpu",job="kube-state-metrics"}  * on (namespace, pod, cluster)
         group_left() max by (namespace, pod, cluster) (
@@ -1274,6 +1276,8 @@ spec:
             )
         )
       record: namespace_cpu:kube_pod_container_resource_requests:sum
+  - name: k8s.rules.container_memory_limits
+    rules:
     - expr: |
         kube_pod_container_resource_limits{resource="memory",job="kube-state-metrics"}  * on (namespace, pod, cluster)
         group_left() max by (namespace, pod, cluster) (
@@ -1291,6 +1295,8 @@ spec:
             )
         )
       record: namespace_memory:kube_pod_container_resource_limits:sum
+  - name: k8s.rules.container_cpu_limits
+    rules:
     - expr: |
         kube_pod_container_resource_limits{resource="cpu",job="kube-state-metrics"}  * on (namespace, pod, cluster)
         group_left() max by (namespace, pod, cluster) (
