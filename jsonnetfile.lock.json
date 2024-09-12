@@ -18,7 +18,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "5088131f51860bb00db8340905639f02c85aa1c7",
+      "version": "981061a4958e8d386b025dbecd43af9b974709e2",
       "sum": "IXI3LQIT9NmTPJAk8WLUJd5+qZfcGpeNCyWIK7oEpws="
     },
     {
@@ -138,7 +138,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "aebbb390820496d46750697aa6956c57ff082d41",
+      "version": "76ef24190dbca4afb116d8f9d91fba41ae59b704",
       "sum": "lO7jUSzAIy8Yk9pOWJIWgPRhubkWzVh56W6wtYfbVH4="
     },
     {
@@ -148,7 +148,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "aebbb390820496d46750697aa6956c57ff082d41",
+      "version": "76ef24190dbca4afb116d8f9d91fba41ae59b704",
       "sum": "qclI7LwucTjBef3PkGBkKxF0mfZPbHnn4rlNWKGtR4c="
     },
     {
@@ -158,7 +158,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "10ddb1fa74f259c4f70720fdc7f1c6b11082033d",
+      "version": "781d6df6bc8e48b010a74348f19526f66c5e2c54",
       "sum": "gi+knjdxs2T715iIQIntrimbHRgHnpM8IFBJDD1gYfs=",
       "name": "prometheus-operator-mixin"
     },
@@ -169,7 +169,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "10ddb1fa74f259c4f70720fdc7f1c6b11082033d",
+      "version": "781d6df6bc8e48b010a74348f19526f66c5e2c54",
       "sum": "YhMrMNg8UEvQ6Wz0poEQ8/63zJArmGwyf0u0iSLGZS4="
     },
     {
@@ -179,7 +179,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "ccc1ed914dabc288e2111f745fadf8fff105eed8",
+      "version": "e9904f93a7efa063bac628ed0b74184acf1c7401",
       "sum": "IpF46ZXsm+0wJJAPtAre8+yxTNZA57mBqGpBP/r7/kw=",
       "name": "alertmanager"
     },
@@ -200,7 +200,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "50cd453c8fc5d7fd9270fc72dfa50367fc7a9c23",
+      "version": "5aa3d8260a7335a0da6946dea82f608cafa46c20",
       "sum": "dYLcLzGH4yF3qB7OGC/7z4nqeTNjv42L7Q3BENU8XJI=",
       "name": "prometheus"
     },
