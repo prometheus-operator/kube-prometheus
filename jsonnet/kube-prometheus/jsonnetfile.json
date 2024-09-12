@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "master"
+      "version": "5698c8940b6dadca3f42107b7839557bc041761f"
     },
     {
       "source": {
@@ -17,7 +17,7 @@
           "subdir": "grafana-mixin"
         }
       },
-      "version": "main",
+      "version": "release-11.2.0",
       "name": "grafana-mixin"
     },
     {
@@ -27,7 +27,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "main"
+      "version": "release-3.5"
     },
     {
       "source": {
@@ -36,7 +36,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "main"
+      "version": "release-0.76"
     },
     {
       "source": {
@@ -45,7 +45,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "main",
+      "version": "release-0.76",
       "name": "prometheus-operator-mixin"
     },
     {
@@ -55,7 +55,7 @@
           "subdir": ""
         }
       },
-      "version": "master"
+      "version": "50150c585ebee6e4d9cb72218182da8f3c616515"
     },
     {
       "source": {
@@ -64,7 +64,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "main"
+      "version": "release-2.13"
     },
     {
       "source": {
@@ -73,7 +73,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "main"
+      "version": "release-2.13"
     },
     {
       "source": {
@@ -82,7 +82,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "master"
+      "version": "release-1.8"
     },
     {
       "source": {
@@ -91,7 +91,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "main",
+      "version": "release-2.54",
       "name": "prometheus"
     },
     {
@@ -101,7 +101,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "main",
+      "version": "release-0.27",
       "name": "alertmanager"
     },
     {
@@ -111,7 +111,7 @@
           "subdir": "jsonnet/controller-gen"
         }
       },
-      "version": "release-0.7",
+      "version": "v0.7.7",
       "name": "pyrra"
     },
     {
@@ -121,7 +121,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "main",
+      "version": "release-0.36",
       "name": "thanos-mixin"
     }
   ],
