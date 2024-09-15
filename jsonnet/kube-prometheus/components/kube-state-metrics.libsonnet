@@ -15,12 +15,18 @@ local defaults = {
   },
 
   kubeRbacProxyMain:: {
+    ports: [
+      { name: 'http-metrics', containerPort: 8443 },
+    ],
     resources+: {
       limits+: { cpu: '40m' },
       requests+: { cpu: '20m' },
     },
   },
   kubeRbacProxySelf:: {
+    ports: [
+      { name: 'telemetry', containerPort: 9443 },
+    ],
     resources+: {
       limits+: { cpu: '20m' },
       requests+: { cpu: '10m' },
@@ -93,14 +99,14 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     spec+: {
       ports: [
         {
-          name: 'https-main',
-          port: 8443,
-          targetPort: 'https-main',
+          name: defaults.kubeRbacProxyMain.ports[0].name,
+          port: defaults.kubeRbacProxyMain.ports[0].containerPort,
+          targetPort: defaults.kubeRbacProxyMain.ports[0].name,
         },
         {
-          name: 'https-self',
-          port: 9443,
-          targetPort: 'https-self',
+          name: defaults.kubeRbacProxySelf.ports[0].name,
+          port: defaults.kubeRbacProxySelf.ports[0].containerPort,
+          targetPort: defaults.kubeRbacProxySelf.ports[0].name,
         },
       ],
     },
@@ -109,10 +115,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
   local kubeRbacProxyMain = krp(ksm._config.kubeRbacProxyMain {
     name: 'kube-rbac-proxy-main',
     upstream: 'http://127.0.0.1:8081/',
-    secureListenAddress: ':8443',
-    ports: [
-      { name: 'https-main', containerPort: 8443 },
-    ],
+    secureListenAddress: ':' + std.toString(defaults.kubeRbacProxyMain.ports[0].containerPort),
     image: ksm._config.kubeRbacProxyImage,
     // When enabling probes, kube-rbac-proxy needs to always allow the /livez endpoint.
     ignorePaths: if ksm._config.enableProbes then ['/livez'] else super.ignorePaths,
@@ -121,10 +124,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
   local kubeRbacProxySelf = krp(ksm._config.kubeRbacProxySelf {
     name: 'kube-rbac-proxy-self',
     upstream: 'http://127.0.0.1:8082/',
-    secureListenAddress: ':9443',
-    ports: [
-      { name: 'https-self', containerPort: 9443 },
-    ],
+    secureListenAddress: ':' + std.toString(defaults.kubeRbacProxySelf.ports[0].containerPort),
     image: ksm._config.kubeRbacProxyImage,
     // When enabling probes, kube-rbac-proxy needs to always allow the /readyz endpoint.
     ignorePaths: if ksm._config.enableProbes then ['/readyz'] else super.ignorePaths,
