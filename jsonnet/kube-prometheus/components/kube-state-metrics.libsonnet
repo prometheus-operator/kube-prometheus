@@ -167,16 +167,32 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
         spec+: {
           automountServiceAccountToken: true,
           containers: std.map(function(c) c {
-            ports:: null,
             securityContext+: {
               runAsGroup: 65534,
             },
             args: ['--host=127.0.0.1', '--port=8081', '--telemetry-host=127.0.0.1', '--telemetry-port=8082'],
             resources: ksm._config.resources,
           } + if !ksm._config.enableProbes then {
+            ports:: null,
             livenessProbe:: null,
             readinessProbe:: null,
-          } else {}, super.containers) + [kubeRbacProxyMain, kubeRbacProxySelf],
+          } else {
+            ports: defaults.kubeRbacProxyMain.ports + defaults.kubeRbacProxySelf.ports,
+            livenessProbe: {
+              httpGet: {
+                path: '/livez',
+                port: defaults.kubeRbacProxyMain.ports[0].name,
+                scheme: 'HTTPS',
+              },
+            },
+            readinessProbe: {
+              httpGet: {
+                path: '/readyz',
+                port: defaults.kubeRbacProxySelf.ports[0].name,
+                scheme: 'HTTPS',
+              },
+            },
+          }, super.containers) + [kubeRbacProxyMain, kubeRbacProxySelf],
         },
       },
     },
