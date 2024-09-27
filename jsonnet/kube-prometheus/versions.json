@@ -6,8 +6,8 @@
   "nodeExporter": "1.8.2",
   "prometheus": "2.54.1",
   "prometheusAdapter": "0.12.0",
-  "prometheusOperator": "0.77.0",
+  "prometheusOperator": "0.77.1",
   "kubeRbacProxy": "0.18.1",
-  "configmapReload": "0.13.1",
+  "configmapReload": "0.14.0",
   "pyrra": "0.6.4"
 }
