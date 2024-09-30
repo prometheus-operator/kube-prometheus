@@ -18,7 +18,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "c86c93ca2951338115159dcdd20711603044e1f1",
+      "version": "68e712276bb8a8f35f7f077add143b28422e8d66",
       "sum": "IXI3LQIT9NmTPJAk8WLUJd5+qZfcGpeNCyWIK7oEpws="
     },
     {
@@ -88,7 +88,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "134467f00ae4b1c9ac30697dec7e360f783046c7",
+      "version": "349a4d4936014ab83ace72f500424d6ef098201e",
       "sum": "yxqWcq/N3E/a/XreeU6EuE6X7kYPnG0AspAQFKOjASo="
     },
     {
@@ -98,7 +98,7 @@
           "subdir": "mixin-utils"
         }
       },
-      "version": "134467f00ae4b1c9ac30697dec7e360f783046c7",
+      "version": "349a4d4936014ab83ace72f500424d6ef098201e",
       "sum": "LoYq5QxJmUXEtqkEG8CFUBLBhhzDDaNANHc7Gz36ZdM="
     },
     {
@@ -158,7 +158,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "4c1a70cceb84b106ef7987e118d607109832dd4a",
+      "version": "7405049eb95fd85bd27acb552491146ca3074365",
       "sum": "gi+knjdxs2T715iIQIntrimbHRgHnpM8IFBJDD1gYfs=",
       "name": "prometheus-operator-mixin"
     },
@@ -169,7 +169,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "4c1a70cceb84b106ef7987e118d607109832dd4a",
+      "version": "7405049eb95fd85bd27acb552491146ca3074365",
       "sum": "orqSseZSFDyhRwMAKmGPgUkdGF/C8J+ZAFm0T5ivSrk="
     },
     {
@@ -190,8 +190,8 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "71d9b6c06103a440a6590135467bc4c96174c9a1",
-      "sum": "rhUvbqviGjQ2mwsRhHKMN0TiS3YvnYpUXHew3XlQ+Wg="
+      "version": "11f93d3da1232ea26d89d72753fa454a56e228d8",
+      "sum": "cQCW+1N0Xae5yXecCWDK2oAlN0luBS/5GrwBYSlaFms="
     },
     {
       "source": {
@@ -200,7 +200,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "410fcce6f0484d59184e5c5c0dd13ea454cd2f9e",
+      "version": "537c5dbbcf33b6d64494641466f438d8670eedd2",
       "sum": "dYLcLzGH4yF3qB7OGC/7z4nqeTNjv42L7Q3BENU8XJI=",
       "name": "prometheus"
     },

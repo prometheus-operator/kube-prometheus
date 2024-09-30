@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: grafana
     app.kubernetes.io/name: grafana
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 11.2.0
+    app.kubernetes.io/version: 11.2.1
   name: grafana
   namespace: monitoring
 spec:
@@ -18,19 +18,19 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/grafana-config: c4d088078bb55176e3910a42b41ecc08
-        checksum/grafana-dashboardproviders: b66e063b0e9d7b9e152e066f0ab965ee
-        checksum/grafana-datasources: 495c78a90b81354c8feeece92f6f5466
+        checksum/grafana-config: e12dc3d29f03df88bfe8e6fae64e5240
+        checksum/grafana-dashboardproviders: e24c700dcef0abdf5b6f31ba292fa62b
+        checksum/grafana-datasources: 19a115373979a415c1a78985d1ba268b
       labels:
         app.kubernetes.io/component: grafana
         app.kubernetes.io/name: grafana
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 11.2.0
+        app.kubernetes.io/version: 11.2.1
     spec:
       automountServiceAccountToken: false
       containers:
       - env: []
-        image: grafana/grafana:11.2.0
+        image: grafana/grafana:11.2.1
         name: grafana
         ports:
         - containerPort: 3000
@@ -117,6 +117,9 @@ spec:
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/node-rsrc-use
           name: grafana-dashboard-node-rsrc-use
+          readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/nodes-aix
+          name: grafana-dashboard-nodes-aix
           readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/nodes-darwin
           name: grafana-dashboard-nodes-darwin
@@ -219,6 +222,9 @@ spec:
       - configMap:
           name: grafana-dashboard-node-rsrc-use
         name: grafana-dashboard-node-rsrc-use
+      - configMap:
+          name: grafana-dashboard-nodes-aix
+        name: grafana-dashboard-nodes-aix
       - configMap:
           name: grafana-dashboard-nodes-darwin
         name: grafana-dashboard-nodes-darwin
