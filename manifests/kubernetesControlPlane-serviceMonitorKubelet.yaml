@@ -99,6 +99,11 @@ spec:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     honorLabels: true
     interval: 5s
+    metricRelabelings:
+    - action: drop
+      regex: process_start_time_seconds
+      sourceLabels:
+      - __name__
     path: /metrics/slis
     port: https-metrics
     relabelings:
@@ -106,10 +111,6 @@ spec:
       sourceLabels:
       - __metrics_path__
       targetLabel: metrics_path
-    - action: drop
-      regex: process_start_time_seconds
-      sourceLabels:
-      - __name__
     scheme: https
     tlsConfig:
       insecureSkipVerify: true
