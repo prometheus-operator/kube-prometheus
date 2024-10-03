@@ -205,6 +205,8 @@ function(params) {
               sourceLabels: ['__metrics_path__'],
               targetLabel: 'metrics_path',
             },
+          ],
+          metricRelabelings: [
             {
               sourceLabels: ['__name__'],
               regex: 'process_start_time_seconds',
