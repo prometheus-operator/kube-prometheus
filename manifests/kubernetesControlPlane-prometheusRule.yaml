@@ -617,7 +617,7 @@ spec:
         summary: Node is unreachable.
       expr: |
         (kube_node_spec_taint{job="kube-state-metrics",key="node.kubernetes.io/unreachable",effect="NoSchedule"} unless ignoring(key,value) kube_node_spec_taint{job="kube-state-metrics",key=~"ToBeDeletedByClusterAutoscaler|cloud.google.com/impending-node-termination|aws-node-termination-handler/spot-itn"}) == 1
-      for: 15m
+      for: 30m
       labels:
         severity: warning
     - alert: KubeletTooManyPods
