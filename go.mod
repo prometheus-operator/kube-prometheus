@@ -6,7 +6,7 @@ toolchain go1.22.5
 
 require (
 	github.com/Jeffail/gabs v1.4.0
-	github.com/prometheus/client_golang v1.20.4
+	github.com/prometheus/client_golang v1.20.5
 	k8s.io/apimachinery v0.31.1
 	k8s.io/client-go v0.31.1
 )
