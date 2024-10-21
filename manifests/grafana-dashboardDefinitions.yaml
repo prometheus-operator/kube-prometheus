@@ -600,7 +600,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-alertmanager-overview
     namespace: monitoring
 - apiVersion: v1
@@ -1482,7 +1482,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -2296,7 +2296,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -2900,7 +2900,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -3525,7 +3525,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-grafana-overview
     namespace: monitoring
 - apiVersion: v1
@@ -5112,7 +5112,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -5162,7 +5162,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "cluster:node_cpu:ratio_rate5m",
+                          "expr": "sum(cluster:node_cpu:ratio_rate5m) / count(cluster:node_cpu:ratio_rate5m)",
                           "instant": true
                       }
                   ],
@@ -5753,7 +5753,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-k8s-resources-multicluster
     namespace: monitoring
 - apiVersion: v1
@@ -6018,7 +6018,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.cpu\"})",
+                          "expr": "scalar(max(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.cpu\"}))",
                           "legendFormat": "quota - requests"
                       },
                       {
@@ -6026,7 +6026,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.cpu\"})",
+                          "expr": "scalar(max(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.cpu\"}))",
                           "legendFormat": "quota - limits"
                       }
                   ],
@@ -6276,7 +6276,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.memory\"})",
+                          "expr": "scalar(max(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"requests.memory\"}))",
                           "legendFormat": "quota - requests"
                       },
                       {
@@ -6284,7 +6284,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.memory\"})",
+                          "expr": "scalar(max(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=\"limits.memory\"}))",
                           "legendFormat": "quota - limits"
                       }
                   ],
@@ -7271,7 +7271,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -7849,7 +7849,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -9233,7 +9233,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-k8s-resources-pod
     namespace: monitoring
 - apiVersion: v1
@@ -10299,7 +10299,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -10424,7 +10424,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"requests.cpu|cpu\"})",
+                          "expr": "scalar(max(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"requests.cpu|cpu\"}))",
                           "legendFormat": "quota - requests"
                       },
                       {
@@ -10432,7 +10432,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"limits.cpu\"})",
+                          "expr": "scalar(max(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"limits.cpu\"}))",
                           "legendFormat": "quota - limits"
                       }
                   ],
@@ -10719,7 +10719,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"requests.memory|memory\"})",
+                          "expr": "scalar(max(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"requests.memory|memory\"}))",
                           "legendFormat": "quota - requests"
                       },
                       {
@@ -10727,7 +10727,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "scalar(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"limits.memory\"})",
+                          "expr": "scalar(max(kube_resourcequota{cluster=\"$cluster\", namespace=\"$namespace\", type=\"hard\",resource=~\"limits.memory\"}))",
                           "legendFormat": "quota - limits"
                       }
                   ],
@@ -11562,7 +11562,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-k8s-resources-workloads-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -12815,7 +12815,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -13453,7 +13453,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -14249,7 +14249,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -15302,7 +15302,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -16381,7 +16381,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -17449,7 +17449,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-nodes-aix
     namespace: monitoring
 - apiVersion: v1
@@ -18538,7 +18538,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-nodes-darwin
     namespace: monitoring
 - apiVersion: v1
@@ -19620,7 +19620,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -19942,7 +19942,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -20434,7 +20434,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -22093,7 +22093,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -23334,7 +23334,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -23989,7 +23989,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -24590,7 +24590,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -25172,7 +25172,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.2.1
+      app.kubernetes.io/version: 11.2.2+security-01
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList

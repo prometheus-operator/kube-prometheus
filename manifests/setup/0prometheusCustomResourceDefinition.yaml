@@ -2,7 +2,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.16.3
+    controller-gen.kubebuilder.io/version: v0.16.4
     operator.prometheus.io/version: 0.77.1
   name: prometheuses.monitoring.coreos.com
 spec:
@@ -3697,7 +3697,8 @@ spec:
                   it (https://kubernetes.io/docs/concepts/configuration/overview/).
 
                   When hostNetwork is enabled, this will set the DNS policy to
-                  `ClusterFirstWithHostNet` automatically.
+                  `ClusterFirstWithHostNet` automatically (unless `.spec.DNSPolicy` is set
+                  to a different value).
                 type: boolean
               ignoreNamespaceSelectors:
                 description: |-
@@ -5214,7 +5215,7 @@ spec:
               otlp:
                 description: |-
                   Settings related to the OTLP receiver feature.
-                  It requires Prometheus >= v2.54.0.
+                  It requires Prometheus >= v2.55.0.
                 properties:
                   promoteResourceAttributes:
                     description: List of OpenTelemetry Attributes that should be promoted to metric labels, defaults to none.
@@ -7483,6 +7484,17 @@ spec:
                           Alertmanager.
                         type: string
                     type: object
+                type: object
+              runtime:
+                description: RuntimeConfig configures the values for the Prometheus process behavior
+                properties:
+                  goGC:
+                    description: |-
+                      The Go garbage collection target percentage. Lowering this number may increase the CPU usage.
+                      See: https://tip.golang.org/doc/gc-guide#GOGC
+                    format: int32
+                    minimum: -1
+                    type: integer
                 type: object
               sampleLimit:
                 description: |-
