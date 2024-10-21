@@ -209,7 +209,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
         },
         endpoints: [
           {
-            port: 'https-main',
+            port: 'http-metrics',
             scheme: 'https',
             interval: ksm._config.scrapeInterval,
             scrapeTimeout: ksm._config.scrapeTimeout,
@@ -234,7 +234,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
             },
           },
           {
-            port: 'https-self',
+            port: 'telemetry',
             scheme: 'https',
             interval: ksm._config.scrapeInterval,
             bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
