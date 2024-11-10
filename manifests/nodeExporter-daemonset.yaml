@@ -30,6 +30,7 @@ spec:
         - --web.listen-address=127.0.0.1:9100
         - --path.sysfs=/host/sys
         - --path.rootfs=/host/root
+        - --path.procfs=/host/root/proc
         - --path.udev.data=/host/root/run/udev/data
         - --no-collector.wifi
         - --no-collector.hwmon
