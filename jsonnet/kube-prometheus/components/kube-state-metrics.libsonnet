@@ -200,9 +200,9 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
             ],
             metricRelabelings: [
               {
-                // Dropping metric deprecated from kube-state-metrics 2.6.0 version
+                // Dropping metric deprecated from kube-state-metrics 2.6.0 & 2.14.0 versions
                 sourceLabels: ['__name__'],
-                regex: 'kube_endpoint_address_not_ready|kube_endpoint_address_available',
+                regex: 'kube_(endpoint_(address_not_ready|address_available|ports))',
                 action: 'drop',
               },
             ],
