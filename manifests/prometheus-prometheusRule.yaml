@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: k8s
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 3.0.0
+    app.kubernetes.io/version: 3.0.1
     prometheus: k8s
     role: alert-rules
   name: prometheus-k8s-prometheus-rules
@@ -65,9 +65,9 @@ spec:
         severity: warning
     - alert: PrometheusErrorSendingAlertsToSomeAlertmanagers
       annotations:
-        description: '{{ printf "%.1f" $value }}% errors while sending alerts from Prometheus {{$labels.namespace}}/{{$labels.pod}} to Alertmanager {{$labels.alertmanager}}.'
+        description: '{{ printf "%.1f" $value }}% of alerts sent by Prometheus {{$labels.namespace}}/{{$labels.pod}} to Alertmanager {{$labels.alertmanager}} were affected by errors.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/prometheus/prometheuserrorsendingalertstosomealertmanagers
-        summary: Prometheus has encountered more than 1% errors sending alerts to a specific Alertmanager.
+        summary: More than 1% of alerts sent by Prometheus to a specific Alertmanager were affected by errors.
       expr: |
         (
           rate(prometheus_notifications_errors_total{job="prometheus-k8s",namespace="monitoring"}[5m])
