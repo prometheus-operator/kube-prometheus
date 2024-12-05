@@ -156,7 +156,7 @@ spec:
         severity: warning
     - alert: NodeHighNumberConntrackEntriesUsed
       annotations:
-        description: '{{ $value | humanizePercentage }} of conntrack entries are used.'
+        description: '{{`{{`}} $labels.instance {{`}}`}} {{ $value | humanizePercentage }} of conntrack entries are used.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/nodehighnumberconntrackentriesused
         summary: Number of conntrack are getting close to the limit.
       expr: |
