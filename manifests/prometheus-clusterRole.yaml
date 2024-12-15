@@ -20,3 +20,11 @@ rules:
   - /metrics/slis
   verbs:
   - get
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
