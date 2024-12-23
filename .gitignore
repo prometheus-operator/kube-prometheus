@@ -8,3 +8,12 @@ crdschemas/
 
 developer-workspace/gitpod/_output
 developer-workspace/codespaces/kind 
+
+# editor and IDE paraphernalia
+.idea
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
