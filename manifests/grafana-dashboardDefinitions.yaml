@@ -2385,8 +2385,8 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\", verb=\"POST\"}[$__rate_interval])) by (verb, url, le))",
-                          "legendFormat": "{{verb}} {{url}}"
+                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\", verb=\"POST\"}[$__rate_interval])) by (verb, le))",
+                          "legendFormat": "{{verb}}"
                       }
                   ],
                   "title": "Post Request Latency 99th Quantile",
@@ -2436,8 +2436,8 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, url, le))",
-                          "legendFormat": "{{verb}} {{url}}"
+                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-controller-manager\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
+                          "legendFormat": "{{verb}}"
                       }
                   ],
                   "title": "Get Request Latency 99th Quantile",
@@ -12455,8 +12455,8 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\",job=\"kubelet\", metrics_path=\"/metrics\", instance=~\"$instance\"}[$__rate_interval])) by (instance, verb, url, le))",
-                          "legendFormat": "{{instance}} {{verb}} {{url}}"
+                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\",job=\"kubelet\", metrics_path=\"/metrics\", instance=~\"$instance\"}[$__rate_interval])) by (instance, verb, le))",
+                          "legendFormat": "{{instance}} {{verb}}"
                       }
                   ],
                   "title": "Request duration 99th quantile",
@@ -21620,8 +21620,8 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\",instance=~\"$instance\",verb=\"POST\"}[$__rate_interval])) by (verb, url, le))",
-                          "legendFormat": "{{verb}} {{url}}"
+                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\",instance=~\"$instance\",verb=\"POST\"}[$__rate_interval])) by (verb, le))",
+                          "legendFormat": "{{verb}}"
                       }
                   ],
                   "title": "Post Request Latency 99th Quantile",
@@ -21671,8 +21671,8 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, url, le))",
-                          "legendFormat": "{{verb}} {{url}}"
+                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-proxy\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
+                          "legendFormat": "{{verb}}"
                       }
                   ],
                   "title": "Get Request Latency 99th Quantile",
@@ -22221,8 +22221,8 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\", verb=\"POST\"}[$__rate_interval])) by (verb, url, le))",
-                          "legendFormat": "{{verb}} {{url}}"
+                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\", verb=\"POST\"}[$__rate_interval])) by (verb, le))",
+                          "legendFormat": "{{verb}}"
                       }
                   ],
                   "title": "Post Request Latency 99th Quantile",
@@ -22272,8 +22272,8 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, url, le))",
-                          "legendFormat": "{{verb}} {{url}}"
+                          "expr": "histogram_quantile(0.99, sum(rate(rest_client_request_duration_seconds_bucket{cluster=\"$cluster\", job=\"kube-scheduler\", instance=~\"$instance\", verb=\"GET\"}[$__rate_interval])) by (verb, le))",
+                          "legendFormat": "{{verb}}"
                       }
                   ],
                   "title": "Get Request Latency 99th Quantile",
