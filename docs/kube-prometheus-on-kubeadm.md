@@ -13,7 +13,7 @@ description: This guide will help you deploying kube-prometheus on Kubernetes ku
 
 The [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/) tool is linked by Kubernetes as the offical way to deploy and manage self-hosted clusters. kubeadm does a lot of heavy lifting by automatically configuring your Kubernetes cluster with some common options. This guide is intended to show you how to deploy Prometheus, Prometheus Operator and Kube Prometheus to get you started monitoring your cluster that was deployed with kubeadm.
 
-This guide assumes you have a basic understanding of how to use the functionality the Prometheus Operator implements. If you haven't yet, we recommend reading through the [getting started guide](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md) as well as the [alerting guide](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/alerting.md).
+This guide assumes you have a basic understanding of how to use the functionality the Prometheus Operator implements. If you haven't yet, we recommend reading through the [getting started guide](https://prometheus-operator.dev/docs/platform/platform-guide/) as well as the [alerting guide](https://prometheus-operator.dev/docs/developer/alerting/).
 
 ## kubeadm Pre-requisites
 
@@ -133,7 +133,7 @@ kubectl apply -f manifests/prometheus/prometheus-k8s-roles.yaml
 kubectl apply -f manifests/prometheus/prometheus-k8s-role-bindings.yaml
 ```
 
-Finally, install the [Alertmanager](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/alerting.md)
+Finally, install the [Alertmanager](https://prometheus-operator.dev/docs/developer/alerting)
 
 ```
 kubectl --namespace="$NAMESPACE" apply -f manifests/alertmanager
@@ -145,4 +145,4 @@ Now you should have a working cluster. After all the pods are ready, you should 
 * Alertmanager UI on node port `30903`
 * Grafana on node port `30902`
 
-These can of course be changed via the Service definitions. It is recommended to look at the [Exposing Prometheus and Alert Manager](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/exposing-prometheus-and-alertmanager.md) documentation for more detailed information on how to expose these services.
+These can of course be changed via the Service definitions. It is recommended to look at the [Exposing Prometheus and Alert Manager](https://prometheus-operator.dev/docs/platform/exposing-prometheus-and-alertmanager/) documentation for more detailed information on how to expose these services.
