@@ -128,6 +128,11 @@ local utils = import './lib/utils.libsonnet';
       namespace: $.values.common.namespace,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
+    metricsServer+: {
+      namespace: $.values.common.namespace,
+      version: $.values.common.versions.metricsServer,
+      image: 'registry.k8s.io/metrics-server/metrics-server:v' + $.values.common.versions.metricsServer,
+    },
   },
 
   alertmanager: alertmanager($.values.alertmanager),
@@ -139,6 +144,7 @@ local utils = import './lib/utils.libsonnet';
   prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
   prometheusOperator: prometheusOperator($.values.prometheusOperator),
   kubernetesControlPlane: kubernetesControlPlane($.values.kubernetesControlPlane),
+  metricsServer: (import './components/metrics-server.libsonnet')($.values.metricsServer),
   kubePrometheus: customMixin(
     {
       namespace: $.values.common.namespace,
