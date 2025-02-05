@@ -14680,7 +14680,6 @@ items:
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
-                      "hide": 2,
                       "includeAll": false,
                       "name": "cluster",
                       "query": "label_values(node_time_seconds, cluster)",
@@ -15281,7 +15280,6 @@ items:
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
-                      "hide": 2,
                       "includeAll": false,
                       "name": "cluster",
                       "query": "label_values(node_time_seconds, cluster)",
@@ -16005,7 +16003,6 @@ items:
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
-                      "hide": 2,
                       "label": "Cluster",
                       "name": "cluster",
                       "query": "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)",
@@ -16752,7 +16749,6 @@ items:
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
-                      "hide": 2,
                       "label": "Cluster",
                       "name": "cluster",
                       "query": "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"},  cluster)",
@@ -17491,7 +17487,6 @@ items:
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
-                      "hide": 2,
                       "label": "Cluster",
                       "name": "cluster",
                       "query": "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)",
