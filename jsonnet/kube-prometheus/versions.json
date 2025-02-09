@@ -10,5 +10,5 @@
   "kubeRbacProxy": "0.18.2",
   "configmapReload": "0.14.0",
   "pyrra": "0.6.4",
-  "metricsServer": "0.6.4"
+  "metricsServer": "0.7.2"
 }
