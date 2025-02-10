@@ -42,6 +42,12 @@ resources:
 - ./manifests/kubernetesControlPlane-serviceMonitorKubeControllerManager.yaml
 - ./manifests/kubernetesControlPlane-serviceMonitorKubeScheduler.yaml
 - ./manifests/kubernetesControlPlane-serviceMonitorKubelet.yaml
+- ./manifests/metricsServer-apiService.yaml
+- ./manifests/metricsServer-clusterRole.yaml
+- ./manifests/metricsServer-clusterRoleBinding.yaml
+- ./manifests/metricsServer-deployment.yaml
+- ./manifests/metricsServer-service.yaml
+- ./manifests/metricsServer-serviceAccount.yaml
 - ./manifests/nodeExporter-clusterRole.yaml
 - ./manifests/nodeExporter-clusterRoleBinding.yaml
 - ./manifests/nodeExporter-daemonset.yaml
