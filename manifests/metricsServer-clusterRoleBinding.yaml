@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: metrics-api
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.7.2
+  name: metrics-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: metrics-server
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: monitoring

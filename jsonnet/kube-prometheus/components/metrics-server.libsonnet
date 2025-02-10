@@ -43,11 +43,19 @@ function(params) {
       name: ms._config.name,
       labels: ms._config.commonLabels,
     },
-    rules: [{
-      apiGroups: [''],
-      resources: ['pods', 'nodes', 'nodes/stats', 'namespaces'],
-      verbs: ['get', 'list', 'watch'],
-    }],
+    rules: [
+      {
+        apiGroups: [''],
+        resources: ['pods', 'nodes', 'nodes/stats', 'namespaces'],
+        verbs: ['get', 'list', 'watch'],
+      },
+      {
+        apiGroups: [''],
+        resources: ['configmaps'],
+        verbs: ['get'],
+        resourceNames: ['extension-apiserver-authentication'],
+      },
+    ],
   },
 
   clusterRoleBinding: {
@@ -108,24 +116,32 @@ function(params) {
             name: 'metrics-server',
             image: ms._config.image,
             args: [
-              '--cert-dir=/tmp',
+              '--cert-dir=/certs',
               '--secure-port=4443',
               '--kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname',
               '--kubelet-use-node-status-port',
               '--metric-resolution=15s',
+              '--kubelet-insecure-tls',
             ],
             ports: [{
               name: 'https',
               containerPort: 4443,
               protocol: 'TCP',
             }],
+            volumeMounts: [{
+              name: 'certs',
+              mountPath: '/certs',
+            }],
             resources: ms._config.resources,
             securityContext: {
               allowPrivilegeEscalation: false,
-              readOnlyRootFilesystem: true,
               runAsNonRoot: true,
               runAsUser: 1000,
             },
+          }],
+          volumes: [{
+            name: 'certs',
+            emptyDir: {},
           }],
           nodeSelector: { 'kubernetes.io/os': 'linux' },
           serviceAccountName: ms._config.name,
