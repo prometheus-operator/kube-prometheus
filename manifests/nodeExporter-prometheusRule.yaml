@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.8.2
+    app.kubernetes.io/version: 1.9.0
     prometheus: k8s
     role: alert-rules
   name: node-exporter-rules
@@ -314,6 +314,16 @@ spec:
       expr: |
         node_systemd_unit_state{job="node-exporter", state="failed"} == 1
       for: 5m
+      labels:
+        severity: warning
+    - alert: NodeSystemdServiceCrashlooping
+      annotations:
+        description: Systemd service {{ $labels.name }} has being restarted too many times at {{ $labels.instance }} for the last 15 minutes. Please check if service is crash looping.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/node/nodesystemdservicecrashlooping
+        summary: Systemd service keeps restaring, possibly crash looping.
+      expr: |
+        increase(node_systemd_service_restart_total{job="node-exporter"}[5m]) > 2
+      for: 15m
       labels:
         severity: warning
     - alert: NodeBondingDegraded

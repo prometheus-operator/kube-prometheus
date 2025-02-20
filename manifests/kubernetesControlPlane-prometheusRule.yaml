@@ -88,7 +88,7 @@ spec:
         (
           kube_statefulset_status_replicas_ready{job="kube-state-metrics"}
             !=
-          kube_statefulset_status_replicas{job="kube-state-metrics"}
+          kube_statefulset_replicas{job="kube-state-metrics"}
         ) and (
           changes(kube_statefulset_status_replicas_updated{job="kube-state-metrics"}[10m])
             ==
