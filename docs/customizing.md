@@ -165,6 +165,8 @@ be created successfully.
 
 Check the monitoring namespace (or the namespace you have specific in `namespace: `) and make sure the pods are running. Prometheus and Grafana should be up and running soon.
 
+If you want to increase retention time make sure you will add retention: 1y in `prometheus-prometheus.yaml `
+
 ## Minikube Example
 
 To use an easy to reproduce example, see [minikube.jsonnet](../examples/minikube.jsonnet), which uses the minikube setup as demonstrated in [Prerequisites](../README.md#prerequisites). Because we would like easy access to our Prometheus, Alertmanager and Grafana UIs, `minikube.jsonnet` exposes the services as NodePort type services.
