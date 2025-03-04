@@ -360,7 +360,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-alertmanager-overview
     namespace: monitoring
 - apiVersion: v1
@@ -1242,7 +1242,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -2056,7 +2056,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -2660,7 +2660,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -3285,7 +3285,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-grafana-overview
     namespace: monitoring
 - apiVersion: v1
@@ -4872,7 +4872,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -5513,7 +5513,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-k8s-resources-multicluster
     namespace: monitoring
 - apiVersion: v1
@@ -7031,7 +7031,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -7712,7 +7712,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -9096,8 +9096,1658 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-k8s-resources-pod
+    namespace: monitoring
+- apiVersion: v1
+  data:
+    k8s-resources-windows-cluster.json: |-
+      {
+          "editable": false,
+          "panels": [
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "none"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 3,
+                      "w": 4,
+                      "x": 0,
+                      "y": 0
+                  },
+                  "id": 1,
+                  "interval": "1m",
+                  "options": {
+                      "colorMode": "none"
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "1 - avg(rate(windows_cpu_time_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", mode=\"idle\"}[$__rate_interval]))",
+                          "instant": true
+                      }
+                  ],
+                  "title": "CPU Utilisation",
+                  "type": "stat"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 3,
+                      "w": 4,
+                      "x": 4,
+                      "y": 0
+                  },
+                  "id": 2,
+                  "interval": "1m",
+                  "options": {
+                      "colorMode": "none"
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_cpu_cores_request{cluster=\"$cluster\"}) / sum(node:windows_node_num_cpu:sum{cluster=\"$cluster\"})",
+                          "instant": true
+                      }
+                  ],
+                  "title": "CPU Requests Commitment",
+                  "type": "stat"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 3,
+                      "w": 4,
+                      "x": 8,
+                      "y": 0
+                  },
+                  "id": 3,
+                  "interval": "1m",
+                  "options": {
+                      "colorMode": "none"
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_cpu_cores_limit{cluster=\"$cluster\"}) / sum(node:windows_node_num_cpu:sum{cluster=\"$cluster\"})",
+                          "instant": true
+                      }
+                  ],
+                  "title": "CPU Limits Commitment",
+                  "type": "stat"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 3,
+                      "w": 4,
+                      "x": 12,
+                      "y": 0
+                  },
+                  "id": 4,
+                  "interval": "1m",
+                  "options": {
+                      "colorMode": "none"
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "1 - sum(:windows_node_memory_MemFreeCached_bytes:sum{cluster=\"$cluster\"}) / sum(:windows_node_memory_MemTotal_bytes:sum{cluster=\"$cluster\"})",
+                          "instant": true
+                      }
+                  ],
+                  "title": "Memory Utilisation",
+                  "type": "stat"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 3,
+                      "w": 4,
+                      "x": 16,
+                      "y": 0
+                  },
+                  "id": 5,
+                  "interval": "1m",
+                  "options": {
+                      "colorMode": "none"
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_memory_request{cluster=\"$cluster\"}) / sum(:windows_node_memory_MemTotal_bytes:sum{cluster=\"$cluster\"})",
+                          "instant": true
+                      }
+                  ],
+                  "title": "Memory Requests Commitment",
+                  "type": "stat"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 3,
+                      "w": 4,
+                      "x": 20,
+                      "y": 0
+                  },
+                  "id": 6,
+                  "interval": "1m",
+                  "options": {
+                      "colorMode": "none"
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_memory_limit{cluster=\"$cluster\"}) / sum(:windows_node_memory_MemTotal_bytes:sum{cluster=\"$cluster\"})",
+                          "instant": true
+                      }
+                  ],
+                  "title": "Memory Limits Commitment",
+                  "type": "stat"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          }
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 7
+                  },
+                  "id": 7,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\"}) by (namespace)",
+                          "legendFormat": "__auto"
+                      }
+                  ],
+                  "title": "CPU Usage",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "overrides": [
+                          {
+                              "matcher": {
+                                  "id": "byRegexp",
+                                  "options": "/%/"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "percentunit"
+                                  }
+                              ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "Namespace"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "links",
+                                      "value": [
+                                          {
+                                              "title": "Drill down to pods",
+                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f/k8s-resources-windows-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 14
+                  },
+                  "id": 8,
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_cpu_cores_request{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\"}) by (namespace) / sum(kube_pod_windows_container_resource_cpu_cores_request{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_cpu_cores_limit{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\"}) by (namespace) / sum(kube_pod_windows_container_resource_cpu_cores_limit{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      }
+                  ],
+                  "title": "CPU Quota",
+                  "transformations": [
+                      {
+                          "id": "joinByField",
+                          "options": {
+                              "byField": "namespace",
+                              "mode": "outer"
+                          }
+                      },
+                      {
+                          "id": "organize",
+                          "options": {
+                              "excludeByName": {
+                                  "Time": true,
+                                  "Time 1": true,
+                                  "Time 2": true,
+                                  "Time 3": true,
+                                  "Time 4": true,
+                                  "Time 5": true
+                              },
+                              "indexByName": {
+                                  "Time 1": 0,
+                                  "Time 2": 1,
+                                  "Time 3": 2,
+                                  "Time 4": 3,
+                                  "Time 5": 4,
+                                  "Value #A": 6,
+                                  "Value #B": 7,
+                                  "Value #C": 8,
+                                  "Value #D": 9,
+                                  "Value #E": 10,
+                                  "namespace": 5
+                              },
+                              "renameByName": {
+                                  "Value #A": "CPU Usage",
+                                  "Value #B": "CPU Requests",
+                                  "Value #C": "CPU Requests %",
+                                  "Value #D": "CPU Limits",
+                                  "Value #E": "CPU Limits %",
+                                  "namespace": "Namespace"
+                              }
+                          }
+                      }
+                  ],
+                  "type": "table"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "decbytes"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 21
+                  },
+                  "id": 9,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\"}) by (namespace)",
+                          "legendFormat": "__auto"
+                      }
+                  ],
+                  "title": "Memory Usage (Private Working Set)",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "bytes"
+                      },
+                      "overrides": [
+                          {
+                              "matcher": {
+                                  "id": "byRegexp",
+                                  "options": "/%/"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "percentunit"
+                                  }
+                              ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "Memory Usage"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "decbytes"
+                                  }
+                              ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "Memory Requests"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "decbytes"
+                                  }
+                              ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "Memory Limits"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "decbytes"
+                                  }
+                              ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "Namespace"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "links",
+                                      "value": [
+                                          {
+                                              "title": "Drill down to pods",
+                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f/k8s-resources-windows-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 28
+                  },
+                  "id": 10,
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_memory_request{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\"}) by (namespace) / sum(kube_pod_windows_container_resource_memory_request{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_memory_limit{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\"}) by (namespace) / sum(kube_pod_windows_container_resource_memory_limit{cluster=\"$cluster\"}) by (namespace)",
+                          "format": "table",
+                          "instant": true
+                      }
+                  ],
+                  "title": "Memory Requests by Namespace",
+                  "transformations": [
+                      {
+                          "id": "joinByField",
+                          "options": {
+                              "byField": "namespace",
+                              "mode": "outer"
+                          }
+                      },
+                      {
+                          "id": "organize",
+                          "options": {
+                              "excludeByName": {
+                                  "Time": true,
+                                  "Time 1": true,
+                                  "Time 2": true,
+                                  "Time 3": true,
+                                  "Time 4": true,
+                                  "Time 5": true
+                              },
+                              "indexByName": {
+                                  "Time 1": 0,
+                                  "Time 2": 1,
+                                  "Time 3": 2,
+                                  "Time 4": 3,
+                                  "Time 5": 4,
+                                  "Value #A": 6,
+                                  "Value #B": 7,
+                                  "Value #C": 8,
+                                  "Value #D": 9,
+                                  "Value #E": 10,
+                                  "namespace": 5
+                              },
+                              "renameByName": {
+                                  "Value #A": "Memory Usage",
+                                  "Value #B": "Memory Requests",
+                                  "Value #C": "Memory Requests %",
+                                  "Value #D": "Memory Limits",
+                                  "Value #E": "Memory Limits %",
+                                  "namespace": "Namespace"
+                              }
+                          }
+                      }
+                  ],
+                  "type": "table"
+              }
+          ],
+          "refresh": "10s",
+          "schemaVersion": 39,
+          "tags": [
+              "kubernetes-mixin"
+          ],
+          "templating": {
+              "list": [
+                  {
+                      "current": {
+                          "selected": true,
+                          "text": "default",
+                          "value": "default"
+                      },
+                      "hide": 0,
+                      "label": "Data source",
+                      "name": "datasource",
+                      "query": "prometheus",
+                      "regex": "",
+                      "type": "datasource"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "cluster",
+                      "name": "cluster",
+                      "query": "label_values(up{job=\"kubernetes-windows-exporter\"}, cluster)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  }
+              ]
+          },
+          "time": {
+              "from": "now-1h",
+              "to": "now"
+          },
+          "timezone": "utc",
+          "title": "Kubernetes / Compute Resources / Cluster(Windows)",
+          "uid": "4d08557fd9391b100730f2494bccac68"
+      }
+  kind: ConfigMap
+  metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 11.5.2
+    name: grafana-dashboard-k8s-resources-windows-cluster
+    namespace: monitoring
+- apiVersion: v1
+  data:
+    k8s-resources-windows-namespace.json: |-
+      {
+          "editable": false,
+          "panels": [
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          }
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 0
+                  },
+                  "id": 1,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "legendFormat": "__auto"
+                      }
+                  ],
+                  "title": "CPU Usage",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "overrides": [
+                          {
+                              "matcher": {
+                                  "id": "byRegexp",
+                                  "options": "/%/"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "percentunit"
+                                  }
+                              ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "Pod"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "links",
+                                      "value": [
+                                          {
+                                              "title": "Drill down to pods",
+                                              "url": "/d/40597a704a610e936dc6ed374a7ce023/k8s-resources-windows-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 7
+                  },
+                  "id": 2,
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_cpu_cores_request{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(kube_pod_windows_container_resource_cpu_cores_request{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_cpu_cores_limit{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(kube_pod_windows_container_resource_cpu_cores_limit{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      }
+                  ],
+                  "title": "CPU Quota",
+                  "transformations": [
+                      {
+                          "id": "joinByField",
+                          "options": {
+                              "byField": "pod",
+                              "mode": "outer"
+                          }
+                      },
+                      {
+                          "id": "organize",
+                          "options": {
+                              "excludeByName": {
+                                  "Time": true,
+                                  "Time 1": true,
+                                  "Time 2": true,
+                                  "Time 3": true,
+                                  "Time 4": true,
+                                  "Time 5": true
+                              },
+                              "indexByName": {
+                                  "Time 1": 0,
+                                  "Time 2": 1,
+                                  "Time 3": 2,
+                                  "Time 4": 3,
+                                  "Time 5": 4,
+                                  "Value #A": 6,
+                                  "Value #B": 7,
+                                  "Value #C": 8,
+                                  "Value #D": 9,
+                                  "Value #E": 10,
+                                  "pod": 5
+                              },
+                              "renameByName": {
+                                  "Value #A": "CPU Usage",
+                                  "Value #B": "CPU Requests",
+                                  "Value #C": "CPU Requests %",
+                                  "Value #D": "CPU Limits",
+                                  "Value #E": "CPU Limits %",
+                                  "pod": "Pod"
+                              }
+                          }
+                      }
+                  ],
+                  "type": "table"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "decbytes"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 14
+                  },
+                  "id": 3,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "legendFormat": "__auto"
+                      }
+                  ],
+                  "title": "Memory Usage (Private Working Set)",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "bytes"
+                      },
+                      "overrides": [
+                          {
+                              "matcher": {
+                                  "id": "byRegexp",
+                                  "options": "/%/"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "percentunit"
+                                  }
+                              ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "Pod"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "links",
+                                      "value": [
+                                          {
+                                              "title": "Drill down to pods",
+                                              "url": "/d/40597a704a610e936dc6ed374a7ce023/k8s-resources-windows-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 21
+                  },
+                  "id": 4,
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_memory_request{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(kube_pod_windows_container_resource_memory_request{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_memory_limit{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod) / sum(kube_pod_windows_container_resource_memory_limit{cluster=\"$cluster\", namespace=\"$namespace\"}) by (pod)",
+                          "format": "table",
+                          "instant": true
+                      }
+                  ],
+                  "title": "Memory Quota",
+                  "transformations": [
+                      {
+                          "id": "joinByField",
+                          "options": {
+                              "byField": "pod",
+                              "mode": "outer"
+                          }
+                      },
+                      {
+                          "id": "organize",
+                          "options": {
+                              "excludeByName": {
+                                  "Time": true,
+                                  "Time 1": true,
+                                  "Time 2": true,
+                                  "Time 3": true,
+                                  "Time 4": true,
+                                  "Time 5": true
+                              },
+                              "indexByName": {
+                                  "Time 1": 0,
+                                  "Time 2": 1,
+                                  "Time 3": 2,
+                                  "Time 4": 3,
+                                  "Time 5": 4,
+                                  "Value #A": 6,
+                                  "Value #B": 7,
+                                  "Value #C": 8,
+                                  "Value #D": 9,
+                                  "Value #E": 10,
+                                  "pod": 5
+                              },
+                              "renameByName": {
+                                  "Value #A": "Memory Usage",
+                                  "Value #B": "Memory Requests",
+                                  "Value #C": "Memory Requests %",
+                                  "Value #D": "Memory Limits",
+                                  "Value #E": "Memory Limits %",
+                                  "pod": "Pod"
+                              }
+                          }
+                      }
+                  ],
+                  "type": "table"
+              }
+          ],
+          "refresh": "10s",
+          "schemaVersion": 39,
+          "tags": [
+              "kubernetes-mixin"
+          ],
+          "templating": {
+              "list": [
+                  {
+                      "current": {
+                          "selected": true,
+                          "text": "default",
+                          "value": "default"
+                      },
+                      "hide": 0,
+                      "label": "Data source",
+                      "name": "datasource",
+                      "query": "prometheus",
+                      "regex": "",
+                      "type": "datasource"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "cluster",
+                      "name": "cluster",
+                      "query": "label_values(up{job=\"kubernetes-windows-exporter\"}, cluster)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "namespace",
+                      "name": "namespace",
+                      "query": "label_values(windows_pod_container_available{cluster=\"$cluster\"}, namespace)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  }
+              ]
+          },
+          "time": {
+              "from": "now-1h",
+              "to": "now"
+          },
+          "timezone": "utc",
+          "title": "Kubernetes / Compute Resources / Namespace(Windows)",
+          "uid": "490b402361724ab1d4c45666c1fa9b6f"
+      }
+  kind: ConfigMap
+  metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 11.5.2
+    name: grafana-dashboard-k8s-resources-windows-namespace
+    namespace: monitoring
+- apiVersion: v1
+  data:
+    k8s-resources-windows-pod.json: |-
+      {
+          "editable": false,
+          "panels": [
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          }
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 0
+                  },
+                  "id": 1,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "legendFormat": "__auto"
+                      }
+                  ],
+                  "title": "CPU Usage",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "overrides": [
+                          {
+                              "matcher": {
+                                  "id": "byRegexp",
+                                  "options": "/%/"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "percentunit"
+                                  }
+                              ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "Namespace"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "links",
+                                      "value": [
+                                          {
+                                              "title": "Drill down to pods",
+                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f/k8s-resources-windows-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 7
+                  },
+                  "id": 2,
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_cpu_cores_request{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container) / sum(kube_pod_windows_container_resource_cpu_cores_request{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_cpu_cores_limit{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(namespace_pod_container:windows_container_cpu_usage_seconds_total:sum_rate{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container) / sum(kube_pod_windows_container_resource_cpu_cores_limit{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      }
+                  ],
+                  "title": "CPU Quota",
+                  "transformations": [
+                      {
+                          "id": "joinByField",
+                          "options": {
+                              "byField": "container",
+                              "mode": "outer"
+                          }
+                      },
+                      {
+                          "id": "organize",
+                          "options": {
+                              "excludeByName": {
+                                  "Time": true,
+                                  "Time 1": true,
+                                  "Time 2": true,
+                                  "Time 3": true,
+                                  "Time 4": true,
+                                  "Time 5": true
+                              },
+                              "indexByName": {
+                                  "Time 1": 0,
+                                  "Time 2": 1,
+                                  "Time 3": 2,
+                                  "Time 4": 3,
+                                  "Time 5": 4,
+                                  "Value #A": 6,
+                                  "Value #B": 7,
+                                  "Value #C": 8,
+                                  "Value #D": 9,
+                                  "Value #E": 10,
+                                  "container": 5
+                              },
+                              "renameByName": {
+                                  "Value #A": "CPU Usage",
+                                  "Value #B": "CPU Requests",
+                                  "Value #C": "CPU Requests %",
+                                  "Value #D": "CPU Limits",
+                                  "Value #E": "CPU Limits %",
+                                  "container": "Container"
+                              }
+                          }
+                      }
+                  ],
+                  "type": "table"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "decbytes"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 14
+                  },
+                  "id": 3,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "legendFormat": "__auto"
+                      }
+                  ],
+                  "title": "Memory Usage",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "unit": "bytes"
+                      },
+                      "overrides": [
+                          {
+                              "matcher": {
+                                  "id": "byRegexp",
+                                  "options": "/%/"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "percentunit"
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 21
+                  },
+                  "id": 4,
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_memory_request{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container) / sum(kube_pod_windows_container_resource_memory_request{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_pod_windows_container_resource_memory_limit{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(windows_container_private_working_set_usage{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container) / sum(kube_pod_windows_container_resource_memory_limit{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}) by (container)",
+                          "format": "table",
+                          "instant": true
+                      }
+                  ],
+                  "title": "Memory Quota",
+                  "transformations": [
+                      {
+                          "id": "joinByField",
+                          "options": {
+                              "byField": "container",
+                              "mode": "outer"
+                          }
+                      },
+                      {
+                          "id": "organize",
+                          "options": {
+                              "excludeByName": {
+                                  "Time": true,
+                                  "Time 1": true,
+                                  "Time 2": true,
+                                  "Time 3": true,
+                                  "Time 4": true,
+                                  "Time 5": true
+                              },
+                              "indexByName": {
+                                  "Time 1": 0,
+                                  "Time 2": 1,
+                                  "Time 3": 2,
+                                  "Time 4": 3,
+                                  "Time 5": 4,
+                                  "Value #A": 6,
+                                  "Value #B": 7,
+                                  "Value #C": 8,
+                                  "Value #D": 9,
+                                  "Value #E": 10,
+                                  "container": 5
+                              },
+                              "renameByName": {
+                                  "Value #A": "Memory Usage",
+                                  "Value #B": "Memory Requests",
+                                  "Value #C": "Memory Requests %",
+                                  "Value #D": "Memory Limits",
+                                  "Value #E": "Memory Limits %",
+                                  "container": "Container"
+                              }
+                          }
+                      }
+                  ],
+                  "type": "table"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "bytes"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 28
+                  },
+                  "id": 5,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sort_desc(sum by (container) (rate(windows_container_network_received_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))",
+                          "legendFormat": "Received : {{ container }}"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sort_desc(sum by (container) (rate(windows_container_network_transmitted_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))",
+                          "legendFormat": "Transmitted : {{ container }}"
+                      }
+                  ],
+                  "title": "Network I/O",
+                  "type": "timeseries"
+              }
+          ],
+          "refresh": "10s",
+          "schemaVersion": 39,
+          "tags": [
+              "kubernetes-mixin"
+          ],
+          "templating": {
+              "list": [
+                  {
+                      "current": {
+                          "selected": true,
+                          "text": "default",
+                          "value": "default"
+                      },
+                      "hide": 0,
+                      "label": "Data source",
+                      "name": "datasource",
+                      "query": "prometheus",
+                      "regex": "",
+                      "type": "datasource"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "cluster",
+                      "name": "cluster",
+                      "query": "label_values(up{job=\"kubernetes-windows-exporter\"}, cluster)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "namespace",
+                      "name": "namespace",
+                      "query": "label_values(windows_pod_container_available{cluster=\"$cluster\"}, namespace)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "pod",
+                      "name": "pod",
+                      "query": "label_values(windows_pod_container_available{cluster=\"$cluster\",namespace=\"$namespace\"}, pod)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  }
+              ]
+          },
+          "time": {
+              "from": "now-1h",
+              "to": "now"
+          },
+          "timezone": "utc",
+          "title": "Kubernetes / Compute Resources / Pod(Windows)",
+          "uid": "40597a704a610e936dc6ed374a7ce023"
+      }
+  kind: ConfigMap
+  metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 11.5.2
+    name: grafana-dashboard-k8s-resources-windows-pod
     namespace: monitoring
 - apiVersion: v1
   data:
@@ -10162,7 +11812,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -11425,8 +13075,1051 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-k8s-resources-workloads-namespace
+    namespace: monitoring
+- apiVersion: v1
+  data:
+    k8s-windows-cluster-rsrc-use.json: |-
+      {
+          "editable": false,
+          "panels": [
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 0
+                  },
+                  "id": 1,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_cpu_utilisation:avg1m{cluster=\"$cluster\"} * node:windows_node_num_cpu:sum{cluster=\"$cluster\"} / scalar(sum(node:windows_node_num_cpu:sum{cluster=\"$cluster\"}))",
+                          "legendFormat": "{{instance}}"
+                      }
+                  ],
+                  "title": "CPU Utilisation",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 0,
+                      "y": 7
+                  },
+                  "id": 2,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_memory_utilisation:ratio{cluster=\"$cluster\"}",
+                          "legendFormat": "{{instance}}"
+                      }
+                  ],
+                  "title": "Memory Utilisation",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "short"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 12,
+                      "y": 7
+                  },
+                  "id": 3,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_memory_swap_io_pages:irate{cluster=\"$cluster\"}",
+                          "legendFormat": "{{instance}}"
+                      }
+                  ],
+                  "title": "Memory Saturation (Swap I/O Pages)",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 14
+                  },
+                  "id": 4,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_disk_utilisation:avg_irate{cluster=\"$cluster\"} / scalar(node:windows_node:sum{cluster=\"$cluster\"})",
+                          "legendFormat": "{{instance}}"
+                      }
+                  ],
+                  "title": "Disk IO Utilisation",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "Bps"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 0,
+                      "y": 21
+                  },
+                  "id": 5,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_net_utilisation:sum_irate{cluster=\"$cluster\"}",
+                          "legendFormat": "{{instance}}"
+                      }
+                  ],
+                  "title": "Net Utilisation (Transmitted)",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "Bps"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 12,
+                      "y": 21
+                  },
+                  "id": 6,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_net_saturation:sum_irate{cluster=\"$cluster\"}",
+                          "legendFormat": "{{instance}}"
+                      }
+                  ],
+                  "title": "Net Utilisation (Dropped)",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 28
+                  },
+                  "id": 7,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum by (instance)(node:windows_node_filesystem_usage:{cluster=\"$cluster\"})",
+                          "legendFormat": "{{instance}}"
+                      }
+                  ],
+                  "title": "Disk Capacity",
+                  "type": "timeseries"
+              }
+          ],
+          "refresh": "10s",
+          "schemaVersion": 39,
+          "tags": [
+              "kubernetes-mixin"
+          ],
+          "templating": {
+              "list": [
+                  {
+                      "current": {
+                          "selected": true,
+                          "text": "default",
+                          "value": "default"
+                      },
+                      "hide": 0,
+                      "label": "Data source",
+                      "name": "datasource",
+                      "query": "prometheus",
+                      "regex": "",
+                      "type": "datasource"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "cluster",
+                      "name": "cluster",
+                      "query": "label_values(up{job=\"kubernetes-windows-exporter\"}, cluster)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  }
+              ]
+          },
+          "time": {
+              "from": "now-1h",
+              "to": "now"
+          },
+          "timezone": "utc",
+          "title": "Kubernetes / USE Method / Cluster(Windows)",
+          "uid": "53a43377ec9aaf2ff64dfc7a1f539334"
+      }
+  kind: ConfigMap
+  metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 11.5.2
+    name: grafana-dashboard-k8s-windows-cluster-rsrc-use
+    namespace: monitoring
+- apiVersion: v1
+  data:
+    k8s-windows-node-rsrc-use.json: |-
+      {
+          "editable": false,
+          "panels": [
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 0,
+                      "y": 0
+                  },
+                  "id": 1,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_cpu_utilisation:avg1m{cluster=\"$cluster\", instance=\"$instance\"}",
+                          "legendFormat": "Utilisation"
+                      }
+                  ],
+                  "title": "CPU Utilisation",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 12,
+                      "y": 0
+                  },
+                  "id": 2,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum by (core) (irate(windows_cpu_time_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", mode!=\"idle\", instance=\"$instance\"}[$__rate_interval]))",
+                          "legendFormat": "{{core}}"
+                      }
+                  ],
+                  "title": "CPU Usage Per Core",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 8,
+                      "x": 0,
+                      "y": 7
+                  },
+                  "id": 3,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_memory_utilisation:{cluster=\"$cluster\", instance=\"$instance\"}",
+                          "legendFormat": "Memory"
+                      }
+                  ],
+                  "title": "Memory Utilisation %",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "bytes"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 8,
+                      "x": 8,
+                      "y": 7
+                  },
+                  "id": 4,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "max(\n  windows_os_visible_memory_bytes{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}\n  - windows_memory_available_bytes{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}\n)\n",
+                          "legendFormat": "memory used"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "max(node:windows_node_memory_totalCached_bytes:sum{cluster=\"$cluster\", instance=\"$instance\"})",
+                          "legendFormat": "memory cached"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "max(windows_memory_available_bytes{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"})",
+                          "legendFormat": "memory free"
+                      }
+                  ],
+                  "title": "Memory Usage",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "short"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 8,
+                      "x": 16,
+                      "y": 7
+                  },
+                  "id": 5,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_memory_swap_io_pages:irate{cluster=\"$cluster\", instance=\"$instance\"}",
+                          "legendFormat": "Swap IO"
+                      }
+                  ],
+                  "title": "Memory Saturation (Swap I/O) Pages",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 0,
+                      "y": 14
+                  },
+                  "id": 6,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_disk_utilisation:avg_irate{cluster=\"$cluster\", instance=\"$instance\"}",
+                          "legendFormat": "Utilisation"
+                      }
+                  ],
+                  "title": "Disk IO Utilisation",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "bytes"
+                      },
+                      "overrides": [
+                          {
+                              "matcher": {
+                                  "id": "byRegexp",
+                                  "options": "/io time/"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "unit",
+                                      "value": "ms"
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 12,
+                      "y": 14
+                  },
+                  "id": 7,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "max(rate(windows_logical_disk_read_bytes_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}[$__rate_interval]))",
+                          "legendFormat": "read"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "max(rate(windows_logical_disk_write_bytes_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}[$__rate_interval]))",
+                          "legendFormat": "written"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "max(rate(windows_logical_disk_read_seconds_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\",  instance=\"$instance\"}[$__rate_interval]) + rate(windows_logical_disk_write_seconds_total{cluster=\"$cluster\", job=\"kubernetes-windows-exporter\", instance=\"$instance\"}[$__rate_interval]))",
+                          "legendFormat": "io time"
+                      }
+                  ],
+                  "title": "Disk IO",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 24,
+                      "x": 0,
+                      "y": 21
+                  },
+                  "id": 8,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_filesystem_usage:{cluster=\"$cluster\", instance=\"$instance\"}",
+                          "legendFormat": "{{volume}}"
+                      }
+                  ],
+                  "title": "Disk Utilisation",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "Bps"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 0,
+                      "y": 28
+                  },
+                  "id": 9,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_net_utilisation:sum_irate{cluster=\"$cluster\", instance=\"$instance\"}",
+                          "legendFormat": "Utilisation"
+                      }
+                  ],
+                  "title": "Net Utilisation (Transmitted)",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "Bps"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 7,
+                      "w": 12,
+                      "x": 12,
+                      "y": 28
+                  },
+                  "id": 10,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "node:windows_node_net_saturation:sum_irate{cluster=\"$cluster\", instance=\"$instance\"}",
+                          "legendFormat": "Saturation"
+                      }
+                  ],
+                  "title": "Net Saturation (Dropped)",
+                  "type": "timeseries"
+              }
+          ],
+          "refresh": "10s",
+          "schemaVersion": 39,
+          "tags": [
+              "kubernetes-mixin"
+          ],
+          "templating": {
+              "list": [
+                  {
+                      "current": {
+                          "selected": true,
+                          "text": "default",
+                          "value": "default"
+                      },
+                      "hide": 0,
+                      "label": "Data source",
+                      "name": "datasource",
+                      "query": "prometheus",
+                      "regex": "",
+                      "type": "datasource"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "cluster",
+                      "name": "cluster",
+                      "query": "label_values(up{job=\"kubernetes-windows-exporter\"}, cluster)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "instance",
+                      "name": "instance",
+                      "query": "label_values(windows_system_system_up_time{cluster=\"$cluster\"}, instance)",
+                      "refresh": 2,
+                      "type": "query"
+                  }
+              ]
+          },
+          "time": {
+              "from": "now-1h",
+              "to": "now"
+          },
+          "timezone": "utc",
+          "title": "Kubernetes / USE Method / Node(Windows)",
+          "uid": "96e7484b0bb53b74fbc2bcb7723cd40b"
+      }
+  kind: ConfigMap
+  metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 11.5.2
+    name: grafana-dashboard-k8s-windows-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
   data:
@@ -12678,7 +15371,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -13316,7 +16009,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -14112,7 +16805,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -14688,14 +17381,6 @@ items:
                       "refresh": 2,
                       "sort": 1,
                       "type": "query"
-                  },
-                  {
-                      "datasource": {
-                          "type": "prometheus",
-                          "uid": "${datasource}"
-                      },
-                      "refresh": 2,
-                      "sort": 1
                   }
               ]
           },
@@ -14713,7 +17398,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -15905,7 +18590,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -16628,7 +19313,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-nodes-aix
     namespace: monitoring
 - apiVersion: v1
@@ -17375,7 +20060,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-nodes-darwin
     namespace: monitoring
 - apiVersion: v1
@@ -18114,7 +20799,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -18436,7 +21121,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -18928,7 +21613,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -18987,7 +21672,7 @@ items:
                           "expr": "(\n  prometheus_remote_storage_highest_timestamp_in_seconds{cluster=~\"$cluster\", instance=~\"$instance\"}\n-\n  ignoring(remote_name, url) group_right(instance) (prometheus_remote_storage_queue_highest_sent_timestamp_seconds{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"} != 0)\n)\n",
                           "format": "time_series",
                           "intervalFactor": 2,
-                          "legendFormat": "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+                          "legendFormat": "{{cluster}}::{{instance}} {{remote_name}}:{{url}}"
                       }
                   ],
                   "title": "Highest Timestamp In vs. Highest Timestamp Sent",
@@ -19227,7 +21912,7 @@ items:
                           "expr": "prometheus_remote_storage_shards_min{cluster=~\"$cluster\", instance=~\"$instance\", url=~\"$url\"}",
                           "format": "time_series",
                           "intervalFactor": 2,
-                          "legendFormat": "{{cluster}}:{{instance}} {{remote_name}}:{{url}}"
+                          "legendFormat": "{{cluster}}{{instance}} {{remote_name}}:{{url}}"
                       }
                   ],
                   "title": "Min Shards",
@@ -19729,7 +22414,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -20568,7 +23253,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -21223,7 +23908,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -21824,7 +24509,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -22406,7 +25091,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 11.5.0
+      app.kubernetes.io/version: 11.5.2
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList
