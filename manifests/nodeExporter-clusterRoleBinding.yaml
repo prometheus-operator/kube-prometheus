@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.9.0
+    app.kubernetes.io/version: 1.9.1
   name: node-exporter
 roleRef:
   apiGroup: rbac.authorization.k8s.io
