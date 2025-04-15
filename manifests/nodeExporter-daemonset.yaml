@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: node-exporter
     app.kubernetes.io/part-of: kube-prometheus
-    app.kubernetes.io/version: 1.9.0
+    app.kubernetes.io/version: 1.9.1
   name: node-exporter
   namespace: monitoring
 spec:
@@ -22,7 +22,7 @@ spec:
         app.kubernetes.io/component: exporter
         app.kubernetes.io/name: node-exporter
         app.kubernetes.io/part-of: kube-prometheus
-        app.kubernetes.io/version: 1.9.0
+        app.kubernetes.io/version: 1.9.1
     spec:
       automountServiceAccountToken: true
       containers:
@@ -37,7 +37,7 @@ spec:
         - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)
         - --collector.netclass.ignored-devices=^(veth.*|[a-f0-9]{15})$
         - --collector.netdev.device-exclude=^(veth.*|[a-f0-9]{15})$
-        image: quay.io/prometheus/node-exporter:v1.9.0
+        image: quay.io/prometheus/node-exporter:v1.9.1
         name: node-exporter
         resources:
           limits:
