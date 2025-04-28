@@ -2,8 +2,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.17.2
-    operator.prometheus.io/version: 0.81.0
+    controller-gen.kubebuilder.io/version: v0.17.3
+    operator.prometheus.io/version: 0.82.0
   name: alertmanagers.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -1366,7 +1366,7 @@ spec:
                                 type: boolean
                               proxyUrl:
                                 description: '`proxyURL` defines the HTTP proxy server to use.'
-                                pattern: ^http(s)?://.+$
+                                pattern: ^(http|https|socks5)://.+$
                                 type: string
                               scopes:
                                 description: '`scopes` defines the OAuth2 scopes used for the token request.'
@@ -1574,7 +1574,7 @@ spec:
                             type: boolean
                           proxyUrl:
                             description: '`proxyURL` defines the HTTP proxy server to use.'
-                            pattern: ^http(s)?://.+$
+                            pattern: ^(http|https|socks5)://.+$
                             type: string
                           tlsConfig:
                             description: TLS configuration for the client.
@@ -5247,6 +5247,25 @@ spec:
                   - name
                   type: object
                 type: array
+              limits:
+                description: Defines the limits command line flags when starting Alertmanager.
+                properties:
+                  maxPerSilenceBytes:
+                    description: |-
+                      The maximum size of an individual silence as stored on disk. This corresponds to the Alertmanager's
+                      `--silences.max-per-silence-bytes` flag.
+                      It requires Alertmanager >= v0.28.0.
+                    pattern: (^0|([0-9]*[.])?[0-9]+((K|M|G|T|E|P)i?)?B)$
+                    type: string
+                  maxSilences:
+                    description: |-
+                      The maximum number active and pending silences. This corresponds to the
+                      Alertmanager's `--silences.max-silences` flag.
+                      It requires Alertmanager >= v0.28.0.
+                    format: int32
+                    minimum: 0
+                    type: integer
+                type: object
               listenLocal:
                 description: |-
                   ListenLocal makes the Alertmanager server listen on loopback, so that it
@@ -6333,6 +6352,16 @@ spec:
                   Version is ignored if Tag is set.
                   Deprecated: use 'image' instead. The image tag can be specified as part of the image URL.
                 type: string
+              terminationGracePeriodSeconds:
+                description: |-
+                  Optional duration in seconds the pod needs to terminate gracefully.
+                  Value must be non-negative integer. The value zero indicates stop immediately via
+                  the kill signal (no opportunity to shut down) which may lead to data corruption.
+
+                  Defaults to 120 seconds.
+                format: int64
+                minimum: 0
+                type: integer
               tolerations:
                 description: If specified, the pod's tolerations.
                 items:
