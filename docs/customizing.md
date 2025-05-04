@@ -165,6 +165,13 @@ be created successfully.
 
 Check the monitoring namespace (or the namespace you have specific in `namespace: `) and make sure the pods are running. Prometheus and Grafana should be up and running soon.
 
+## Containerized Installing and Compiling
+
+If you don't care to have jb nor jsonnet nor gojsontoyaml installed, then use ghcr.io/roelandvanbatenburg/kube-prometheus-builder container image. Do the following from this kube-prometheus directory:
+
+$ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) ghcr.io/roelandvanbatenburg/kube-prometheus-builder jb update
+$ docker run --rm -v $(pwd):$(pwd) --workdir $(pwd) ghcr.io/roelandvanbatenburg/kube-prometheus-builder ./build.sh example.jsonnet
+
 ## Minikube Example
 
 To use an easy to reproduce example, see [minikube.jsonnet](../examples/minikube.jsonnet), which uses the minikube setup as demonstrated in [Prerequisites](../README.md#prerequisites). Because we would like easy access to our Prometheus, Alertmanager and Grafana UIs, `minikube.jsonnet` exposes the services as NodePort type services.
