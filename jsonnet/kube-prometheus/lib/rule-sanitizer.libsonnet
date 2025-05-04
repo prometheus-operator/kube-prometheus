@@ -74,41 +74,36 @@ local patchOrExcludeRule(rule, ruleSet, operation) =
   else
     [] + patchOrExcludeRule(rule, ruleSet[1:], operation);
 
+local findRuleName(rule, ruleSet) =
+  local _findSameRuleName(rule, ruleSet, index) =
+    if std.length(ruleSet) == index then
+      []
+    else if (('alert' in rule && 'alert' in ruleSet[index] && rule.alert == ruleSet[index].alert) ||
+             ('record' in rule && 'record' in ruleSet[index] && rule.record == ruleSet[index].record)) then
+      [index] + _findSameRuleName(rule, ruleSet, index + 1)
+    else
+      [] + _findSameRuleName(rule, ruleSet, index + 1);
+  _findSameRuleName(rule, ruleSet, 0);
 
-local sameRuleName(rule1, rule2) =
-  if ('alert' in rule1 && 'alert' in rule2) then
-    rule1.alert == rule2.alert
-  else if ('record' in rule1 && 'record' in rule2) then
-    rule1.record == rule2.record
-  else
-    false;
-
-local indexRules(lastRule, ruleSet) =
-  if std.length(ruleSet) == 0 then
-    []
-  else if (lastRule != null) && sameRuleName(lastRule, ruleSet[0]) then
-    local updatedRule = std.mergePatch(ruleSet[0], { index: lastRule.index + 1 });
-    [updatedRule] + indexRules(updatedRule, ruleSet[1:])
-  else
-    local updatedRule = std.mergePatch(ruleSet[0], { index: 0 });
-    [updatedRule] + indexRules(updatedRule, ruleSet[1:]);
-
-local ruleName(rule) =
-  if ('alert' in rule) then
-    rule.alert
-  else if ('record' in rule) then
-    rule.record
-  else
-    assert false : 'rule should have either "alert" or "record" field' + std.toString(rule);
-    '';
+local indexRules(ruleSet) =
+  local _indexRules(ruleSet, index) =
+    if std.length(ruleSet) == index then
+      []
+    else
+      // First we find the number of occurences of the rule in the ruleSet and
+      // get an array containing the indexes of all the occurences.
+      // Then, based on the current index of the rule in the ruleSet we are able
+      // to deduce the index of the rule in the list of rules with the same name.
+      local ruleIndex = std.find(index, findRuleName(ruleSet[index], ruleSet))[0];
+      local updatedRule = std.mergePatch(ruleSet[index], { index: ruleIndex });
+      [updatedRule] + _indexRules(ruleSet, index + 1);
+  _indexRules(ruleSet, 0);
 
 local patchOrExcludeRuleGroup(group, groupSet, operation) =
   if std.length(groupSet) == 0 then
     [group.rules]
   else if (group.name == groupSet[0].name) then
-    local indexedRules = indexRules(null, std.sort(
-      group.rules, keyF=ruleName
-    ));
+    local indexedRules = indexRules(group.rules);
     [patchOrExcludeRule(rule, groupSet[0].rules, operation) for rule in indexedRules]
   else
     [] + patchOrExcludeRuleGroup(group, groupSet[1:], operation);
