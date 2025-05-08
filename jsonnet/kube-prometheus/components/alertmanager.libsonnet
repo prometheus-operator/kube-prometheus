@@ -233,6 +233,7 @@ function(params) {
         runAsNonRoot: true,
         fsGroup: 2000,
       },
+      [if std.objectHas(params, 'storage') then 'storage']: am._config.storage,
     },
   },
 }
