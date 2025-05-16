@@ -8,7 +8,7 @@ require (
 	github.com/armosec/kubescape v1.0.139
 	github.com/brancz/gojsontoyaml v0.1.0
 	github.com/bwplotka/mdox v0.9.1-0.20220718065926-6a6aac7d5d30
-	github.com/google/go-jsonnet v0.20.0
+	github.com/google/go-jsonnet v0.21.0
 	github.com/jsonnet-bundler/jsonnet-bundler v0.6.0
 	github.com/yannh/kubeconform v0.6.7
 	sigs.k8s.io/yaml v1.4.0 // indirect
@@ -60,7 +60,7 @@ require (
 	github.com/efficientgo/tools/extkingpin v0.0.0-20210609125236-d73259166f20 // indirect
 	github.com/elliotchance/orderedmap/v2 v2.2.0 // indirect
 	github.com/enescakir/emoji v1.0.0 // indirect
-	github.com/fatih/color v1.16.0 // indirect
+	github.com/fatih/color v1.18.0 // indirect
 	github.com/felixge/fgprof v0.9.1 // indirect
 	github.com/francoispqt/gojay v1.2.13 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -122,7 +122,7 @@ require (
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
-	github.com/sergi/go-diff v1.1.0 // indirect
+	github.com/sergi/go-diff v1.3.1 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.4.0 // indirect
