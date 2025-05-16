@@ -144,6 +144,17 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/perses/perses-operator.git",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "6855a844c9e680c5cab3772e88cdac110e05bf2c",
+      "sum": "v1Rbqk0TzQRzKCareR3lLv3WuX+apdoK6KUe+jPU7TI=",
+      "name": "perses-operator"
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/prometheus-operator/prometheus-operator.git",
           "subdir": "jsonnet/mixin"
         }
@@ -204,6 +215,17 @@
       "version": "d723f4d1a066dd657e9d09c46a158519dda0faa8",
       "sum": "cxAPQovFkM16zNB5/94O+sk/n3SETk6ao6Oas2Sa6RE=",
       "name": "pyrra"
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/saswatamcode/community-dashboards.git",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "14832989ce20439c58b1e9749c2dc3eb6d3df63d",
+      "sum": "XqheAKf6ghWIdocR8LwVSfVFXWDHMm0mcVwC8bXDYW0=",
+      "name": "community-dashboards"
     },
     {
       "source": {

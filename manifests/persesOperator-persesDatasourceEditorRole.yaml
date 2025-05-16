@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/instance: persesdatasource-editor-role
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: persesdatasource-editor-role
+rules:
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdatasources
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdatasources/status
+  verbs:
+  - get

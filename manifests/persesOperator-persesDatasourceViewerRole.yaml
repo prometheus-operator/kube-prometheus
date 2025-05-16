@@ -1,0 +1,25 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/instance: persesdatasource-viewer-role
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: persesdatasource-viewer-role
+rules:
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdatasources
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdatasources/status
+  verbs:
+  - get

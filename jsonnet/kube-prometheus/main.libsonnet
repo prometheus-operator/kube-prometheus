@@ -5,6 +5,7 @@ local kubernetesControlPlane = import './components/k8s-control-plane.libsonnet'
 local kubeStateMetrics = import './components/kube-state-metrics.libsonnet';
 local customMixin = import './components/mixin/custom.libsonnet';
 local nodeExporter = import './components/node-exporter.libsonnet';
+local persesOperator = import './components/perses-operator.libsonnet';
 local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
 local prometheusOperator = import './components/prometheus-operator.libsonnet';
 local prometheus = import './components/prometheus.libsonnet';
@@ -28,6 +29,8 @@ local utils = import './lib/utils.libsonnet';
         alertmanager: error 'must provide version',
         blackboxExporter: error 'must provide version',
         grafana: error 'must provide version',
+        persesOperator: error 'must provide version',
+        perses: error 'must provide version',
         kubeStateMetrics: error 'must provide version',
         nodeExporter: error 'must provide version',
         prometheus: error 'must provide version',
@@ -40,6 +43,8 @@ local utils = import './lib/utils.libsonnet';
         alertmanager: 'quay.io/prometheus/alertmanager:v' + $.values.common.versions.alertmanager,
         blackboxExporter: 'quay.io/prometheus/blackbox-exporter:v' + $.values.common.versions.blackboxExporter,
         grafana: 'grafana/grafana:' + $.values.common.versions.grafana,
+        perses: 'persesdev/perses:v' + $.values.common.versions.perses,
+        persesOperator: 'persesdev/perses-operator:v' + $.values.common.versions.persesOperator,
         kubeStateMetrics: 'registry.k8s.io/kube-state-metrics/kube-state-metrics:v' + $.values.common.versions.kubeStateMetrics,
         nodeExporter: 'quay.io/prometheus/node-exporter:v' + $.values.common.versions.nodeExporter,
         prometheus: 'quay.io/prometheus/prometheus:v' + $.values.common.versions.prometheus,
@@ -76,6 +81,14 @@ local utils = import './lib/utils.libsonnet';
                   $.alertmanager.mixin.grafanaDashboards +
                   $.grafana.mixin.grafanaDashboards,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
+    },
+    persesOperator: {
+      namespace: $.values.common.namespace,
+      version: $.values.common.versions.persesOperator,
+      image: $.values.common.images.persesOperator,
+      persesImage: $.values.common.images.perses,
+      prometheusName: $.values.prometheus.name,
+      components: ['kubernetes', 'etcd', 'node-exporter', 'alertmanager', 'prometheus', 'perses'],
     },
     kubeStateMetrics: {
       namespace: $.values.common.namespace,
@@ -133,6 +146,7 @@ local utils = import './lib/utils.libsonnet';
   alertmanager: alertmanager($.values.alertmanager),
   blackboxExporter: blackboxExporter($.values.blackboxExporter),
   grafana: grafana($.values.grafana),
+  persesOperator: persesOperator($.values.persesOperator),
   kubeStateMetrics: kubeStateMetrics($.values.kubeStateMetrics),
   nodeExporter: nodeExporter($.values.nodeExporter),
   prometheus: prometheus($.values.prometheus),
