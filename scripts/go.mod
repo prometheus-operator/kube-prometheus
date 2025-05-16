@@ -1,7 +1,8 @@
 module _ // go.mod created for tooling dependencies
 
-go 1.22
-toolchain go1.24.1
+go 1.23.7
+
+toolchain go1.24.3
 
 require (
 	github.com/armosec/kubescape v1.0.139
