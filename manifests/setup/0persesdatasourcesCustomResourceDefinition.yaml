@@ -1,0 +1,326 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.0
+  name: persesdatasources.perses.dev
+spec:
+  group: perses.dev
+  names:
+    kind: PersesDatasource
+    listKind: PersesDatasourceList
+    plural: persesdatasources
+    shortNames:
+    - perds
+    singular: persesdatasource
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: PersesDatasource is the Schema for the PersesDatasources API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              client:
+                properties:
+                  basicAuth:
+                    description: BasicAuth basic auth config for datasource client
+                    properties:
+                      name:
+                        description: Name of basic auth k8s resource (when type is secret or configmap)
+                        type: string
+                      namespace:
+                        description: Namsespace of certificate k8s resource (when type is secret or configmap)
+                        type: string
+                      password_path:
+                        description: Path to password
+                        type: string
+                      type:
+                        description: Type source type of secret
+                        enum:
+                        - secret
+                        - configmap
+                        - file
+                        type: string
+                      username:
+                        description: Username for basic auth
+                        type: string
+                    required:
+                    - password_path
+                    - type
+                    - username
+                    type: object
+                  oauth:
+                    description: OAuth configuration for datasource client
+                    properties:
+                      authStyle:
+                        description: |-
+                          AuthStyle optionally specifies how the endpoint wants the
+                          client ID & client secret sent. The zero value means to
+                          auto-detect.
+                        type: integer
+                      clientIDPath:
+                        description: Path to client id
+                        type: string
+                      clientSecretPath:
+                        description: Path to client secret
+                        type: string
+                      endpointParams:
+                        additionalProperties:
+                          items:
+                            type: string
+                          type: array
+                        description: EndpointParams specifies additional parameters for requests to the token endpoint.
+                        type: object
+                      name:
+                        description: Name of basic auth k8s resource (when type is secret or configmap)
+                        type: string
+                      namespace:
+                        description: Namsespace of certificate k8s resource (when type is secret or configmap)
+                        type: string
+                      scopes:
+                        description: Scope specifies optional requested permissions.
+                        items:
+                          type: string
+                        type: array
+                      tokenURL:
+                        description: |-
+                          TokenURL is the resource server's token endpoint
+                          URL. This is a constant specific to each server.
+                        type: string
+                      type:
+                        description: Type source type of secret
+                        enum:
+                        - secret
+                        - configmap
+                        - file
+                        type: string
+                    required:
+                    - tokenURL
+                    - type
+                    type: object
+                  tls:
+                    description: TLS the equivalent to the tls_config for perses client
+                    properties:
+                      caCert:
+                        description: CaCert to verify the perses certificate
+                        properties:
+                          certPath:
+                            description: Path to Certificate
+                            type: string
+                          name:
+                            description: Name of basic auth k8s resource (when type is secret or configmap)
+                            type: string
+                          namespace:
+                            description: Namsespace of certificate k8s resource (when type is secret or configmap)
+                            type: string
+                          privateKeyPath:
+                            description: Path to Private key certificate
+                            type: string
+                          type:
+                            description: Type source type of secret
+                            enum:
+                            - secret
+                            - configmap
+                            - file
+                            type: string
+                        required:
+                        - certPath
+                        - type
+                        type: object
+                      enable:
+                        description: Enable TLS connection to perses
+                        type: boolean
+                      insecureSkipVerify:
+                        description: InsecureSkipVerify skip verify of perses certificate
+                        type: boolean
+                      userCert:
+                        description: UserCert client cert/key for mTLS
+                        properties:
+                          certPath:
+                            description: Path to Certificate
+                            type: string
+                          name:
+                            description: Name of basic auth k8s resource (when type is secret or configmap)
+                            type: string
+                          namespace:
+                            description: Namsespace of certificate k8s resource (when type is secret or configmap)
+                            type: string
+                          privateKeyPath:
+                            description: Path to Private key certificate
+                            type: string
+                          type:
+                            description: Type source type of secret
+                            enum:
+                            - secret
+                            - configmap
+                            - file
+                            type: string
+                        required:
+                        - certPath
+                        - type
+                        type: object
+                    required:
+                    - enable
+                    type: object
+                type: object
+              config:
+                properties:
+                  default:
+                    type: boolean
+                  display:
+                    properties:
+                      description:
+                        type: string
+                      name:
+                        type: string
+                    type: object
+                  plugin:
+                    description: |-
+                      Plugin will contain the datasource configuration.
+                      The data typed is available in Cue.
+                    properties:
+                      kind:
+                        type: string
+                      spec:
+                        x-kubernetes-preserve-unknown-fields: true
+                    required:
+                    - kind
+                    - spec
+                    type: object
+                required:
+                - default
+                - plugin
+                type: object
+              instanceSelector:
+                description: |-
+                  A label selector is a label query over a set of resources. The result of matchLabels and
+                  matchExpressions are ANDed. An empty label selector matches all objects. A null
+                  label selector matches no objects.
+                properties:
+                  matchExpressions:
+                    description: matchExpressions is a list of label selector requirements. The requirements are ANDed.
+                    items:
+                      description: |-
+                        A label selector requirement is a selector that contains values, a key, and an operator that
+                        relates the key and values.
+                      properties:
+                        key:
+                          description: key is the label key that the selector applies to.
+                          type: string
+                        operator:
+                          description: |-
+                            operator represents a key's relationship to a set of values.
+                            Valid operators are In, NotIn, Exists and DoesNotExist.
+                          type: string
+                        values:
+                          description: |-
+                            values is an array of string values. If the operator is In or NotIn,
+                            the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                            the values array must be empty. This array is replaced during a strategic
+                            merge patch.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: atomic
+                      required:
+                      - key
+                      - operator
+                      type: object
+                    type: array
+                    x-kubernetes-list-type: atomic
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                      map is equivalent to an element of matchExpressions, whose key field is "key", the
+                      operator is "In", and the values array contains only "value". The requirements are ANDed.
+                    type: object
+                type: object
+                x-kubernetes-map-type: atomic
+            required:
+            - config
+            type: object
+          status:
+            description: PersesDatasourceStatus defines the observed state of PersesDatasource
+            properties:
+              conditions:
+                items:
+                  description: Condition contains details for one aspect of the current state of this API Resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        lastTransitionTime is the last time the condition transitioned from one status to another.
+                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        message is a human readable message indicating details about the transition.
+                        This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        observedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: |-
+                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                        Producers of specific condition types may define expected values and meanings for this field,
+                        and whether the values are considered a guaranteed API.
+                        The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: type of condition in CamelCase or in foo.example.com/CamelCase.
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

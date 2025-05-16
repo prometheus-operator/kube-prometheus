@@ -1,0 +1,123 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: perses-operator
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - statefulsets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - services
+  - configmaps
+  - secrets
+  verbs:
+  - get
+  - patch
+  - update
+  - create
+  - delete
+  - list
+  - watch
+- apiGroups:
+  - perses.dev
+  resources:
+  - perses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - perses.dev
+  resources:
+  - perses/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - perses.dev
+  resources:
+  - perses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdashboards
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdashboards/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdashboards/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdatasources
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdatasources/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - perses.dev
+  resources:
+  - persesdatasources/status
+  verbs:
+  - get
+  - patch
+  - update

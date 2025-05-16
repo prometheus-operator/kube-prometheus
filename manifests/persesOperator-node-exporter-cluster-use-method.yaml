@@ -1,0 +1,435 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: node-exporter-cluster-use-method
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: node-exporter-cluster-use-method
+  namespace: monitoring
+spec:
+  display:
+    name: Node Exporter / USE Method / Cluster
+  duration: 1h
+  layouts:
+  - kind: Grid
+    spec:
+      display:
+        title: CPU
+      items:
+      - content:
+          $ref: '#/spec/panels/0_0'
+        height: 6
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/0_1'
+        height: 6
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Memory
+      items:
+      - content:
+          $ref: '#/spec/panels/1_0'
+        height: 6
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/1_1'
+        height: 6
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Network
+      items:
+      - content:
+          $ref: '#/spec/panels/2_0'
+        height: 6
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/2_1'
+        height: 6
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Disk IO
+      items:
+      - content:
+          $ref: '#/spec/panels/3_0'
+        height: 6
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/3_1'
+        height: 6
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Disk Space
+      items:
+      - content:
+          $ref: '#/spec/panels/4_0'
+        height: 6
+        width: 24
+        x: 0
+        "y": 0
+  panels:
+    "0_0":
+      kind: Panel
+      spec:
+        display:
+          name: CPU Usage
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: percent-decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    (
+                        (
+                            instance:node_cpu_utilisation:rate5m{instance=~"$instance",job="node"}
+                          *
+                            instance:node_num_cpu:sum{instance=~"$instance",job="node"}
+                        )
+                      !=
+                        0
+                    )
+                  /
+                    scalar(sum(instance:node_num_cpu:sum{instance=~"$instance",job="node"}))
+                seriesNameFormat: '{{instance}}'
+    "0_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows CPU saturation metrics across cluster nodes
+          name: CPU Saturation (Load1 per CPU)
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: percent-decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    (
+                        instance:node_load1_per_cpu:ratio{instance=~"$instance",job="node"}
+                      /
+                        scalar(count(instance:node_load1_per_cpu:ratio{instance=~"$instance",job="node"}))
+                    )
+                  !=
+                    0
+                seriesNameFormat: '{{instance}}'
+    "1_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows memory utilization percentage across cluster nodes
+          name: Memory Utilisation
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: percent-decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    (
+                        instance:node_memory_utilisation:ratio{instance=~"$instance",job="node"}
+                      /
+                        scalar(count(instance:node_memory_utilisation:ratio{instance=~"$instance",job="node"}))
+                    )
+                  !=
+                    0
+                seriesNameFormat: '{{instance}}'
+    "1_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows memory saturation through page fault metrics
+          name: Memory Saturation (Major Page Faults)
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: reads/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: instance:node_vmstat_pgmajfault:rate5m{instance=~"$instance",job="node"}
+                seriesNameFormat: '{{instance}}'
+    "2_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows network utilization in bytes
+          name: Network Utilisation (Bytes Receive/Transmit)
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: instance:node_network_receive_bytes_excluding_lo:rate5m{instance=~"$instance",job="node"} != 0
+                seriesNameFormat: '{{instance}} - Network - Received'
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: instance:node_network_transmit_bytes_excluding_lo:rate5m{instance=~"$instance",job="node"} != 0
+                seriesNameFormat: '{{instance}} - Network - Transmitted'
+    "2_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows network saturation through drop metrics
+          name: Network Saturation (Drops Receive/Transmit)
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: instance:node_network_receive_drop_excluding_lo:rate5m{instance=~"$instance",job="node"} != 0
+                seriesNameFormat: '{{instance}} - Network - Received'
+    "3_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows disk I/O utilization across cluster nodes
+          name: Disk IO Utilisation
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: percent-decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    (
+                        instance_device:node_disk_io_time_seconds:rate5m{instance=~"$instance",job="node"}
+                      /
+                        scalar(count(instance_device:node_disk_io_time_seconds:rate5m{instance=~"$instance",job="node"}))
+                    )
+                  !=
+                    0
+                seriesNameFormat: '{{instance}}'
+    "3_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows disk I/O saturation metrics
+          name: Disk IO Saturation
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: percent-decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    (
+                        instance_device:node_disk_io_time_seconds:rate5m{instance=~"$instance",job="node"}
+                      /
+                        scalar(count(instance_device:node_disk_io_time_seconds:rate5m{instance=~"$instance",job="node"}))
+                    )
+                  !=
+                    0
+                seriesNameFormat: '{{instance}}'
+    "4_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows disk space utilization metrics
+          name: Disk Space Utilisation
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            yAxis:
+              format:
+                unit: percent-decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    sum without (device) (
+                      max without (fstype, mountpoint) (
+                          (
+                              node_filesystem_size_bytes{fstype!="",instance=~"$instance",job="node",mountpoint!=""}
+                            -
+                              node_filesystem_avail_bytes{fstype!="",instance=~"$instance",job="node",mountpoint!=""}
+                          )
+                        !=
+                          0
+                      )
+                    )
+                  /
+                    scalar(
+                      sum(
+                        max without (fstype, mountpoint) (
+                          node_filesystem_size_bytes{fstype!="",instance=~"$instance",job="node",mountpoint!=""}
+                        )
+                      )
+                    )
+                seriesNameFormat: '{{instance}}'
+  variables:
+  - kind: ListVariable
+    spec:
+      allowAllValue: true
+      allowMultiple: true
+      display:
+        hidden: false
+        name: instance
+      name: instance
+      plugin:
+        kind: PrometheusLabelValuesVariable
+        spec:
+          datasource:
+            kind: PrometheusDatasource
+            name: prometheus-k8s-datasource
+          labelName: instance
+          matchers:
+          - node_uname_info{job="node",sysname!="Darwin"}
+status: {}

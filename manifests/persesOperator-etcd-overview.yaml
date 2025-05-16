@@ -1,0 +1,794 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: etcd-overview
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: etcd-overview
+  namespace: monitoring
+spec:
+  display:
+    name: etcd / Overview
+  duration: 1h
+  layouts:
+  - kind: Grid
+    spec:
+      display:
+        title: etcd Status
+      items:
+      - content:
+          $ref: '#/spec/panels/0_0'
+        height: 8
+        width: 24
+        x: 0
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: RPC and Streams
+      items:
+      - content:
+          $ref: '#/spec/panels/1_0'
+        height: 8
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/1_1'
+        height: 8
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: etcd DB
+      items:
+      - content:
+          $ref: '#/spec/panels/2_0'
+        height: 8
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/2_1'
+        height: 8
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: etcd Raft
+      items:
+      - content:
+          $ref: '#/spec/panels/3_0'
+        height: 8
+        width: 24
+        x: 0
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: etcd Traffic
+      items:
+      - content:
+          $ref: '#/spec/panels/4_0'
+        height: 8
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/4_1'
+        height: 8
+        width: 12
+        x: 12
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/4_2'
+        height: 8
+        width: 12
+        x: 0
+        "y": 8
+      - content:
+          $ref: '#/spec/panels/4_3'
+        height: 8
+        width: 12
+        x: 12
+        "y": 8
+  - kind: Grid
+    spec:
+      display:
+        title: etcd Peer Round Trip Time
+      items:
+      - content:
+          $ref: '#/spec/panels/5_0'
+        height: 8
+        width: 24
+        x: 0
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Resource Usage
+      items:
+      - content:
+          $ref: '#/spec/panels/6_0'
+        height: 8
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/6_1'
+        height: 8
+        width: 12
+        x: 12
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/6_2'
+        height: 8
+        width: 12
+        x: 0
+        "y": 8
+      - content:
+          $ref: '#/spec/panels/6_3'
+        height: 8
+        width: 12
+        x: 12
+        "y": 8
+  panels:
+    "0_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the status of etcd.
+          name: Up
+        plugin:
+          kind: StatChart
+          spec:
+            calculation: last
+            format:
+              unit: decimal
+            valueFontSize: 50
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: sum(etcd_server_has_leader{cluster="$cluster",job=~".*etcd.*"})
+                seriesNameFormat: '{{cluster}} {{namespace}}'
+    "1_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the rate of gRPC requests.
+          name: RPC Rate
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 1
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+              stack: all
+            yAxis:
+              format:
+                unit: ops/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum(
+                    rate(grpc_server_started_total{cluster="$cluster",grpc_type="unary",job=~".*etcd.*"}[$__rate_interval])
+                  )
+                seriesNameFormat: RPC Rate
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum(
+                    rate(
+                      grpc_server_handled_total{cluster="$cluster",grpc_code=~"Unknown|FailedPrecondition|ResourceExhausted|Internal|Unavailable|DataLoss|DeadlineExceeded",grpc_type="unary",job=~".*etcd.*"}[$__rate_interval]
+                    )
+                  )
+                seriesNameFormat: RPC failed Rate
+    "1_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the number of active streams.
+          name: Active Streams
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 1
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+              stack: all
+            yAxis:
+              format:
+                unit: decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    sum(
+                      grpc_server_started_total{cluster="$cluster",grpc_service="etcdserverpb.Watch",grpc_type="bidi_stream",job=~".*etcd.*"}
+                    )
+                  -
+                    sum(
+                      grpc_server_handled_total{cluster="$cluster",grpc_service="etcdserverpb.Watch",grpc_type="bidi_stream"}
+                    )
+                seriesNameFormat: Watch Streams
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    sum(
+                      grpc_server_started_total{cluster="$cluster",grpc_service="etcdserverpb.Lease",grpc_type="bidi_stream",job=~".*etcd.*"}
+                    )
+                  -
+                    sum(
+                      grpc_server_handled_total{cluster="$cluster",grpc_service="etcdserverpb.Lease",grpc_type="bidi_stream"}
+                    )
+                seriesNameFormat: Lease Streams
+    "2_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the size of the etcd database.
+          name: DB Size
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: etcd_mvcc_db_total_size_in_bytes{cluster="$cluster",job=~".*etcd.*"}
+                seriesNameFormat: '{{instance}} DB Size'
+    "2_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the duration of the etcd disk sync for WAL and DB.
+          name: Disk Sync Duration
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: seconds
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  histogram_quantile(
+                    0.99,
+                    sum by (instance, le) (
+                      rate(etcd_disk_wal_fsync_duration_seconds_bucket{cluster="$cluster",job=~".*etcd.*"}[$__rate_interval])
+                    )
+                  )
+                seriesNameFormat: '{{instance}} WAL fsync'
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  histogram_quantile(
+                    0.99,
+                    sum by (instance, le) (
+                      rate(
+                        etcd_disk_backend_commit_duration_seconds_bucket{cluster="$cluster",job=~".*etcd.*"}[$__rate_interval]
+                      )
+                    )
+                  )
+                seriesNameFormat: '{{instance}} DB fsync'
+    "3_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the number of times etcd has leader elections in a day.
+          name: Raft Proposals / Leader Elections in a day
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: changes(etcd_server_leader_changes_seen_total{cluster="$cluster",job=~".*etcd.*"}[1d])
+                seriesNameFormat: '{{instance}} total leader elections per day'
+    "4_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the client traffic into etcd.
+          name: Client Traffic In
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: rate(etcd_network_client_grpc_received_bytes_total{cluster="$cluster",job=~".*etcd.*"}[$__rate_interval])
+                seriesNameFormat: '{{instance}} client traffic in'
+    "4_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the client traffic out of etcd.
+          name: Client Traffic Out
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: rate(etcd_network_client_grpc_sent_bytes_total{cluster="$cluster",job=~".*etcd.*"}[$__rate_interval])
+                seriesNameFormat: '{{instance}} client traffic out'
+    "4_2":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the peer traffic into etcd.
+          name: Peer Traffic In
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (instance) (
+                    rate(etcd_network_peer_received_bytes_total{cluster="$cluster",job=~".*etcd.*"}[$__rate_interval])
+                  )
+                seriesNameFormat: '{{instance}} peer traffic in'
+    "4_3":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the peer traffic out of etcd.
+          name: Peer Traffic Out
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (instance) (
+                    rate(etcd_network_peer_sent_bytes_total{cluster="$cluster",job=~".*etcd.*"}[$__rate_interval])
+                  )
+                seriesNameFormat: '{{instance}} peer traffic out'
+    "5_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the roundtrip time of the peer traffic.
+          name: Peer Roundtrip Time
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: seconds
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  histogram_quantile(
+                    0.99,
+                    sum by (instance, le) (
+                      rate(
+                        etcd_network_peer_round_trip_time_seconds_bucket{cluster="$cluster",job=~".*etcd.*"}[$__rate_interval]
+                      )
+                    )
+                  )
+                seriesNameFormat: '{{instance}} peer roundtrip time'
+    "6_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows various memory usage metrics of the component.
+          name: Memory Usage
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: go_memstats_alloc_bytes{cluster=~"$cluster",job=~".*etcd.*"}
+                seriesNameFormat: Alloc All {{instance}}
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: go_memstats_heap_alloc_bytes{cluster=~"$cluster",job=~".*etcd.*"}
+                seriesNameFormat: Alloc Heap {{instance}}
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: rate(go_memstats_alloc_bytes_total{cluster=~"$cluster",job=~".*etcd.*"}[$__rate_interval])
+                seriesNameFormat: Alloc Rate All {{instance}}
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: rate(go_memstats_heap_alloc_bytes{cluster=~"$cluster",job=~".*etcd.*"}[$__rate_interval])
+                seriesNameFormat: Alloc Rate Heap {{instance}}
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: go_memstats_stack_inuse_bytes{cluster=~"$cluster",job=~".*etcd.*"}
+                seriesNameFormat: Inuse Stack {{instance}}
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: go_memstats_heap_inuse_bytes{cluster=~"$cluster",job=~".*etcd.*"}
+                seriesNameFormat: Inuse Heap {{instance}}
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: process_resident_memory_bytes{cluster=~"$cluster",job=~".*etcd.*"}
+                seriesNameFormat: Resident Memory {{instance}}
+    "6_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the CPU usage of the component.
+          name: CPU Usage
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: rate(process_cpu_seconds_total{cluster=~"$cluster",job=~".*etcd.*"}[$__rate_interval])
+                seriesNameFormat: '{{instance}}'
+    "6_2":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the number of goroutines being used by the component.
+          name: Goroutines
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: go_goroutines{cluster=~"$cluster",job=~".*etcd.*"}
+                seriesNameFormat: '{{instance}}'
+    "6_3":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the Go garbage collection pause durations for the component.
+          name: GC Duration
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: table
+              position: bottom
+              values:
+              - last
+            visual:
+              areaOpacity: 0.5
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: seconds
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: go_gc_duration_seconds{cluster=~"$cluster",job=~".*etcd.*"}
+                seriesNameFormat: '{{quantile}} - {{instance}}'
+  variables:
+  - kind: ListVariable
+    spec:
+      allowAllValue: false
+      allowMultiple: false
+      display:
+        hidden: false
+        name: cluster
+      name: cluster
+      plugin:
+        kind: PrometheusLabelValuesVariable
+        spec:
+          datasource:
+            kind: PrometheusDatasource
+            name: prometheus-k8s-datasource
+          labelName: cluster
+          matchers:
+          - etcd_server_has_leader{job=~".*etcd.*"}
+status: {}

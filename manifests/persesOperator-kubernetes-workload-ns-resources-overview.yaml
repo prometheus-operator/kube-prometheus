@@ -1,0 +1,1077 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: kubernetes-workload-ns-resources-overview
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: kubernetes-workload-ns-resources-overview
+  namespace: monitoring
+spec:
+  display:
+    name: Kubernetes / Compute Resources / Namespace (Workloads)
+  duration: 1h
+  layouts:
+  - kind: Grid
+    spec:
+      display:
+        title: CPU Usage
+      items:
+      - content:
+          $ref: '#/spec/panels/0_0'
+        height: 8
+        width: 24
+        x: 0
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: CPU Usage Quota
+      items:
+      - content:
+          $ref: '#/spec/panels/1_0'
+        height: 10
+        width: 24
+        x: 0
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Memory Usage
+      items:
+      - content:
+          $ref: '#/spec/panels/2_0'
+        height: 8
+        width: 24
+        x: 0
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Memory Usage Quota
+      items:
+      - content:
+          $ref: '#/spec/panels/3_0'
+        height: 10
+        width: 24
+        x: 0
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Network Usage
+      items:
+      - content:
+          $ref: '#/spec/panels/4_0'
+        height: 10
+        width: 24
+        x: 0
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Bandwidth
+      items:
+      - content:
+          $ref: '#/spec/panels/5_0'
+        height: 8
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/5_1'
+        height: 8
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Average Container Bandwidth
+      items:
+      - content:
+          $ref: '#/spec/panels/6_0'
+        height: 8
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/6_1'
+        height: 8
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Rate of Packets
+      items:
+      - content:
+          $ref: '#/spec/panels/7_0'
+        height: 8
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/7_1'
+        height: 8
+        width: 12
+        x: 12
+        "y": 0
+  - kind: Grid
+    spec:
+      display:
+        title: Rate of Packets Dropped
+      items:
+      - content:
+          $ref: '#/spec/panels/8_0'
+        height: 8
+        width: 12
+        x: 0
+        "y": 0
+      - content:
+          $ref: '#/spec/panels/8_1'
+        height: 8
+        width: 12
+        x: 12
+        "y": 0
+  panels:
+    "0_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the CPU usage of the namespace by workload, and the CPU resource quota of the namespace.
+          name: CPU Usage
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 1
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: decimal
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (workload, workload_type) (
+                      node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",namespace="$namespace"}
+                    * on (namespace, pod) group_left (workload, workload_type)
+                      namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+                seriesNameFormat: '{{workload}} - {{workload_type}}'
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  scalar(
+                    max(
+                      kube_resourcequota{cluster="$cluster",namespace="$namespace",resource="requests.cpu",type="hard"}
+                    )
+                  )
+                seriesNameFormat: quota - requests
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  scalar(
+                    max(kube_resourcequota{cluster="$cluster",namespace="$namespace",resource="limits.cpu",type="hard"})
+                  )
+                seriesNameFormat: quota - limits
+    "1_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the CPU requests, limits, and usage of workloads in a namespace in tabular format.
+          name: CPU Quota
+        plugin:
+          kind: Table
+          spec:
+            columnSettings:
+            - align: left
+              header: Workload
+              name: workload
+            - align: left
+              header: Type
+              name: workload_type
+            - align: right
+              header: Running Pods
+              name: 'value #1'
+            - align: right
+              header: CPU Usage
+              name: 'value #2'
+            - align: right
+              header: CPU Requests
+              name: 'value #3'
+            - align: right
+              header: CPU Requests %
+              name: 'value #4'
+            - align: right
+              header: CPU Limits
+              name: 'value #5'
+            - align: right
+              header: CPU Limits %
+              name: 'value #6'
+            - hide: true
+              name: timestamp
+            transforms:
+            - kind: MergeSeries
+              spec: {}
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  count by (workload, workload_type) (
+                    namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (workload, workload_type) (
+                      node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",namespace="$namespace"}
+                    * on (namespace, pod) group_left (workload, workload_type)
+                      namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (workload, workload_type) (
+                      kube_pod_container_resource_requests{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",resource="cpu"}
+                    * on (namespace, pod) group_left (workload, workload_type)
+                      namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    sum by (workload, workload_type) (
+                        node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",namespace="$namespace"}
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  /
+                    sum by (workload, workload_type) (
+                        kube_pod_container_resource_requests{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",resource="cpu"}
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (workload, workload_type) (
+                      kube_pod_container_resource_limits{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",resource="cpu"}
+                    * on (namespace, pod) group_left (workload, workload_type)
+                      namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    sum by (workload, workload_type) (
+                        node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",namespace="$namespace"}
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  /
+                    sum by (workload, workload_type) (
+                        kube_pod_container_resource_limits{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",resource="cpu"}
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+    "2_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the memory usage of the namespace by workload, and the memory resource quota of the namespace.
+          name: Memory Usage
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 1
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (workload, workload_type) (
+                      container_memory_working_set_bytes{cluster="$cluster",container!="",image!="",job="cadvisor",namespace="$namespace"}
+                    * on (namespace, pod) group_left (workload, workload_type)
+                      namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+                seriesNameFormat: '{{workload}} - {{workload_type}}'
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  scalar(
+                    max(
+                      kube_resourcequota{cluster="$cluster",namespace="$namespace",resource=~"requests.memory|memory",type="hard"}
+                    )
+                  )
+                seriesNameFormat: quota - requests
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  scalar(
+                    max(
+                      kube_resourcequota{cluster="$cluster",namespace="$namespace",resource=~"limits.memory",type="hard"}
+                    )
+                  )
+                seriesNameFormat: quota - limits
+    "3_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the memory requests, limits, and usage of workloads in a namespace in tabular format.
+          name: Memory Quota
+        plugin:
+          kind: Table
+          spec:
+            columnSettings:
+            - align: left
+              header: Workload
+              name: workload
+            - align: left
+              header: Type
+              name: workload_type
+            - align: right
+              header: Running Pods
+              name: 'value #1'
+            - align: right
+              header: Memory Usage
+              name: 'value #2'
+            - align: right
+              header: Memory Requests
+              name: 'value #3'
+            - align: right
+              header: Memory Requests %
+              name: 'value #4'
+            - align: right
+              header: Memory Limits
+              name: 'value #5'
+            - align: right
+              header: Memory Limits %
+              name: 'value #6'
+            - hide: true
+              name: timestamp
+            transforms:
+            - kind: MergeSeries
+              spec: {}
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  count by (workload, workload_type) (
+                    namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (workload, workload_type) (
+                      container_memory_working_set_bytes{cluster="$cluster",container!="",image!="",job="cadvisor",namespace="$namespace"}
+                    * on (namespace, pod) group_left (workload, workload_type)
+                      namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (workload, workload_type) (
+                      kube_pod_container_resource_requests{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",resource="memory"}
+                    * on (namespace, pod) group_left (workload, workload_type)
+                      namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    sum by (workload, workload_type) (
+                        container_memory_working_set_bytes{cluster="$cluster",container!="",image!="",job="cadvisor",namespace="$namespace"}
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  /
+                    sum by (workload, workload_type) (
+                        kube_pod_container_resource_requests{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",resource="memory"}
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  sum by (workload, workload_type) (
+                      kube_pod_container_resource_limits{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",resource="memory"}
+                    * on (namespace, pod) group_left (workload, workload_type)
+                      namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |2-
+                    sum by (workload, workload_type) (
+                        container_memory_working_set_bytes{cluster="$cluster",container!="",image!="",job="cadvisor",namespace="$namespace"}
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  /
+                    sum by (workload, workload_type) (
+                        kube_pod_container_resource_limits{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",resource="memory"}
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+    "4_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the current network usage of the namespace by workloads.
+          name: Current Network Usage
+        plugin:
+          kind: Table
+          spec:
+            columnSettings:
+            - align: left
+              header: Workload
+              name: workload
+            - align: right
+              header: Current Receive Bandwidth
+              name: 'value #1'
+            - align: right
+              header: Current Transmit Bandwidth
+              name: 'value #2'
+            - align: right
+              header: Rate of Received Packets
+              name: 'value #3'
+            - align: right
+              header: Rate of Transmitted Packets
+              name: 'value #4'
+            - align: right
+              header: Rate of Received Packets Dropped
+              name: 'value #5'
+            - align: right
+              header: Rate of Transmitted Packets Dropped
+              name: 'value #6'
+            - hide: true
+              name: timestamp
+            transforms:
+            - kind: MergeSeries
+              spec: {}
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_receive_bytes_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_transmit_bytes_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_receive_packets_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_transmit_packets_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_receive_packets_dropped_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  )
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_transmit_packets_dropped_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload_type=~"$type"}
+                    )
+                  )
+    "5_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the network receive bandwidth of the namespace by workload.
+          name: Receive Bandwidth
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.75
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_receive_bytes_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+",workload_type=~"$type"}
+                    )
+                  )
+                seriesNameFormat: '{{workload}}'
+    "5_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the network transmit bandwidth of the namespace by workload.
+          name: Transmit Bandwidth
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.75
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_transmit_bytes_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+",workload_type=~"$type"}
+                    )
+                  )
+                seriesNameFormat: '{{workload}}'
+    "6_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the average network bandwidth received in container by workload.
+          name: 'Average Container Bandwidth by Workload: Received'
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.75
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    avg by (workload) (
+                        rate(
+                          container_network_receive_bytes_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+",workload_type=~"$type"}
+                    )
+                  )
+                seriesNameFormat: '{{workload}}'
+    "6_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the average network bandwidth transmitted in container by workload.
+          name: 'Average Container Bandwidth by Workload: Transmitted'
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.75
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: bytes/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    avg by (workload) (
+                        rate(
+                          container_network_transmit_bytes_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+",workload_type=~"$type"}
+                    )
+                  )
+                seriesNameFormat: '{{workload}}'
+    "7_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the rate of received packets by pods in a workload in a namespace.
+          name: Rate of Received Packets
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.75
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: packets/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_receive_packets_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+",workload_type=~"$type"}
+                    )
+                  )
+                seriesNameFormat: '{{workload}}'
+    "7_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the rate of transmitted packets by pods in a workload in a namespace.
+          name: Rate of Transmitted Packets
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.75
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: packets/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_transmit_packets_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+",workload_type=~"$type"}
+                    )
+                  )
+                seriesNameFormat: '{{workload}}'
+    "8_0":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the rate of received packets droppedby pods in a workload in a namespace.
+          name: Rate of Received Packets Dropped
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.75
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: packets/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_receive_packets_dropped_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+",workload_type=~"$type"}
+                    )
+                  )
+                seriesNameFormat: '{{workload}}'
+    "8_1":
+      kind: Panel
+      spec:
+        display:
+          description: Shows the rate of transmitted packets dropped by pods in a workload in a namespace.
+          name: Rate of Transmitted Packets Dropped
+        plugin:
+          kind: TimeSeriesChart
+          spec:
+            legend:
+              mode: list
+              position: bottom
+              size: small
+            visual:
+              areaOpacity: 0.75
+              display: line
+              lineWidth: 0.25
+              palette:
+                mode: auto
+            yAxis:
+              format:
+                unit: packets/sec
+        queries:
+        - kind: TimeSeriesQuery
+          spec:
+            plugin:
+              kind: PrometheusTimeSeriesQuery
+              spec:
+                datasource:
+                  kind: PrometheusDatasource
+                  name: prometheus-k8s-datasource
+                query: |-
+                  (
+                    sum by (workload) (
+                        rate(
+                          container_network_transmit_packets_dropped_total{cluster="$cluster",job="cadvisor",namespace="$namespace"}[$__rate_interval]
+                        )
+                      * on (namespace, pod) group_left (workload, workload_type)
+                        namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+",workload_type=~"$type"}
+                    )
+                  )
+                seriesNameFormat: '{{workload}}'
+  variables:
+  - kind: ListVariable
+    spec:
+      allowAllValue: false
+      allowMultiple: false
+      display:
+        hidden: false
+        name: cluster
+      name: cluster
+      plugin:
+        kind: PrometheusLabelValuesVariable
+        spec:
+          datasource:
+            kind: PrometheusDatasource
+            name: prometheus-k8s-datasource
+          labelName: cluster
+          matchers:
+          - up{job="kubelet", metrics_path="/metrics/cadvisor"}
+  - kind: ListVariable
+    spec:
+      allowAllValue: false
+      allowMultiple: false
+      display:
+        hidden: false
+        name: namespace
+      name: namespace
+      plugin:
+        kind: PrometheusLabelValuesVariable
+        spec:
+          datasource:
+            kind: PrometheusDatasource
+            name: prometheus-k8s-datasource
+          labelName: namespace
+          matchers:
+          - kube_namespace_status_phase{cluster="$cluster",job="kube-state-metrics"}
+  - kind: ListVariable
+    spec:
+      allowAllValue: false
+      allowMultiple: false
+      display:
+        hidden: false
+        name: workload_type
+      name: type
+      plugin:
+        kind: PrometheusLabelValuesVariable
+        spec:
+          datasource:
+            kind: PrometheusDatasource
+            name: prometheus-k8s-datasource
+          labelName: workload_type
+          matchers:
+          - namespace_workload_pod:kube_pod_owner:relabel{cluster="$cluster",namespace="$namespace",workload=~".+"}
+status: {}

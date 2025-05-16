@@ -1,0 +1,23 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDatasource
+metadata:
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: perses-datasource
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: prometheus-k8s-datasource
+  namespace: monitoring
+spec:
+  config:
+    default: true
+    display:
+      name: Prometheus k8s Datasource
+    plugin:
+      kind: PrometheusDatasource
+      spec:
+        proxy:
+          kind: HTTPProxy
+          spec:
+            url: http://prometheus-k8s.monitoring.svc:9090

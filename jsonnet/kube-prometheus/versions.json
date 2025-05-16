@@ -2,6 +2,8 @@
   "alertmanager": "0.28.1",
   "blackboxExporter": "0.26.0",
   "grafana": "12.0.0",
+  "perses": "0.51.0-rc.0",
+  "persesOperator": "0.1.10",
   "kubeStateMetrics": "2.15.0",
   "nodeExporter": "1.9.1",
   "prometheus": "3.3.1",
