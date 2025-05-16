@@ -87,9 +87,9 @@ jobs:
     strategy:
       matrix:
         kind-image:
-          - 'kindest/node:v1.31.0'
-          - 'kindest/node:v1.30.4'
-          - 'kindest/node:v1.29.8'
+          - 'kindest/node:v1.33.0'
+          - 'kindest/node:v1.32.3'
+          - 'kindest/node:v1.31.6'
     steps:
     - uses: actions/checkout@v4
       with:
