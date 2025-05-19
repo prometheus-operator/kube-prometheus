@@ -79,7 +79,7 @@ be created successfully.
 kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
 ```
 
-The [official documentation](https://prometheus-operator.dev/docs/prologue/quick-start/) contains the full version of this quick-start guide, and includes instructions on how to access Prometheus, AlertManager, and Grafana. 
+The [official documentation](http://prometheus-operator.dev/docs/getting-started/installation/) contains the full version of this quick-start guide, and includes [instructions](https://prometheus-operator.dev/kube-prometheus/kube/access-ui/) on how to access Prometheus, AlertManager, and Grafana.
 
 ### minikube
 
