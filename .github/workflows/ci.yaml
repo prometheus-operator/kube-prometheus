@@ -12,115 +12,115 @@ jobs:
           - ubuntu-latest
     name: Generate
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    - name: Import environment variables from file
-      run: cat ".github/env" >> "$GITHUB_ENV"
-    - uses: actions/setup-go@v5
-      with:
-        go-version: ${{ env.golang-version }}
-    - run: make --always-make generate validate && git diff --exit-code
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.golang-version }}
+      - run: make --always-make generate validate && git diff --exit-code
   check-docs:
     runs-on: ubuntu-latest
     name: Check Documentation formatting and links
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    - name: Import environment variables from file
-      run: cat ".github/env" >> "$GITHUB_ENV"
-    - uses: actions/setup-go@v5
-      with:
-        go-version: ${{ env.golang-version }}
-    - run: make check-docs
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.golang-version }}
+      - run: make check-docs
   lint:
     runs-on: ubuntu-latest
     name: Jsonnet linter
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    - name: Import environment variables from file
-      run: cat ".github/env" >> "$GITHUB_ENV"
-    - uses: actions/setup-go@v5
-      with:
-        go-version: ${{ env.golang-version }}
-    - run: make --always-make lint
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.golang-version }}
+      - run: make --always-make lint
   fmt:
     runs-on: ubuntu-latest
     name: Jsonnet formatter
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    - name: Import environment variables from file
-      run: cat ".github/env" >> "$GITHUB_ENV"
-    - uses: actions/setup-go@v5
-      with:
-        go-version: ${{ env.golang-version }}
-    - run: make --always-make fmt && git diff --exit-code
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.golang-version }}
+      - run: make --always-make fmt && git diff --exit-code
   unit-tests:
     runs-on: ubuntu-latest
     name: Unit tests
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    - name: Import environment variables from file
-      run: cat ".github/env" >> "$GITHUB_ENV"
-    - uses: actions/setup-go@v5
-      with:
-        go-version: ${{ env.golang-version }}
-    - run: make --always-make test
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.golang-version }}
+      - run: make --always-make test
   security-audit:
     runs-on: ubuntu-latest
     name: Run security analysis on manifests
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    - run: make --always-make kubescape
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: make --always-make kubescape
   e2e-tests:
     name: E2E tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
         kind-image:
-          - 'kindest/node:v1.33.0'
-          - 'kindest/node:v1.32.3'
-          - 'kindest/node:v1.31.6'
+          - "kindest/node:v1.33.1"
+          - "kindest/node:v1.32.5"
+          - "kindest/node:v1.31.9"
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    - name: Import environment variables from file
-      run: cat ".github/env" >> "$GITHUB_ENV"
-    - uses: actions/setup-go@v5
-      with:
-        go-version: ${{ env.golang-version }}
-    - name: Start kind cluster
-      uses: helm/kind-action@v1.12.0
-      with:
-        version: ${{ env.kind-version }}
-        node_image: ${{ matrix.kind-image }}
-        wait: 10s # Without default CNI, control-plane doesn't get ready until Cilium is installed
-        config: .github/workflows/kind/config.yml
-        cluster_name: e2e
-    - name: Install kube-router for NetworkPolicy support
-      run: |
-        kubectl apply -f .github/workflows/kind/kube-router.yaml
-    - name: Wait for cluster to finish bootstraping
-      run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
-    - name: Create kube-prometheus stack
-      run: |
-        kubectl create -f manifests/setup
-        until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
-        kubectl create -f manifests/
-    - name: Run tests
-      run: |
-        export KUBECONFIG="${HOME}/.kube/config"
-        make test-e2e
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.golang-version }}
+      - name: Start kind cluster
+        uses: helm/kind-action@v1.12.0
+        with:
+          version: ${{ env.kind-version }}
+          node_image: ${{ matrix.kind-image }}
+          wait: 10s # Without default CNI, control-plane doesn't get ready until Cilium is installed
+          config: tests/e2e/kind/config.yml
+          cluster_name: e2e
+      - name: Install kube-router for NetworkPolicy support
+        run: |
+          kubectl apply -f tests/e2e/kind/kube-router.yaml
+      - name: Wait for cluster to finish bootstraping
+        run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
+      - name: Create kube-prometheus stack
+        run: |
+          kubectl create -f manifests/setup
+          until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
+          kubectl create -f manifests/
+      - name: Run tests
+        run: |
+          export KUBECONFIG="${HOME}/.kube/config"
+          make test-e2e
 
   # Added to summarize the matrix and allow easy branch protection rules setup
   e2e-tests-result:

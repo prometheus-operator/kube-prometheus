@@ -3,84 +3,84 @@ name: Upgrade to latest versions
 on:
   workflow_dispatch:
   schedule:
-    - cron: '37 7 * * 1'
+    - cron: "37 7 * * 1"
 jobs:
   versions:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         branch:
-          - 'release-0.11'
-          - 'release-0.12'
-          - 'release-0.13'
-          - 'main'
+          - "release-0.11"
+          - "release-0.12"
+          - "release-0.13"
+          - "main"
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{ matrix.branch }}
-    - name: Import environment variables from file
-      run: cat ".github/env" >> "$GITHUB_ENV"
-    - uses: actions/setup-go@v5
-      with:
-        go-version: ${{ env.golang-version }}
-    - name: Upgrade versions
-      id: versions
-      run: |
-        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        # Write to temporary file to make update atomic
-        scripts/generate-versions.sh > /tmp/versions.json
-        mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
-        # Display the raw diff between versions.
-        git diff
-        # Get the links to the changelogs of the updated versions and make them
-        # available to the reviewers
-        {
-          echo 'new_changelogs<<EOF'
-          echo $(scripts/get-new-changelogs.sh)
-          echo EOF
-        } >> $GITHUB_OUTPUT
-      if: matrix.branch == 'main'
-    - name: Update jsonnet dependencies
-      run: |
-        make update
-        make generate
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.golang-version }}
+      - name: Upgrade versions
+        id: versions
+        run: |
+          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          # Write to temporary file to make update atomic
+          scripts/generate-versions.sh > /tmp/versions.json
+          mv /tmp/versions.json jsonnet/kube-prometheus/versions.json
+          # Display the raw diff between versions.
+          git diff
+          # Get the links to the changelogs of the updated versions and make them
+          # available to the reviewers
+          {
+            echo "new_changelogs<<EOF"
+            scripts/get-new-changelogs.sh
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+        if: matrix.branch == 'main'
+      - name: Update jsonnet dependencies
+        run: |
+          make update
+          make generate
 
-        # Reset jsonnetfile.lock.json if no dependencies were updated
-        changedFiles=$(git diff --name-only | grep -v 'jsonnetfile.lock.json' | wc -l)
-        if [[ "$changedFiles" -eq 0 ]]; then
-          git checkout -- jsonnetfile.lock.json;
-        fi
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v7
-      with:
-        commit-message: "[bot] [${{ matrix.branch }}] Automated version update"
-        title: "[bot] [${{ matrix.branch }}] Automated version update"
-        body: |
-          ## Description
+          # Reset jsonnetfile.lock.json if no dependencies were updated
+          changedFiles=$(git diff --name-only | grep -vc 'jsonnetfile.lock.json')
+          if [[ "$changedFiles" -eq 0 ]]; then
+            git checkout -- jsonnetfile.lock.json;
+          fi
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "[bot] [${{ matrix.branch }}] Automated version update"
+          title: "[bot] [${{ matrix.branch }}] Automated version update"
+          body: |
+            ## Description
 
-          This is an automated version and jsonnet dependencies update performed from CI.
+            This is an automated version and jsonnet dependencies update performed from CI.
 
-          Please review the following changelogs to make sure that we don't miss any important
-          changes before merging this PR.
+            Please review the following changelogs to make sure that we don't miss any important
+            changes before merging this PR.
 
-          ${{ steps.versions.outputs.new_changelogs }}
+            ${{ steps.versions.outputs.new_changelogs }}
 
-          Configuration of the workflow is located in `.github/workflows/versions.yaml`.
+            Configuration of the workflow is located in `.github/workflows/versions.yaml`.
 
-          ## Type of change
+            ## Type of change
 
-          - [x] `NONE` (if none of the other choices apply. Example, tooling, build system, CI, docs, etc.)
+            - [x] `NONE` (if none of the other choices apply. Example, tooling, build system, CI, docs, etc.)
 
-          ## Changelog entry
+            ## Changelog entry
 
-          ```release-note
+            ```release-note
 
-          ```
-        team-reviewers: kube-prometheus-reviewers
-        committer: Prometheus Operator Bot <prom-op-bot@users.noreply.github.com>
-        author: Prometheus Operator Bot <prom-op-bot@users.noreply.github.com>
-        branch: automated-updates-${{ matrix.branch }}
-        delete-branch: true
-        # GITHUB_TOKEN cannot be used as it won't trigger CI in a created PR
-        # More in https://github.com/peter-evans/create-pull-request/issues/155
-        token: ${{ secrets.PROM_OP_BOT_PAT }}
+            ```
+          team-reviewers: kube-prometheus-reviewers
+          committer: Prometheus Operator Bot <prom-op-bot@users.noreply.github.com>
+          author: Prometheus Operator Bot <prom-op-bot@users.noreply.github.com>
+          branch: automated-updates-${{ matrix.branch }}
+          delete-branch: true
+          # GITHUB_TOKEN cannot be used as it won't trigger CI in a created PR
+          # More in https://github.com/peter-evans/create-pull-request/issues/155
+          token: ${{ secrets.PROM_OP_BOT_PAT }}
