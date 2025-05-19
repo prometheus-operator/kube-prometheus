@@ -105,11 +105,11 @@ jobs:
           version: ${{ env.kind-version }}
           node_image: ${{ matrix.kind-image }}
           wait: 10s # Without default CNI, control-plane doesn't get ready until Cilium is installed
-          config: .github/workflows/kind/config.yml
+          config: tests/e2e/kind/config.yml
           cluster_name: e2e
       - name: Install kube-router for NetworkPolicy support
         run: |
-          kubectl apply -f .github/workflows/kind/kube-router.yaml
+          kubectl apply -f tests/e2e/kind/kube-router.yaml
       - name: Wait for cluster to finish bootstraping
         run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
       - name: Create kube-prometheus stack
