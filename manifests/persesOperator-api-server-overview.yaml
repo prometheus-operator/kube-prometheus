@@ -11,826 +11,827 @@ metadata:
   name: api-server-overview
   namespace: monitoring
 spec:
-  display:
-    name: Kubernetes / API server
-  duration: 1h
-  layouts:
-  - kind: Grid
-    spec:
-      display:
-        title: Notice
-      items:
-      - content:
-          $ref: '#/spec/panels/0_0'
-        height: 3
-        width: 24
-        x: 0
-        "y": 0
-  - kind: Grid
-    spec:
-      display:
-        title: All Availability And Error Budget
-      items:
-      - content:
-          $ref: '#/spec/panels/1_0'
-        height: 8
-        width: 12
-        x: 0
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/1_1'
-        height: 8
-        width: 12
-        x: 12
-        "y": 0
-  - kind: Grid
-    spec:
-      display:
-        title: API Server Read
-      items:
-      - content:
-          $ref: '#/spec/panels/2_0'
-        height: 8
-        width: 6
-        x: 0
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/2_1'
-        height: 8
-        width: 6
-        x: 6
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/2_2'
-        height: 8
-        width: 6
-        x: 12
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/2_3'
-        height: 8
-        width: 6
-        x: 18
-        "y": 0
-  - kind: Grid
-    spec:
-      display:
-        title: API Server Write
-      items:
-      - content:
-          $ref: '#/spec/panels/3_0'
-        height: 8
-        width: 6
-        x: 0
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/3_1'
-        height: 8
-        width: 6
-        x: 6
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/3_2'
-        height: 8
-        width: 6
-        x: 12
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/3_3'
-        height: 8
-        width: 6
-        x: 18
-        "y": 0
-  - kind: Grid
-    spec:
-      display:
-        title: Work Queue
-      items:
-      - content:
-          $ref: '#/spec/panels/4_0'
-        height: 8
-        width: 8
-        x: 0
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/4_1'
-        height: 8
-        width: 8
-        x: 8
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/4_2'
-        height: 8
-        width: 8
-        x: 16
-        "y": 0
-  - kind: Grid
-    spec:
-      display:
-        title: Resource Usage
-      items:
-      - content:
-          $ref: '#/spec/panels/5_0'
-        height: 10
-        width: 12
-        x: 0
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/5_1'
-        height: 10
-        width: 12
-        x: 12
-        "y": 0
-      - content:
-          $ref: '#/spec/panels/5_2'
-        height: 10
-        width: 12
-        x: 0
-        "y": 10
-      - content:
-          $ref: '#/spec/panels/5_3'
-        height: 10
-        width: 12
-        x: 12
-        "y": 10
-  panels:
-    "0_0":
-      kind: Panel
+  config:
+    display:
+      name: Kubernetes / API server
+    duration: 1h
+    layouts:
+    - kind: Grid
       spec:
         display:
-          name: Notice
-        plugin:
-          kind: Markdown
-          spec:
-            text: The SLO (service level objective) and other metrics displayed on this dashboard are for informational purposes only.
-    "1_0":
-      kind: Panel
+          title: Notice
+        items:
+        - content:
+            $ref: '#/spec/panels/0_0'
+          height: 3
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
       spec:
         display:
-          description: How many percent of requests (both read and write) in 30 days have been answered successfully and fast enough?
-          name: Availability (30d) > 99.000%
-        plugin:
-          kind: StatChart
-          spec:
-            calculation: last
-            format:
-              decimalPlaces: 3
-              unit: percent
-            valueFontSize: 50
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: apiserver_request:availability30d{cluster=~"$cluster",verb="all"}
-    "1_1":
-      kind: Panel
+          title: All Availability And Error Budget
+        items:
+        - content:
+            $ref: '#/spec/panels/1_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/1_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
       spec:
         display:
-          description: How much error budget is left looking at our 0.990% availability guarantees?
-          name: ErrorBudget (30d) > 99.000%
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: list
-              position: bottom
-              size: small
-            visual:
-              areaOpacity: 0.75
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
+          title: API Server Read
+        items:
+        - content:
+            $ref: '#/spec/panels/2_0'
+          height: 8
+          width: 6
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/2_1'
+          height: 8
+          width: 6
+          x: 6
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/2_2'
+          height: 8
+          width: 6
+          x: 12
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/2_3'
+          height: 8
+          width: 6
+          x: 18
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: API Server Write
+        items:
+        - content:
+            $ref: '#/spec/panels/3_0'
+          height: 8
+          width: 6
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/3_1'
+          height: 8
+          width: 6
+          x: 6
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/3_2'
+          height: 8
+          width: 6
+          x: 12
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/3_3'
+          height: 8
+          width: 6
+          x: 18
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Work Queue
+        items:
+        - content:
+            $ref: '#/spec/panels/4_0'
+          height: 8
+          width: 8
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/4_1'
+          height: 8
+          width: 8
+          x: 8
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/4_2'
+          height: 8
+          width: 8
+          x: 16
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Resource Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/5_0'
+          height: 10
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/5_1'
+          height: 10
+          width: 12
+          x: 12
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/5_2'
+          height: 10
+          width: 12
+          x: 0
+          "y": 10
+        - content:
+            $ref: '#/spec/panels/5_3'
+          height: 10
+          width: 12
+          x: 12
+          "y": 10
+    panels:
+      "0_0":
+        kind: Panel
+        spec:
+          display:
+            name: Notice
+          plugin:
+            kind: Markdown
+            spec:
+              text: The SLO (service level objective) and other metrics displayed on this dashboard are for informational purposes only.
+      "1_0":
+        kind: Panel
+        spec:
+          display:
+            description: How many percent of requests (both read and write) in 30 days have been answered successfully and fast enough?
+            name: Availability (30d) > 99.000%
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
               format:
+                decimalPlaces: 3
                 unit: percent
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: 100 * (apiserver_request:availability30d{cluster=~"$cluster",verb="all"} - 0.99)
-                seriesNameFormat: errorbudget
-    "2_0":
-      kind: Panel
-      spec:
-        display:
-          description: How many percent of read requests (LIST,GET) in 30 days have been answered successfully and fast enough?
-          name: Read Availability (30d)
-        plugin:
-          kind: StatChart
-          spec:
-            calculation: last
-            format:
-              decimalPlaces: 3
-              unit: percent
-            valueFontSize: 50
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: apiserver_request:availability30d{cluster=~"$cluster",verb="read"}
-    "2_1":
-      kind: Panel
-      spec:
-        display:
-          description: How many read requests (LIST,GET) per second do the apiservers get by code?
-          name: Read SLI - Requests
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: table
-              position: bottom
-              values:
-              - last
-            visual:
-              areaOpacity: 1
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-              stack: all
-            yAxis:
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: apiserver_request:availability30d{cluster=~"$cluster",verb="all"}
+      "1_1":
+        kind: Panel
+        spec:
+          display:
+            description: How much error budget is left looking at our 0.990% availability guarantees?
+            name: ErrorBudget (30d) > 99.000%
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: percent
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: 100 * (apiserver_request:availability30d{cluster=~"$cluster",verb="all"} - 0.99)
+                  seriesNameFormat: errorbudget
+      "2_0":
+        kind: Panel
+        spec:
+          display:
+            description: How many percent of read requests (LIST,GET) in 30 days have been answered successfully and fast enough?
+            name: Read Availability (30d)
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
               format:
-                unit: requests/sec
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: sum by (code) (code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",verb="read"})
-                seriesNameFormat: '{{ code }}'
-    "2_2":
-      kind: Panel
-      spec:
-        display:
-          description: How many percent of read requests (LIST,GET) per second are returned with errors (5xx)?
-          name: Read SLI - Errors
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: list
-              position: bottom
-              size: small
-            visual:
-              areaOpacity: 0.75
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
+                decimalPlaces: 3
                 unit: percent
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: |2-
-                    sum by (resource) (
-                      code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",code=~"5..",verb="read"}
-                    )
-                  /
-                    sum by (resource) (code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",verb="read"})
-                seriesNameFormat: '{{ resource }}'
-    "2_3":
-      kind: Panel
-      spec:
-        display:
-          description: How many seconds is the 99th percentile for reading (LIST|GET) a given resource?
-          name: Read SLI - Duration
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: table
-              position: bottom
-            visual:
-              areaOpacity: 0.5
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: apiserver_request:availability30d{cluster=~"$cluster",verb="read"}
+      "2_1":
+        kind: Panel
+        spec:
+          display:
+            description: How many read requests (LIST,GET) per second do the apiservers get by code?
+            name: Read SLI - Requests
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: requests/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (code) (code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",verb="read"})
+                  seriesNameFormat: '{{ code }}'
+      "2_2":
+        kind: Panel
+        spec:
+          display:
+            description: How many percent of read requests (LIST,GET) per second are returned with errors (5xx)?
+            name: Read SLI - Errors
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: percent
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (resource) (
+                        code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",code=~"5..",verb="read"}
+                      )
+                    /
+                      sum by (resource) (code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",verb="read"})
+                  seriesNameFormat: '{{ resource }}'
+      "2_3":
+        kind: Panel
+        spec:
+          display:
+            description: How many seconds is the 99th percentile for reading (LIST|GET) a given resource?
+            name: Read SLI - Duration
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{cluster=~"$cluster",verb="read"}
+                  seriesNameFormat: '{{ resource }}'
+      "3_0":
+        kind: Panel
+        spec:
+          display:
+            description: How many percent of write requests (POST|PUT|PATCH|DELETE) in 30 days have been answered successfully and fast enough?
+            name: Write Availability (30d)
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
               format:
-                unit: seconds
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{cluster=~"$cluster",verb="read"}
-                seriesNameFormat: '{{ resource }}'
-    "3_0":
-      kind: Panel
-      spec:
-        display:
-          description: How many percent of write requests (POST|PUT|PATCH|DELETE) in 30 days have been answered successfully and fast enough?
-          name: Write Availability (30d)
-        plugin:
-          kind: StatChart
-          spec:
-            calculation: last
-            format:
-              decimalPlaces: 3
-              unit: percent
-            valueFontSize: 50
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: apiserver_request:availability30d{cluster=~"$cluster",verb="write"}
-    "3_1":
-      kind: Panel
-      spec:
-        display:
-          description: How many write requests (POST|PUT|PATCH|DELETE) per second do the apiservers get by code?
-          name: Write SLI - Requests
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: table
-              position: bottom
-              values:
-              - last
-            visual:
-              areaOpacity: 1
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-              stack: all
-            yAxis:
-              format:
-                unit: requests/sec
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: sum by (code) (code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",verb="write"})
-                seriesNameFormat: '{{ code }}'
-    "3_2":
-      kind: Panel
-      spec:
-        display:
-          description: How many percent of write requests (POST|PUT|PATCH|DELETE) per second are returned with errors (5xx)?
-          name: Write SLI - Errors
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: list
-              position: bottom
-              size: small
-            visual:
-              areaOpacity: 0.75
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
+                decimalPlaces: 3
                 unit: percent
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: |2-
-                    sum by (resource) (
-                      code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",code=~"5..",verb="write"}
-                    )
-                  /
-                    sum by (resource) (code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",verb="write"})
-                seriesNameFormat: '{{ resource }}'
-    "3_3":
-      kind: Panel
-      spec:
-        display:
-          description: How many seconds is the 99th percentile for writing (POST|PUT|PATCH|DELETE) a given resource?
-          name: Write SLI - Duration
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: table
-              position: bottom
-            visual:
-              areaOpacity: 0.5
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
-                unit: seconds
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{cluster=~"$cluster",verb="write"}
-                seriesNameFormat: '{{ resource }}'
-    "4_0":
-      kind: Panel
-      spec:
-        display:
-          description: Shows the rate of work queue add events.
-          name: Work Queue Add Rate
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: list
-              position: bottom
-              size: small
-            visual:
-              areaOpacity: 1
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
-                unit: decimal
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: |-
-                  sum by (instance, name) (
-                    rate(
-                      workqueue_adds_total{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
-                    )
-                  )
-                seriesNameFormat: '{{instance}} {{name}}'
-    "4_1":
-      kind: Panel
-      spec:
-        display:
-          description: Shows the depth of the work queue.
-          name: Work Queue Depth
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: list
-              position: bottom
-              size: small
-            visual:
-              areaOpacity: 1
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
-                unit: decimal
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: |-
-                  sum by (instance, name) (
-                    rate(workqueue_depth{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval])
-                  )
-                seriesNameFormat: '{{instance}} {{name}}'
-    "4_2":
-      kind: Panel
-      spec:
-        display:
-          description: Shows the 99th percentile latency of items queued in the work queue
-          name: Work Queue Latency
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: list
-              position: bottom
-              size: small
-            visual:
-              areaOpacity: 0.5
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
-                unit: seconds
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: |-
-                  histogram_quantile(
-                    0.99,
-                    sum by (instance, name, le) (
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: apiserver_request:availability30d{cluster=~"$cluster",verb="write"}
+      "3_1":
+        kind: Panel
+        spec:
+          display:
+            description: How many write requests (POST|PUT|PATCH|DELETE) per second do the apiservers get by code?
+            name: Write SLI - Requests
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: requests/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (code) (code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",verb="write"})
+                  seriesNameFormat: '{{ code }}'
+      "3_2":
+        kind: Panel
+        spec:
+          display:
+            description: How many percent of write requests (POST|PUT|PATCH|DELETE) per second are returned with errors (5xx)?
+            name: Write SLI - Errors
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: percent
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (resource) (
+                        code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",code=~"5..",verb="write"}
+                      )
+                    /
+                      sum by (resource) (code_resource:apiserver_request_total:rate5m{cluster=~"$cluster",verb="write"})
+                  seriesNameFormat: '{{ resource }}'
+      "3_3":
+        kind: Panel
+        spec:
+          display:
+            description: How many seconds is the 99th percentile for writing (POST|PUT|PATCH|DELETE) a given resource?
+            name: Write SLI - Duration
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: cluster_quantile:apiserver_request_sli_duration_seconds:histogram_quantile{cluster=~"$cluster",verb="write"}
+                  seriesNameFormat: '{{ resource }}'
+      "4_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of work queue add events.
+            name: Work Queue Add Rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance, name) (
                       rate(
-                        workqueue_queue_duration_seconds_bucket{cluster="$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
+                        workqueue_adds_total{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
                       )
                     )
-                  )
-                seriesNameFormat: '{{instance}} {{name}}'
-    "5_0":
-      kind: Panel
+                  seriesNameFormat: '{{instance}} {{name}}'
+      "4_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the depth of the work queue.
+            name: Work Queue Depth
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance, name) (
+                      rate(workqueue_depth{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval])
+                    )
+                  seriesNameFormat: '{{instance}} {{name}}'
+      "4_2":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the 99th percentile latency of items queued in the work queue
+            name: Work Queue Latency
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, name, le) (
+                        rate(
+                          workqueue_queue_duration_seconds_bucket{cluster="$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{name}}'
+      "5_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows various memory usage metrics of the component.
+            name: Memory Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
+                  seriesNameFormat: Alloc All {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_heap_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
+                  seriesNameFormat: Alloc Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    rate(
+                      go_memstats_alloc_bytes_total{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
+                    )
+                  seriesNameFormat: Alloc Rate All {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    rate(
+                      go_memstats_heap_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
+                    )
+                  seriesNameFormat: Alloc Rate Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_stack_inuse_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
+                  seriesNameFormat: Inuse Stack {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_heap_inuse_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
+                  seriesNameFormat: Inuse Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: process_resident_memory_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
+                  seriesNameFormat: Resident Memory {{instance}}
+      "5_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU usage of the component.
+            name: CPU Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    rate(
+                      process_cpu_seconds_total{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
+                    )
+                  seriesNameFormat: '{{instance}}'
+      "5_2":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the number of goroutines being used by the component.
+            name: Goroutines
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_goroutines{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
+                  seriesNameFormat: '{{instance}}'
+      "5_3":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the Go garbage collection pause durations for the component.
+            name: GC Duration
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_gc_duration_seconds{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
+                  seriesNameFormat: '{{quantile}} - {{instance}}'
+    variables:
+    - kind: ListVariable
       spec:
+        allowAllValue: false
+        allowMultiple: false
         display:
-          description: Shows various memory usage metrics of the component.
-          name: Memory Usage
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: table
-              position: bottom
-              values:
-              - last
-            visual:
-              areaOpacity: 0.5
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
-                unit: bytes
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: go_memstats_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
-                seriesNameFormat: Alloc All {{instance}}
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: go_memstats_heap_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
-                seriesNameFormat: Alloc Heap {{instance}}
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: |-
-                  rate(
-                    go_memstats_alloc_bytes_total{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
-                  )
-                seriesNameFormat: Alloc Rate All {{instance}}
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: |-
-                  rate(
-                    go_memstats_heap_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
-                  )
-                seriesNameFormat: Alloc Rate Heap {{instance}}
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: go_memstats_stack_inuse_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
-                seriesNameFormat: Inuse Stack {{instance}}
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: go_memstats_heap_inuse_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
-                seriesNameFormat: Inuse Heap {{instance}}
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: process_resident_memory_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
-                seriesNameFormat: Resident Memory {{instance}}
-    "5_1":
-      kind: Panel
-      spec:
-        display:
-          description: Shows the CPU usage of the component.
-          name: CPU Usage
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: table
-              position: bottom
-              values:
-              - last
-            visual:
-              areaOpacity: 0.5
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
-                unit: decimal
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: |-
-                  rate(
-                    process_cpu_seconds_total{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}[$__rate_interval]
-                  )
-                seriesNameFormat: '{{instance}}'
-    "5_2":
-      kind: Panel
-      spec:
-        display:
-          description: Shows the number of goroutines being used by the component.
-          name: Goroutines
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: table
-              position: bottom
-              values:
-              - last
-            visual:
-              areaOpacity: 0.5
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
-                unit: decimal
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: go_goroutines{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
-                seriesNameFormat: '{{instance}}'
-    "5_3":
-      kind: Panel
-      spec:
-        display:
-          description: Shows the Go garbage collection pause durations for the component.
-          name: GC Duration
-        plugin:
-          kind: TimeSeriesChart
-          spec:
-            legend:
-              mode: table
-              position: bottom
-              values:
-              - last
-            visual:
-              areaOpacity: 0.5
-              display: line
-              lineWidth: 0.25
-              palette:
-                mode: auto
-            yAxis:
-              format:
-                unit: seconds
-        queries:
-        - kind: TimeSeriesQuery
-          spec:
-            plugin:
-              kind: PrometheusTimeSeriesQuery
-              spec:
-                datasource:
-                  kind: PrometheusDatasource
-                  name: prometheus-k8s-datasource
-                query: go_gc_duration_seconds{cluster=~"$cluster",instance=~"$instance",job="kube-apiserver"}
-                seriesNameFormat: '{{quantile}} - {{instance}}'
-  variables:
-  - kind: ListVariable
-    spec:
-      allowAllValue: false
-      allowMultiple: false
-      display:
-        hidden: false
+          hidden: false
+          name: cluster
         name: cluster
-      name: cluster
-      plugin:
-        kind: PrometheusLabelValuesVariable
-        spec:
-          datasource:
-            kind: PrometheusDatasource
-            name: prometheus-k8s-datasource
-          labelName: cluster
-          matchers:
-          - up{job="kube-apiserver"}
-  - kind: ListVariable
-    spec:
-      allowAllValue: false
-      allowMultiple: false
-      display:
-        hidden: false
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: cluster
+            matchers:
+            - up{job="kube-apiserver"}
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: instance
         name: instance
-      name: instance
-      plugin:
-        kind: PrometheusLabelValuesVariable
-        spec:
-          datasource:
-            kind: PrometheusDatasource
-            name: prometheus-k8s-datasource
-          labelName: instance
-          matchers:
-          - up{cluster="$cluster",job="kube-apiserver"}
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: instance
+            matchers:
+            - up{cluster="$cluster",job="kube-apiserver"}
 status: {}

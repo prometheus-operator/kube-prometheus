@@ -141,7 +141,7 @@
           "subdir": "jsonnet"
         }
       },
-      "version": "jsonnet",
+      "version": "c3b0b402c32ae174a1a517ac52dc90b50259435a",
       "name": "community-dashboards"
     }
   ],
