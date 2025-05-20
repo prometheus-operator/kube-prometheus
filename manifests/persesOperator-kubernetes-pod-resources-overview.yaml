@@ -1,0 +1,1193 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: kubernetes-pod-resources-overview
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: kubernetes-pod-resources-overview
+  namespace: monitoring
+spec:
+  config:
+    display:
+      name: Kubernetes / Compute Resources / Pod
+    duration: 1h
+    layouts:
+    - kind: Grid
+      spec:
+        display:
+          title: CPU Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/0_0'
+          height: 8
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: CPU Throttling
+        items:
+        - content:
+            $ref: '#/spec/panels/1_0'
+          height: 8
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: CPU Usage Quota
+        items:
+        - content:
+            $ref: '#/spec/panels/2_0'
+          height: 10
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Memory Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/3_0'
+          height: 8
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Memory Usage Quota
+        items:
+        - content:
+            $ref: '#/spec/panels/4_0'
+          height: 10
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Bandwidth
+        items:
+        - content:
+            $ref: '#/spec/panels/5_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/5_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Rate of Packets
+        items:
+        - content:
+            $ref: '#/spec/panels/6_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/6_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Rate of Packets Dropped
+        items:
+        - content:
+            $ref: '#/spec/panels/7_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/7_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Storage IO
+        items:
+        - content:
+            $ref: '#/spec/panels/8_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/8_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Storage IO - Container
+        items:
+        - content:
+            $ref: '#/spec/panels/9_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/9_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Storage IO - Distribution
+        items:
+        - content:
+            $ref: '#/spec/panels/10_0'
+          height: 10
+          width: 24
+          x: 0
+          "y": 0
+    panels:
+      "0_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU usage of the pod by container, alongwith the requests and limits.
+            name: CPU Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",container!="",namespace="$namespace",pod="$pod"}
+                    )
+                  seriesNameFormat: '{{container}}'
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      kube_pod_container_resource_requests{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",pod="$pod",resource="cpu"}
+                    )
+                  seriesNameFormat: requests
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      kube_pod_container_resource_limits{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",pod="$pod",resource="cpu"}
+                    )
+                  seriesNameFormat: limits
+      "1_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU throttling of the pod, split by container.
+            name: CPU Throttling
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: percent
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (container) (
+                        increase(
+                          container_cpu_cfs_throttled_periods_total{cluster="$cluster",container!="",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                        )
+                      )
+                    /
+                      sum by (container) (
+                        increase(
+                          container_cpu_cfs_periods_total{cluster="$cluster",container!="",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                        )
+                      )
+                  seriesNameFormat: '{{container}}'
+      "2_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU requests, limits, and usage of containers in a pod in tabular format.
+            name: CPU Quota
+          plugin:
+            kind: Table
+            spec:
+              columnSettings:
+              - align: left
+                header: Container
+                name: container
+              - align: right
+                header: CPU Usage
+                name: 'value #1'
+              - align: right
+                header: CPU Requests
+                name: 'value #2'
+              - align: right
+                header: CPU Requests %
+                name: 'value #3'
+              - align: right
+                header: CPU Limits
+                name: 'value #4'
+              - align: right
+                header: CPU Limits %
+                name: 'value #5'
+              - hide: true
+                name: timestamp
+              transforms:
+              - kind: MergeSeries
+                spec: {}
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",container!="",namespace="$namespace",pod="$pod"}
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster="$cluster",container!="",namespace="$namespace",pod="$pod"}
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (container) (
+                        node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",container!="",namespace="$namespace",pod="$pod"}
+                      )
+                    /
+                      sum by (container) (
+                        cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster="$cluster",container!="",namespace="$namespace",pod="$pod"}
+                      )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster="$cluster",container!="",namespace="$namespace",pod="$pod"}
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (container) (
+                        node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster="$cluster",container!="",namespace="$namespace",pod="$pod"}
+                      )
+                    /
+                      sum by (container) (
+                        cluster:namespace:pod_cpu:active:kube_pod_container_resource_limits{cluster="$cluster",container!="",namespace="$namespace",pod="$pod"}
+                      )
+      "3_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the memory usage (WSS) of the pod by container, alongwith the requests and limits.
+            name: Memory Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      container_memory_working_set_bytes{cluster="$cluster",container!="",image!="",job="cadvisor",namespace="$namespace",pod="$pod"}
+                    )
+                  seriesNameFormat: '{{container}}'
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      kube_pod_container_resource_requests{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",pod="$pod",resource="memory"}
+                    )
+                  seriesNameFormat: requests
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      kube_pod_container_resource_limits{cluster="$cluster",job="kube-state-metrics",namespace="$namespace",pod="$pod",resource="memory"}
+                    )
+                  seriesNameFormat: limits
+      "4_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the memory requests, limits, and usage of containers in a pod in tabular format.
+            name: Memory Quota
+          plugin:
+            kind: Table
+            spec:
+              columnSettings:
+              - align: left
+                header: Container
+                name: container
+              - align: right
+                header: Memory Usage
+                name: 'value #1'
+              - align: right
+                header: Memory Requests
+                name: 'value #2'
+              - align: right
+                header: Memory Requests %
+                name: 'value #3'
+              - align: right
+                header: Memory Limits
+                name: 'value #4'
+              - align: right
+                header: Memory Limits %
+                name: 'value #5'
+              - align: right
+                header: Memory Usage (RSS)
+                name: 'value #6'
+              - align: right
+                header: Memory Usage (Cache)
+                name: 'value #7'
+              - align: right
+                header: Memory Usage (Swap)
+                name: 'value #8'
+              - hide: true
+                name: timestamp
+              transforms:
+              - kind: MergeSeries
+                spec: {}
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      container_memory_working_set_bytes{cluster="$cluster",container!="",image!="",job="cadvisor",namespace="$namespace",pod="$pod"}
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster="$cluster",namespace="$namespace",pod="$pod"}
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (container) (
+                        container_memory_working_set_bytes{cluster="$cluster",image!="",job="cadvisor",namespace="$namespace",pod="$pod"}
+                      )
+                    /
+                      sum by (container) (
+                        cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster="$cluster",namespace="$namespace",pod="$pod"}
+                      )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster="$cluster",namespace="$namespace",pod="$pod"}
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (container) (
+                        container_memory_working_set_bytes{cluster="$cluster",container!="",image!="",job="cadvisor",namespace="$namespace",pod="$pod"}
+                      )
+                    /
+                      sum by (container) (
+                        cluster:namespace:pod_memory:active:kube_pod_container_resource_limits{cluster="$cluster",namespace="$namespace",pod="$pod"}
+                      )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      container_memory_rss{cluster="$cluster",container!="",container!="POD",job="cadvisor",namespace="$namespace",pod="$pod"}
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      container_memory_cache{cluster="$cluster",container!="",container!="POD",job="cadvisor",namespace="$namespace",pod="$pod"}
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      container_memory_swap{cluster="$cluster",container!="",container!="POD",job="cadvisor",namespace="$namespace",pod="$pod"}
+                    )
+      "5_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the network receive bandwidth of the pod.
+            name: Receive Bandwidth
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (pod) (
+                      irate(
+                        container_network_receive_bytes_total{cluster="$cluster",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{pod}}'
+      "5_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the network transmit bandwidth of the pod.
+            name: Transmit Bandwidth
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (pod) (
+                      rate(
+                        container_network_transmit_bytes_total{cluster="$cluster",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{pod}}'
+      "6_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of received packets by a pod.
+            name: Rate of Received Packets
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: packets/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (pod) (
+                      rate(
+                        container_network_receive_packets_total{cluster="$cluster",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{pod}}'
+      "6_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of transmitted packets by a pod.
+            name: Rate of Transmitted Packets
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: packets/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (pod) (
+                      rate(
+                        container_network_transmit_packets_total{cluster="$cluster",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{pod}}'
+      "7_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of received packets dropped by a pod.
+            name: Rate of Received Packets Dropped
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: packets/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (pod) (
+                      rate(
+                        container_network_receive_packets_dropped_total{cluster="$cluster",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{pod}}'
+      "7_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of transmitted packets droppedby a pod.
+            name: Rate of Transmitted Packets Dropped
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: packets/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (pod) (
+                      rate(
+                        container_network_transmit_packets_dropped_total{cluster="$cluster",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{pod}}'
+      "8_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows IOPS of a pod, split by read and write.
+            name: IOPS(Pod)
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    ceil(
+                      sum by (pod) (
+                        rate(
+                          container_fs_writes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: Writes
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    ceil(
+                      sum by (pod) (
+                        rate(
+                          container_fs_reads_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: Reads
+      "8_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows Throughput of a pod, split by read and write.
+            name: ThroughPut(Pod)
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (pod) (
+                      rate(
+                        container_fs_writes_bytes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: Writes
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (pod) (
+                      rate(
+                        container_fs_reads_bytes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod=~"$pod"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: Reads
+      "9_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows IOPS(Reads+Writes) by containers in a pod.
+            name: 'IOPS(Reads+Writes Containers) '
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    ceil(
+                      sum by (container) (
+                          rate(
+                            container_fs_reads_total{cluster="$cluster",container!="",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                          )
+                        +
+                          rate(
+                            container_fs_writes_total{cluster="$cluster",container!="",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                          )
+                      )
+                    )
+                  seriesNameFormat: '{{container}}'
+      "9_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows Throughput(Reads+Writes) by containers in a pod.
+            name: 'ThroughPut(Reads+Writes Containers) '
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                        rate(
+                          container_fs_reads_bytes_total{cluster="$cluster",container!="",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                        )
+                      +
+                        rate(
+                          container_fs_writes_bytes_total{cluster="$cluster",container!="",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                        )
+                    )
+                  seriesNameFormat: '{{container}}'
+      "10_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the current storage IO of the pod in tabular form, by containers.
+            name: Current Storage IO
+          plugin:
+            kind: Table
+            spec:
+              columnSettings:
+              - align: left
+                header: Container
+                name: container
+              - align: right
+                header: IOPS(Reads)
+                name: 'value #1'
+              - align: right
+                header: IOPS(Writes)
+                name: 'value #2'
+              - align: right
+                header: IOPS(Reads + Writes)
+                name: 'value #3'
+              - align: right
+                header: Throughput(Reads)
+                name: 'value #4'
+              - align: right
+                header: Throughput(Writes)
+                name: 'value #5'
+              - align: right
+                header: Throughput(Reads + Writes)
+                name: 'value #6'
+              - hide: true
+                name: timestamp
+              transforms:
+              - kind: MergeSeries
+                spec: {}
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      rate(
+                        container_fs_reads_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                      )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      rate(
+                        container_fs_writes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                      )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                        rate(
+                          container_fs_reads_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                        )
+                      +
+                        rate(
+                          container_fs_writes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                        )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      rate(
+                        container_fs_reads_bytes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                      )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                      rate(
+                        container_fs_writes_bytes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                      )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (container) (
+                        rate(
+                          container_fs_reads_bytes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                        )
+                      +
+                        rate(
+                          container_fs_writes_bytes_total{cluster="$cluster",container!="",device=~"(/dev.+)|mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|dasd.+",job="cadvisor",namespace="$namespace",pod="$pod"}[$__rate_interval]
+                        )
+                    )
+    variables:
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: cluster
+        name: cluster
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: cluster
+            matchers:
+            - up{job="kubelet", metrics_path="/metrics/cadvisor"}
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: namespace
+        name: namespace
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: namespace
+            matchers:
+            - kube_namespace_status_phase{cluster="$cluster",job="kube-state-metrics"}
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: pod
+        name: pod
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: pod
+            matchers:
+            - kube_pod_info{cluster="$cluster",job="kube-state-metrics",namespace="$namespace"}
+status: {}

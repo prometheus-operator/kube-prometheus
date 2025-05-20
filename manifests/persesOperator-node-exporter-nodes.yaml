@@ -1,0 +1,411 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: node-exporter-nodes
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: node-exporter-nodes
+  namespace: monitoring
+spec:
+  config:
+    display:
+      name: Node Exporter / Nodes
+    duration: 1h
+    layouts:
+    - kind: Grid
+      spec:
+        display:
+          title: CPU
+        items:
+        - content:
+            $ref: '#/spec/panels/0_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Memory
+        items:
+        - content:
+            $ref: '#/spec/panels/1_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/1_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Disk
+        items:
+        - content:
+            $ref: '#/spec/panels/2_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/2_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Network
+        items:
+        - content:
+            $ref: '#/spec/panels/3_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/3_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    panels:
+      "0_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows CPU utilization percentage across cluster nodes
+            name: CPU Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              yAxis:
+                format:
+                  unit: percent-decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    (
+                        (
+                            1
+                          -
+                            sum without (mode) (
+                              rate(node_cpu_seconds_total{instance="$instance",job="node",mode=~"idle|iowait|steal"}[$__rate_interval])
+                            )
+                        )
+                      / ignoring (cpu) group_left ()
+                        count without (cpu, mode) (node_cpu_seconds_total{instance="$instance",job="node",mode="idle"})
+                    )
+                  seriesNameFormat: '{{device}} - CPU - Usage'
+      "0_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows CPU utilization metrics
+            name: CPU Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: node_load1{instance="$instance",job="node"}
+                  seriesNameFormat: CPU - 1m Average
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: node_load5{instance="$instance",job="node"}
+                  seriesNameFormat: CPU - 5m Average
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: node_load15{instance="$instance",job="node"}
+                  seriesNameFormat: CPU - 15m Average
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: count(node_cpu_seconds_total{instance="$instance",job="node",mode="idle"})
+                  seriesNameFormat: CPU - Logical Cores
+      "1_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows memory utilization metrics
+            name: Memory Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              yAxis:
+                format:
+                  shortValues: true
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: node_memory_Buffers_bytes{instance="$instance",job="node"}
+                  seriesNameFormat: Memory - Buffers
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: node_memory_Cached_bytes{instance="$instance",job="node"}
+                  seriesNameFormat: Memory - Cached
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: node_memory_MemFree_bytes{instance="$instance",job="node"}
+                  seriesNameFormat: Memory - Free
+      "1_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows memory utilization across nodes
+            name: Memory Usage
+          plugin:
+            kind: GaugeChart
+            spec:
+              calculation: last
+              format:
+                unit: percent
+              thresholds:
+                defaultColor: green
+                mode: absolute
+                steps:
+                - color: orange
+                  value: 80
+                - color: red
+                  value: 90
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      100
+                    -
+                      (
+                            avg(node_memory_MemAvailable_bytes{instance="$instance",job="node"})
+                          /
+                            avg(node_memory_MemTotal_bytes{instance="$instance",job="node"})
+                        *
+                          100
+                      )
+                  seriesNameFormat: Memory - Usage
+      "2_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows disk I/O metrics in bytes
+            name: Disk I/O Bytes
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              yAxis:
+                format:
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: rate(node_disk_read_bytes_total{device!="",instance="$instance",job="node"}[$__rate_interval])
+                  seriesNameFormat: '{{device}} - Disk - Usage'
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: rate(node_disk_io_time_seconds_total{device!="",instance="$instance",job="node"}[$__rate_interval])
+                  seriesNameFormat: '{{device}} - Disk - Written'
+      "2_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows disk I/O duration metrics
+            name: Disk I/O Seconds
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: rate(node_disk_io_time_seconds_total{device!="",instance="$instance",job="node"}[$__rate_interval])
+                  seriesNameFormat: '{{device}} - Disk - IO Time'
+      "3_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows network received bytes metrics
+            name: Network Received
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: rate(node_network_receive_bytes_total{device!="lo",instance="$instance",job="node"}[$__rate_interval])
+                  seriesNameFormat: '{{device}} - Network - Received'
+      "3_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows network transmitted bytes metrics
+            name: Network Transmitted
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: rate(node_network_transmit_bytes_total{device!="lo",instance="$instance",job="node"}[$__rate_interval])
+                  seriesNameFormat: '{{device}} - Network - Transmitted'
+    variables:
+    - kind: ListVariable
+      spec:
+        allowAllValue: true
+        allowMultiple: false
+        display:
+          hidden: false
+          name: instance
+        name: instance
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: instance
+            matchers:
+            - node_uname_info{job="node",sysname!="Darwin"}
+status: {}

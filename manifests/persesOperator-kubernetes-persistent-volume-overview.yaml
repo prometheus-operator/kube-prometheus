@@ -1,0 +1,345 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: kubernetes-persistent-volume-overview
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: kubernetes-persistent-volume-overview
+  namespace: monitoring
+spec:
+  config:
+    display:
+      name: Kubernetes / Persistent Volume
+    duration: 1h
+    layouts:
+    - kind: Grid
+      spec:
+        display:
+          title: Volume Space Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/0_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Volume Inodes Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/1_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/1_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    panels:
+      "0_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the space usage of persistent volume in a namespace by a PV claim.
+            name: Volume Space Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    (
+                        sum without (instance, node) (
+                          topk(
+                            1,
+                            (
+                              kubelet_volume_stats_capacity_bytes{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                            )
+                          )
+                        )
+                      -
+                        sum without (instance, node) (
+                          topk(
+                            1,
+                            (
+                              kubelet_volume_stats_available_bytes{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                            )
+                          )
+                        )
+                    )
+                  seriesNameFormat: Used Space
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum without (instance, node) (
+                      topk(
+                        1,
+                        (
+                          kubelet_volume_stats_available_bytes{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                        )
+                      )
+                    )
+                  seriesNameFormat: Free Space
+      "0_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the space usage of persistent volume in a namespace by a PV claim.
+            name: Volume Space Usage
+          plugin:
+            kind: GaugeChart
+            spec:
+              calculation: last
+              format:
+                unit: percent
+              thresholds:
+                defaultColor: green
+                mode: absolute
+                steps:
+                - color: green
+                  value: 0
+                - color: orange
+                  value: 80
+                - color: red
+                  value: 90
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    max without (instance, node) (
+                          (
+                              topk(
+                                1,
+                                kubelet_volume_stats_capacity_bytes{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                              )
+                            -
+                              topk(
+                                1,
+                                kubelet_volume_stats_available_bytes{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                              )
+                          )
+                        /
+                          topk(
+                            1,
+                            kubelet_volume_stats_capacity_bytes{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                          )
+                      *
+                        100
+                    )
+      "1_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the inodes usage of persistent volume in a namespace by a PV claim.
+            name: Volume inodes Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum without (instance, node) (
+                      topk(
+                        1,
+                        (
+                          kubelet_volume_stats_inodes_used{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                        )
+                      )
+                    )
+                  seriesNameFormat: Used inodes
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    (
+                        sum without (instance, node) (
+                          topk(
+                            1,
+                            (
+                              kubelet_volume_stats_inodes{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                            )
+                          )
+                        )
+                      -
+                        sum without (instance, node) (
+                          topk(
+                            1,
+                            (
+                              kubelet_volume_stats_inodes_used{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                            )
+                          )
+                        )
+                    )
+                  seriesNameFormat: Free inodes
+      "1_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the inodes usage of persistent volume in a namespace by a PV claim.
+            name: Volume inodes Usage
+          plugin:
+            kind: GaugeChart
+            spec:
+              calculation: last
+              format:
+                unit: percent
+              thresholds:
+                defaultColor: green
+                mode: absolute
+                steps:
+                - color: green
+                  value: 0
+                - color: orange
+                  value: 80
+                - color: red
+                  value: 90
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    max without (instance, node) (
+                          topk(
+                            1,
+                            kubelet_volume_stats_inodes_used{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                          )
+                        /
+                          topk(
+                            1,
+                            kubelet_volume_stats_inodes{cluster="$cluster",job="kubelet",namespace="$namespace",persistentvolumeclaim="$volume"}
+                          )
+                      *
+                        100
+                    )
+    variables:
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: cluster
+        name: cluster
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: cluster
+            matchers:
+            - kubelet_volume_stats_capacity_bytes{job="kubelet"}
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: namespace
+        name: namespace
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: namespace
+            matchers:
+            - kubelet_volume_stats_capacity_bytes{cluster="$cluster",job="kubelet"}
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: PersistentVolume
+        name: volume
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: persistentvolumeclaim
+            matchers:
+            - kubelet_volume_stats_capacity_bytes{cluster="$cluster",job="kubelet",namespace="$namespace"}
+status: {}

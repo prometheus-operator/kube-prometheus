@@ -1,0 +1,652 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: controller-manager-overview
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: controller-manager-overview
+  namespace: monitoring
+spec:
+  config:
+    display:
+      name: Kubernetes / Controller Manager
+    duration: 1h
+    layouts:
+    - kind: Grid
+      spec:
+        display:
+          title: Controller Manager Status
+        items:
+        - content:
+            $ref: '#/spec/panels/0_0'
+          height: 8
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Work Queue
+        items:
+        - content:
+            $ref: '#/spec/panels/1_0'
+          height: 8
+          width: 8
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/1_1'
+          height: 8
+          width: 8
+          x: 8
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/1_2'
+          height: 8
+          width: 8
+          x: 16
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Kube API Requests
+        items:
+        - content:
+            $ref: '#/spec/panels/2_0'
+          height: 8
+          width: 8
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/2_1'
+          height: 8
+          width: 8
+          x: 8
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/2_2'
+          height: 8
+          width: 8
+          x: 16
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Resource Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/3_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/3_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/3_2'
+          height: 8
+          width: 12
+          x: 0
+          "y": 8
+        - content:
+            $ref: '#/spec/panels/3_3'
+          height: 8
+          width: 12
+          x: 12
+          "y": 8
+    panels:
+      "0_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the status of the controller manager.
+            name: Up
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                unit: decimal
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum(up{cluster="$cluster",job="kube-controller-manager"})
+      "1_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of work queue add events.
+            name: Work Queue Add Rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (cluster, instance, name) (
+                      rate(
+                        workqueue_adds_total{cluster="$cluster",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{cluster}} {{instance}} {{name}}'
+      "1_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the depth of the work queue.
+            name: Work Queue Depth
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (cluster, instance, name) (
+                      rate(
+                        workqueue_depth{cluster="$cluster",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{cluster}} {{instance}} {{name}}'
+      "1_2":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the 99th percentile latency of items queued in the work queue.
+            name: Work Queue Latency
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (cluster, instance, name, le) (
+                        rate(
+                          workqueue_queue_duration_seconds_bucket{cluster="$cluster",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{cluster}} {{instance}} {{name}}'
+      "2_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of requests to the Kube API.
+            name: Kube API Request Rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: requests/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(
+                        rest_client_requests_total{cluster=~"$cluster",code=~"2..",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: 2xx
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(
+                        rest_client_requests_total{cluster=~"$cluster",code=~"3..",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: 3xx
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(
+                        rest_client_requests_total{cluster=~"$cluster",code=~"4..",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: 4xx
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(
+                        rest_client_requests_total{cluster=~"$cluster",code=~"5..",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: 5xx
+      "2_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the 99th quantile latency of post requests to the Kube API.
+            name: Post Request Latency 99th Quantile
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (verb, le) (
+                        rate(
+                          rest_client_request_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager",verb="POST"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{verb}}'
+      "2_2":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the 99th quantile latency of get requests to the Kube API.
+            name: Get Request Latency 99th Quantile
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (verb, le) (
+                        rate(
+                          rest_client_request_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager",verb="GET"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{verb}}'
+      "3_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows various memory usage metrics of the component.
+            name: Memory Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}
+                  seriesNameFormat: Alloc All {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_heap_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}
+                  seriesNameFormat: Alloc Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    rate(
+                      go_memstats_alloc_bytes_total{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                    )
+                  seriesNameFormat: Alloc Rate All {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    rate(
+                      go_memstats_heap_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                    )
+                  seriesNameFormat: Alloc Rate Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_stack_inuse_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}
+                  seriesNameFormat: Inuse Stack {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_heap_inuse_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}
+                  seriesNameFormat: Inuse Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: process_resident_memory_bytes{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}
+                  seriesNameFormat: Resident Memory {{instance}}
+      "3_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU usage of the component.
+            name: CPU Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    rate(
+                      process_cpu_seconds_total{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}[$__rate_interval]
+                    )
+                  seriesNameFormat: '{{instance}}'
+      "3_2":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the number of goroutines being used by the component.
+            name: Goroutines
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_goroutines{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}
+                  seriesNameFormat: '{{instance}}'
+      "3_3":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the Go garbage collection pause durations for the component.
+            name: GC Duration
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_gc_duration_seconds{cluster=~"$cluster",instance=~"$instance",job="kube-controller-manager"}
+                  seriesNameFormat: '{{quantile}} - {{instance}}'
+    variables:
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: cluster
+        name: cluster
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: cluster
+            matchers:
+            - up{job="kube-controller-manager"}
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: instance
+        name: instance
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: instance
+            matchers:
+            - up{cluster="$cluster",job="kube-controller-manager"}
+status: {}

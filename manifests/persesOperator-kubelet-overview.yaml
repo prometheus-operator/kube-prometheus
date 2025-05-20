@@ -1,0 +1,1297 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: kubelet-overview
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: kubelet-overview
+  namespace: monitoring
+spec:
+  config:
+    display:
+      name: Kubernetes / Kubelet
+    duration: 1h
+    layouts:
+    - kind: Grid
+      spec:
+        display:
+          title: Kubelet Stats
+        items:
+        - content:
+            $ref: '#/spec/panels/0_0'
+          height: 6
+          width: 4
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_1'
+          height: 6
+          width: 4
+          x: 4
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_2'
+          height: 6
+          width: 4
+          x: 8
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_3'
+          height: 6
+          width: 4
+          x: 12
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_4'
+          height: 6
+          width: 4
+          x: 16
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_5'
+          height: 6
+          width: 4
+          x: 20
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Operation Rate and Errors
+        items:
+        - content:
+            $ref: '#/spec/panels/1_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/1_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Operation Duration 99th quantile
+        items:
+        - content:
+            $ref: '#/spec/panels/2_0'
+          height: 6
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Pod Start Rate and Duration
+        items:
+        - content:
+            $ref: '#/spec/panels/3_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/3_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Storage Operations Rate and Errors
+        items:
+        - content:
+            $ref: '#/spec/panels/4_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/4_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Storage Operation Duration 99th quantile
+        items:
+        - content:
+            $ref: '#/spec/panels/5_0'
+          height: 6
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Cgroup manager
+        items:
+        - content:
+            $ref: '#/spec/panels/6_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/6_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: PLEG relist
+        items:
+        - content:
+            $ref: '#/spec/panels/7_0'
+          height: 6
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/7_1'
+          height: 6
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: PLEG relist duration
+        items:
+        - content:
+            $ref: '#/spec/panels/8_0'
+          height: 6
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: RPC rate
+        items:
+        - content:
+            $ref: '#/spec/panels/9_0'
+          height: 6
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Request duration 99th quantile
+        items:
+        - content:
+            $ref: '#/spec/panels/10_0'
+          height: 6
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Resource Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/11_0'
+          height: 10
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/11_1'
+          height: 10
+          width: 12
+          x: 12
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/11_2'
+          height: 10
+          width: 12
+          x: 0
+          "y": 10
+        - content:
+            $ref: '#/spec/panels/11_3'
+          height: 10
+          width: 12
+          x: 12
+          "y": 10
+    panels:
+      "0_0":
+        kind: Panel
+        spec:
+          display:
+            description: Number of Running Kubelets Instances
+            name: Running Kubelets
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum(kubelet_node_name{cluster=~"$cluster",job="kubelet"})
+      "0_1":
+        kind: Panel
+        spec:
+          display:
+            description: Total Number of Running Pods
+            name: Running Pods
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum(kubelet_running_pods{cluster=~"$cluster",instance=~"$instance",job="kubelet"})
+      "0_2":
+        kind: Panel
+        spec:
+          display:
+            description: Total Number of Running Containers
+            name: Running Containers
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum(kubelet_running_containers{cluster=~"$cluster",instance=~"$instance",job="kubelet"})
+      "0_3":
+        kind: Panel
+        spec:
+          display:
+            description: Total Number of Volumes Currently Mounted
+            name: Actual Volume Count
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      volume_manager_total_volumes{cluster=~"$cluster",instance=~"$instance",job="kubelet",state="actual_state_of_world"}
+                    )
+      "0_4":
+        kind: Panel
+        spec:
+          display:
+            description: Total Number of Desired Volume Mounts
+            name: Desired Volume Count
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      volume_manager_total_volumes{cluster=~"$cluster",instance=~"$instance",job="kubelet",state="desired_state_of_world"}
+                    )
+      "0_5":
+        kind: Panel
+        spec:
+          display:
+            description: Node Config Error Count Per Second
+            name: Config Error Count
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(kubelet_node_config_error{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval])
+                    )
+      "1_0":
+        kind: Panel
+        spec:
+          display:
+            description: Rate of Container Runtime Operations, grouped by the type of Operation and kubelet instance
+            name: Operation Rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (operation_type, instance) (
+                      rate(
+                        kubelet_runtime_operations_total{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{operation_type}}'
+      "1_1":
+        kind: Panel
+        spec:
+          display:
+            description: Rate of Container Runtime Operations Errors, grouped by the type of Operation and kubelet instance
+            name: Operation Error Rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance, operation_type) (
+                      rate(
+                        kubelet_runtime_operations_errors_total{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{operation_type}}'
+      "2_0":
+        kind: Panel
+        spec:
+          display:
+            description: 99th percentile latency (in seconds) for each runtime operation
+            name: Operation Duration 99th quantile
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, operation_type, le) (
+                        rate(
+                          kubelet_runtime_operations_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{operation_type}}'
+      "3_0":
+        kind: Panel
+        spec:
+          display:
+            description: Rate of Starting Pods and Pod Worker Operations
+            name: Pod Start Rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance) (
+                      rate(
+                        kubelet_pod_start_duration_seconds_count{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} pod'
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance) (
+                      rate(
+                        kubelet_pod_worker_duration_seconds_count{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} worker'
+      "3_1":
+        kind: Panel
+        spec:
+          display:
+            description: 99th percentile Duration of Starting Pods and Pod Worker Operations
+            name: Pod Start Duration
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, le) (
+                        rate(
+                          kubelet_pod_start_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} pod'
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, le) (
+                        rate(
+                          kubelet_pod_worker_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} worker'
+      "4_0":
+        kind: Panel
+        spec:
+          display:
+            description: Rate of Storage Operations
+            name: Storage Operation Rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance, operation_name, volume_plugin) (
+                      rate(
+                        storage_operation_duration_seconds_count{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{operation_name}} {{volume_plugin}}'
+      "4_1":
+        kind: Panel
+        spec:
+          display:
+            description: Rate of Storage Operators Errors
+            name: Storage Operation Error Rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance, operation_name, volume_plugin) (
+                      rate(
+                        storage_operation_errors_total{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{operation_name}} {{volume_plugin}}'
+      "5_0":
+        kind: Panel
+        spec:
+          display:
+            description: 99th percentile Duration of Storage Operations
+            name: Storage Operation Duration 99th quantile
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, operation_name, volume_plugin, le) (
+                        rate(
+                          storage_operation_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{operation_name}} {{volume_plugin}}'
+      "6_0":
+        kind: Panel
+        spec:
+          display:
+            description: Rate of Operations from cgroup manager
+            name: Cgroup manager operation rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance, operation_type) (
+                      rate(
+                        kubelet_cgroup_manager_duration_seconds_count{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{operation_type}}'
+      "6_1":
+        kind: Panel
+        spec:
+          display:
+            description: 99th percentile Duration of Cgroup manager
+            name: Cgroup manager 99th quantile
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, operation_type, le) (
+                        rate(
+                          kubelet_cgroup_manager_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{operation_type}}'
+      "7_0":
+        kind: Panel
+        spec:
+          display:
+            description: Rate of PLEG performed operation
+            name: PLEG relist rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance) (
+                      rate(
+                        kubelet_pleg_relist_duration_seconds_count{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: '{{instance}}'
+      "7_1":
+        kind: Panel
+        spec:
+          display:
+            description: 99th percentile time interval between PLEG relist cycles
+            name: PLEG relist interval
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, le) (
+                        rate(
+                          kubelet_pleg_relist_interval_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}}'
+      "8_0":
+        kind: Panel
+        spec:
+          display:
+            description: 99th percentile of PLEG duration of relist operations
+            name: PLEG relist duration
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, le) (
+                        rate(
+                          kubelet_pleg_relist_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}}'
+      "9_0":
+        kind: Panel
+        spec:
+          display:
+            description: Total number of HTTP requests made by the Kubelet, by status code
+            name: RPC rate
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+                stack: all
+              yAxis:
+                format:
+                  unit: ops/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(
+                        rest_client_requests_total{cluster=~"$cluster",code=~"2..",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: 2xx
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(
+                        rest_client_requests_total{cluster=~"$cluster",code=~"3..",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: 3xx
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(
+                        rest_client_requests_total{cluster=~"$cluster",code=~"4..",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: 4xx
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum(
+                      rate(
+                        rest_client_requests_total{cluster=~"$cluster",code=~"5..",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                      )
+                    )
+                  seriesNameFormat: 5xx
+      "10_0":
+        kind: Panel
+        spec:
+          display:
+            description: 99th percentile of Request duration
+            name: Request duration 99th quantile
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    histogram_quantile(
+                      0.99,
+                      sum by (instance, verb, le) (
+                        rate(
+                          rest_client_request_duration_seconds_bucket{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                        )
+                      )
+                    )
+                  seriesNameFormat: '{{instance}} {{verb}}'
+      "11_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows various memory usage metrics of the component.
+            name: Memory Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kubelet"}
+                  seriesNameFormat: Alloc All {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_heap_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kubelet"}
+                  seriesNameFormat: Alloc Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    rate(
+                      go_memstats_alloc_bytes_total{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                    )
+                  seriesNameFormat: Alloc Rate All {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    rate(
+                      go_memstats_heap_alloc_bytes{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval]
+                    )
+                  seriesNameFormat: Alloc Rate Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_stack_inuse_bytes{cluster=~"$cluster",instance=~"$instance",job="kubelet"}
+                  seriesNameFormat: Inuse Stack {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_memstats_heap_inuse_bytes{cluster=~"$cluster",instance=~"$instance",job="kubelet"}
+                  seriesNameFormat: Inuse Heap {{instance}}
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: process_resident_memory_bytes{cluster=~"$cluster",instance=~"$instance",job="kubelet"}
+                  seriesNameFormat: Resident Memory {{instance}}
+      "11_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU usage of the component.
+            name: CPU Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: rate(process_cpu_seconds_total{cluster=~"$cluster",instance=~"$instance",job="kubelet"}[$__rate_interval])
+                  seriesNameFormat: '{{instance}}'
+      "11_2":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the number of goroutines being used by the component.
+            name: Goroutines
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_goroutines{cluster=~"$cluster",instance=~"$instance",job="kubelet"}
+                  seriesNameFormat: '{{instance}}'
+      "11_3":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the Go garbage collection pause durations for the component.
+            name: GC Duration
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: table
+                position: bottom
+                values:
+                - last
+              visual:
+                areaOpacity: 0.5
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: seconds
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: go_gc_duration_seconds{cluster=~"$cluster",instance=~"$instance",job="kubelet"}
+                  seriesNameFormat: '{{quantile}} - {{instance}}'
+    variables:
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: cluster
+        name: cluster
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: cluster
+            matchers:
+            - up{job="kubelet"}
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: instance
+        name: instance
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: instance
+            matchers:
+            - up{cluster="$cluster",job="kubelet"}
+status: {}

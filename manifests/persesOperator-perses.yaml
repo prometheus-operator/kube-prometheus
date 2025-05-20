@@ -1,0 +1,57 @@
+apiVersion: perses.dev/v1alpha1
+kind: Perses
+metadata:
+  finalizers:
+  - perses.dev/finalizer
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: perses-k8s
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: perses-k8s
+  namespace: monitoring
+spec:
+  config:
+    database:
+      file:
+        case_sensitive: false
+        extension: yaml
+        folder: /perses
+    ephemeral_dashboard:
+      cleanup_interval: 1s
+      enable: true
+    frontend:
+      disable: false
+      explorer:
+        enable: true
+      time_range:
+        disable_custom: false
+    security:
+      authentication:
+        disable_sign_up: false
+        providers:
+          enable_native: false
+      cookie:
+        secure: false
+      enable_auth: false
+      readonly: false
+  containerPort: 8080
+  image: persesdev/perses:v0.51.0-rc.0
+  livenessProbe:
+    failureThreshold: 5
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  metadata:
+    labels:
+      app.kubernetes.io/instance: perses-k8s
+  readinessProbe:
+    failureThreshold: 5
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  storage:
+    size: 1Gi

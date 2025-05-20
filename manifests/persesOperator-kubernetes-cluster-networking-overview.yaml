@@ -1,0 +1,826 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: kubernetes-cluster-networking-overview
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: kubernetes-cluster-networking-overview
+  namespace: monitoring
+spec:
+  config:
+    display:
+      name: Kubernetes / Networking / Cluster
+    duration: 1h
+    layouts:
+    - kind: Grid
+      spec:
+        display:
+          title: Current Rate of Bytes
+        items:
+        - content:
+            $ref: '#/spec/panels/0_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Current Status
+        items:
+        - content:
+            $ref: '#/spec/panels/1_0'
+          height: 10
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Average Rate of Bytes
+        items:
+        - content:
+            $ref: '#/spec/panels/2_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/2_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Bandwidth
+        items:
+        - content:
+            $ref: '#/spec/panels/3_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/3_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Rate of Packets
+        items:
+        - content:
+            $ref: '#/spec/panels/4_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/4_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Rate of Packets Dropped
+        items:
+        - content:
+            $ref: '#/spec/panels/5_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/5_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: TCP Retransmit Rate
+        items:
+        - content:
+            $ref: '#/spec/panels/6_0'
+          height: 8
+          width: 12
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/6_1'
+          height: 8
+          width: 12
+          x: 12
+          "y": 0
+    panels:
+      "0_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of bytes received by namespace in a cluster.
+            name: Current Rate of Bytes Received
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "0_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of bytes transmitted by namespace in a cluster.
+            name: Current Rate of Bytes Transmitted
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "1_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the current network status of the cluster by namespace.
+            name: Current Status
+          plugin:
+            kind: Table
+            spec:
+              columnSettings:
+              - align: left
+                header: Namespace
+                name: namespace
+              - align: right
+                header: Rx Bytes
+                name: 'value #1'
+              - align: right
+                header: Tx Bytes
+                name: 'value #2'
+              - align: right
+                header: Rx Bytes (Avg)
+                name: 'value #3'
+              - align: right
+                header: Tx Bytes (Avg)
+                name: 'value #4'
+              - align: right
+                header: Rx Packets
+                name: 'value #5'
+              - align: right
+                header: Tx Packets
+                name: 'value #6'
+              - align: right
+                header: Rx Packets Dropped
+                name: 'value #7'
+              - align: right
+                header: Tx Packets Dropped
+                name: 'value #8'
+              - hide: true
+                name: timestamp
+              transforms:
+              - kind: MergeSeries
+                spec: {}
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    avg by (namespace) (
+                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    avg by (namespace) (
+                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_receive_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_transmit_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+      "2_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the average rate of bytes received by namespace in a cluster.
+            name: Average Rate of Bytes Received
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    avg by (namespace) (
+                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "2_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the average rate of bytes transmitted by namespace in a cluster.
+            name: Average Rate of Bytes Received
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    avg by (namespace) (
+                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "3_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the network receive bandwidth of the cluster highlighting top pods.
+            name: Receive Bandwidth
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_receive_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "3_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the network transmit bandwidth of the cluster highlighting top pods.
+            name: Transmit Bandwidth
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_transmit_bytes_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "4_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of received packets by namespace in a cluster.
+            name: Rate of Received Packets
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: packets/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_receive_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "4_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of transmitted packets by namespace in a cluster.
+            name: Rate of Transmitted Packets
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: packets/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_transmit_packets_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "5_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of received packets dropped by namespace in a cluster.
+            name: Rate of Received Packets Dropped
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: packets/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_receive_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "5_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of transmitted packets dropped by namespace in a cluster.
+            name: Rate of Transmitted Packets Dropped
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: packets/sec
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (namespace) (
+                        rate(container_network_transmit_packets_dropped_total{cluster="$cluster",namespace!=""}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{namespace}}'
+      "6_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of TCP retransmits out of all sent segments in a cluster.
+            name: Rate of TCP Retransmits out of all sent segments
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: percent
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance) (
+                          rate(node_netstat_Tcp_RetransSegs{cluster="$cluster"}[$__rate_interval])
+                        /
+                          rate(node_netstat_Tcp_OutSegs{cluster="$cluster"}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{instance}}'
+      "6_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the rate of TCP SYN retransmits out of all sent segments in a cluster.
+            name: Rate of TCP SYN Retransmits out of all sent segments
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 0.75
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: percent
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |-
+                    sum by (instance) (
+                          rate(node_netstat_TcpExt_TCPSynRetrans{cluster="$cluster"}[$__rate_interval])
+                        /
+                          rate(node_netstat_Tcp_RetransSegs{cluster="$cluster"}[$__rate_interval])
+                      * on (cluster, namespace, pod) group_left ()
+                        topk by (cluster, namespace, pod) (
+                          1,
+                          max by (cluster, namespace, pod) (kube_pod_info{host_network="false"})
+                        )
+                    )
+                  seriesNameFormat: '{{instance}}'
+    variables:
+    - kind: ListVariable
+      spec:
+        allowAllValue: false
+        allowMultiple: false
+        display:
+          hidden: false
+          name: cluster
+        name: cluster
+        plugin:
+          kind: PrometheusLabelValuesVariable
+          spec:
+            datasource:
+              kind: PrometheusDatasource
+              name: prometheus-k8s-datasource
+            labelName: cluster
+            matchers:
+            - up{job="kubelet", metrics_path="/metrics/cadvisor"}
+status: {}

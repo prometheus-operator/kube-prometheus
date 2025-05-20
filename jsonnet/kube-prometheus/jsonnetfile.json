@@ -123,6 +123,26 @@
       },
       "version": "main",
       "name": "thanos-mixin"
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/perses/perses-operator",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "main",
+      "name": "perses-operator"
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/saswatamcode/community-dashboards",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "c3b0b402c32ae174a1a517ac52dc90b50259435a",
+      "name": "community-dashboards"
     }
   ],
   "legacyImports": true

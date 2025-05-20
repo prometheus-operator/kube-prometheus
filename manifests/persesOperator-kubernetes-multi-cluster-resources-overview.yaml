@@ -1,0 +1,498 @@
+apiVersion: perses.dev/v1alpha1
+kind: PersesDashboard
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/component: perses-operator
+    app.kubernetes.io/instance: kubernetes-multi-cluster-resources-overview
+    app.kubernetes.io/name: perses-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.1.10
+  name: kubernetes-multi-cluster-resources-overview
+  namespace: monitoring
+spec:
+  config:
+    display:
+      name: Kubernetes / Compute Resources / Multi-Cluster
+    duration: 1h
+    layouts:
+    - kind: Grid
+      spec:
+        display:
+          title: Multi-Cluster Stats
+        items:
+        - content:
+            $ref: '#/spec/panels/0_0'
+          height: 4
+          width: 4
+          x: 0
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_1'
+          height: 4
+          width: 4
+          x: 4
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_2'
+          height: 4
+          width: 4
+          x: 8
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_3'
+          height: 4
+          width: 4
+          x: 12
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_4'
+          height: 4
+          width: 4
+          x: 16
+          "y": 0
+        - content:
+            $ref: '#/spec/panels/0_5'
+          height: 4
+          width: 4
+          x: 20
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Multi-Cluster CPU Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/1_0'
+          height: 8
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Multi-Cluster CPU Usage Quota
+        items:
+        - content:
+            $ref: '#/spec/panels/2_0'
+          height: 10
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Multi-Cluster Memory Usage
+        items:
+        - content:
+            $ref: '#/spec/panels/3_0'
+          height: 8
+          width: 24
+          x: 0
+          "y": 0
+    - kind: Grid
+      spec:
+        display:
+          title: Multi-Cluster Memory Usage Quota
+        items:
+        - content:
+            $ref: '#/spec/panels/4_0'
+          height: 10
+          width: 24
+          x: 0
+          "y": 0
+    panels:
+      "0_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU utilization of all clusters.
+            name: CPU Utilization
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                decimalPlaces: 2
+                unit: percent
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum(cluster:node_cpu:ratio_rate5m) / count(cluster:node_cpu:ratio_rate5m)
+      "0_1":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU requests commitment of all clusters.
+            name: CPU Requests Commitment
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                decimalPlaces: 2
+                unit: percent
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum(kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"})
+                    /
+                      sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
+      "0_2":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU limits commitment of all clusters.
+            name: CPU Limits Commitment
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                decimalPlaces: 2
+                unit: percent
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum(kube_pod_container_resource_limits{job="kube-state-metrics",resource="cpu"})
+                    /
+                      sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
+      "0_3":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the Memory utilization of all clusters.
+            name: Memory Utilization
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                decimalPlaces: 2
+                unit: percent
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: 1 - sum(:node_memory_MemAvailable_bytes:sum) / sum(node_memory_MemTotal_bytes{job="node-exporter"})
+      "0_4":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the Memory requests commitment of all clusters.
+            name: Memory Requests Commitment
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                decimalPlaces: 2
+                unit: percent
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum(kube_pod_container_resource_requests{job="kube-state-metrics",resource="memory"})
+                    /
+                      sum(kube_node_status_allocatable{job="kube-state-metrics",resource="memory"})
+      "0_5":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the Memory limits commitment of all clusters.
+            name: Memory Limits Commitment
+          plugin:
+            kind: StatChart
+            spec:
+              calculation: last
+              format:
+                decimalPlaces: 2
+                unit: percent
+              valueFontSize: 50
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum(kube_pod_container_resource_limits{job="kube-state-metrics",resource="memory"})
+                    /
+                      sum(kube_node_status_allocatable{job="kube-state-metrics",resource="memory"})
+      "1_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU usage of each cluster.
+            name: CPU Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: decimal
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (cluster) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m)
+                  seriesNameFormat: '{{cluster}}'
+      "2_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the CPU requests, limits, and usage of clusters in tabular format.
+            name: CPU Quota
+          plugin:
+            kind: Table
+            spec:
+              columnSettings:
+              - align: left
+                header: Cluster
+                name: cluster
+              - align: right
+                header: CPU Usage
+                name: 'value #1'
+              - align: right
+                header: CPU Requests
+                name: 'value #2'
+              - align: right
+                header: CPU Requests %
+                name: 'value #3'
+              - align: right
+                header: CPU Limits
+                name: 'value #4'
+              - align: right
+                header: CPU Limits %
+                name: 'value #5'
+              - hide: true
+                name: timestamp
+              transforms:
+              - kind: MergeSeries
+                spec: {}
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (cluster) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m)
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (cluster) (kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"})
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (cluster) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m)
+                    /
+                      sum by (cluster) (kube_pod_container_resource_requests{job="kube-state-metrics",resource="cpu"})
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (cluster) (kube_pod_container_resource_limits{job="kube-state-metrics",resource="cpu"})
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (cluster) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m)
+                    /
+                      sum by (cluster) (kube_pod_container_resource_limits{job="kube-state-metrics",resource="cpu"})
+      "3_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows memory usage w/o cache, for each cluster.
+            name: Memory Usage
+          plugin:
+            kind: TimeSeriesChart
+            spec:
+              legend:
+                mode: list
+                position: bottom
+                size: small
+              visual:
+                areaOpacity: 1
+                display: line
+                lineWidth: 0.25
+                palette:
+                  mode: auto
+              yAxis:
+                format:
+                  unit: bytes
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (cluster) (container_memory_rss{container!="",job="cadvisor"})
+                  seriesNameFormat: '{{cluster}}'
+      "4_0":
+        kind: Panel
+        spec:
+          display:
+            description: Shows the memory requests, limits, and usage of clusters in tabular format.
+            name: Memory Requests by Cluster
+          plugin:
+            kind: Table
+            spec:
+              columnSettings:
+              - align: left
+                header: Cluster
+                name: cluster
+              - align: right
+                header: Memory Usage
+                name: 'value #1'
+              - align: right
+                header: Memory Requests
+                name: 'value #2'
+              - align: right
+                header: Memory Requests %
+                name: 'value #3'
+              - align: right
+                header: Memory Limits
+                name: 'value #4'
+              - align: right
+                header: Memory Limits %
+                name: 'value #5'
+              - hide: true
+                name: timestamp
+              transforms:
+              - kind: MergeSeries
+                spec: {}
+          queries:
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (cluster) (container_memory_rss{container!="",job="cadvisor"})
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (cluster) (kube_pod_container_resource_requests{job="kube-state-metrics",resource="memory"})
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (cluster) (container_memory_rss{container!="",job="cadvisor"})
+                    /
+                      sum by (cluster) (kube_pod_container_resource_requests{job="kube-state-metrics",resource="memory"})
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: sum by (cluster) (kube_pod_container_resource_limits{job="kube-state-metrics",resource="memory"})
+          - kind: TimeSeriesQuery
+            spec:
+              plugin:
+                kind: PrometheusTimeSeriesQuery
+                spec:
+                  datasource:
+                    kind: PrometheusDatasource
+                    name: prometheus-k8s-datasource
+                  query: |2-
+                      sum by (cluster) (container_memory_rss{container!="",job="cadvisor"})
+                    /
+                      sum by (cluster) (kube_pod_container_resource_limits{job="kube-state-metrics",resource="memory"})
+    variables: []
+status: {}
