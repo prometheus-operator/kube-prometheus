@@ -9,8 +9,8 @@ JSONNET_BIN=$(BIN_DIR)/jsonnet
 JSONNETLINT_BIN=$(BIN_DIR)/jsonnet-lint
 JSONNETFMT_BIN=$(BIN_DIR)/jsonnetfmt
 KUBECONFORM_BIN=$(BIN_DIR)/kubeconform
-KUBESCAPE_BIN=$(BIN_DIR)/kubescape
-TOOLING=$(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETLINT_BIN) $(JSONNETFMT_BIN) $(KUBECONFORM_BIN) $(MDOX_BIN) $(KUBESCAPE_BIN)
+KUBESCAPE_BIN=~/.kubescape/bin/kubescape
+TOOLING=$(JB_BIN) $(GOJSONTOYAML_BIN) $(JSONNET_BIN) $(JSONNETLINT_BIN) $(JSONNETFMT_BIN) $(KUBECONFORM_BIN) $(MDOX_BIN)
 
 JSONNETFMT_ARGS=-n 2 --max-blank-lines 2 --string-style s --comment-style s
 
@@ -54,16 +54,16 @@ update: $(JB_BIN)
 	$(JB_BIN) update
 
 .PHONY: validate
-validate: validate-1.29 validate-1.30 validate-1.31
-
-validate-1.29:
-	KUBE_VERSION=1.29.8 $(MAKE) kubeconform
-
-validate-1.30:
-	KUBE_VERSION=1.30.4 $(MAKE) kubeconform
+validate: validate-1.31 validate-1.32 validate-1.33
 
 validate-1.31:
-	KUBE_VERSION=1.31.0 $(MAKE) kubeconform
+	KUBE_VERSION=1.31.9 $(MAKE) kubeconform
+
+validate-1.32:
+	KUBE_VERSION=1.32.5 $(MAKE) kubeconform
+
+validate-1.33:
+	KUBE_VERSION=1.33.1 $(MAKE) kubeconform
 
 .PHONY: kubeconform
 kubeconform: crdschemas manifests $(KUBECONFORM_BIN)
@@ -71,7 +71,10 @@ kubeconform: crdschemas manifests $(KUBECONFORM_BIN)
 
 .PHONY: kubescape
 kubescape: $(KUBESCAPE_BIN) ## Runs a security analysis on generated manifests - failing if risk score is above threshold percentage 't'
-	$(KUBESCAPE_BIN) scan -s framework -t $(KUBESCAPE_THRESHOLD) nsa manifests/*.yaml --exceptions 'kubescape-exceptions.json'
+	$(KUBESCAPE_BIN) scan framework nsa --compliance-threshold $(KUBESCAPE_THRESHOLD) -v --exceptions 'kubescape-exceptions.json' manifests/
+
+$(KUBESCAPE_BIN):
+	curl -s https://raw.githubusercontent.com/kubescape/kubescape/master/install.sh | /bin/bash
 
 .PHONY: fmt
 fmt: $(JSONNETFMT_BIN)

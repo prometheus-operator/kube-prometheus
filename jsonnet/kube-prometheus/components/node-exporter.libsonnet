@@ -26,6 +26,7 @@ local defaults = {
   // thus [a-z0-9] regex below
   ignoredNetworkDevices:: '^(veth.*|[a-f0-9]{15})$',
   port:: 9100,
+  internal_port:: 9101,
   commonLabels:: {
     'app.kubernetes.io/name': defaults.name,
     'app.kubernetes.io/version': defaults.version,
@@ -211,9 +212,10 @@ function(params) {
       name: ne._config.name,
       image: ne._config.image,
       args: [
-        '--web.listen-address=' + std.join(':', [ne._config.listenAddress, std.toString(ne._config.port)]),
+        '--web.listen-address=' + std.join(':', [ne._config.listenAddress, std.toString(ne._config.internal_port)]),
         '--path.sysfs=/host/sys',
         '--path.rootfs=/host/root',
+        '--path.procfs=/host/root/proc',
         '--path.udev.data=/host/root/run/udev/data',
         '--no-collector.wifi',
         '--no-collector.hwmon',
@@ -237,7 +239,7 @@ function(params) {
     local kubeRbacProxy = krp(ne._config.kubeRbacProxy {
       name: 'kube-rbac-proxy',
       //image: krpImage,
-      upstream: 'http://127.0.0.1:' + ne._config.port + '/',
+      upstream: 'http://127.0.0.1:' + ne._config.internal_port + '/',
       secureListenAddress: '[$(IP)]:' + ne._config.port,
       // Keep `hostPort` here, rather than in the node-exporter container
       // because Kubernetes mandates that if you define a `hostPort` then

@@ -28,7 +28,7 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
-  configmapReloaderImage:: error 'must provide version',
+  configmapReloaderImage:: error 'must provide configmapReloaderImage',
   kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
 
   port:: 9115,

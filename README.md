@@ -41,13 +41,13 @@ no effect, but is still deployed.
 
 The following Kubernetes versions are supported and work as we test against these versions in their respective branches. But note that other versions might work!
 
-| kube-prometheus stack                                                                      | Kubernetes 1.23 | Kubernetes 1.24 | Kubernetes 1.25 | Kubernetes 1.26 | Kubernetes 1.27 | Kubernetes 1.28 | Kubernetes 1.29 | Kubernetes 1.30 | Kubernetes 1.31 |
-|--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| [`release-0.11`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.11) | ✔               | ✔               | ✗               | x               | x               | x               | x               | x               | x               |
-| [`release-0.12`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.12) | ✗               | ✔               | ✔               | x               | x               | x               | x               | x               | x               |
-| [`release-0.13`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.13) | ✗               | ✗               | x               | ✔               | ✔               | ✔               | x               | x               | x               |
-| [`release-0.14`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.14) | ✗               | ✗               | x               | ✔               | ✔               | ✔               | ✔               | ✔               | ✔               |
-| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | ✗               | ✗               | x               | x               | ✔               | ✔               | ✔               | ✔               | ✔               |
+| kube-prometheus stack                                                                      | Kubernetes 1.23 | Kubernetes 1.24 | Kubernetes 1.25 | Kubernetes 1.26 | Kubernetes 1.27 | Kubernetes 1.28 | Kubernetes 1.29 | Kubernetes 1.30 | Kubernetes 1.31 | Kubernetes 1.32 | Kubernetes 1.33 |
+|--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
+| [`release-0.11`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.11) | ✔               | ✔               | ✗               | x               | x               | x               | x               | x               | x               | x               | x               |
+| [`release-0.12`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.12) | ✗               | ✔               | ✔               | x               | x               | x               | x               | x               | x               | x               | x               |
+| [`release-0.13`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.13) | ✗               | ✗               | x               | ✔               | ✔               | ✔               | x               | x               | x               | x               | x               |
+| [`release-0.14`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.14) | ✗               | ✗               | x               | ✔               | ✔               | ✔               | ✔               | ✔               | ✔               | x               | x               |
+| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | ✗               | ✗               | x               | x               | ✔               | ✔               | ✔               | ✔               | ✔               | ✔               | ✔               |
 
 ## Quickstart
 
@@ -79,12 +79,14 @@ be created successfully.
 kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
 ```
 
+The [official documentation](http://prometheus-operator.dev/docs/getting-started/installation/) contains the full version of this quick-start guide, and includes [instructions](https://prometheus-operator.dev/kube-prometheus/kube/access-ui/) on how to access Prometheus, AlertManager, and Grafana.
+
 ### minikube
 
 To try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
 
 ```shell
-$ minikube delete && minikube start --kubernetes-version=v1.23.0 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.bind-address=0.0.0.0 --extra-config=controller-manager.bind-address=0.0.0.0
+$ minikube delete && minikube start --container-runtime=containerd --kubernetes-version=v1.32.3 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.bind-address=0.0.0.0 --extra-config=controller-manager.bind-address=0.0.0.0
 ```
 
 The kube-prometheus stack includes a resource metrics API server, so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:

@@ -363,6 +363,7 @@ function(params) {
         fsGroup: 2000,
       },
       [if std.objectHas(params, 'thanos') then 'thanos']: p._config.thanos,
+      [if std.objectHas(params, 'storage') then 'storage']: p._config.storage,
     },
   },
 
