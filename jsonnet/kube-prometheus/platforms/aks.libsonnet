@@ -16,9 +16,13 @@
       apiVersion: 'v1',
       kind: 'Service',
       metadata: {
-        name: 'kube-prometheus-stack-coredns',
+        name: 'kube-dns-metrics',
         namespace: 'kube-system',
-        labels: { 'k8s-app': 'kube-dns' },
+        labels: {
+          'k8s-app': 'kube-dns',
+          // This label is used as the job name in Prometheus
+          'app.kubernetes.io/name': 'kube-dns',
+        },
       },
       spec: {
         ports: [
