@@ -7,6 +7,7 @@ local defaults = {
   commonLabels:: {
     'app.kubernetes.io/name': 'kube-prometheus',
     'app.kubernetes.io/part-of': 'kube-prometheus',
+    'app.kubernetes.io/component': 'control-plane',
   },
   mixin:: {
     ruleLabels: {},
