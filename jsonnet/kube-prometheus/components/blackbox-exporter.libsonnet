@@ -129,6 +129,7 @@ function(params) {
     kind: 'ClusterRole',
     metadata: {
       name: 'blackbox-exporter',
+      labels: bb._config.commonLabels,
     },
     rules: [
       {
