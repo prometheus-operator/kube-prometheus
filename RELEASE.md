@@ -8,7 +8,17 @@ We do not guarantee backports from the `main` branch to older release branches.
 
 This differs from the previous release schedule, which was driven by OpenShift releases.
 
-# How to cut a new release
+| Release | Kubernetes Version Tested | Release shepherd                        |
+|---------|---------------------------|-----------------------------------------|
+| v0.18.0 | 1.39, 1.38, 1.37          | **searching for volunteer**             |
+| v0.17.0 | 1.37, 1.36, 1.35          | **searching for volunteer**             |
+| v0.16.0 | 1.35, 1.34, 1.33          | Simon Pasquier (GitHub: @simonpasquier) |
+| v0.15.0 | 1.33, 1.32, 1.31          | Jayapriya Pai (Github: @slashpai)       |
+| v0.14.0 | 1.31, 1.30, 1.29          | Philip Gough (GitHub: @philipgough)     |
+| v0.13.0 | 1.28, 1.27, 1.26          | Philip Gough (GitHub: @philipgough)     |
+| v0.13.0 | 1.28, 1.27, 1.26          | Philip Gough (GitHub: @philipgough)     |
+
+## How to cut a new release
 
 > This guide is strongly based on the [prometheus-operator release
 > instructions](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md).
