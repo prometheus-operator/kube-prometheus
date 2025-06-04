@@ -19,7 +19,7 @@
         namespace: 'kube-system',
         labels: {
           'app.kubernetes.io/name': 'aws-node',
-          'app.kubernetes.io/component': 'prometheus',
+          'app.kubernetes.io/component': 'cni',
           'app.kubernetes.io/part-of': 'kube-prometheus',
         },
       },
@@ -44,7 +44,7 @@
         namespace: $.values.kubernetesControlPlane.namespace,
         labels: {
           'app.kubernetes.io/name': 'aws-node',
-          'app.kubernetes.io/component': 'prometheus',
+          'app.kubernetes.io/component': 'cni',
           'app.kubernetes.io/part-of': 'kube-prometheus',
         },
       },
