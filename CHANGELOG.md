@@ -1,10 +1,10 @@
 ## release-0.15 / 2025-06-04
 
-[FEATURE] Add config option for storage to Prometheus and Alertmanager servers[#2651](https://github.com/prometheus-operator/kube-prometheus/pull/2651)
-[ENHANCEMENT] Reduce apiserver metric cardinality [#2531](https://github.com/prometheus-operator/kube-prometheus/pull/2531)
-[BUGFIX] Fix port allocation for node-exporter [#2627](https://github.com/prometheus-operator/kube-prometheus/pull/2627)
-[BUGFIX] Fix procfs location for node-exporter [#2549](https://github.com/prometheus-operator/kube-prometheus/pull/2549)
-[BUGFIX] Drop `process_start_time_seconds` from Kubelet slis endpoint [#2530](https://github.com/prometheus-operator/kube-prometheus/pull/2530)
+* [FEATURE] Add config option for storage to Prometheus and Alertmanager servers[#2651](https://github.com/prometheus-operator/kube-prometheus/pull/2651)
+* [ENHANCEMENT] Reduce apiserver metric cardinality [#2531](https://github.com/prometheus-operator/kube-prometheus/pull/2531)
+* [BUGFIX] Fix port allocation for node-exporter [#2627](https://github.com/prometheus-operator/kube-prometheus/pull/2627)
+* [BUGFIX] Fix procfs location for node-exporter [#2549](https://github.com/prometheus-operator/kube-prometheus/pull/2549)
+* [BUGFIX] Drop `process_start_time_seconds` from Kubelet slis endpoint [#2530](https://github.com/prometheus-operator/kube-prometheus/pull/2530)
 
 ## release-0.14 / 2024-09-12
 
