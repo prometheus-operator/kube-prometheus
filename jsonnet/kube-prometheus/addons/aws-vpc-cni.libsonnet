@@ -53,6 +53,7 @@
         selector: {
           matchLabels: {
             'app.kubernetes.io/name': 'aws-node',
+            'app.kubernetes.io/component': 'cni',
           },
         },
         namespaceSelector: {
