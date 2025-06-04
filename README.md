@@ -43,11 +43,12 @@ The following Kubernetes versions are supported and work as we test against thes
 
 | kube-prometheus stack                                                                      | Kubernetes 1.23 | Kubernetes 1.24 | Kubernetes 1.25 | Kubernetes 1.26 | Kubernetes 1.27 | Kubernetes 1.28 | Kubernetes 1.29 | Kubernetes 1.30 | Kubernetes 1.31 | Kubernetes 1.32 | Kubernetes 1.33 |
 |--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| [`release-0.11`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.11) | ✔               | ✔               | ✗               | x               | x               | x               | x               | x               | x               | x               | x               |
 | [`release-0.12`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.12) | ✗               | ✔               | ✔               | x               | x               | x               | x               | x               | x               | x               | x               |
 | [`release-0.13`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.13) | ✗               | ✗               | x               | ✔               | ✔               | ✔               | x               | x               | x               | x               | x               |
 | [`release-0.14`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.14) | ✗               | ✗               | x               | ✔               | ✔               | ✔               | ✔               | ✔               | ✔               | x               | x               |
-| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | ✗               | ✗               | x               | x               | ✔               | ✔               | ✔               | ✔               | ✔               | ✔               | ✔               |
+| [`release-0.15`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.15)                 | ✗               | ✗               | x               | x               | x               | x               | x               | x               | ✔               | ✔               | ✔               |
+| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | ✗               | ✗               | x               | x               | x               | x               | x               | x               | ✔               | ✔               | ✔               |
+
 
 ## Quickstart
 
