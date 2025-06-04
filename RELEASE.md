@@ -1,6 +1,6 @@
 # Release schedule
 
-kube-prometheus will follow the Kubernetes release schedule.
+kube-prometheus will follow the [Kubernetes release schedule](https://kubernetes.io/releases).
 For every new Kubernetes release, there will be a corresponding minor release of
 kube-prometheus, although it may not be immediate.
 
@@ -8,7 +8,7 @@ We do not guarantee backports from the `main` branch to older release branches.
 
 This differs from the previous release schedule, which was driven by OpenShift releases.
 
-# How to cut a new release
+## How to cut a new release
 
 > This guide is strongly based on the [prometheus-operator release
 > instructions](https://github.com/prometheus-operator/prometheus-operator/blob/master/RELEASE.md).
@@ -38,13 +38,19 @@ failed or because the main branch was already up-to-date.
 
 ## Update Kubernetes supported versions
 
-The `main` branch of kube-prometheus should support the last 2 versions of
+The `main` branch of kube-prometheus should support the atleast last 2 versions of
 Kubernetes. We need to make sure that the CI on the main branch is testing the
-kube-prometheus configuration against both of these versions by updating the [CI
+kube-prometheus configuration against these versions by updating the [CI
 worklow](.github/workflows/ci.yaml) to include the latest kind version and the
-2 latest images versions that are attached to the kind release. Once that is
+latest images versions that are attached to the kind release. Once that is
 done, the [compatibility matrix](README.md#compatibility) in
 the README should also be updated to reflect the CI changes.
+
+## Update Kubernetes versions used by kubeconform
+
+Update the versions of Kubernetes used when validating manifests with
+kubeconform in the [Makefile](Makefile) to align with the compatibility
+matrix.
 
 ## Create pull request to cut the release
 
@@ -88,7 +94,13 @@ Iterate over the PRs that were merged between the latest release of kube-prometh
 
 Once the PR cutting the release is merged, pull the changes, create a new
 release branch named `release-x.y` based on the latest changes and push it to
-the upstream repository.
+the upstream repository or create the branch from Github UI directly.
+
+## Create the release
+
+From Github UI and draft a new [release](https://github.com/prometheus-operator/kube-prometheus/releases/new). Give the correct tag name and select the newly created release branch as Target. Fill the description and click Publish release.
+
+**Note:** New tag will be created automatically when the release is published.
 
 ## Create follow-up pull request
 
@@ -100,9 +112,3 @@ the main branch to be in sync with the latest changes of its dependencies.
 ### Update CI workflow
 
 Update the [versions workflow](.github/workflows/versions.yaml) to include the latest release branch and remove the oldest one to reflect the list of supported releases.
-
-### Update Kubernetes versions used by kubeconform
-
-Update the versions of Kubernetes used when validating manifests with
-kubeconform in the [Makefile](Makefile) to align with the compatibility
-matrix.
