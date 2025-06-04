@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         branch:
+          # testing will be done against last two release branches and main branch
           - "release-0.14"
           - "release-0.15"
           - "main"

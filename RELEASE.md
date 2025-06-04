@@ -38,7 +38,7 @@ failed or because the main branch was already up-to-date.
 
 ## Update Kubernetes supported versions
 
-The `main` branch of kube-prometheus should support the atleast last 2 versions of
+The `main` branch of kube-prometheus should support at least the last 2 versions of
 Kubernetes. We need to make sure that the CI on the main branch is testing the
 kube-prometheus configuration against these versions by updating the [CI
 worklow](.github/workflows/ci.yaml) to include the latest kind version and the
@@ -98,9 +98,13 @@ the upstream repository or create the branch from Github UI directly.
 
 ## Create the release
 
-From Github UI and draft a new [release](https://github.com/prometheus-operator/kube-prometheus/releases/new). Give the correct tag name and select the newly created release branch as Target. Fill the description and click Publish release.
+From the Github UI, draft a new [release](https://github.com/prometheus-operator/kube-prometheus/releases/new). Give the correct tag name and select the newly created release branch as the Target. Fill the description and click the `Publish release` button.
 
-**Note:** New tag will be created automatically when the release is published.
+> [!NOTE]
+> The new tag will be created automatically when the release is published.
+
+> [!TIP]
+> If we click `Generate release notes` while creating the release to compare with the last released tag, along with the commit changes from last release it will also find new contributors. We can skip the release notes generated but can keep the `New Contributors` section. See [example](https://github.com/prometheus-operator/kube-prometheus/releases/tag/v0.15.0) for reference.
 
 ## Create follow-up pull request
 
