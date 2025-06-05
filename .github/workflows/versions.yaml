@@ -37,7 +37,7 @@ jobs:
           {
             echo "new_changelogs<<EOF"
             scripts/get-new-changelogs.sh
-            echo "EOF"
+            echo EOF
           } >> "$GITHUB_OUTPUT"
         if: matrix.branch == 'main'
       - name: Update jsonnet dependencies
