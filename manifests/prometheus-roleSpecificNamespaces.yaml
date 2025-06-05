@@ -13,10 +13,17 @@ items:
     namespace: default
   rules:
   - apiGroups:
+    - discovery.k8s.io
+    resources:
+    - endpointslices
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
     - ""
     resources:
     - services
-    - endpoints
     - pods
     verbs:
     - get
@@ -51,10 +58,17 @@ items:
     namespace: kube-system
   rules:
   - apiGroups:
+    - discovery.k8s.io
+    resources:
+    - endpointslices
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
     - ""
     resources:
     - services
-    - endpoints
     - pods
     verbs:
     - get
@@ -89,10 +103,17 @@ items:
     namespace: monitoring
   rules:
   - apiGroups:
+    - discovery.k8s.io
+    resources:
+    - endpointslices
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
     - ""
     resources:
     - services
-    - endpoints
     - pods
     verbs:
     - get
