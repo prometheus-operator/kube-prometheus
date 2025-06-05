@@ -3158,6 +3158,7 @@ items:
               }
           ],
           "schemaVersion": 30,
+          "style": "dark",
           "tags": [
 
           ],
@@ -17384,14 +17385,6 @@ items:
                       "refresh": 2,
                       "sort": 1,
                       "type": "query"
-                  },
-                  {
-                      "datasource": {
-                          "type": "prometheus",
-                          "uid": "${datasource}"
-                      },
-                      "refresh": 2,
-                      "sort": 1
                   }
               ]
           },

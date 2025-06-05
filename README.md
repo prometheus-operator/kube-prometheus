@@ -4,7 +4,8 @@
 [![Slack](https://img.shields.io/badge/join%20slack-%23prometheus--operator-brightgreen.svg)](http://slack.k8s.io/)
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/prometheus-operator/kube-prometheus)
 
-> Note that everything is experimental and may change significantly at any time.
+> [!WARNING]
+> Everything is experimental and may change significantly at any time.
 
 This repository collects Kubernetes manifests, [Grafana](http://grafana.com/) dashboards, and [Prometheus rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with [Prometheus](https://prometheus.io/) using the Prometheus Operator.
 
@@ -41,44 +42,46 @@ no effect, but is still deployed.
 
 The following Kubernetes versions are supported and work as we test against these versions in their respective branches. But note that other versions might work!
 
-| kube-prometheus stack                                                                      | Kubernetes 1.23 | Kubernetes 1.24 | Kubernetes 1.25 | Kubernetes 1.26 | Kubernetes 1.27 | Kubernetes 1.28 | Kubernetes 1.29 | Kubernetes 1.30 | Kubernetes 1.31 | Kubernetes 1.32 | Kubernetes 1.33 |
-|--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| [`release-0.12`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.12) | ✗               | ✔               | ✔               | x               | x               | x               | x               | x               | x               | x               | x               |
-| [`release-0.13`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.13) | ✗               | ✗               | x               | ✔               | ✔               | ✔               | x               | x               | x               | x               | x               |
-| [`release-0.14`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.14) | ✗               | ✗               | x               | ✔               | ✔               | ✔               | ✔               | ✔               | ✔               | x               | x               |
-| [`release-0.15`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.15)                 | ✗               | ✗               | x               | x               | x               | x               | x               | x               | ✔               | ✔               | ✔               |
-| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | ✗               | ✗               | x               | x               | x               | x               | x               | x               | ✔               | ✔               | ✔               |
+> [!NOTE]
+> In CI we will be testing only last two releases and main branch on a regular basis.
 
+| kube-prometheus stack                                                                      | Kubernetes 1.27 | Kubernetes 1.28 | Kubernetes 1.29 | Kubernetes 1.30 | Kubernetes 1.31 | Kubernetes 1.32 | Kubernetes 1.33 |
+|--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|-----------------|
+| [`release-0.13`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.13) | ✔               | ✔               | x               | x               | x               | x               | x               |
+| [`release-0.14`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.14) | x               | x               | ✔               | ✔               | ✔               | x               | x               |
+| [`release-0.15`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.15) | x               | x               | x               | x               | ✔               | ✔               | ✔               |
+| [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | x               | x               | x               | x               | ✔               | ✔               | ✔               |
 
 ## Quickstart
 
 This project is intended to be used as a library (i.e. the intent is not for you to create your own modified copy of this repository).
 
 Though for a quickstart a compiled version of the Kubernetes [manifests](manifests) generated with this library (specifically with `example.jsonnet`) is checked into this repository in order to try the content out quickly. To try out the stack un-customized run:
+
 * Create the monitoring stack using the config in the `manifests` directory:
 
-```shell
-# Create the namespace and CRDs, and then wait for them to be available before creating the remaining resources
-# Note that due to some CRD size we are using kubectl server-side apply feature which is generally available since kubernetes 1.22.
-# If you are using previous kubernetes versions this feature may not be available and you would need to use kubectl create instead.
-kubectl apply --server-side -f manifests/setup
-kubectl wait \
-	--for condition=Established \
-	--all CustomResourceDefinition \
-	--namespace=monitoring
-kubectl apply -f manifests/
-```
+  ```shell
+  # Create the namespace and CRDs, and then wait for them to be available before creating the remaining resources
+  # Note that due to some CRD size we are using kubectl server-side apply feature which is generally available since kubernetes 1.22.
+  # If you are using previous kubernetes versions this feature may not be available and you would need to use kubectl create instead.
+  kubectl apply --server-side -f manifests/setup
+  kubectl wait \
+      --for condition=Established \
+      --all CustomResourceDefinition \
+      --namespace=monitoring
+  kubectl apply -f manifests/
+  ```
 
 We create the namespace and CustomResourceDefinitions first to avoid race conditions when deploying the monitoring components.
 Alternatively, the resources in both folders can be applied with a single command
 `kubectl apply --server-side -f manifests/setup -f manifests`, but it may be necessary to run the command multiple times for all components to
 be created successfully.
 
-* And to teardown the stack:
+* To teardown the stack:
 
-```shell
-kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
-```
+  ```shell
+  kubectl delete --ignore-not-found=true -f manifests/ -f manifests/setup
+  ```
 
 The [official documentation](http://prometheus-operator.dev/docs/getting-started/installation/) contains the full version of this quick-start guide, and includes [instructions](https://prometheus-operator.dev/kube-prometheus/kube/access-ui/) on how to access Prometheus, AlertManager, and Grafana.
 
@@ -87,13 +90,13 @@ The [official documentation](http://prometheus-operator.dev/docs/getting-started
 To try out this stack, start [minikube](https://github.com/kubernetes/minikube) with the following command:
 
 ```shell
-$ minikube delete && minikube start --container-runtime=containerd --kubernetes-version=v1.32.3 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.bind-address=0.0.0.0 --extra-config=controller-manager.bind-address=0.0.0.0
+minikube delete && minikube start --container-runtime=containerd --kubernetes-version=v1.33.1 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.bind-address=0.0.0.0 --extra-config=controller-manager.bind-address=0.0.0.0
 ```
 
 The kube-prometheus stack includes a resource metrics API server, so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:
 
 ```shell
-$ minikube addons disable metrics-server
+minikube addons disable metrics-server
 ```
 
 ## Getting started
@@ -117,7 +120,7 @@ To contribute to kube-prometheus, refer to [Contributing](CONTRIBUTING.md).
 
 ## Join the discussion
 
-If you have any questions or feedback regarding kube-prometheus, join the [kube-prometheus discussion](https://github.com/prometheus-operator/kube-prometheus/discussions). Alternatively, consider joining [the kubernetes slack #prometheus-operator channel](http://slack.k8s.io/) or project's bi-weekly [Contributor Office Hours](https://docs.google.com/document/d/1-fjJmzrwRpKmSPHtXN5u6VZnn39M28KqyQGBEJsqUOk/edit#).
+If you have any questions or feedback regarding kube-prometheus, join the [kube-prometheus discussion](https://github.com/prometheus-operator/kube-prometheus/discussions). Alternatively, consider joining [#prometheus-operator](https://kubernetes.slack.com/archives/CFFDS2Z7F) slack channel or project's bi-weekly [Contributor Office Hours](https://docs.google.com/document/d/1-fjJmzrwRpKmSPHtXN5u6VZnn39M28KqyQGBEJsqUOk/edit#).
 
 ## License
 
