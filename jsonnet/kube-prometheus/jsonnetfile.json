@@ -111,7 +111,7 @@
           "subdir": "jsonnet/controller-gen"
         }
       },
-      "version": "release-0.7",
+      "version": "main",
       "name": "pyrra"
     },
     {

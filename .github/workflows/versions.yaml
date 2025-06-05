@@ -10,9 +10,9 @@ jobs:
     strategy:
       matrix:
         branch:
-          - "release-0.11"
-          - "release-0.12"
-          - "release-0.13"
+          # testing will be done against last two release branches and main branch
+          - "release-0.14"
+          - "release-0.15"
           - "main"
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
           {
             echo "new_changelogs<<EOF"
             scripts/get-new-changelogs.sh
-            echo "EOF"
+            echo EOF
           } >> "$GITHUB_OUTPUT"
         if: matrix.branch == 'main'
       - name: Update jsonnet dependencies
