@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: kubernetes
+    app.kubernetes.io/name: pyrra
+    app.kubernetes.io/version: 0.8.4
+  name: pyrra-kubernetes
+  namespace: monitoring
+spec:
+  endpoints:
+  - port: metrics
+  namespaceSelector:
+    matchNames:
+    - monitoring
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: kubernetes
+      app.kubernetes.io/name: pyrra

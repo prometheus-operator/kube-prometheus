@@ -1,0 +1,48 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: kubernetes
+    app.kubernetes.io/name: pyrra
+    app.kubernetes.io/version: 0.8.4
+  name: pyrra-kubernetes
+  namespace: monitoring
+rules:
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - prometheusrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - monitoring.coreos.com
+  resources:
+  - prometheusrules/status
+  verbs:
+  - get
+- apiGroups:
+  - pyrra.dev
+  resources:
+  - servicelevelobjectives
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - pyrra.dev
+  resources:
+  - servicelevelobjectives/status
+  verbs:
+  - get
+  - patch
+  - update

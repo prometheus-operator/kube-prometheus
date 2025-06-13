@@ -43,6 +43,16 @@ local defaults = {
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/prometheus-operator/%s',
     },
   },
+  slos: {
+    reconcileErrors: {
+      target: '95',
+      window: '2w',
+    },
+    HTTPErrors: {
+      target: '99.5',
+      window: '2w',
+    },
+  },
 };
 
 function(params)
@@ -167,6 +177,65 @@ function(params)
               runAsGroup: 65534,
             },
             containers+: [kubeRbacProxy],
+          },
+        },
+      },
+    },
+
+    sloReconcileErrors: {
+      apiVersion: 'pyrra.dev/v1alpha1',
+      kind: 'ServiceLevelObjective',
+      metadata: po.service.metadata {
+        name: po._config.name + '-reconcile-errors',
+        labels: po._config.commonLabels + po._config.mixin.ruleLabels + {
+          'pyrra.dev/component': po._config.name,
+        },
+      },
+      spec: {
+        target: po._config.slos.reconcileErrors.target,
+        window: po._config.slos.reconcileErrors.window,
+        description: |||
+          The Prometheus Operator reconciles the controllers object to have the underlying resource in the desired state.
+          If this is firing the object may not be running correctly.
+        |||,
+        indicator: {
+          ratio: {
+            errors: {
+              metric: 'prometheus_operator_reconcile_errors_total{%s}' % po._config.mixin._config.prometheusOperatorSelector,
+            },
+            total: {
+              metric: 'prometheus_operator_reconcile_operations_total{%s}' % po._config.mixin._config.prometheusOperatorSelector,
+            },
+            grouping: ['controller'],
+          },
+        },
+      },
+    },
+
+    sloHTTPErrors: {
+      apiVersion: 'pyrra.dev/v1alpha1',
+      kind: 'ServiceLevelObjective',
+      metadata: po.service.metadata {
+        name: po._config.name + '-http-errors',
+        labels: po._config.commonLabels + po._config.mixin.ruleLabels + {
+          'pyrra.dev/component': po._config.name,
+        },
+      },
+      spec: {
+        target: '99.5',
+        window: '2w',
+        description: |||
+          The Prometheus Operator makes HTTP requests to the Kubernetes API server to read and write the objects.
+          If this firing the Prometheus Operator might not be able read and write the latest objects. 
+        |||,
+        indicator: {
+          ratio: {
+            errors: {
+              metric: 'prometheus_operator_kubernetes_client_http_requests_total{%s,status_code=~"5.."}' % po._config.mixin._config.prometheusOperatorSelector,
+            },
+            total: {
+              metric: 'prometheus_operator_kubernetes_client_http_requests_total{%s}' % po._config.mixin._config.prometheusOperatorSelector,
+            },
           },
         },
       },

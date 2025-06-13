@@ -198,11 +198,11 @@
       "source": {
         "git": {
           "remote": "https://github.com/pyrra-dev/pyrra.git",
-          "subdir": "jsonnet/controller-gen"
+          "subdir": "jsonnet"
         }
       },
-      "version": "1ed2f3301251455dee757da1658c88fd32e0f1ca",
-      "sum": "O3c9Uurei8MWAY0Ad7DOL1fMqSgdHyHB7MpHsxSITKM=",
+      "version": "e6d76176d1adbd4712561a1e61caca470edd4002",
+      "sum": "egH5yDS/wTfqNLFm7tSWafIsEGjOuk8xDj2PFhCWX2A=",
       "name": "pyrra"
     },
     {

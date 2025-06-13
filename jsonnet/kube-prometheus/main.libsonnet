@@ -8,6 +8,7 @@ local nodeExporter = import './components/node-exporter.libsonnet';
 local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
 local prometheusOperator = import './components/prometheus-operator.libsonnet';
 local prometheus = import './components/prometheus.libsonnet';
+local pyrra = import './components/pyrra.libsonnet';
 
 local platformPatch = import './platforms/platforms.libsonnet';
 
@@ -35,6 +36,7 @@ local utils = import './lib/utils.libsonnet';
         prometheusOperator: error 'must provide version',
         kubeRbacProxy: error 'must provide version',
         configmapReload: error 'must provide version',
+        pyrra: error 'must provide version',
       } + (import 'versions.json'),
       images: {
         alertmanager: 'quay.io/prometheus/alertmanager:v' + $.values.common.versions.alertmanager,
@@ -48,6 +50,7 @@ local utils = import './lib/utils.libsonnet';
         prometheusOperatorReloader: 'quay.io/prometheus-operator/prometheus-config-reloader:v' + $.values.common.versions.prometheusOperator,
         kubeRbacProxy: 'quay.io/brancz/kube-rbac-proxy:v' + $.values.common.versions.kubeRbacProxy,
         configmapReload: 'ghcr.io/jimmidyson/configmap-reload:v' + $.values.common.versions.configmapReload,
+        pyrra: 'ghcr.io/pyrra-dev/pyrra:v' + $.values.common.versions.pyrra,
       },
     },
     alertmanager: {
@@ -112,7 +115,7 @@ local utils = import './lib/utils.libsonnet';
       image: $.values.common.images.prometheusAdapter,
       prometheusURL: 'http://prometheus-' + $.values.prometheus.name + '.' + $.values.prometheus.namespace + '.svc:9090/',
       rangeIntervals+: {
-        kubelet: utils.rangeInterval($.kubernetesControlPlane.serviceMonitorKubelet.spec.endpoints[0].interval),
+        kubelet: utils.rangeInterval($.kubernetesControlPlane.kubeletServiceMonitor.spec.endpoints[0].interval),
         nodeExporter: utils.rangeInterval($.nodeExporter.serviceMonitor.spec.endpoints[0].interval),
       },
     },
@@ -128,6 +131,11 @@ local utils = import './lib/utils.libsonnet';
       namespace: $.values.common.namespace,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
+    pyrra: {
+      namespace: $.values.common.namespace,
+      version: $.values.common.versions.pyrra,
+      image: $.values.common.images.pyrra,
+    },
   },
 
   alertmanager: alertmanager($.values.alertmanager),
@@ -138,6 +146,7 @@ local utils = import './lib/utils.libsonnet';
   prometheus: prometheus($.values.prometheus),
   prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
   prometheusOperator: prometheusOperator($.values.prometheusOperator),
+  pyrra: pyrra($.values.pyrra),
   kubernetesControlPlane: kubernetesControlPlane($.values.kubernetesControlPlane),
   kubePrometheus: customMixin(
     {
