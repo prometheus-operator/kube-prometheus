@@ -1,0 +1,27 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: prometheus-operator
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 0.83.0
+    prometheus: k8s
+    pyrra.dev/component: prometheus-operator
+    role: alert-rules
+  name: prometheus-operator-reconcile-errors
+  namespace: monitoring
+spec:
+  description: |
+    The Prometheus Operator reconciles the controllers object to have the underlying resource in the desired state.
+    If this is firing the object may not be running correctly.
+  indicator:
+    ratio:
+      errors:
+        metric: prometheus_operator_reconcile_errors_total{job="prometheus-operator",namespace="monitoring"}
+      grouping:
+      - controller
+      total:
+        metric: prometheus_operator_reconcile_operations_total{job="prometheus-operator",namespace="monitoring"}
+  target: "95"
+  window: 2w

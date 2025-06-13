@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: kubernetes
+    app.kubernetes.io/name: pyrra
+    app.kubernetes.io/version: 0.8.4
+  name: pyrra-kubernetes
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: kubernetes
+      app.kubernetes.io/name: pyrra
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: kubernetes
+        app.kubernetes.io/name: pyrra
+        app.kubernetes.io/version: 0.8.4
+    spec:
+      containers:
+      - args:
+        - kubernetes
+        - --generic-rules
+        image: ghcr.io/pyrra-dev/pyrra:v0.8.4
+        name: pyrra
+        ports:
+        - containerPort: 9099
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: pyrra-kubernetes

@@ -1,0 +1,18 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: prometheus-notification-errors
+  namespace: monitoring
+spec:
+  description: ""
+  indicator:
+    ratio:
+      errors:
+        metric: prometheus_notifications_errors_total{job="prometheus-k8s"}
+      total:
+        metric: prometheus_notifications_sent_total{job="prometheus-k8s"}
+  target: "99"
+  window: 2w

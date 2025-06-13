@@ -1,0 +1,20 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: prometheus-operator-reconcile-errors
+  namespace: monitoring
+spec:
+  description: ""
+  indicator:
+    ratio:
+      errors:
+        metric: prometheus_operator_reconcile_errors_total{job="prometheus-operator"}
+      grouping:
+      - controller
+      total:
+        metric: prometheus_operator_reconcile_operations_total{job="prometheus-operator"}
+  target: "95"
+  window: 2w

@@ -1,0 +1,24 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: coredns
+    app.kubernetes.io/part-of: kube-prometheus
+    prometheus: k8s
+    pyrra.dev/component: coredns
+    role: alert-rules
+  name: coredns-response-latency
+  namespace: monitoring
+spec:
+  description: |
+    CoreDNS runs within a Kubernetes cluster and resolves internal requests and forward external requests.
+    If CoreDNS gets too slow it might have an impact on the latency of other applications in this cluster.
+  indicator:
+    latency:
+      success:
+        metric: coredns_dns_request_duration_seconds_bucket{job="coredns",le="0.032"}
+      total:
+        metric: coredns_dns_request_duration_seconds_count{job="coredns"}
+  target: "99"
+  window: 2w

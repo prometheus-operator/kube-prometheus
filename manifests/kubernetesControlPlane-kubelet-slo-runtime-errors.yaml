@@ -1,0 +1,23 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    app.kubernetes.io/name: kubelet
+    app.kubernetes.io/part-of: kube-prometheus
+    prometheus: k8s
+    pyrra.dev/component: kubelet
+    role: alert-rules
+  name: kubelet-runtime-errors
+  namespace: monitoring
+spec:
+  description: |
+    The kubelet is the primary “node agent” that runs on each node.
+    If there are runtime errors the kubelet might be unable to check the containers are running and healthy.
+  indicator:
+    ratio:
+      errors:
+        metric: kubelet_runtime_operations_errors_total{job="kubelet", metrics_path="/metrics"}
+      total:
+        metric: kubelet_runtime_operations_total{job="kubelet", metrics_path="/metrics"}
+  target: "99.5"
+  window: 2w
