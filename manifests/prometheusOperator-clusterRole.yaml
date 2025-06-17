@@ -98,12 +98,13 @@ rules:
   verbs:
   - get
 - apiGroups:
-  - ""
+  - discovery.k8s.io
   resources:
-  - endpoints
+  - endpointslices
   verbs:
   - get
   - create
+  - list
   - update
   - delete
 - apiGroups:
