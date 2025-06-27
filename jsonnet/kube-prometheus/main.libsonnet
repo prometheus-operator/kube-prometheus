@@ -69,12 +69,12 @@ local utils = import './lib/utils.libsonnet';
       version: $.values.common.versions.grafana,
       image: $.values.common.images.grafana,
       prometheusName: $.values.prometheus.name,
-      // TODO(paulfantom) This should be done by iterating over all objects and looking for object.mixin.grafanaDashboards
-      dashboards: $.nodeExporter.mixin.grafanaDashboards +
-                  $.prometheus.mixin.grafanaDashboards +
-                  $.kubernetesControlPlane.mixin.grafanaDashboards +
-                  $.alertmanager.mixin.grafanaDashboards +
-                  $.grafana.mixin.grafanaDashboards,
+      dashboards: {
+        [name]: $[component].mixin.grafanaDashboards[name]
+        for component in std.objectFields($)
+        if std.objectHasAll(std.get($[component], 'mixin', {}), 'grafanaDashboards')
+        for name in std.objectFields($[component].mixin.grafanaDashboards)
+      },
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
     kubeStateMetrics: {
