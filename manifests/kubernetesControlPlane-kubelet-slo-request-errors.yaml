@@ -1,0 +1,24 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    app.kubernetes.io/name: kubelet
+    app.kubernetes.io/part-of: kube-prometheus
+    prometheus: k8s
+    pyrra.dev/component: kubelet
+    role: alert-rules
+  name: kubelet-request-errors
+  namespace: monitoring
+spec:
+  description: |
+    The kubelet is the primary “node agent” that runs on each node.
+    The kubelet ensures that the containers are running and healthy.
+    If these requests are failing the Kubelet might not know what to run exactly.
+  indicator:
+    ratio:
+      errors:
+        metric: rest_client_requests_total{job="kubelet", metrics_path="/metrics",code=~"5..|<error>"}
+      total:
+        metric: rest_client_requests_total{job="kubelet", metrics_path="/metrics"}
+  target: "99"
+  window: 2w

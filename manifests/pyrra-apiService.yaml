@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: api
+    app.kubernetes.io/name: pyrra
+    app.kubernetes.io/version: 0.8.4
+  name: pyrra-api
+  namespace: monitoring
+spec:
+  ports:
+  - name: http
+    port: 9099
+    targetPort: 9099
+  selector:
+    app.kubernetes.io/component: api
+    app.kubernetes.io/name: pyrra
