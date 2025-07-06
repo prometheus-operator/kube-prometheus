@@ -30,7 +30,7 @@ spec:
       - args:
         - --kubelet-service=kube-system/kubelet
         - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.83.0
-        - --kubelet-endpoints=false
+        - --kubelet-endpoints=true
         - --kubelet-endpointslice=true
         env:
         - name: GOGC

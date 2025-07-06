@@ -155,16 +155,6 @@
     {
       "source": {
         "git": {
-          "remote": "https://github.com/prometheus-operator/prometheus-operator.git",
-          "subdir": "jsonnet/prometheus-operator"
-        }
-      },
-      "version": "8af9ceaf5f99a2be18bd7b690fa79dc18c18aa04",
-      "sum": "dtH2oiXvUttHg2fz6uITHKuZflkQ832ddkdnhVu0drY="
-    },
-    {
-      "source": {
-        "git": {
           "remote": "https://github.com/prometheus/alertmanager.git",
           "subdir": "doc/alertmanager-mixin"
         }
@@ -204,6 +194,16 @@
       "version": "1ed2f3301251455dee757da1658c88fd32e0f1ca",
       "sum": "O3c9Uurei8MWAY0Ad7DOL1fMqSgdHyHB7MpHsxSITKM=",
       "name": "pyrra"
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/slashpai/prometheus-operator.git",
+          "subdir": "jsonnet/prometheus-operator"
+        }
+      },
+      "version": "f8960863958daef20c77e7be24d99e0d6c2aa6b6",
+      "sum": "Afa/g9EOG+6CGLMuMHLh9IdaWQHDWXbREOHNT9ndJ2w="
     },
     {
       "source": {
