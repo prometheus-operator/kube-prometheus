@@ -29,6 +29,7 @@ local defaults = {
     for labelName in std.objectFields(defaults.commonLabels)
     if !std.setMember(labelName, ['app.kubernetes.io/version'])
   },
+  serviceDiscoveryRole:: 'EndpointSlice',
   mixin:: {
     ruleLabels: {},
     _config: {
@@ -52,6 +53,21 @@ local defaults = {
   reloaderPort:: 8080,
 };
 
+local endpointSliceRule = {
+  apiGroups: ['discovery.k8s.io'],
+  resources: ['endpointslices'],
+  verbs: ['get', 'list', 'watch'],
+};
+local endpointsRule = {
+  apiGroups: [''],
+  resources: ['endpoints'],
+  verbs: ['get', 'list', 'watch'],
+};
+
+local validateServiceDiscoveryRole(role) =
+  if role == 'EndpointSlice' then endpointSliceRule
+  else if role == 'Endpoints' then endpointsRule
+  else error 'Invalid serviceDiscoveryRole';
 
 function(params) {
   local p = self,
@@ -286,9 +302,10 @@ function(params) {
         namespace: namespace,
       },
       rules: [
+        validateServiceDiscoveryRole(p._config.serviceDiscoveryRole),
         {
           apiGroups: [''],
-          resources: ['services', 'endpoints', 'pods'],
+          resources: ['services', 'pods'],
           verbs: ['get', 'list', 'watch'],
         },
         {
@@ -334,6 +351,7 @@ function(params) {
       podMetadata: {
         labels: p.prometheus.metadata.labels,
       },
+      serviceDiscoveryRole: p._config.serviceDiscoveryRole,
       externalLabels: p._config.externalLabels,
       enableFeatures: p._config.enableFeatures,
       serviceAccountName: p.serviceAccount.metadata.name,
