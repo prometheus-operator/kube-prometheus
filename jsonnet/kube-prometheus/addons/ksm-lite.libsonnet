@@ -16,7 +16,7 @@ local addArgs(args, name, containers) = std.map(
             containers: addArgs(
               [|||
                 --metric-denylist=
-                ^kube_.+_created$,
+                ^kube_(?=namespace).*_created$,
                 ^kube_.+_metadata_resource_version$,
                 ^kube_replicaset_metadata_generation$,
                 ^kube_replicaset_status_observed_generation$,

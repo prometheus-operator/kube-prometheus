@@ -122,13 +122,13 @@ spec:
               unless
             kube_statefulset_status_update_revision{job="kube-state-metrics"}
           )
-            *
+            * on(namespace, statefulset, job, cluster)
           (
             kube_statefulset_replicas{job="kube-state-metrics"}
               !=
             kube_statefulset_status_replicas_updated{job="kube-state-metrics"}
           )
-        )  and (
+        )  and on(namespace, statefulset, job, cluster) (
           changes(kube_statefulset_status_replicas_updated{job="kube-state-metrics"}[5m])
             ==
           0
@@ -1550,18 +1550,15 @@ spec:
       record: cluster:node_cpu:ratio_rate5m
   - name: kubelet.rules
     rules:
-    - expr: |
-        histogram_quantile(0.99, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+    - expr: "histogram_quantile(\n  0.99, \n  sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job=\"kubelet\", metrics_path=\"/metrics\"}[5m])) by (cluster, instance, le) \n  * on(cluster, instance) group_left (node) \n  max by (cluster, instance, node) (kubelet_node_name{job=\"kubelet\", metrics_path=\"/metrics\"})\n)\n"
       labels:
         quantile: "0.99"
       record: node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile
-    - expr: |
-        histogram_quantile(0.9, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+    - expr: "histogram_quantile(\n  0.9, \n  sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job=\"kubelet\", metrics_path=\"/metrics\"}[5m])) by (cluster, instance, le) \n  * on(cluster, instance) group_left (node) \n  max by (cluster, instance, node) (kubelet_node_name{job=\"kubelet\", metrics_path=\"/metrics\"})\n)\n"
       labels:
         quantile: "0.9"
       record: node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile
-    - expr: |
-        histogram_quantile(0.5, sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"})
+    - expr: "histogram_quantile(\n  0.5, \n  sum(rate(kubelet_pleg_relist_duration_seconds_bucket{job=\"kubelet\", metrics_path=\"/metrics\"}[5m])) by (cluster, instance, le) \n  * on(cluster, instance) group_left (node) \n  max by (cluster, instance, node) (kubelet_node_name{job=\"kubelet\", metrics_path=\"/metrics\"})\n)\n"
       labels:
         quantile: "0.5"
       record: node_quantile:kubelet_pleg_relist_duration_seconds:histogram_quantile
