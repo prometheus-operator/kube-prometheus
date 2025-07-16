@@ -1467,37 +1467,37 @@ spec:
             label_join(
               group by (cluster, namespace, job_name, pod) (
                 label_join(
-                  kube_pod_owner{job=\"kube-state-metrics\", owner_kind=\"Job\"}
-                , \"job_name\", \"\", \"owner_name\")
+                  kube_pod_owner{job="kube-state-metrics", owner_kind="Job"}
+                , "job_name", "", "owner_name")
               )
               * on (cluster, namespace, job_name) group_left(owner_kind, owner_name)
               group by (cluster, namespace, job_name, owner_kind, owner_name) (
-                kube_job_owner{job=\"kube-state-metrics\", owner_kind!=\"Pod\", owner_kind!=\"\"}
+                kube_job_owner{job="kube-state-metrics", owner_kind!="Pod", owner_kind!=""}
               )
-            , \"workload\", \"\", \"owner_name\")
-          , \"workload_type\", \"\", \"owner_kind\")
+            , "workload", "", "owner_name")
+          , "workload_type", "", "owner_kind")
         
           OR
         
           label_replace(
             label_replace(
               label_replace(
-                kube_pod_owner{job=\"kube-state-metrics\", owner_kind=\"ReplicaSet\"}
-                , \"replicaset\", \"$1\", \"owner_name\", \"(.+)\"
+                kube_pod_owner{job="kube-state-metrics", owner_kind="ReplicaSet"}
+                , "replicaset", "$1", "owner_name", "(.+)"
               )
               * on(cluster, namespace, replicaset) group_left(owner_kind, owner_name)
               group by (cluster, namespace, replicaset, owner_kind, owner_name) (
-                kube_replicaset_owner{job=\"kube-state-metrics\", owner_kind!=\"Deployment\", owner_kind!=\"\"}
+                kube_replicaset_owner{job="kube-state-metrics", owner_kind!="Deployment", owner_kind!=""}
               )
-            , \"workload\", \"$1\", \"owner_name\", \"(.+)\")
+            , "workload", "$1", "owner_name", "(.+)")
             OR
             label_replace(
               group by (cluster, namespace, pod, owner_name, owner_kind) (
-                kube_pod_owner{job=\"kube-state-metrics\", owner_kind!=\"ReplicaSet\", owner_kind!=\"DaemonSet\", owner_kind!=\"StatefulSet\", owner_kind!=\"Job\", owner_kind!=\"Node\", owner_kind!=\"\"}
+                kube_pod_owner{job="kube-state-metrics", owner_kind!="ReplicaSet", owner_kind!="DaemonSet", owner_kind!="StatefulSet", owner_kind!="Job", owner_kind!="Node", owner_kind!=""}
               )
-              , \"workload\", \"$1\", \"owner_name\", \"(.+)\"
+              , "workload", "$1", "owner_name", "(.+)"
             )
-          , \"workload_type\", \"$1\", \"owner_kind\", \"(.+)\")
+          , "workload_type", "$1", "owner_kind", "(.+)")
         )
       record: namespace_workload_pod:kube_pod_owner:relabel
   - name: kube-scheduler.rules
