@@ -32,11 +32,11 @@
     {
       "source": {
         "git": {
-          "remote": "https://github.com/prometheus-operator/prometheus-operator",
+          "remote": "https://github.com/slashpai/prometheus-operator",
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "main"
+      "version": "endpointslice"
     },
     {
       "source": {

@@ -1,5 +1,5 @@
 local krp = import './kube-rbac-proxy.libsonnet';
-local prometheusOperator = import 'github.com/prometheus-operator/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet';
+local prometheusOperator = import 'github.com/slashpai/prometheus-operator/jsonnet/prometheus-operator/prometheus-operator.libsonnet';
 
 local defaults = {
   local defaults = self,
@@ -9,6 +9,8 @@ local defaults = {
   namespace:: error 'must provide namespace',
   version:: error 'must provide version',
   image:: error 'must provide image',
+  kubeletEndpointsEnabled:: true,
+  kubeletEndpointSliceEnabled:: true,
   kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
   configReloaderImage:: error 'must provide config reloader image',
   resources:: {

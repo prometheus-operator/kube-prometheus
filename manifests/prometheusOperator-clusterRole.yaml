@@ -26,6 +26,7 @@ rules:
   - thanosrulers/status
   - scrapeconfigs
   - servicemonitors
+  - servicemonitors/status
   - podmonitors
   - probes
   - prometheusrules
@@ -98,12 +99,13 @@ rules:
   verbs:
   - get
 - apiGroups:
-  - ""
+  - discovery.k8s.io
   resources:
-  - endpoints
+  - endpointslices
   verbs:
   - get
   - create
+  - list
   - update
   - delete
 - apiGroups:
