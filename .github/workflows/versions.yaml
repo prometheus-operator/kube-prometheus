@@ -34,18 +34,20 @@ jobs:
           git diff
           # Get the links to the changelogs of the updated versions and make them
           # available to the reviewers
-          # 1) Start the multiline output, unconditionally
+          
+          # 1) Open the multiline output
           echo "new_changelogs<<EOF" >> "$GITHUB_OUTPUT"
-    
-          # 2) Run the changelog script, capture its exit code,
-          #    and append its stdout to the output.
+          
+          # 2) Run changelog script without exiting on error
+          set +e
           scripts/get-new-changelogs.sh >> "$GITHUB_OUTPUT"
           script_rc=$?
-    
-          # 3) Close the delimiter so Actions can parse the value.
+          set -e
+          
+          # 3) Close the multiline output
           echo "EOF" >> "$GITHUB_OUTPUT"
-    
-          # 4) If the script failed, re-exit with its code to fail the job.
+          
+          # 4) Fail if the script actually errored
           if [ $script_rc -ne 0 ]; then
             echo "::error::get-new-changelogs.sh failed with exit code $script_rc"
             exit $script_rc
