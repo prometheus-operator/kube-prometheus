@@ -1,12 +1,12 @@
 {
   "alertmanager": "0.28.1",
-  "blackboxExporter": "0.26.0",
-  "grafana": "12.0.1",
-  "kubeStateMetrics": "2.15.0",
+  "blackboxExporter": "0.27.0",
+  "grafana": "12.0.2",
+  "kubeStateMetrics": "2.16.0",
   "nodeExporter": "1.9.1",
-  "prometheus": "3.4.0",
+  "prometheus": "3.5.0",
   "prometheusAdapter": "0.12.0",
-  "prometheusOperator": "0.83.0",
+  "prometheusOperator": "0.84.0",
   "kubeRbacProxy": "0.19.1",
   "configmapReload": "0.15.0",
   "pyrra": "0.8.4"
