@@ -18,7 +18,12 @@ get_changelog_url() {
 # Gets all the new changelogs from the updated components version.
 get_changelog_urls() {
   while IFS= read -r updated_version; do
-    read -r component version <<< "${updated_version}"
+    # Skip any empty lines
+    [[ -z "$updated_version" ]] && continue
+
+    # Split into component and version
+    read -r component version <<< "$updated_version"
+
     case "${component}" in
       alertmanager)
         get_changelog_url "prometheus/alertmanager" "${version}"
@@ -49,6 +54,9 @@ get_changelog_urls() {
         ;;
       configmapReload)
         get_changelog_url "jimmidyson/configmap-reload" "${version}"
+        ;;
+      pyrra)
+        get_changelog_url "pyrra-dev/pyrra" "${version}"
         ;;
       *)
         echo "Unknown component ${component} updated"
