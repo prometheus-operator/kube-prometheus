@@ -34,11 +34,22 @@ jobs:
           git diff
           # Get the links to the changelogs of the updated versions and make them
           # available to the reviewers
-          {
-            echo "new_changelogs<<EOF"
-            scripts/get-new-changelogs.sh
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
+          # 1) Start the multiline output, unconditionally
+          echo "new_changelogs<<EOF" >> "$GITHUB_OUTPUT"
+    
+          # 2) Run the changelog script, capture its exit code,
+          #    and append its stdout to the output.
+          scripts/get-new-changelogs.sh >> "$GITHUB_OUTPUT"
+          script_rc=$?
+    
+          # 3) Close the delimiter so Actions can parse the value.
+          echo "EOF" >> "$GITHUB_OUTPUT"
+    
+          # 4) If the script failed, re-exit with its code to fail the job.
+          if [ $script_rc -ne 0 ]; then
+            echo "::error::get-new-changelogs.sh failed with exit code $script_rc"
+            exit $script_rc
+          fi
         if: matrix.branch == 'main'
       - name: Update jsonnet dependencies
         run: |
