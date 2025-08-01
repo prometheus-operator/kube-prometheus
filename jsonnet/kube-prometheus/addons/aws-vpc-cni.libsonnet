@@ -17,7 +17,11 @@
       metadata: {
         name: 'aws-node',
         namespace: 'kube-system',
-        labels: { 'app.kubernetes.io/name': 'aws-node' },
+        labels: {
+          'app.kubernetes.io/name': 'aws-node',
+          'app.kubernetes.io/component': 'cni',
+          'app.kubernetes.io/part-of': 'kube-prometheus',
+        },
       },
       spec: {
         ports: [
@@ -40,6 +44,8 @@
         namespace: $.values.kubernetesControlPlane.namespace,
         labels: {
           'app.kubernetes.io/name': 'aws-node',
+          'app.kubernetes.io/component': 'cni',
+          'app.kubernetes.io/part-of': 'kube-prometheus',
         },
       },
       spec: {
@@ -47,6 +53,7 @@
         selector: {
           matchLabels: {
             'app.kubernetes.io/name': 'aws-node',
+            'app.kubernetes.io/component': 'cni',
           },
         },
         namespaceSelector: {
