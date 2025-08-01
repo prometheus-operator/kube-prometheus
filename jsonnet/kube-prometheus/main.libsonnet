@@ -128,6 +128,10 @@ local utils = import './lib/utils.libsonnet';
       namespace: $.values.common.namespace,
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
+    kubePrometheus: {
+      namespace: $.values.common.namespace,
+      mixin+: { ruleLabels: $.values.common.ruleLabels },
+    },
   },
 
   alertmanager: alertmanager($.values.alertmanager),
@@ -139,12 +143,7 @@ local utils = import './lib/utils.libsonnet';
   prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
   prometheusOperator: prometheusOperator($.values.prometheusOperator),
   kubernetesControlPlane: kubernetesControlPlane($.values.kubernetesControlPlane),
-  kubePrometheus: customMixin(
-    {
-      namespace: $.values.common.namespace,
-      mixin+: { ruleLabels: $.values.common.ruleLabels },
-    }
-  ) + {
+  kubePrometheus: customMixin($.values.kubePrometheus) + {
     namespace: {
       apiVersion: 'v1',
       kind: 'Namespace',
