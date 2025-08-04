@@ -2,6 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   labels:
+    app.kubernetes.io/component: kubernetes
     app.kubernetes.io/name: apiserver
     app.kubernetes.io/part-of: kube-prometheus
   name: kube-apiserver

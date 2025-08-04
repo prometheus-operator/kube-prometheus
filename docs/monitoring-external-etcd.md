@@ -31,7 +31,7 @@ With kube-aws, each etcd node has two IP addresses:
 * EC2 instance IP
 * EIP or ENI (depending on the chosen method in yuour cluster.yaml)
 
-For some reason, some etcd node answer to :2379/metrics on the intance IP (eth0), some others on the EIP|ENI address (eth1). See issue https://github.com/kubernetes-incubator/kube-aws/issues/923
+For some reason, some etcd node answer to :2379/metrics on the intance IP (eth0), some others on the EIP|ENI address (eth1). See [issue](https://github.com/kubernetes-incubator/kube-aws/issues/923)
 It would be of course much better if we could hit the EPI/ENI all the time as they don't change even if the underlying EC2 intance goes down.
 If specifying the Instance IP (eth0) in the Prometheus Operator ServiceMonitor, and the EC2 intance goes down, one would have to update the ServiceMonitor.
 

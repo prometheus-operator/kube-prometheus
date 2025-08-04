@@ -7,6 +7,9 @@ validators:
   # Ignore release links.
   - regex: 'https:\/\/github\.com\/prometheus-operator\/kube-prometheus\/releases'
     type: "ignore"
+  # Ignore github issue link that is timing out
+  - regex: 'https:\/\/github\.com\/kubernetes-incubator\/kube-aws\/issues\/923'
+    type: "ignore"
   # Twitter changed their policy and now returns 403 if not authenticated. We can guarantee this link since we own the account.
   - regex: 'https:\/\/twitter.com\/PromOperator'
     type: "ignore"
