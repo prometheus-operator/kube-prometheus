@@ -6,7 +6,7 @@
   "nodeExporter": "1.9.1",
   "prometheus": "3.5.0",
   "prometheusAdapter": "0.12.0",
-  "prometheusOperator": "0.84.0",
+  "prometheusOperator": "0.84.1",
   "kubeRbacProxy": "0.19.1",
   "configmapReload": "0.15.0",
   "pyrra": "0.8.4"
