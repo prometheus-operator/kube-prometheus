@@ -278,17 +278,30 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecpuovercommit
         summary: Cluster has overcommitted CPU resource requests.
       expr: |
-        (sum(namespace_cpu:kube_pod_container_resource_requests:sum{}) by (cluster) -
-        sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster) > 0
-        and
-        count by (cluster) (max by (cluster, node) (kube_node_role{job="kube-state-metrics", role="control-plane"})) < 3)
+        # Non-HA clusters.
+        (
+          (
+            sum by(cluster) (namespace_cpu:kube_pod_container_resource_requests:sum{})
+            -
+            sum by(cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) > 0
+          )
+          and
+          count by (cluster) (max by (cluster, node) (kube_node_role{job="kube-state-metrics", role="control-plane"})) < 3
+        )
         or
-        (sum(namespace_cpu:kube_pod_container_resource_requests:sum{}) by (cluster) -
-        (sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster) -
-        max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster)) > 0
-        and
-        (sum(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster) -
-        max(kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"}) by (cluster)) > 0)
+        # HA clusters.
+        (
+          sum by(cluster) (namespace_cpu:kube_pod_container_resource_requests:sum{})
+          -
+          (
+            # Skip clusters with only one allocatable node.
+            (
+              sum by (cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
+              -
+              max by (cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="cpu"})
+            ) > 0
+          ) > 0
+        )
       for: 10m
       labels:
         severity: warning
@@ -298,17 +311,30 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubememoryovercommit
         summary: Cluster has overcommitted memory resource requests.
       expr: |
-        (sum(namespace_memory:kube_pod_container_resource_requests:sum{}) by (cluster) -
-        sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster) > 0
-        and
-        count by (cluster) (max by (cluster, node) (kube_node_role{job="kube-state-metrics", role="control-plane"})) < 3)
+        # Non-HA clusters.
+        (
+          (
+            sum by(cluster) (namespace_memory:kube_pod_container_resource_requests:sum{})
+            -
+            sum by(cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="memory"}) > 0
+          )
+          and
+          count by (cluster) (max by (cluster, node) (kube_node_role{job="kube-state-metrics", role="control-plane"})) < 3
+        )
         or
-        (sum(namespace_memory:kube_pod_container_resource_requests:sum{}) by (cluster) -
-        (sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster) -
-        max(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster)) > 0
-        and
-        (sum(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster) -
-        max(kube_node_status_allocatable{resource="memory", job="kube-state-metrics"}) by (cluster)) > 0)
+        # HA clusters.
+        (
+          sum by(cluster) (namespace_memory:kube_pod_container_resource_requests:sum{})
+          -
+          (
+            # Skip clusters with only one allocatable node.
+            (
+              sum by (cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="memory"})
+              -
+              max by (cluster) (kube_node_status_allocatable{job="kube-state-metrics",resource="memory"})
+            ) > 0
+          ) > 0
+        )
       for: 10m
       labels:
         severity: warning
@@ -736,7 +762,18 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletpodstartuplatencyhigh
         summary: Kubelet Pod startup latency is too high.
       expr: |
-        histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le)) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"} > 60
+        histogram_quantile(0.99,
+          sum by (cluster, instance, le) (
+            topk by (cluster, instance, le, operation_type) (1,
+              rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])
+            )
+          )
+        )
+        * on(cluster, instance) group_left(node)
+        topk by (cluster, instance, node) (1,
+          kubelet_node_name{job="kubelet", metrics_path="/metrics"}
+        )
+        > 60
       for: 15m
       labels:
         severity: warning
