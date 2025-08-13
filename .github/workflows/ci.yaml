@@ -12,7 +12,7 @@ jobs:
           - ubuntu-latest
     name: Generate
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Import environment variables from file
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Check Documentation formatting and links
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Import environment variables from file
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Jsonnet linter
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Import environment variables from file
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Jsonnet formatter
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Import environment variables from file
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Unit tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Import environment variables from file
@@ -77,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Run security analysis on manifests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - run: make --always-make kubescape
@@ -91,7 +91,7 @@ jobs:
           - "kindest/node:v1.32.5"
           - "kindest/node:v1.31.9"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
       - name: Import environment variables from file
