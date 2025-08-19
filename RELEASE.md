@@ -6,8 +6,6 @@ kube-prometheus, although it may not be immediate.
 
 We do not guarantee backports from the `main` branch to older release branches.
 
-This differs from the previous release schedule, which was driven by OpenShift releases.
-
 | Release | Kubernetes Version | Release shepherd                        |
 |---------|--------------------|-----------------------------------------|
 | v0.18.0 | 1.36               | **searching for volunteer**             |
