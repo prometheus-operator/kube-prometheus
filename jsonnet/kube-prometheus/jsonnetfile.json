@@ -8,7 +8,7 @@
           "subdir": "grafana"
         }
       },
-      "version": "master"
+      "version": "5698c8940b6dadca3f42107b7839557bc041761f"
     },
     {
       "source": {
@@ -17,7 +17,7 @@
           "subdir": "grafana-mixin"
         }
       },
-      "version": "main",
+      "version": "v12.1.0",
       "name": "grafana-mixin"
     },
     {
@@ -27,7 +27,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "main"
+      "version": "v3.6.4"
     },
     {
       "source": {
@@ -36,7 +36,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "main"
+      "version": "v0.85.0"
     },
     {
       "source": {
@@ -45,7 +45,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "main",
+      "version": "v0.85.0",
       "name": "prometheus-operator-mixin"
     },
     {
@@ -55,7 +55,7 @@
           "subdir": ""
         }
       },
-      "version": "master"
+      "version": "77180e5901fd4c4a822a84722ba5253cb95a6c66"
     },
     {
       "source": {
@@ -64,7 +64,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "main"
+      "version": "v2.16.0"
     },
     {
       "source": {
@@ -73,7 +73,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "main"
+      "version": "2.16.0"
     },
     {
       "source": {
@@ -82,7 +82,7 @@
           "subdir": "docs/node-mixin"
         }
       },
-      "version": "master"
+      "version": "v1.9.1"
     },
     {
       "source": {
@@ -91,7 +91,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "main",
+      "version": "v3.5.0",
       "name": "prometheus"
     },
     {
@@ -101,7 +101,7 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "main",
+      "version": "v0.28.1",
       "name": "alertmanager"
     },
     {
@@ -111,7 +111,7 @@
           "subdir": "jsonnet/controller-gen"
         }
       },
-      "version": "main",
+      "version": "f6ba7dce57e6add2e2b9f4318144e20c13ea1773",
       "name": "pyrra"
     },
     {
@@ -121,7 +121,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "main",
+      "version": "v0.39.2",
       "name": "thanos-mixin"
     }
   ],
