@@ -1,3 +1,10 @@
+## release-0.16 / 2025-08-28
+
+* [ENHANCEMENT] Add common labels to blackbox-exporter ClusterRole. [#2667](https://github.com/prometheus-operator/kube-prometheus/pull/2667)
+* [ENHANCEMENT] Add labels to AWS VPC CNI Service and ServiceMonitor. [#2668](https://github.com/prometheus-operator/kube-prometheus/pull/2668)
+* [ENHANCEMENT] Add component label to Kubernetes control-plane resources. [#2669](https://github.com/prometheus-operator/kube-prometheus/pull/2669)
+* [CHANGE] AKS platform: change Service name and `job` label. [#2665](https://github.com/prometheus-operator/kube-prometheus/pull/2665)
+
 ## release-0.15 / 2025-06-04
 
 * [FEATURE] Add config option for storage to Prometheus and Alertmanager servers[#2651](https://github.com/prometheus-operator/kube-prometheus/pull/2651)
