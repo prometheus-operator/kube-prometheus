@@ -54,16 +54,16 @@ update: $(JB_BIN)
 	$(JB_BIN) update
 
 .PHONY: validate
-validate: validate-1.31 validate-1.32 validate-1.33
-
-validate-1.31:
-	KUBE_VERSION=1.31.9 $(MAKE) kubeconform
+validate: validate-1.32 validate-1.33 validate-1.34
 
 validate-1.32:
-	KUBE_VERSION=1.32.5 $(MAKE) kubeconform
+	KUBE_VERSION=1.32.8 $(MAKE) kubeconform
 
 validate-1.33:
-	KUBE_VERSION=1.33.1 $(MAKE) kubeconform
+	KUBE_VERSION=1.33.4 $(MAKE) kubeconform
+
+validate-1.34:
+	KUBE_VERSION=1.34.0 $(MAKE) kubeconform
 
 .PHONY: kubeconform
 kubeconform: crdschemas manifests $(KUBECONFORM_BIN)
