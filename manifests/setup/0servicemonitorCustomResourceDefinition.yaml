@@ -1299,12 +1299,6 @@ spec:
                   - resource
                   type: object
                 type: array
-                x-kubernetes-list-map-keys:
-                - group
-                - resource
-                - name
-                - namespace
-                x-kubernetes-list-type: map
             type: object
         required:
         - spec
