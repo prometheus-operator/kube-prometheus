@@ -73,7 +73,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "2.16.0"
+      "version": "v2.16.0"
     },
     {
       "source": {
