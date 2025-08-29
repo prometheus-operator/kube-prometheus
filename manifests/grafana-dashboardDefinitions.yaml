@@ -17384,6 +17384,14 @@ items:
                       "refresh": 2,
                       "sort": 1,
                       "type": "query"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "refresh": 2,
+                      "sort": 1
                   }
               ]
           },
@@ -22662,8 +22670,7 @@ items:
               ]
           },
           "timezone": "utc",
-          "title": "Prometheus / Overview",
-          "uid": "9fa0d141-d019-4ad7-8bc5-42196ee308bd"
+          "title": "Prometheus / Overview"
       }
   kind: ConfigMap
   metadata:
