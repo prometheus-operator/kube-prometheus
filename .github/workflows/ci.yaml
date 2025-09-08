@@ -17,7 +17,7 @@ jobs:
           persist-credentials: false
       - name: Import environment variables from file
         run: cat ".github/env" >> "$GITHUB_ENV"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ env.golang-version }}
       - run: make --always-make generate validate && git diff --exit-code
@@ -30,7 +30,7 @@ jobs:
           persist-credentials: false
       - name: Import environment variables from file
         run: cat ".github/env" >> "$GITHUB_ENV"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ env.golang-version }}
       - run: make check-docs
@@ -43,7 +43,7 @@ jobs:
           persist-credentials: false
       - name: Import environment variables from file
         run: cat ".github/env" >> "$GITHUB_ENV"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ env.golang-version }}
       - run: make --always-make lint
@@ -56,7 +56,7 @@ jobs:
           persist-credentials: false
       - name: Import environment variables from file
         run: cat ".github/env" >> "$GITHUB_ENV"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ env.golang-version }}
       - run: make --always-make fmt && git diff --exit-code
@@ -69,7 +69,7 @@ jobs:
           persist-credentials: false
       - name: Import environment variables from file
         run: cat ".github/env" >> "$GITHUB_ENV"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ env.golang-version }}
       - run: make --always-make test
@@ -96,7 +96,7 @@ jobs:
           persist-credentials: false
       - name: Import environment variables from file
         run: cat ".github/env" >> "$GITHUB_ENV"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ env.golang-version }}
       - name: Start kind cluster
