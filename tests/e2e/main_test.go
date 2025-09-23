@@ -61,34 +61,6 @@ func testMain(m *testing.M) int {
 }
 
 func TestQueryPrometheus(t *testing.T) {
-	queries := []struct {
-		query   string
-		expectN int
-	}{
-		{
-			query:   `up{job="node-exporter"} == 1`,
-			expectN: 1,
-		}, {
-			// 	query:   `up{job="kubelet"} == 1`,
-			// 	expectN: 1,
-			// }, {
-			query:   `up{job="apiserver"} == 1`,
-			expectN: 1,
-		}, {
-			query:   `up{job="kube-state-metrics"} == 1`,
-			expectN: 1,
-		}, {
-			query:   `up{job="prometheus-k8s"} == 1`,
-			expectN: 1,
-		}, {
-			query:   `up{job="prometheus-operator"} == 1`,
-			expectN: 1,
-		}, {
-			query:   `up{job="alertmanager-main"} == 1`,
-			expectN: 2,
-		},
-	}
-
 	// Wait for pod to respond at queries at all. Then start verifying their results.
 	err := wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
 		_, err := promClient.query("up")
@@ -98,25 +70,47 @@ func TestQueryPrometheus(t *testing.T) {
 		t.Fatal(fmt.Errorf("wait for prometheus-k8s: %w", err))
 	}
 
-	err = wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
-		defer t.Log("---------------------------\n")
-
-		for _, q := range queries {
-			n, err := promClient.query(q.query)
+	for _, tc := range []struct {
+		job     string
+		expectN int
+	}{
+		{
+			job:     "node-exporter",
+			expectN: 1,
+		}, {
+			job:     "apiserver",
+			expectN: 1,
+		}, {
+			job:     "kube-state-metrics",
+			expectN: 1,
+		}, {
+			job:     "prometheus-k8s",
+			expectN: 1,
+		}, {
+			job:     "prometheus-operator",
+			expectN: 1,
+		}, {
+			job:     "alertmanager-main",
+			expectN: 2,
+		},
+	} {
+		t.Run(tc.job, func(t *testing.T) {
+			err = wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
+				n, err := promClient.query(fmt.Sprintf(`up{job="%s"} == 1`, tc.job))
+				if err != nil {
+					return false, err
+				}
+				if n < tc.expectN {
+					// Don't return an error as targets may only become visible after a while.
+					t.Logf("expected at least %d results for job=%q but got %d", tc.expectN, tc.job, n)
+					return false, nil
+				}
+				return true, nil
+			})
 			if err != nil {
-				return false, err
+				t.Fatal(err)
 			}
-			if n < q.expectN {
-				// Don't return an error as targets may only become visible after a while.
-				t.Logf("expected at least %d results for %q but got %d", q.expectN, q.query, n)
-				return false, nil
-			}
-			t.Logf("query %q succeeded", q.query)
-		}
-		return true, nil
-	})
-	if err != nil {
-		t.Fatal(err)
+		})
 	}
 }
 
