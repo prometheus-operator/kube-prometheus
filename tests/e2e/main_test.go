@@ -60,63 +60,71 @@ func testMain(m *testing.M) int {
 	return m.Run()
 }
 
-func TestQueryPrometheus(t *testing.T) {
-	queries := []struct {
-		query   string
-		expectN int
-	}{
-		{
-			query:   `up{job="node-exporter"} == 1`,
-			expectN: 1,
-		}, {
-			// 	query:   `up{job="kubelet"} == 1`,
-			// 	expectN: 1,
-			// }, {
-			query:   `up{job="apiserver"} == 1`,
-			expectN: 1,
-		}, {
-			query:   `up{job="kube-state-metrics"} == 1`,
-			expectN: 1,
-		}, {
-			query:   `up{job="prometheus-k8s"} == 1`,
-			expectN: 1,
-		}, {
-			query:   `up{job="prometheus-operator"} == 1`,
-			expectN: 1,
-		}, {
-			query:   `up{job="alertmanager-main"} == 1`,
-			expectN: 2,
-		},
+func pollCondition(timeout time.Duration, conditionFunc func() error) error {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
+
+	var conditionErr error
+	if err := wait.PollImmediateUntilWithContext(ctx, 5*time.Second, func(context.Context) (bool, error) {
+		conditionErr := conditionFunc()
+		return conditionErr == nil, nil
+	}); err != nil {
+		return fmt.Errorf("%w: %w", err, conditionErr)
 	}
 
+	return nil
+}
+
+func TestQueryPrometheus(t *testing.T) {
 	// Wait for pod to respond at queries at all. Then start verifying their results.
-	err := wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
+	err := pollCondition(1*time.Minute, func() error {
 		_, err := promClient.query("up")
-		return err == nil, nil
+		return err
 	})
 	if err != nil {
 		t.Fatal(fmt.Errorf("wait for prometheus-k8s: %w", err))
 	}
 
-	err = wait.Poll(5*time.Second, 1*time.Minute, func() (bool, error) {
-		defer t.Log("---------------------------\n")
-
-		for _, q := range queries {
-			n, err := promClient.query(q.query)
+	for _, tc := range []struct {
+		job     string
+		expectN int
+	}{
+		{
+			job:     "node-exporter",
+			expectN: 1,
+		}, {
+			job:     "apiserver",
+			expectN: 1,
+		}, {
+			job:     "kube-state-metrics",
+			expectN: 1,
+		}, {
+			job:     "prometheus-k8s",
+			expectN: 1,
+		}, {
+			job:     "prometheus-operator",
+			expectN: 1,
+		}, {
+			job:     "alertmanager-main",
+			expectN: 2,
+		},
+	} {
+		t.Run(tc.job, func(t *testing.T) {
+			err = pollCondition(1*time.Minute, func() error {
+				n, err := promClient.query(fmt.Sprintf(`up{job="%s"} == 1`, tc.job))
+				if err != nil {
+					return err
+				}
+				if n < tc.expectN {
+					// Don't return an error as targets may only become visible after a while.
+					return fmt.Errorf("expected at least %d results for job=%q but got %d", tc.expectN, tc.job, n)
+				}
+				return nil
+			})
 			if err != nil {
-				return false, err
+				t.Fatal(err)
 			}
-			if n < q.expectN {
-				// Don't return an error as targets may only become visible after a while.
-				t.Logf("expected at least %d results for %q but got %d", q.expectN, q.query, n)
-				return false, nil
-			}
-			t.Logf("query %q succeeded", q.query)
-		}
-		return true, nil
-	})
-	if err != nil {
-		t.Fatal(err)
+		})
 	}
 }
 
@@ -201,80 +209,78 @@ func TestFailedRuleEvaluations(t *testing.T) {
 	}()
 
 	// Wait for the 2 replicas of kube-state-metrics to be successfully scraped.
-	err = wait.Poll(5*time.Second, 2*time.Minute, func() (bool, error) {
+	err = pollCondition(2*time.Minute, func() error {
 		n, err := promClient.query(`up{job="kube-state-metrics"} == 1`)
 		if err != nil {
-			return false, err
+			return err
 		}
 
 		if n != 2 {
-			t.Logf("expecting 2 kube-state-metrics targets, got %d", n)
-			return false, nil
+			return fmt.Errorf("expecting 2 kube-state-metrics targets, got %d", n)
 		}
 
-		return true, nil
+		return nil
 	})
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("waiting for kube-state-metrics: %s", err)
 	}
 
 	// Wait for all rule groups to be evaluated at least once without error.
 	now := time.Now()
-	err = wait.Poll(30*time.Second, 5*time.Minute, func() (bool, error) {
+	err = pollCondition(5*time.Minute, func() error {
 		rsp, err := promClient.apiRequest("/api/v1/rules", "type", "")
 		if err != nil {
-			return false, err
+			return err
 		}
 
 		res, err := gabs.ParseJSON(rsp.Data)
 		if err != nil {
-			return false, err
+			return err
 		}
 
 		groups, err := res.Path("groups").Children()
 		if err != nil {
-			return false, err
+			return err
 		}
 
 		if len(groups) == 0 {
-			return false, fmt.Errorf("got 0 rule groups")
+			return fmt.Errorf("got 0 rule groups")
 		}
 
 		for _, group := range groups {
 			groupName := group.Path("name").Data().(string)
 			if err != nil {
-				return false, err
+				return err
 			}
 
 			lastEvalString := group.Path("lastEvaluation").Data().(string)
 			lastEval, err := time.Parse(time.RFC3339Nano, lastEvalString)
 			if err != nil {
-				return false, err
+				return err
 			}
 
 			if lastEval.Before(now) {
-				t.Logf("%s not yet evaluated", groupName)
-				return false, nil
+				return fmt.Errorf("%s not yet evaluated", groupName)
 			}
 
 			rules, err := group.Path("rules").Children()
 			if err != nil {
-				return false, err
+				return err
 			}
 
 			if len(rules) == 0 {
-				return false, fmt.Errorf("got 0 rules in group %s", groupName)
+				return fmt.Errorf("got 0 rules in group %s", groupName)
 			}
 
 			for _, rule := range rules {
 				health := rule.Path("health").Data().(string)
 				if health != "ok" {
-					return false, fmt.Errorf("error evaluating rule: %v", rule)
+					return fmt.Errorf("error evaluating rule: %v", rule)
 				}
 			}
 		}
 
-		return true, nil
+		return nil
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -285,14 +291,19 @@ func TestGrafana(t *testing.T) {
 	t.Parallel()
 	kClient := promClient.kubeClient
 
-	err := wait.Poll(30*time.Second, 5*time.Minute, func() (bool, error) {
+	err := pollCondition(5*time.Minute, func() error {
 		grafanaDeployment, err := kClient.AppsV1().Deployments("monitoring").Get(context.Background(), "grafana", metav1.GetOptions{})
 		if err != nil {
-			t.Fatal(err)
+			return err
 		}
-		return grafanaDeployment.Status.ReadyReplicas == *grafanaDeployment.Spec.Replicas, nil
+
+		if grafanaDeployment.Status.ReadyReplicas != *grafanaDeployment.Spec.Replicas {
+			return fmt.Errorf("expecting %d replicas, got %d", *grafanaDeployment.Spec.Replicas, grafanaDeployment.Status.ReadyReplicas)
+		}
+
+		return nil
 	})
 	if err != nil {
-		t.Fatal(fmt.Errorf("timeout while waiting for deployment ready condition: %w", err))
+		t.Fatal(fmt.Errorf("timeout while waiting for Grafana deployment ready condition: %w", err))
 	}
 }
