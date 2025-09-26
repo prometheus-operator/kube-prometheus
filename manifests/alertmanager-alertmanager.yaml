@@ -10,6 +10,7 @@ metadata:
   name: main
   namespace: monitoring
 spec:
+  alertmanagerConfigSelector: {}
   image: quay.io/prometheus/alertmanager:v0.28.1
   nodeSelector:
     kubernetes.io/os: linux
