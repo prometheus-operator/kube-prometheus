@@ -121,6 +121,10 @@ jobs:
           kubectl create -f manifests/setup
           until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
           kubectl create -f manifests/
+      - name: Wait for kube-prometheus stack to finish bootstraping
+        run: kubectl wait --for=condition=Ready pods --all -n monitoring --timeout=300s
+      - name: Check resources in all namespaces
+        run: kubectl get services,endpoints,pods,prometheus,alertmanager --all-namespaces
       - name: Run tests
         run: |
           export KUBECONFIG="${HOME}/.kube/config"
