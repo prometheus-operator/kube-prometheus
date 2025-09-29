@@ -66,7 +66,7 @@ func pollCondition(timeout time.Duration, conditionFunc func() error) error {
 
 	var conditionErr error
 	if err := wait.PollImmediateUntilWithContext(ctx, 5*time.Second, func(context.Context) (bool, error) {
-		conditionErr := conditionFunc()
+		conditionErr = conditionFunc()
 		return conditionErr == nil, nil
 	}); err != nil {
 		return fmt.Errorf("%w: %w", err, conditionErr)
@@ -96,6 +96,16 @@ func TestQueryPrometheus(t *testing.T) {
 			job:     "apiserver",
 			expectN: 1,
 		}, {
+			// There are 4 kubelet endpoints.
+			job:     "kubelet",
+			expectN: 4,
+		}, {
+			job:     "kube-scheduler",
+			expectN: 1,
+		}, {
+			job:     "kube-controller-manager",
+			expectN: 1,
+		}, {
 			job:     "kube-state-metrics",
 			expectN: 1,
 		}, {
@@ -115,10 +125,12 @@ func TestQueryPrometheus(t *testing.T) {
 				if err != nil {
 					return err
 				}
+
 				if n < tc.expectN {
 					// Don't return an error as targets may only become visible after a while.
 					return fmt.Errorf("expected at least %d results for job=%q but got %d", tc.expectN, tc.job, n)
 				}
+
 				return nil
 			})
 			if err != nil {

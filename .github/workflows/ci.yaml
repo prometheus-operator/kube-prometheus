@@ -110,6 +110,10 @@ jobs:
       - name: Install kube-router for NetworkPolicy support
         run: |
           kubectl apply -f tests/e2e/kind/kube-router.yaml
+      - name: Install kube-scheduler and kube-controller-manager services
+        run: |
+          kubectl apply -f tests/e2e/kind/kubernetesControlPlane-kubeControllerManagerPrometheusDiscoveryService.yaml && \
+          kubectl apply -f tests/e2e/kind/kubernetesControlPlane-kubeSchedulerPrometheusDiscoveryService.yaml
       - name: Wait for cluster to finish bootstraping
         run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
       - name: Create kube-prometheus stack
