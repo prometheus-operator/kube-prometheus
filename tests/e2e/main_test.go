@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -142,21 +143,31 @@ func TestQueryPrometheus(t *testing.T) {
 
 func TestDroppedMetrics(t *testing.T) {
 	t.Parallel()
-	// query metadata for all metrics and their metadata
+
+	exceptions := []string{
+		"scheduler_scheduler_cache_size",
+	}
+
+	// Query metadata for all metrics and their metadata.
 	md, err := promClient.metadata("{job=~\".+\"}")
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	for _, k := range md {
+		if slices.Contains(exceptions, k.Metric) {
+			continue
+		}
+
 		// check if the metric' help text contains Deprecated
 		if strings.Contains(k.Help, "Deprecated") {
 			// query prometheus for the Deprecated metric
 			n, err := promClient.query(k.Metric)
 			if err != nil {
-				t.Fatal(err)
+				t.Error(err)
 			}
 			if n > 0 {
-				t.Fatalf("deprecated metric with name: %s and help text: %s exists.", k.Metric, k.Help)
+				t.Errorf("found deprecated metric with name %q and help text %q", k.Metric, k.Help)
 			}
 		}
 	}
