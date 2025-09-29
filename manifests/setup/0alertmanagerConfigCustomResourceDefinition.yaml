@@ -2571,7 +2571,7 @@ spec:
                         type: object
                       type: array
                     name:
-                      description: name defiens the name of the receiver. Must be unique across all items from the list.
+                      description: name defines the name of the receiver. Must be unique across all items from the list.
                       minLength: 1
                       type: string
                     opsgenieConfigs:
