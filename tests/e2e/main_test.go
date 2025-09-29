@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -66,7 +67,7 @@ func pollCondition(timeout time.Duration, conditionFunc func() error) error {
 
 	var conditionErr error
 	if err := wait.PollImmediateUntilWithContext(ctx, 5*time.Second, func(context.Context) (bool, error) {
-		conditionErr := conditionFunc()
+		conditionErr = conditionFunc()
 		return conditionErr == nil, nil
 	}); err != nil {
 		return fmt.Errorf("%w: %w", err, conditionErr)
@@ -96,6 +97,16 @@ func TestQueryPrometheus(t *testing.T) {
 			job:     "apiserver",
 			expectN: 1,
 		}, {
+			// There are 4 kubelet endpoints.
+			job:     "kubelet",
+			expectN: 4,
+		}, {
+			job:     "kube-scheduler",
+			expectN: 1,
+		}, {
+			job:     "kube-controller-manager",
+			expectN: 1,
+		}, {
 			job:     "kube-state-metrics",
 			expectN: 1,
 		}, {
@@ -115,10 +126,12 @@ func TestQueryPrometheus(t *testing.T) {
 				if err != nil {
 					return err
 				}
+
 				if n < tc.expectN {
 					// Don't return an error as targets may only become visible after a while.
 					return fmt.Errorf("expected at least %d results for job=%q but got %d", tc.expectN, tc.job, n)
 				}
+
 				return nil
 			})
 			if err != nil {
@@ -130,21 +143,31 @@ func TestQueryPrometheus(t *testing.T) {
 
 func TestDroppedMetrics(t *testing.T) {
 	t.Parallel()
-	// query metadata for all metrics and their metadata
+
+	exceptions := []string{
+		"scheduler_scheduler_cache_size",
+	}
+
+	// Query metadata for all metrics and their metadata.
 	md, err := promClient.metadata("{job=~\".+\"}")
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	for _, k := range md {
+		if slices.Contains(exceptions, k.Metric) {
+			continue
+		}
+
 		// check if the metric' help text contains Deprecated
 		if strings.Contains(k.Help, "Deprecated") {
 			// query prometheus for the Deprecated metric
 			n, err := promClient.query(k.Metric)
 			if err != nil {
-				t.Fatal(err)
+				t.Error(err)
 			}
 			if n > 0 {
-				t.Fatalf("deprecated metric with name: %s and help text: %s exists.", k.Metric, k.Help)
+				t.Errorf("found deprecated metric with name %q and help text %q", k.Metric, k.Help)
 			}
 		}
 	}
