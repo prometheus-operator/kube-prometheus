@@ -104,7 +104,6 @@ local utils = import './lib/utils.libsonnet';
           apiVersion: 'v2',
         }],
       },
-      serviceDiscoveryRole: 'EndpointSlice',
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
     prometheusAdapter: {

@@ -53,22 +53,6 @@ local defaults = {
   reloaderPort:: 8080,
 };
 
-local endpointSliceRule = {
-  apiGroups: ['discovery.k8s.io'],
-  resources: ['endpointslices'],
-  verbs: ['get', 'list', 'watch'],
-};
-local endpointsRule = {
-  apiGroups: [''],
-  resources: ['endpoints'],
-  verbs: ['get', 'list', 'watch'],
-};
-
-local validateServiceDiscoveryRole(role) =
-  if role == 'EndpointSlice' then endpointSliceRule
-  else if role == 'Endpoints' then endpointsRule
-  else error 'Invalid serviceDiscoveryRole';
-
 function(params) {
   local p = self,
   _config:: defaults + params,
@@ -302,7 +286,20 @@ function(params) {
         namespace: namespace,
       },
       rules: [
-        validateServiceDiscoveryRole(p._config.serviceDiscoveryRole),
+        if p._config.serviceDiscoveryRole == 'EndpointSlice' then {
+          apiGroups: ['discovery.k8s.io'],
+          resources: ['endpointslices'],
+          verbs: ['get', 'list', 'watch'],
+        }
+        else if p._config.serviceDiscoveryRole == 'Endpoints' then
+          {
+            apiGroups: [''],
+            resources: ['endpoints'],
+            verbs: ['get', 'list', 'watch'],
+          }
+        else
+          error 'Invalid serviceDiscoveryRole: ' + p._config.serviceDiscoveryRole,
+      ] + [
         {
           apiGroups: [''],
           resources: ['services', 'pods'],
