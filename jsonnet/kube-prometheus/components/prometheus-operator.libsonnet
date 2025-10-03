@@ -9,6 +9,12 @@ local defaults = {
   namespace:: error 'must provide namespace',
   version:: error 'must provide version',
   image:: error 'must provide image',
+  // Enable both endpoints and endpointslice for the kubelet controller to
+  // ensure that the `endpointslice.kubernetes.io/skip-mirror=true` label is
+  // set on the endpoints object. In the next release we can turn off endpoints
+  // management.
+  kubeletEndpointsEnabled:: true,
+  kubeletEndpointSliceEnabled:: true,
   kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
   configReloaderImage:: error 'must provide config reloader image',
   resources:: {

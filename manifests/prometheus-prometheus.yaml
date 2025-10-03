@@ -45,6 +45,7 @@ spec:
     runAsNonRoot: true
     runAsUser: 1000
   serviceAccountName: prometheus-k8s
+  serviceDiscoveryRole: EndpointSlice
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
   version: 3.6.0
