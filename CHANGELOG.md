@@ -1,3 +1,7 @@
+## Unreleased
+
+* [CHANGE] Remove `alertmanagerName` and `thanosSelector` configuration options from `prometheus.libsonnet`. [#2755](https://github.com/prometheus-operator/kube-prometheus/pull/2755)
+
 ## release-0.16 / 2025-08-28
 
 * [ENHANCEMENT] Add common labels to blackbox-exporter ClusterRole. [#2667](https://github.com/prometheus-operator/kube-prometheus/pull/2667)

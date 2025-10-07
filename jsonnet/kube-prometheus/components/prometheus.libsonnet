@@ -9,8 +9,6 @@ local defaults = {
   resources: {
     requests: { memory: '400Mi' },
   },
-  //TODO(paulfantom): remove alertmanagerName after release-0.10 and convert to plain 'alerting' object.
-  alertmanagerName:: '',
   alerting: {},
   namespaces:: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
@@ -35,14 +33,12 @@ local defaults = {
     _config: {
       prometheusSelector: 'job="prometheus-' + defaults.name + '",namespace="' + defaults.namespace + '"',
       prometheusName: '{{$labels.namespace}}/{{$labels.pod}}',
-      // TODO: remove `thanosSelector` after 0.10.0 release.
-      thanosSelector: 'job="thanos-sidecar"',
       thanos: {
         targetGroups: {
           namespace: defaults.namespace,
         },
         sidecar: {
-          selector: defaults.mixin._config.thanosSelector,
+          selector: 'job="thanos-sidecar"',
           thanosPrometheusCommonDimensions: 'namespace, pod',
         },
       },
@@ -76,8 +72,7 @@ function(params) {
     (import 'github.com/kubernetes-monitoring/kubernetes-mixin/lib/add-runbook-links.libsonnet') + {
       _config+:: p._config.mixin._config,
       targetGroups+: p._config.mixin._config.thanos.targetGroups,
-      // TODO: remove `_config.thanosSelector` after 0.10.0 release.
-      sidecar+: { selector: p._config.mixin._config.thanosSelector } + p._config.mixin._config.thanos.sidecar,
+      sidecar+: p._config.mixin._config.thanos.sidecar,
     },
 
   prometheusRule: {
@@ -364,14 +359,7 @@ function(params) {
       serviceMonitorNamespaceSelector: {},
       nodeSelector: { 'kubernetes.io/os': 'linux' },
       resources: p._config.resources,
-      alerting: if p._config.alerting != {} then p._config.alerting else {
-        alertmanagers: [{
-          namespace: p._config.namespace,
-          name: 'alertmanager-' + p._config.alertmanagerName,
-          port: 'web',
-          apiVersion: 'v2',
-        }],
-      },
+      alerting: p._config.alerting,
       securityContext: {
         runAsUser: 1000,
         runAsNonRoot: true,
