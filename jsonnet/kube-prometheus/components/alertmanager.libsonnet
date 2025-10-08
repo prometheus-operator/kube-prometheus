@@ -61,6 +61,7 @@ local defaults = {
   },
   replicas: 3,
   secrets: [],
+  alertmanagerConfigSelector: {},
   mixin:: {
     ruleLabels: {},
     _config: {
@@ -234,7 +235,7 @@ function(params) {
         fsGroup: 2000,
       },
       [if std.objectHas(params, 'storage') then 'storage']: am._config.storage,
-      alertmanagerConfigSelector: {},
+      alertmanagerConfigSelector: am._config.alertmanagerConfigSelector,
     },
   },
 }
