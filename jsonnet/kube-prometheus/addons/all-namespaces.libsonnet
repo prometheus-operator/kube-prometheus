@@ -3,6 +3,11 @@
     clusterRole+: {
       rules+: [
         {
+          apiGroups: ['discovery.k8s.io'],
+          resources: ['endpointslices'],
+          verbs: ['get', 'list', 'watch'],
+        },
+        {
           apiGroups: [''],
           resources: ['services', 'endpoints', 'pods'],
           verbs: ['get', 'list', 'watch'],
