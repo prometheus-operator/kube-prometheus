@@ -111,7 +111,7 @@
           "subdir": "jsonnet/controller-gen"
         }
       },
-      "version": "main",
+      "version": "improve-slo-performance-with-subqueries",
       "name": "pyrra"
     },
     {
