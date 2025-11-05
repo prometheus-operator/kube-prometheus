@@ -17,3 +17,6 @@ validators:
   # Ignoring for now but we need remove the related content if it persists.
   - regex: 'https:\/\/www.weave.works.*'
     type: "ignore"
+  # StackOverflow returns 403 for automated requests.
+  - regex: 'https:\/\/stackoverflow.com.*'
+    type: "ignore"
