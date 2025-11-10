@@ -31,7 +31,7 @@ spec:
       expr: |
         sum by (namespace, pod, cluster) (
           max by(namespace, pod, cluster) (
-            kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown|Failed"}
+            kube_pod_status_phase{job="kube-state-metrics", phase=~"Pending|Unknown"}
           ) * on(namespace, pod, cluster) group_left(owner_kind) topk by(namespace, pod, cluster) (
             1, max by(namespace, pod, owner_kind, cluster) (kube_pod_owner{owner_kind!="Job"})
           )
@@ -376,10 +376,16 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotaalmostfull
         summary: Namespace quota is going to be full.
       expr: |
-        kube_resourcequota{job="kube-state-metrics", type="used"}
-          / ignoring(instance, job, type)
-        (kube_resourcequota{job="kube-state-metrics", type="hard"} > 0)
-          > 0.9 < 1
+        max without (instance, job, type) (
+          kube_resourcequota{job="kube-state-metrics", type="used"}
+        )
+        / on (cluster, namespace, resource, resourcequota) group_left()
+        (
+          max without (instance, job, type) (
+            kube_resourcequota{job="kube-state-metrics", type="hard"}
+          ) > 0
+        )
+        > 0.9 < 1
       for: 15m
       labels:
         severity: info
@@ -389,10 +395,16 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotafullyused
         summary: Namespace quota is fully used.
       expr: |
-        kube_resourcequota{job="kube-state-metrics", type="used"}
-          / ignoring(instance, job, type)
-        (kube_resourcequota{job="kube-state-metrics", type="hard"} > 0)
-          == 1
+        max without (instance, job, type) (
+          kube_resourcequota{job="kube-state-metrics", type="used"}
+        )
+        / on (cluster, namespace, resource, resourcequota) group_left()
+        (
+          max without (instance, job, type) (
+            kube_resourcequota{job="kube-state-metrics", type="hard"}
+          ) > 0
+        )
+        == 1
       for: 15m
       labels:
         severity: info
@@ -402,10 +414,15 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotaexceeded
         summary: Namespace quota has exceeded the limits.
       expr: |
-        kube_resourcequota{job="kube-state-metrics", type="used"}
-          / ignoring(instance, job, type)
-        (kube_resourcequota{job="kube-state-metrics", type="hard"} > 0)
-          > 1
+        max without (instance, job, type) (
+          kube_resourcequota{job="kube-state-metrics", type="used"}
+        )
+        / on (cluster, namespace, resource, resourcequota) group_left()
+        (
+          max without (instance, job, type) (
+            kube_resourcequota{job="kube-state-metrics", type="hard"}
+          ) > 0
+        ) > 1
       for: 15m
       labels:
         severity: warning
@@ -415,10 +432,22 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/cputhrottlinghigh
         summary: Processes experience elevated CPU throttling.
       expr: |
-        sum(increase(container_cpu_cfs_throttled_periods_total{container!="", job="kubelet", metrics_path="/metrics/cadvisor", }[5m])) without (id, metrics_path, name, image, endpoint, job, node)
-          / on (cluster, namespace, pod, container, instance) group_left
-        sum(increase(container_cpu_cfs_periods_total{job="kubelet", metrics_path="/metrics/cadvisor", }[5m])) without (id, metrics_path, name, image, endpoint, job, node)
-          > ( 25 / 100 )
+        sum without (id, metrics_path, name, image, endpoint, job, node) (
+          topk by (cluster, namespace, pod, container, instance) (1,
+            increase(
+              container_cpu_cfs_throttled_periods_total{container!="", job="kubelet", metrics_path="/metrics/cadvisor", }
+            [5m])
+          )
+        )
+        / on (cluster, namespace, pod, container, instance) group_left
+        sum without (id, metrics_path, name, image, endpoint, job, node) (
+          topk by (cluster, namespace, pod, container, instance) (1,
+            increase(
+              container_cpu_cfs_periods_total{job="kubelet", metrics_path="/metrics/cadvisor", }
+            [5m])
+          )
+        )
+        > ( 25 / 100 )
       for: 15m
       labels:
         severity: info
@@ -653,7 +682,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapidown
         summary: Target disappeared from Prometheus target discovery.
       expr: |
-        absent(up{job="apiserver"} == 1)
+        absent(up{job="apiserver"})
       for: 15m
       labels:
         severity: critical
@@ -845,7 +874,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletdown
         summary: Target disappeared from Prometheus target discovery.
       expr: |
-        absent(up{job="kubelet", metrics_path="/metrics"} == 1)
+        absent(up{job="kubelet", metrics_path="/metrics"})
       for: 15m
       labels:
         severity: critical
@@ -857,7 +886,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeschedulerdown
         summary: Target disappeared from Prometheus target discovery.
       expr: |
-        absent(up{job="kube-scheduler"} == 1)
+        absent(up{job="kube-scheduler"})
       for: 15m
       labels:
         severity: critical
@@ -869,7 +898,7 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubecontrollermanagerdown
         summary: Target disappeared from Prometheus target discovery.
       expr: |
-        absent(up{job="kube-controller-manager"} == 1)
+        absent(up{job="kube-controller-manager"})
       for: 15m
       labels:
         severity: critical
@@ -1562,10 +1591,10 @@ spec:
   - name: kube-scheduler.rules
     rules:
     - expr: |
-        histogram_quantile(0.99, sum(rate(scheduler_e2e_scheduling_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+        histogram_quantile(0.99, sum(rate(scheduler_scheduling_attempt_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.99"
-      record: cluster_quantile:scheduler_e2e_scheduling_duration_seconds:histogram_quantile
+      record: cluster_quantile:scheduler_scheduling_attempt_duration_seconds:histogram_quantile
     - expr: |
         histogram_quantile(0.99, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
@@ -1577,10 +1606,10 @@ spec:
         quantile: "0.99"
       record: cluster_quantile:scheduler_binding_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.9, sum(rate(scheduler_e2e_scheduling_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+        histogram_quantile(0.9, sum(rate(scheduler_scheduling_attempt_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.9"
-      record: cluster_quantile:scheduler_e2e_scheduling_duration_seconds:histogram_quantile
+      record: cluster_quantile:scheduler_scheduling_attempt_duration_seconds:histogram_quantile
     - expr: |
         histogram_quantile(0.9, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
@@ -1592,10 +1621,10 @@ spec:
         quantile: "0.9"
       record: cluster_quantile:scheduler_binding_duration_seconds:histogram_quantile
     - expr: |
-        histogram_quantile(0.5, sum(rate(scheduler_e2e_scheduling_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
+        histogram_quantile(0.5, sum(rate(scheduler_scheduling_attempt_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:
         quantile: "0.5"
-      record: cluster_quantile:scheduler_e2e_scheduling_duration_seconds:histogram_quantile
+      record: cluster_quantile:scheduler_scheduling_attempt_duration_seconds:histogram_quantile
     - expr: |
         histogram_quantile(0.5, sum(rate(scheduler_scheduling_algorithm_duration_seconds_bucket{job="kube-scheduler"}[5m])) without(instance, pod))
       labels:

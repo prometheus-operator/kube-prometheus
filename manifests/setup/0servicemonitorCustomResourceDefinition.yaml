@@ -3,7 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.19.0
-    operator.prometheus.io/version: 0.86.0
+    operator.prometheus.io/version: 0.86.2
   name: servicemonitors.monitoring.coreos.com
 spec:
   group: monitoring.coreos.com
@@ -808,16 +808,12 @@ spec:
                         type: object
                       type: array
                     scheme:
-                      description: |-
-                        scheme defines the HTTP scheme to use for scraping.
-
-                        `http` and `https` are the expected values unless you rewrite the
-                        `__scheme__` label via relabeling.
-
-                        If empty, Prometheus uses the default value `http`.
+                      description: scheme defines the HTTP scheme to use when scraping the metrics.
                       enum:
                       - http
                       - https
+                      - HTTP
+                      - HTTPS
                       type: string
                     scrapeTimeout:
                       description: |-
