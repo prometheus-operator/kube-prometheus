@@ -146,6 +146,10 @@ func TestDroppedMetrics(t *testing.T) {
 
 	exceptions := []string{
 		"scheduler_scheduler_cache_size",
+		"prometheus_remote_storage_exemplars_in_total",
+		"prometheus_remote_storage_samples_in_total",
+		"prometheus_remote_storage_histograms_in_total",
+		"prometheus_remote_storage_highest_timestamp_in_seconds",
 	}
 
 	// Query metadata for all metrics and their metadata.
