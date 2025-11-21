@@ -15,7 +15,7 @@ jobs:
           - "release-0.16"
           - "main"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ matrix.branch }}
       - name: Import environment variables from file
