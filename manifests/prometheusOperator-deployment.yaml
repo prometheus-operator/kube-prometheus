@@ -30,6 +30,8 @@ spec:
       - args:
         - --kubelet-service=kube-system/kubelet
         - --prometheus-config-reloader=quay.io/prometheus-operator/prometheus-config-reloader:v0.87.0
+        - --watch-referenced-objects-in-all-namespaces=true
+        - --disable-unmanaged-prometheus-configuration=true
         - --kubelet-endpoints=true
         - --kubelet-endpointslice=true
         env:
@@ -57,7 +59,7 @@ spec:
         - --secure-listen-address=:8443
         - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
         - --upstream=http://127.0.0.1:8080/
-        image: quay.io/brancz/kube-rbac-proxy:v0.20.0
+        image: quay.io/brancz/kube-rbac-proxy:v0.20.1
         name: kube-rbac-proxy
         ports:
         - containerPort: 8443
