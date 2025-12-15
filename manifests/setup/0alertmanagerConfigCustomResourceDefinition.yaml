@@ -77,7 +77,7 @@ spec:
                               Valid values: "=" (equality), "!=" (inequality), "=~" (regex match), "!~" (regex non-match).
                             enum:
                             - '!='
-                            - =
+                            - '='
                             - =~
                             - '!~'
                             type: string
@@ -116,7 +116,7 @@ spec:
                               Valid values: "=" (equality), "!=" (inequality), "=~" (regex match), "!~" (regex non-match).
                             enum:
                             - '!='
-                            - =
+                            - '='
                             - =~
                             - '!~'
                             type: string
@@ -10930,7 +10930,7 @@ spec:
                             Valid values: "=" (equality), "!=" (inequality), "=~" (regex match), "!~" (regex non-match).
                           enum:
                           - '!='
-                          - =
+                          - '='
                           - =~
                           - '!~'
                           type: string
