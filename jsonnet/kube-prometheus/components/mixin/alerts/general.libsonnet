@@ -46,7 +46,7 @@
                 This alert should be routed to a null receiver and configured to inhibit alerts with severity="info".
               |||,
             },
-            expr: 'ALERTS{severity = "info"} == 1 unless on(namespace) ALERTS{alertname != "InfoInhibitor", severity =~ "warning|critical", alertstate="firing"} == 1',
+            expr: 'count by (namespace) (ALERTS{severity = "info"} == 1) > 0 unless on (namespace) count by (namespace) (ALERTS{alertname != "InfoInhibitor", alertstate = "firing", severity =~ "warning|critical"} == 1) > 0',
             labels: {
               severity: 'none',
             },
