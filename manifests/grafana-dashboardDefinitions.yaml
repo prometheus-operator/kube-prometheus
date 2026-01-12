@@ -4288,7 +4288,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "avg(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "avg(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4339,7 +4339,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "avg(irate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "avg(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4390,7 +4390,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "sum(rate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4441,7 +4441,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "sum(rate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4492,7 +4492,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "sum(rate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4543,7 +4543,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "sum(rate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -6536,7 +6536,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_receive_packets_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum(rate(container_network_receive_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -6587,7 +6587,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_transmit_packets_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum(rate(container_network_transmit_packets_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -6638,7 +6638,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_receive_packets_dropped_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum(rate(container_network_receive_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -6689,7 +6689,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum(rate(container_network_transmit_packets_dropped_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -7102,6 +7102,49 @@ items:
                                       }
                                   }
                               ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "max allocatable"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "color",
+                                      "value": {
+                                          "fixedColor": "super-light-red",
+                                          "mode": "fixed"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.stacking",
+                                      "value": {
+                                          "mode": "none"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.hideFrom",
+                                      "value": {
+                                          "legend": false,
+                                          "tooltip": true,
+                                          "viz": false
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.lineStyle",
+                                      "value": {
+                                          "dash": [
+                                              10,
+                                              10
+                                          ],
+                                          "fill": "dash"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.fillOpacity",
+                                      "value": 0
+                                  }
+                              ]
                           }
                       ]
                   },
@@ -7136,6 +7179,14 @@ items:
                           },
                           "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"cpu\"})",
                           "legendFormat": "max capacity"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_node_status_allocatable{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"cpu\"})",
+                          "legendFormat": "max allocatable"
                       },
                       {
                           "datasource": {
@@ -7331,6 +7382,49 @@ items:
                                       }
                                   }
                               ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "max allocatable"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "color",
+                                      "value": {
+                                          "fixedColor": "super-light-red",
+                                          "mode": "fixed"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.stacking",
+                                      "value": {
+                                          "mode": "none"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.hideFrom",
+                                      "value": {
+                                          "legend": false,
+                                          "tooltip": true,
+                                          "viz": false
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.lineStyle",
+                                      "value": {
+                                          "dash": [
+                                              10,
+                                              10
+                                          ],
+                                          "fill": "dash"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.fillOpacity",
+                                      "value": 0
+                                  }
+                              ]
                           }
                       ]
                   },
@@ -7365,6 +7459,14 @@ items:
                           },
                           "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"memory\"})",
                           "legendFormat": "max capacity"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_node_status_allocatable{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"memory\"})",
+                          "legendFormat": "max allocatable"
                       },
                       {
                           "datasource": {
@@ -7434,6 +7536,49 @@ items:
                                       }
                                   }
                               ]
+                          },
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "max allocatable"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "color",
+                                      "value": {
+                                          "fixedColor": "super-light-red",
+                                          "mode": "fixed"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.stacking",
+                                      "value": {
+                                          "mode": "none"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.hideFrom",
+                                      "value": {
+                                          "legend": false,
+                                          "tooltip": true,
+                                          "viz": false
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.lineStyle",
+                                      "value": {
+                                          "dash": [
+                                              10,
+                                              10
+                                          ],
+                                          "fill": "dash"
+                                      }
+                                  },
+                                  {
+                                      "id": "custom.fillOpacity",
+                                      "value": 0
+                                  }
+                              ]
                           }
                       ]
                   },
@@ -7468,6 +7613,14 @@ items:
                           },
                           "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"memory\"})",
                           "legendFormat": "max capacity"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_node_status_allocatable{cluster=\"$cluster\", job=\"kube-state-metrics\", node=~\"$node\", resource=\"memory\"})",
+                          "legendFormat": "max allocatable"
                       },
                       {
                           "datasource": {
