@@ -11,12 +11,12 @@ metadata:
 spec:
   clusterIP: None
   ports:
-  - name: https-main
+  - name: http-metrics
     port: 8443
-    targetPort: https-main
-  - name: https-self
+    targetPort: http-metrics
+  - name: telemetry
     port: 9443
-    targetPort: https-self
+    targetPort: telemetry
   selector:
     app.kubernetes.io/component: exporter
     app.kubernetes.io/name: kube-state-metrics
