@@ -15,12 +15,18 @@ local defaults = {
   },
 
   kubeRbacProxyMain:: {
+    ports: [
+      { name: 'http-metrics', containerPort: 8443 },
+    ],
     resources+: {
       limits+: { cpu: '40m' },
       requests+: { cpu: '20m' },
     },
   },
   kubeRbacProxySelf:: {
+    ports: [
+      { name: 'telemetry', containerPort: 9443 },
+    ],
     resources+: {
       limits+: { cpu: '20m' },
       requests+: { cpu: '10m' },
@@ -46,6 +52,8 @@ local defaults = {
       runbookURLPattern: 'https://runbooks.prometheus-operator.dev/runbooks/kube-state-metrics/%s',
     },
   },
+  // `enableProbes` allows users to opt-into upstream definitions for health probes.
+  enableProbes:: false,
 };
 
 function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-state-metrics/kube-state-metrics.libsonnet') {
@@ -91,14 +99,14 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
     spec+: {
       ports: [
         {
-          name: 'https-main',
-          port: 8443,
-          targetPort: 'https-main',
+          name: defaults.kubeRbacProxyMain.ports[0].name,
+          port: defaults.kubeRbacProxyMain.ports[0].containerPort,
+          targetPort: defaults.kubeRbacProxyMain.ports[0].name,
         },
         {
-          name: 'https-self',
-          port: 9443,
-          targetPort: 'https-self',
+          name: defaults.kubeRbacProxySelf.ports[0].name,
+          port: defaults.kubeRbacProxySelf.ports[0].containerPort,
+          targetPort: defaults.kubeRbacProxySelf.ports[0].name,
         },
       ],
     },
@@ -107,21 +115,19 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
   local kubeRbacProxyMain = krp(ksm._config.kubeRbacProxyMain {
     name: 'kube-rbac-proxy-main',
     upstream: 'http://127.0.0.1:8081/',
-    secureListenAddress: ':8443',
-    ports: [
-      { name: 'https-main', containerPort: 8443 },
-    ],
+    secureListenAddress: ':' + std.toString(defaults.kubeRbacProxyMain.ports[0].containerPort),
     image: ksm._config.kubeRbacProxyImage,
+    // When enabling probes, kube-rbac-proxy needs to always allow the /livez endpoint.
+    ignorePaths: if ksm._config.enableProbes then ['/livez'] else super.ignorePaths,
   }),
 
   local kubeRbacProxySelf = krp(ksm._config.kubeRbacProxySelf {
     name: 'kube-rbac-proxy-self',
     upstream: 'http://127.0.0.1:8082/',
-    secureListenAddress: ':9443',
-    ports: [
-      { name: 'https-self', containerPort: 9443 },
-    ],
+    secureListenAddress: ':' + std.toString(defaults.kubeRbacProxySelf.ports[0].containerPort),
     image: ksm._config.kubeRbacProxyImage,
+    // When enabling probes, kube-rbac-proxy needs to always allow the /readyz endpoint.
+    ignorePaths: if ksm._config.enableProbes then ['/readyz'] else super.ignorePaths,
   }),
 
   networkPolicy: {
@@ -161,14 +167,31 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
         spec+: {
           automountServiceAccountToken: true,
           containers: std.map(function(c) c {
-            ports:: null,
-            livenessProbe:: null,
-            readinessProbe:: null,
             securityContext+: {
               runAsGroup: 65534,
             },
             args: ['--host=127.0.0.1', '--port=8081', '--telemetry-host=127.0.0.1', '--telemetry-port=8082'],
             resources: ksm._config.resources,
+          } + if !ksm._config.enableProbes then {
+            ports:: null,
+            livenessProbe:: null,
+            readinessProbe:: null,
+          } else {
+            ports: defaults.kubeRbacProxyMain.ports + defaults.kubeRbacProxySelf.ports,
+            livenessProbe: {
+              httpGet: {
+                path: '/livez',
+                port: defaults.kubeRbacProxyMain.ports[0].name,
+                scheme: 'HTTPS',
+              },
+            },
+            readinessProbe: {
+              httpGet: {
+                path: '/readyz',
+                port: defaults.kubeRbacProxySelf.ports[0].name,
+                scheme: 'HTTPS',
+              },
+            },
           }, super.containers) + [kubeRbacProxyMain, kubeRbacProxySelf],
         },
       },
@@ -186,7 +209,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
         },
         endpoints: [
           {
-            port: 'https-main',
+            port: 'http-metrics',
             scheme: 'https',
             interval: ksm._config.scrapeInterval,
             scrapeTimeout: ksm._config.scrapeTimeout,
@@ -211,7 +234,7 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
             },
           },
           {
-            port: 'https-self',
+            port: 'telemetry',
             scheme: 'https',
             interval: ksm._config.scrapeInterval,
             bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',

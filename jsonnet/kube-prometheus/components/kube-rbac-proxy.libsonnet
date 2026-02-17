@@ -38,6 +38,13 @@ local defaults = {
     'TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305',
     'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305',
   ],
+  // Corresponds to KRP's --ignore-paths flag.
+  // Some components (for e.g., KSM) may utilize the flag to allow for communication with external parties in scenarios
+  // where the originating request(s) cannot be modified to the proxy's expectations, and thus, are passed through, as
+  // is, to certain endpoints that they target, without the proxy's intervention. The kubelet, in KSM's case, can thus
+  // query health probe endpoints without being blocked by KRP, thus allowing for http-based probes over exec-based
+  // ones.
+  ignorePaths:: [],
 };
 
 
@@ -50,10 +57,11 @@ function(params) {
   name: krp._config.name,
   image: krp._config.image,
   args: [
-    '--secure-listen-address=' + krp._config.secureListenAddress,
-    '--tls-cipher-suites=' + std.join(',', krp._config.tlsCipherSuites),
-    '--upstream=' + krp._config.upstream,
-  ],
+          '--secure-listen-address=' + krp._config.secureListenAddress,
+          '--tls-cipher-suites=' + std.join(',', krp._config.tlsCipherSuites),
+          '--upstream=' + krp._config.upstream,
+        ]  // Optionals.
+        + if std.length(krp._config.ignorePaths) > 0 then ['--ignore-paths=' + std.join(',', krp._config.ignorePaths)] else defaults.ignorePaths,
   resources: krp._config.resources,
   ports: krp._config.ports,
   securityContext: {

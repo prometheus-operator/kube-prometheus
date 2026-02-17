@@ -18,7 +18,7 @@ spec:
       regex: kube_(endpoint_(address_not_ready|address_available|ports))
       sourceLabels:
       - __name__
-    port: https-main
+    port: http-metrics
     relabelings:
     - action: labeldrop
       regex: (pod|service|endpoint|namespace)
@@ -28,7 +28,7 @@ spec:
       insecureSkipVerify: true
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     interval: 30s
-    port: https-self
+    port: telemetry
     scheme: https
     tlsConfig:
       insecureSkipVerify: true
