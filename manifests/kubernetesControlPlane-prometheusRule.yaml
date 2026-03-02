@@ -870,11 +870,13 @@ spec:
         severity: warning
     - alert: KubeletDown
       annotations:
-        description: Kubelet has disappeared from Prometheus target discovery.
+        description: Kubelet has disappeared from Prometheus target discovery on cluster {{ $labels.cluster }}.
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeletdown
         summary: Target disappeared from Prometheus target discovery.
       expr: |
-        absent(up{job="kubelet", metrics_path="/metrics"})
+        count by (cluster) (kube_node_info{job="kube-state-metrics"})
+        unless on (cluster)
+        count by (cluster) (up{job="kubelet", metrics_path="/metrics"} == 1)
       for: 15m
       labels:
         severity: critical

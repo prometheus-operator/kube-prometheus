@@ -360,7 +360,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-alertmanager-overview
     namespace: monitoring
 - apiVersion: v1
@@ -1242,7 +1242,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-apiserver
     namespace: monitoring
 - apiVersion: v1
@@ -1303,11 +1303,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (namespace) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "sum by (namespace) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Received",
+                  "title": "Current Rate of Bits Received",
                   "type": "timeseries"
               },
               {
@@ -1349,11 +1349,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (namespace) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "sum by (namespace) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Transmitted",
+                  "title": "Current Rate of Bits Transmitted",
                   "type": "timeseries"
               },
               {
@@ -1366,7 +1366,7 @@ items:
                           {
                               "matcher": {
                                   "id": "byRegexp",
-                                  "options": "/Bytes/"
+                                  "options": "/Bits/"
                               },
                               "properties": [
                                   {
@@ -1420,7 +1420,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (namespace) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "sum by (namespace) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -1429,7 +1429,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (namespace) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "sum by (namespace) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -1438,7 +1438,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "avg by (namespace) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "avg by (namespace) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -1447,7 +1447,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "avg by (namespace) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "avg by (namespace) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -1531,10 +1531,10 @@ items:
                                   "namespace": 8
                               },
                               "renameByName": {
-                                  "Value #A": "Rx Bytes",
-                                  "Value #B": "Tx Bytes",
-                                  "Value #C": "Rx Bytes (Avg)",
-                                  "Value #D": "Tx Bytes (Avg)",
+                                  "Value #A": "Rx Bits",
+                                  "Value #B": "Tx Bits",
+                                  "Value #C": "Rx Bits (Avg)",
+                                  "Value #D": "Tx Bits (Avg)",
                                   "Value #E": "Rx Packets",
                                   "Value #F": "Tx Packets",
                                   "Value #G": "Rx Packets Dropped",
@@ -1585,11 +1585,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "avg by (namespace) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "avg by (namespace) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Average Rate of Bytes Received",
+                  "title": "Average Rate of Bits Received",
                   "type": "timeseries"
               },
               {
@@ -1631,11 +1631,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "avg by (namespace) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "avg by (namespace) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Average Rate of Bytes Transmitted",
+                  "title": "Average Rate of Bits Transmitted",
                   "type": "timeseries"
               },
               {
@@ -1677,7 +1677,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (namespace) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "sum by (namespace) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -1723,7 +1723,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (namespace) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
+                          "expr": "sum by (namespace) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace!=\"\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\",cluster=\"$cluster\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -2056,7 +2056,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-cluster-total
     namespace: monitoring
 - apiVersion: v1
@@ -2660,7 +2660,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-controller-manager
     namespace: monitoring
 - apiVersion: v1
@@ -3279,7 +3279,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-grafana-overview
     namespace: monitoring
 - apiVersion: v1
@@ -4042,7 +4042,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval]))) by (namespace)",
                           "format": "table",
                           "instant": true
                       },
@@ -4051,7 +4051,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval]))) by (namespace)",
                           "format": "table",
                           "instant": true
                       },
@@ -4186,7 +4186,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval]))) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4237,7 +4237,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval]))) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4288,7 +4288,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "avg(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "avg((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval]))) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4339,7 +4339,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "avg(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval])) by (namespace)",
+                          "expr": "avg((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=~\".+\"}[$__rate_interval]))) by (namespace)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -4866,7 +4866,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -5507,7 +5507,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-multicluster
     namespace: monitoring
 - apiVersion: v1
@@ -6290,7 +6290,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))) by (pod)",
                           "format": "table",
                           "instant": true
                       },
@@ -6299,7 +6299,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))) by (pod)",
                           "format": "table",
                           "instant": true
                       },
@@ -6434,7 +6434,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_receive_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum((8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -6485,7 +6485,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_transmit_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum((8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -7025,7 +7025,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -7859,7 +7859,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-node
     namespace: monitoring
 - apiVersion: v1
@@ -8538,7 +8538,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum((8 * irate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -8589,7 +8589,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -9243,7 +9243,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-pod
     namespace: monitoring
 - apiVersion: v1
@@ -9930,7 +9930,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-windows-cluster
     namespace: monitoring
 - apiVersion: v1
@@ -10384,7 +10384,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-windows-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -10893,7 +10893,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-windows-pod
     namespace: monitoring
 - apiVersion: v1
@@ -11361,7 +11361,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "(sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "format": "table",
                           "instant": true
                       },
@@ -11370,7 +11370,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "(sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "format": "table",
                           "instant": true
                       },
@@ -11505,7 +11505,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "(sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -11556,7 +11556,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "(sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -11607,7 +11607,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(avg(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "(avg((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -11658,7 +11658,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(avg(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "(avg((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -11960,7 +11960,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-workload
     namespace: monitoring
 - apiVersion: v1
@@ -12638,7 +12638,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "(sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload))\n",
                           "format": "table",
                           "instant": true
                       },
@@ -12647,7 +12647,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "(sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload_type=~\"$type\"}) by (workload))\n",
                           "format": "table",
                           "instant": true
                       },
@@ -12782,7 +12782,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "(sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -12833,7 +12833,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "(sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -12884,7 +12884,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(avg(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "(avg((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -12935,7 +12935,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "(avg(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "(avg((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\", namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -13223,7 +13223,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-resources-workloads-namespace
     namespace: monitoring
 - apiVersion: v1
@@ -13639,7 +13639,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-windows-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -14266,7 +14266,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-k8s-windows-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -15519,7 +15519,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-kubelet
     namespace: monitoring
 - apiVersion: v1
@@ -15588,11 +15588,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
+                          "expr": "sum (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Received",
+                  "title": "Current Rate of Bits Received",
                   "type": "gauge"
               },
               {
@@ -15642,11 +15642,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
+                          "expr": "sum (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Transmitted",
+                  "title": "Current Rate of Bits Transmitted",
                   "type": "gauge"
               },
               {
@@ -15713,7 +15713,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (pod) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
+                          "expr": "sum by (pod) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -15722,7 +15722,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (pod) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
+                          "expr": "sum by (pod) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -15852,7 +15852,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (pod) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
+                          "expr": "sum by (pod) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -15898,7 +15898,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum by (pod) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
+                          "expr": "sum by (pod) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n  * on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n)\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -16159,7 +16159,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-namespace-by-pod
     namespace: monitoring
 - apiVersion: v1
@@ -16214,11 +16214,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(sum(rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "sort_desc(sum((8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Received",
+                  "title": "Current Rate of Bits Received",
                   "type": "bargauge"
               },
               {
@@ -16254,11 +16254,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(sum(rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "sort_desc(sum((8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Transmitted",
+                  "title": "Current Rate of Bits Transmitted",
                   "type": "bargauge"
               },
               {
@@ -16271,7 +16271,7 @@ items:
                           {
                               "matcher": {
                                   "id": "byRegexp",
-                                  "options": "/Bytes/"
+                                  "options": "/Bits/"
                               },
                               "properties": [
                                   {
@@ -16325,7 +16325,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16334,7 +16334,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16343,7 +16343,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  avg by (workload, workload_type) (\n    rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  avg by (workload, workload_type) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16352,7 +16352,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  avg by (workload, workload_type) (\n    rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  avg by (workload, workload_type) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16361,7 +16361,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    rate(container_network_receive_packets_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (1 * rate(container_network_receive_packets_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16370,7 +16370,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    rate(container_network_transmit_packets_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (1 * rate(container_network_transmit_packets_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16379,7 +16379,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    rate(container_network_receive_packets_dropped_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (1 * rate(container_network_receive_packets_dropped_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16388,7 +16388,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    rate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (1 * rate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       }
@@ -16451,10 +16451,10 @@ items:
                                   "workload_type 8": 24
                               },
                               "renameByName": {
-                                  "Value #A": "Rx Bytes",
-                                  "Value #B": "Tx Bytes",
-                                  "Value #C": "Rx Bytes (Avg)",
-                                  "Value #D": "Tx Bytes (Avg)",
+                                  "Value #A": "Rx Bits",
+                                  "Value #B": "Tx Bits",
+                                  "Value #C": "Rx Bits (Avg)",
+                                  "Value #D": "Tx Bits (Avg)",
                                   "Value #E": "Rx Packets",
                                   "Value #F": "Tx Packets",
                                   "Value #G": "Rx Packets Dropped",
@@ -16511,7 +16511,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(sum(rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "sort_desc(sum((8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -16562,7 +16562,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(sum(rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "sort_desc(sum((8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -16613,7 +16613,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(avg(rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "sort_desc(avg((8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -16664,7 +16664,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(avg(rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval])\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
+                          "expr": "sort_desc(avg((8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n* on (cluster,namespace,pod) group_left ()\n    topk by (cluster,namespace,pod) (\n      1,\n      max by (cluster,namespace,pod) (kube_pod_info{host_network=\"false\"})\n    )\n* on (cluster,namespace,pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}) by (workload))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -16957,7 +16957,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-namespace-by-workload
     namespace: monitoring
 - apiVersion: v1
@@ -17021,7 +17021,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "((\n  instance:node_cpu_utilisation:rate5m{job=\"node-exporter\", cluster=\"$cluster\"}\n  *\n  instance:node_num_cpu:sum{job=\"node-exporter\", cluster=\"$cluster\"}\n) != 0 )\n/ scalar(sum(instance:node_num_cpu:sum{job=\"node-exporter\", cluster=\"$cluster\"}))\n",
+                          "expr": "((\n  instance:node_cpu_utilisation:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"}\n  *\n  instance:node_num_cpu:sum{job=\"node-exporter\", cluster=~\"$cluster\"}\n) != 0 )\n/ scalar(sum(instance:node_num_cpu:sum{job=\"node-exporter\", cluster=~\"$cluster\"}))\n",
                           "legendFormat": "{{ instance }}"
                       }
                   ],
@@ -17068,7 +17068,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n  instance:node_load1_per_cpu:ratio{job=\"node-exporter\", cluster=\"$cluster\"}\n  / scalar(count(instance:node_load1_per_cpu:ratio{job=\"node-exporter\", cluster=\"$cluster\"}))\n)  != 0\n",
+                          "expr": "(\n  instance:node_load1_per_cpu:ratio{job=\"node-exporter\", cluster=~\"$cluster\"}\n  / scalar(count(instance:node_load1_per_cpu:ratio{job=\"node-exporter\", cluster=~\"$cluster\"}))\n)  != 0\n",
                           "legendFormat": "{{ instance }}"
                       }
                   ],
@@ -17130,7 +17130,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n  instance:node_memory_utilisation:ratio{job=\"node-exporter\", cluster=\"$cluster\"}\n  / scalar(count(instance:node_memory_utilisation:ratio{job=\"node-exporter\", cluster=\"$cluster\"}))\n) != 0\n",
+                          "expr": "(\n  instance:node_memory_utilisation:ratio{job=\"node-exporter\", cluster=~\"$cluster\"}\n  / scalar(count(instance:node_memory_utilisation:ratio{job=\"node-exporter\", cluster=~\"$cluster\"}))\n) != 0\n",
                           "legendFormat": "{{ instance }}"
                       }
                   ],
@@ -17177,7 +17177,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", cluster=\"$cluster\"}",
+                          "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"}",
                           "legendFormat": "{{ instance }}"
                       }
                   ],
@@ -17253,7 +17253,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "{{ instance }} Receive"
                       },
                       {
@@ -17261,7 +17261,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "{{ instance }} Transmit"
                       }
                   ],
@@ -17322,7 +17322,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "{{ instance }} Receive"
                       },
                       {
@@ -17330,7 +17330,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "{{ instance }} Transmit"
                       }
                   ],
@@ -17392,7 +17392,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", cluster=\"$cluster\"}\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", cluster=\"$cluster\"}))\n",
+                          "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"}\n/ scalar(count(instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"}))\n",
                           "legendFormat": "{{ instance }} {{device}}"
                       }
                   ],
@@ -17439,7 +17439,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", cluster=\"$cluster\"}\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", cluster=\"$cluster\"}))\n",
+                          "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"}\n/ scalar(count(instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", cluster=~\"$cluster\"}))\n",
                           "legendFormat": "{{ instance }} {{device}}"
                       }
                   ],
@@ -17501,7 +17501,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "sum without (device) (\n  max without (fstype, mountpoint) ((\n    node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\", mountpoint!=\"\", cluster=\"$cluster\"}\n    -\n    node_filesystem_avail_bytes{job=\"node-exporter\", fstype!=\"\", mountpoint!=\"\", cluster=\"$cluster\"}\n  ) != 0)\n)\n/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\", mountpoint!=\"\", cluster=\"$cluster\"})))\n",
+                          "expr": "sum without (device) (\n  max without (fstype, mountpoint) ((\n    node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\", mountpoint!=\"\", cluster=~\"$cluster\"}\n    -\n    node_filesystem_avail_bytes{job=\"node-exporter\", fstype!=\"\", mountpoint!=\"\", cluster=~\"$cluster\"}\n  ) != 0)\n)\n/ scalar(sum(max without (fstype, mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\", mountpoint!=\"\", cluster=~\"$cluster\"})))\n",
                           "legendFormat": "{{ instance }}"
                       }
                   ],
@@ -17522,12 +17522,13 @@ items:
                       "type": "datasource"
                   },
                   {
+                      "allValue": ".*",
                       "datasource": {
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
                       "hide": 2,
-                      "includeAll": false,
+                      "includeAll": true,
                       "name": "cluster",
                       "query": "label_values(node_time_seconds, cluster)",
                       "refresh": 2,
@@ -17550,7 +17551,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-node-cluster-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -17614,7 +17615,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_cpu_utilisation:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_cpu_utilisation:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "Utilisation"
                       }
                   ],
@@ -17661,7 +17662,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_load1_per_cpu:ratio{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_load1_per_cpu:ratio{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "Saturation"
                       }
                   ],
@@ -17723,7 +17724,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_memory_utilisation:ratio{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_memory_utilisation:ratio{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "Utilisation"
                       }
                   ],
@@ -17770,7 +17771,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_vmstat_pgmajfault:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "Major page Faults"
                       }
                   ],
@@ -17846,7 +17847,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_network_receive_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "Receive"
                       },
                       {
@@ -17854,7 +17855,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_network_transmit_bytes_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "Transmit"
                       }
                   ],
@@ -17915,7 +17916,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_network_receive_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "Receive"
                       },
                       {
@@ -17923,7 +17924,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance:node_network_transmit_drop_excluding_lo:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "Transmit"
                       }
                   ],
@@ -17985,7 +17986,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance_device:node_disk_io_time_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "{{device}}"
                       }
                   ],
@@ -18032,7 +18033,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} != 0",
+                          "expr": "instance_device:node_disk_io_time_weighted_seconds:rate5m{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} != 0",
                           "legendFormat": "{{device}}"
                       }
                   ],
@@ -18094,7 +18095,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "sort_desc(1 -\n  (\n    max without (mountpoint, fstype) (node_filesystem_avail_bytes{job=\"node-exporter\", fstype!=\"\", instance=\"$instance\", cluster=\"$cluster\"})\n    /\n    max without (mountpoint, fstype) (node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\", instance=\"$instance\", cluster=\"$cluster\"})\n  ) != 0\n)\n",
+                          "expr": "sort_desc(1 -\n  (\n    max without (mountpoint, fstype) (node_filesystem_avail_bytes{job=\"node-exporter\", fstype!=\"\", instance=\"$instance\", cluster=~\"$cluster\"})\n    /\n    max without (mountpoint, fstype) (node_filesystem_size_bytes{job=\"node-exporter\", fstype!=\"\", instance=\"$instance\", cluster=~\"$cluster\"})\n  ) != 0\n)\n",
                           "legendFormat": "{{device}}"
                       }
                   ],
@@ -18115,12 +18116,13 @@ items:
                       "type": "datasource"
                   },
                   {
+                      "allValue": ".*",
                       "datasource": {
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
                       "hide": 2,
-                      "includeAll": false,
+                      "includeAll": true,
                       "name": "cluster",
                       "query": "label_values(node_time_seconds, cluster)",
                       "refresh": 2,
@@ -18133,7 +18135,7 @@ items:
                           "uid": "${datasource}"
                       },
                       "name": "instance",
-                      "query": "label_values(node_exporter_build_info{job=\"node-exporter\", cluster=\"$cluster\"}, instance)",
+                      "query": "label_values(node_exporter_build_info{job=\"node-exporter\", cluster=~\"$cluster\"}, instance)",
                       "refresh": 2,
                       "sort": 1,
                       "type": "query"
@@ -18154,7 +18156,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-node-rsrc-use
     namespace: monitoring
 - apiVersion: v1
@@ -18216,7 +18218,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\", cluster=\"$cluster\"})\n)\n",
+                          "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\", cluster=~\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\", cluster=~\"$cluster\"})\n)\n",
                           "intervalFactor": 5,
                           "legendFormat": "{{cpu}}"
                       }
@@ -18258,7 +18260,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "1m load average"
                       },
                       {
@@ -18266,7 +18268,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "5m load average"
                       },
                       {
@@ -18274,7 +18276,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "15m load average"
                       },
                       {
@@ -18282,7 +18284,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})",
+                          "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", mode=\"idle\"})",
                           "legendFormat": "logical cores"
                       }
                   ],
@@ -18338,7 +18340,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "Physical Memory"
                       },
                       {
@@ -18346,7 +18348,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n    node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} -\n    node_memory_available_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n)\n",
+                          "expr": "(\n    node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} -\n    node_memory_available_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}\n)\n",
                           "legendFormat": "Memory Used"
                       }
                   ],
@@ -18394,7 +18396,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "100 -\n(\n  avg(node_memory_available_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) /\n  avg(node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"})\n  * 100\n)\n"
+                          "expr": "100 -\n(\n  avg(node_memory_available_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}) /\n  avg(node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"})\n  * 100\n)\n"
                       }
                   ],
                   "title": "Memory Usage",
@@ -18474,7 +18476,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} read"
                       },
@@ -18483,7 +18485,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} written"
                       },
@@ -18492,7 +18494,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} io time"
                       }
@@ -18615,7 +18617,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
+                          "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                           "format": "table",
                           "instant": true,
                           "legendFormat": ""
@@ -18625,7 +18627,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
+                          "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                           "format": "table",
                           "instant": true,
                           "legendFormat": ""
@@ -18775,7 +18777,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
+                          "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}}"
                       }
@@ -18817,7 +18819,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
+                          "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}}"
                       }
@@ -18839,11 +18841,13 @@ items:
                       "type": "datasource"
                   },
                   {
+                      "allValue": ".*",
                       "datasource": {
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
                       "hide": 2,
+                      "includeAll": true,
                       "label": "Cluster",
                       "name": "cluster",
                       "query": "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)",
@@ -18857,7 +18861,7 @@ items:
                       },
                       "label": "Instance",
                       "name": "instance",
-                      "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)",
+                      "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=~\"$cluster\", sysname!=\"Darwin\"}, instance)",
                       "refresh": 2,
                       "type": "query"
                   }
@@ -18877,7 +18881,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-nodes-aix
     namespace: monitoring
 - apiVersion: v1
@@ -18939,7 +18943,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\", cluster=\"$cluster\"})\n)\n",
+                          "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\", cluster=~\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\", cluster=~\"$cluster\"})\n)\n",
                           "intervalFactor": 5,
                           "legendFormat": "{{cpu}}"
                       }
@@ -18981,7 +18985,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "1m load average"
                       },
                       {
@@ -18989,7 +18993,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "5m load average"
                       },
                       {
@@ -18997,7 +19001,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "15m load average"
                       },
                       {
@@ -19005,7 +19009,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})",
+                          "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", mode=\"idle\"})",
                           "legendFormat": "logical cores"
                       }
                   ],
@@ -19061,7 +19065,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "Physical Memory"
                       },
                       {
@@ -19069,7 +19073,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n    node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} +\n    node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} +\n    node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n)\n",
+                          "expr": "(\n    node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} +\n    node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} +\n    node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}\n)\n",
                           "legendFormat": "Memory Used"
                       },
                       {
@@ -19077,7 +19081,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n    node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n)\n",
+                          "expr": "(\n    node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"} -\n    node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}\n)\n",
                           "legendFormat": "App Memory"
                       },
                       {
@@ -19085,7 +19089,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "Wired Memory"
                       },
                       {
@@ -19093,7 +19097,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "Compressed"
                       }
                   ],
@@ -19141,7 +19145,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n    (\n      avg(node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) -\n      avg(node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) +\n      avg(node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) +\n      avg(node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"})\n    ) /\n    avg(node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"})\n)\n*\n100\n"
+                          "expr": "(\n    (\n      avg(node_memory_internal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}) -\n      avg(node_memory_purgeable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}) +\n      avg(node_memory_wired_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}) +\n      avg(node_memory_compressed_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"})\n    ) /\n    avg(node_memory_total_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"})\n)\n*\n100\n"
                       }
                   ],
                   "title": "Memory Usage",
@@ -19221,7 +19225,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} read"
                       },
@@ -19230,7 +19234,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} written"
                       },
@@ -19239,7 +19243,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} io time"
                       }
@@ -19362,7 +19366,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
+                          "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                           "format": "table",
                           "instant": true,
                           "legendFormat": ""
@@ -19372,7 +19376,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
+                          "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                           "format": "table",
                           "instant": true,
                           "legendFormat": ""
@@ -19522,7 +19526,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
+                          "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}}"
                       }
@@ -19564,7 +19568,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
+                          "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}}"
                       }
@@ -19586,11 +19590,13 @@ items:
                       "type": "datasource"
                   },
                   {
+                      "allValue": ".*",
                       "datasource": {
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
                       "hide": 2,
+                      "includeAll": true,
                       "label": "Cluster",
                       "name": "cluster",
                       "query": "label_values(node_uname_info{job=\"node-exporter\", sysname=\"Darwin\"},  cluster)",
@@ -19604,7 +19610,7 @@ items:
                       },
                       "label": "Instance",
                       "name": "instance",
-                      "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname=\"Darwin\"}, instance)",
+                      "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=~\"$cluster\", sysname=\"Darwin\"}, instance)",
                       "refresh": 2,
                       "type": "query"
                   }
@@ -19624,7 +19630,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-nodes-darwin
     namespace: monitoring
 - apiVersion: v1
@@ -19686,7 +19692,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\", cluster=\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\", cluster=\"$cluster\"})\n)\n",
+                          "expr": "(\n  (1 - sum without (mode) (rate(node_cpu_seconds_total{job=\"node-exporter\", mode=~\"idle|iowait|steal\", instance=\"$instance\", cluster=~\"$cluster\"}[$__rate_interval])))\n/ ignoring(cpu) group_left\n  count without (cpu, mode) (node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\", cluster=~\"$cluster\"})\n)\n",
                           "intervalFactor": 5,
                           "legendFormat": "{{cpu}}"
                       }
@@ -19728,7 +19734,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load1{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "1m load average"
                       },
                       {
@@ -19736,7 +19742,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load5{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "5m load average"
                       },
                       {
@@ -19744,7 +19750,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_load15{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "15m load average"
                       },
                       {
@@ -19752,7 +19758,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", mode=\"idle\"})",
+                          "expr": "count(node_cpu_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", mode=\"idle\"})",
                           "legendFormat": "logical cores"
                       }
                   ],
@@ -19808,7 +19814,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "(\n  node_memory_MemTotal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n-\n  node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n-\n  node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n-\n  node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}\n)\n",
+                          "expr": "(\n  node_memory_MemTotal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}\n-\n  node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}\n-\n  node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}\n-\n  node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}\n)\n",
                           "legendFormat": "memory used"
                       },
                       {
@@ -19816,7 +19822,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_memory_Buffers_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "memory buffers"
                       },
                       {
@@ -19824,7 +19830,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_memory_Cached_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "memory cached"
                       },
                       {
@@ -19832,7 +19838,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}",
+                          "expr": "node_memory_MemFree_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}",
                           "legendFormat": "memory free"
                       }
                   ],
@@ -19880,7 +19886,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "100 -\n(\n  avg(node_memory_MemAvailable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"}) /\n  avg(node_memory_MemTotal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\"})\n* 100\n)\n"
+                          "expr": "100 -\n(\n  avg(node_memory_MemAvailable_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"}) /\n  avg(node_memory_MemTotal_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\"})\n* 100\n)\n"
                       }
                   ],
                   "title": "Memory Usage",
@@ -19960,7 +19966,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_read_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} read"
                       },
@@ -19969,7 +19975,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_written_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} written"
                       },
@@ -19978,7 +19984,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
+                          "expr": "rate(node_disk_io_time_seconds_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device=~\"(/dev/)?(mmcblk.p.+|nvme.+|rbd.+|sd.+|vd.+|xvd.+|dm-.+|md.+|dasd.+)\"}[$__rate_interval])",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}} io time"
                       }
@@ -20101,7 +20107,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
+                          "expr": "max by (mountpoint) (node_filesystem_size_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                           "format": "table",
                           "instant": true,
                           "legendFormat": ""
@@ -20111,7 +20117,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
+                          "expr": "max by (mountpoint) (node_filesystem_avail_bytes{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", fstype!=\"\", mountpoint!=\"\"})\n",
                           "format": "table",
                           "instant": true,
                           "legendFormat": ""
@@ -20261,7 +20267,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
+                          "expr": "rate(node_network_receive_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}}"
                       }
@@ -20303,7 +20309,7 @@ items:
                               "type": "prometheus",
                               "uid": "$datasource"
                           },
-                          "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
+                          "expr": "rate(node_network_transmit_bytes_total{job=\"node-exporter\", instance=\"$instance\", cluster=~\"$cluster\", device!=\"lo\"}[$__rate_interval]) * 8",
                           "intervalFactor": 1,
                           "legendFormat": "{{device}}"
                       }
@@ -20325,11 +20331,13 @@ items:
                       "type": "datasource"
                   },
                   {
+                      "allValue": ".*",
                       "datasource": {
                           "type": "prometheus",
                           "uid": "${datasource}"
                       },
                       "hide": 2,
+                      "includeAll": true,
                       "label": "Cluster",
                       "name": "cluster",
                       "query": "label_values(node_uname_info{job=\"node-exporter\", sysname!=\"Darwin\"}, cluster)",
@@ -20343,7 +20351,7 @@ items:
                       },
                       "label": "Instance",
                       "name": "instance",
-                      "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=\"$cluster\", sysname!=\"Darwin\"}, instance)",
+                      "query": "label_values(node_uname_info{job=\"node-exporter\", cluster=~\"$cluster\", sysname!=\"Darwin\"}, instance)",
                       "refresh": 2,
                       "type": "query"
                   }
@@ -20363,7 +20371,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-nodes
     namespace: monitoring
 - apiVersion: v1
@@ -20685,7 +20693,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-persistentvolumesusage
     namespace: monitoring
 - apiVersion: v1
@@ -20754,11 +20762,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))",
+                          "expr": "sum((8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval])))",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Received",
+                  "title": "Current Rate of Bits Received",
                   "type": "gauge"
               },
               {
@@ -20808,11 +20816,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))",
+                          "expr": "sum((8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval])))",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Transmitted",
+                  "title": "Current Rate of Bits Transmitted",
                   "type": "gauge"
               },
               {
@@ -20854,7 +20862,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum((8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -20900,7 +20908,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval])) by (pod)",
+                          "expr": "sum((8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))) by (pod)",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -21179,7 +21187,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-pod-total
     namespace: monitoring
 - apiVersion: v1
@@ -21981,7 +21989,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-prometheus-remote-write
     namespace: monitoring
 - apiVersion: v1
@@ -22821,7 +22829,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-prometheus
     namespace: monitoring
 - apiVersion: v1
@@ -23476,7 +23484,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-proxy
     namespace: monitoring
 - apiVersion: v1
@@ -24077,7 +24085,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-scheduler
     namespace: monitoring
 - apiVersion: v1
@@ -24132,11 +24140,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "sort_desc(sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Received",
+                  "title": "Current Rate of Bits Received",
                   "type": "bargauge"
               },
               {
@@ -24172,11 +24180,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "sort_desc(sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Current Rate of Bytes Transmitted",
+                  "title": "Current Rate of Bits Transmitted",
                   "type": "bargauge"
               },
               {
@@ -24212,11 +24220,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(avg(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "sort_desc(avg((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Average Rate of Bytes Received",
+                  "title": "Average Rate of Bits Received",
                   "type": "bargauge"
               },
               {
@@ -24252,11 +24260,11 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(avg(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "sort_desc(avg((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
-                  "title": "Average Rate of Bytes Transmitted",
+                  "title": "Average Rate of Bits Transmitted",
                   "type": "bargauge"
               },
               {
@@ -24303,7 +24311,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(sum(rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "sort_desc(sum((8 * rate(container_network_receive_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -24354,7 +24362,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(sum(rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval])\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
+                          "expr": "sort_desc(sum((8 * rate(container_network_transmit_bytes_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", cluster=\"$cluster\",namespace=~\"$namespace\"}[$__rate_interval]))\n* on (cluster, namespace, pod)\ngroup_left(workload,workload_type) namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=~\"$namespace\", workload=~\"$workload\", workload_type=~\"$type\"}) by (pod))\n",
                           "legendFormat": "__auto"
                       }
                   ],
@@ -24663,7 +24671,7 @@ items:
       app.kubernetes.io/component: grafana
       app.kubernetes.io/name: grafana
       app.kubernetes.io/part-of: kube-prometheus
-      app.kubernetes.io/version: 12.3.1
+      app.kubernetes.io/version: 12.3.3
     name: grafana-dashboard-workload-total
     namespace: monitoring
 kind: ConfigMapList
