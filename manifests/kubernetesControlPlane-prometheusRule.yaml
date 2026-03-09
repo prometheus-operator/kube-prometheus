@@ -249,9 +249,16 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubehpamaxedout
         summary: HPA is running at max replicas
       expr: |
-        kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics"}
-          ==
-        kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics"}
+        (
+          kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics"}
+            ==
+          kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics"}
+        )
+        and on(namespace, horizontalpodautoscaler) (
+          kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics"}
+            !=
+          kube_horizontalpodautoscaler_spec_min_replicas{job="kube-state-metrics"}
+        )
       for: 15m
       labels:
         severity: warning
