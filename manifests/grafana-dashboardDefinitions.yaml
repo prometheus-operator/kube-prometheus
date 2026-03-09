@@ -9251,6 +9251,19 @@ items:
     k8s-resources-windows-cluster.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -9920,7 +9933,7 @@ items:
               "from": "now-1h",
               "to": "now"
           },
-          "timezone": "utc",
+          "timezone": "UTC",
           "title": "Kubernetes / Compute Resources / Cluster(Windows)",
           "uid": "4d08557fd9391b100730f2494bccac68"
       }
@@ -9938,6 +9951,19 @@ items:
     k8s-resources-windows-namespace.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -10374,7 +10400,7 @@ items:
               "from": "now-1h",
               "to": "now"
           },
-          "timezone": "utc",
+          "timezone": "UTC",
           "title": "Kubernetes / Compute Resources / Namespace(Windows)",
           "uid": "490b402361724ab1d4c45666c1fa9b6f"
       }
@@ -10392,6 +10418,19 @@ items:
     k8s-resources-windows-pod.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -10883,7 +10922,7 @@ items:
               "from": "now-1h",
               "to": "now"
           },
-          "timezone": "utc",
+          "timezone": "UTC",
           "title": "Kubernetes / Compute Resources / Pod(Windows)",
           "uid": "40597a704a610e936dc6ed374a7ce023"
       }
@@ -13231,6 +13270,19 @@ items:
     k8s-windows-cluster-rsrc-use.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -13629,7 +13681,7 @@ items:
               "from": "now-1h",
               "to": "now"
           },
-          "timezone": "utc",
+          "timezone": "UTC",
           "title": "Kubernetes / USE Method / Cluster(Windows)",
           "uid": "53a43377ec9aaf2ff64dfc7a1f539334"
       }
@@ -13647,6 +13699,19 @@ items:
     k8s-windows-node-rsrc-use.json: |-
       {
           "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
           "panels": [
               {
                   "datasource": {
@@ -14256,7 +14321,7 @@ items:
               "from": "now-1h",
               "to": "now"
           },
-          "timezone": "utc",
+          "timezone": "UTC",
           "title": "Kubernetes / USE Method / Node(Windows)",
           "uid": "96e7484b0bb53b74fbc2bcb7723cd40b"
       }
