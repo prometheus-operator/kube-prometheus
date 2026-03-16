@@ -9,7 +9,7 @@ We do not guarantee backports from the `main` branch to older release branches.
 | Release | Kubernetes Version | Release shepherd                        |
 |---------|--------------------|-----------------------------------------|
 | v0.18.0 | 1.36               | **searching for volunteer**             |
-| v0.17.0 | 1.35               | **searching for volunteer**             |
+| v0.17.0 | 1.35               | Jayapriya Pai (Github:@slashpai)        |
 | v0.16.0 | 1.34               | Simon Pasquier (GitHub: @simonpasquier) |
 | v0.15.0 | 1.33               | Jayapriya Pai (Github: @slashpai)       |
 | v0.14.0 | 1.31               | Philip Gough (GitHub: @philipgough)     |
