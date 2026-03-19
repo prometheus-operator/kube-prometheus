@@ -5,7 +5,7 @@
 * [CHANGE] Alertmanager: select AlertmanagerConfig CRs within its own namespace by default. [#2747](https://github.com/prometheus-operator/kube-prometheus/pull/2747)
 * [BUGFIX] Fix InfoInhibitor alert failing with duplicate series error when multiple info-level alerts fire in the same namespace. [#2786](https://github.com/prometheus-operator/kube-prometheus/pull/2786)
 * [BUGFIX] Add EndpointSlices RBAC to all-namespaces addon. [#2760](https://github.com/prometheus-operator/kube-prometheus/pull/2760)
-* [BUGFIX] Drop deprecated `apiserver_storage_objects` metric (replaced by `apiserver_resource_objects` since Kubernetes 1.34).
+* [BUGFIX] Drop deprecated `apiserver_storage_objects` metric (replaced by `apiserver_resource_objects` since Kubernetes 1.34). [#2809](https://github.com/prometheus-operator/kube-prometheus/pull/2809)
 
 ## release-0.16 / 2025-08-28
 
