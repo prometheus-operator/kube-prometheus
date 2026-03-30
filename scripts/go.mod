@@ -1,13 +1,11 @@
 module _ // go.mod created for tooling dependencies
 
-go 1.24.0
-
-toolchain go1.24.3
+go 1.24.5
 
 require (
 	github.com/brancz/gojsontoyaml v0.1.0
 	github.com/bwplotka/mdox v0.9.1-0.20220718065926-6a6aac7d5d30
-	github.com/google/go-jsonnet v0.21.0
+	github.com/google/go-jsonnet v0.22.0
 	github.com/jsonnet-bundler/jsonnet-bundler v0.6.0
 	github.com/yannh/kubeconform v0.7.0
 	sigs.k8s.io/yaml v1.4.0 // indirect
