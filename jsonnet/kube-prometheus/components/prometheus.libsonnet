@@ -13,21 +13,17 @@ local defaults = {
   namespaces:: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
   externalLabels: {},
-  histogram_Mode:: 'classic', 
-  
-  enableFeatures: 
-    if self.histogram_Mode == 'classic' then []
-    else if self.histogram_Mode == 'native' || self.histogram_Mode == 'dual' then ['native-histograms', 'native-histogram-bucket-limit=160']
-    else error 'Invalid histogram_Mode: ' + self.histogram_Mode + '. Must be "classic", "native", or "dual".',
-  scrapeNativeHistograms: 
-    if self.histogram_Mode == 'classic' then false 
-    else if self.histogram_Mode == 'native' || self.histogram_Mode == 'dual' then true
-    else false,
-  scrapeClassicHistograms: 
-    if self.histogram_Mode == 'native' then false 
-    else if self.histogram_Mode == 'classic' || self.histogram_Mode == 'dual' then true
-    else true,
-
+  // histogramMode specifies the strategy for Prometheus histogram ingestion.
+  // Supported values: 
+  // - 'classic': Traditional bucket-based histograms (default).
+  // - 'native': High-resolution sparse histograms (Prometheus v3+).
+  // - 'dual': Parallel ingestion of both formats for migration support.
+  histogramMode:: 'classic',
+  enableFeatures: [],
+  enableNativeHistograms: self.histogramMode == 'native' || self.histogramMode == 'dual',
+  enableClassicHistograms: self.histogramMode == 'classic' || self.histogramMode == 'dual',
+  scrapeNativeHistograms: self.histogramMode == 'native' || self.histogramMode == 'dual',
+  scrapeClassicHistograms: self.histogramMode == 'classic' || self.histogramMode == 'dual',
   ruleSelector: {},
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
