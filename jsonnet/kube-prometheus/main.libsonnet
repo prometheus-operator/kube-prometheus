@@ -96,6 +96,7 @@ local utils = import './lib/utils.libsonnet';
       version: $.values.common.versions.prometheus,
       image: $.values.common.images.prometheus,
       name: 'k8s',
+      histogram_Mode: 'classic',
       alerting: {
         alertmanagers: [{
           namespace: $.values.common.namespace,
@@ -157,3 +158,4 @@ local utils = import './lib/utils.libsonnet';
     },
   },
 } + platformPatch
+

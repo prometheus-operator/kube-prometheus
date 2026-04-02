@@ -13,7 +13,21 @@ local defaults = {
   namespaces:: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
   externalLabels: {},
-  enableFeatures: [],
+  histogram_Mode:: 'classic', 
+  
+  enableFeatures: 
+    if self.histogram_Mode == 'classic' then []
+    else if self.histogram_Mode == 'native' || self.histogram_Mode == 'dual' then ['native-histograms', 'native-histogram-bucket-limit=160']
+    else error 'Invalid histogram_Mode: ' + self.histogram_Mode + '. Must be "classic", "native", or "dual".',
+  scrapeNativeHistograms: 
+    if self.histogram_Mode == 'classic' then false 
+    else if self.histogram_Mode == 'native' || self.histogram_Mode == 'dual' then true
+    else false,
+  scrapeClassicHistograms: 
+    if self.histogram_Mode == 'native' then false 
+    else if self.histogram_Mode == 'classic' || self.histogram_Mode == 'dual' then true
+    else true,
+
   ruleSelector: {},
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
@@ -346,6 +360,8 @@ function(params) {
       serviceDiscoveryRole: p._config.serviceDiscoveryRole,
       externalLabels: p._config.externalLabels,
       enableFeatures: p._config.enableFeatures,
+      scrapeNativeHistograms: p._config.scrapeNativeHistograms,
+      scrapeClassicHistograms: p._config.scrapeClassicHistograms,
       serviceAccountName: p.serviceAccount.metadata.name,
       podMonitorSelector: {},
       podMonitorNamespaceSelector: {},
