@@ -18,12 +18,8 @@ local defaults = {
   // - 'classic': Traditional bucket-based histograms (default).
   // - 'native': High-resolution sparse histograms (Prometheus v3+).
   // - 'dual': Parallel ingestion of both formats for migration support.
-  histogramMode:: 'classic',
+  histogramMode:: 'dual',
   enableFeatures: [],
-  enableNativeHistograms: self.histogramMode == 'native' || self.histogramMode == 'dual',
-  enableClassicHistograms: self.histogramMode == 'classic' || self.histogramMode == 'dual',
-  scrapeNativeHistograms: self.histogramMode == 'native' || self.histogramMode == 'dual',
-  scrapeClassicHistograms: self.histogramMode == 'classic' || self.histogramMode == 'dual',
   ruleSelector: {},
   commonLabels:: {
     'app.kubernetes.io/name': 'prometheus',
@@ -356,8 +352,8 @@ function(params) {
       serviceDiscoveryRole: p._config.serviceDiscoveryRole,
       externalLabels: p._config.externalLabels,
       enableFeatures: p._config.enableFeatures,
-      scrapeNativeHistograms: p._config.scrapeNativeHistograms,
-      scrapeClassicHistograms: p._config.scrapeClassicHistograms,
+      scrapeNativeHistograms: p._config.histogramMode == 'native' || p._config.histogramMode == 'dual',
+      scrapeClassicHistograms: p._config.histogramMode == 'classic' || p._config.histogramMode == 'dual',
       serviceAccountName: p.serviceAccount.metadata.name,
       podMonitorSelector: {},
       podMonitorNamespaceSelector: {},
@@ -390,10 +386,13 @@ function(params) {
       selector: {
         matchLabels: p._config.selectorLabels,
       },
-      endpoints: [
+      endpoints: std.map(function(e) e {
+        scrapeNativeHistograms: p._config.histogramMode == 'native' || p._config.histogramMode == 'dual',
+        scrapeClassicHistograms: p._config.histogramMode == 'classic' || p._config.histogramMode == 'dual',
+      }, [
         { port: 'web', interval: '30s' },
         { port: 'reloader-web', interval: '30s' },
-      ],
+      ]),
     },
   },
 
