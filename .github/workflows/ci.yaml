@@ -124,6 +124,7 @@ jobs:
       - name: Wait for kube-prometheus stack to finish bootstraping
         run: kubectl wait --for=condition=Ready pods --all -n monitoring --timeout=300s
       - name: Check resources in all namespaces
+        if: always()
         run: kubectl get services,endpoints,pods,prometheus,alertmanager --all-namespaces
       - name: Run tests
         run: |
