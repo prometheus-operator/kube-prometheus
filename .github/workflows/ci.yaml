@@ -126,6 +126,9 @@ jobs:
       - name: Check resources in all namespaces
         if: always()
         run: kubectl get services,endpoints,pods,prometheus,alertmanager --all-namespaces
+      - name: Check events in all namespaces
+        if: ${{ failure() }}
+        run: kubectl get events --all-namespaces
       - name: Run tests
         run: |
           export KUBECONFIG="${HOME}/.kube/config"
