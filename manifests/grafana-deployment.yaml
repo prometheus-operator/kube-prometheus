@@ -94,6 +94,9 @@ spec:
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-node
           name: grafana-dashboard-k8s-resources-node
           readOnly: false
+        - mountPath: /grafana-dashboard-definitions/0/k8s-resources-nodes-overview
+          name: grafana-dashboard-k8s-resources-nodes-overview
+          readOnly: false
         - mountPath: /grafana-dashboard-definitions/0/k8s-resources-pod
           name: grafana-dashboard-k8s-resources-pod
           readOnly: false
@@ -213,6 +216,9 @@ spec:
       - configMap:
           name: grafana-dashboard-k8s-resources-node
         name: grafana-dashboard-k8s-resources-node
+      - configMap:
+          name: grafana-dashboard-k8s-resources-nodes-overview
+        name: grafana-dashboard-k8s-resources-nodes-overview
       - configMap:
           name: grafana-dashboard-k8s-resources-pod
         name: grafana-dashboard-k8s-resources-pod

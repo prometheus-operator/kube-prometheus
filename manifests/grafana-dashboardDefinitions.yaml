@@ -1398,7 +1398,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down",
-                                              "url": "/d/8b7a8b326d7a6f1f04244066368c67af/kubernetes-networking-namespace-pods?${datasource:queryparam}&var-cluster=${cluster}&var-namespace=${__data.fields.Namespace}"
+                                              "url": "/d/8b7a8b326d7a6f1f04244066368c67af?${datasource:queryparam}&var-cluster=${cluster}&var-namespace=${__data.fields.Namespace}"
                                           }
                                       ]
                                   }
@@ -3591,7 +3591,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                              "url": "/d/85a562078cdf77779eaa1add43ccec1e?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
                                           }
                                       ]
                                   }
@@ -3843,7 +3843,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                              "url": "/d/85a562078cdf77779eaa1add43ccec1e?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
                                           }
                                       ]
                                   }
@@ -4020,7 +4020,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                              "url": "/d/85a562078cdf77779eaa1add43ccec1e?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
                                           }
                                       ]
                                   }
@@ -4694,7 +4694,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                              "url": "/d/85a562078cdf77779eaa1add43ccec1e?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
                                           }
                                       ]
                                   }
@@ -5173,7 +5173,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down",
-                                              "url": "/d/efa86fd1d0c121a26444b636a3f509a8/kubernetes-compute-resources-cluster?${datasource:queryparam}&var-cluster=${__data.fields.Cluster}"
+                                              "url": "/d/efa86fd1d0c121a26444b636a3f509a8?${datasource:queryparam}&var-cluster=${__data.fields.Cluster}"
                                           }
                                       ]
                                   }
@@ -5361,7 +5361,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down",
-                                              "url": "/d/efa86fd1d0c121a26444b636a3f509a8/kubernetes-compute-resources-cluster?${datasource:queryparam}&var-cluster=${__data.fields.Cluster}"
+                                              "url": "/d/efa86fd1d0c121a26444b636a3f509a8?${datasource:queryparam}&var-cluster=${__data.fields.Cluster}"
                                           }
                                       ]
                                   }
@@ -5817,7 +5817,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -6078,7 +6078,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -6268,7 +6268,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -6840,7 +6840,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -7230,7 +7230,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -7667,7 +7667,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -7861,6 +7861,392 @@ items:
       app.kubernetes.io/part-of: kube-prometheus
       app.kubernetes.io/version: 12.4.2
     name: grafana-dashboard-k8s-resources-node
+    namespace: monitoring
+- apiVersion: v1
+  data:
+    k8s-resources-nodes-overview.json: |-
+      {
+          "editable": false,
+          "links": [
+              {
+                  "asDropdown": true,
+                  "includeVars": true,
+                  "keepTime": true,
+                  "tags": [
+                      "kubernetes-mixin"
+                  ],
+                  "targetBlank": false,
+                  "title": "Kubernetes",
+                  "type": "dashboards"
+              }
+          ],
+          "panels": [
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 0,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "decimals": 0,
+                          "unit": "short"
+                      },
+                      "overrides": [
+                          {
+                              "matcher": {
+                                  "id": "byName",
+                                  "options": "pods"
+                              },
+                              "properties": [
+                                  {
+                                      "id": "custom.axisPlacement",
+                                      "value": "right"
+                                  },
+                                  {
+                                      "id": "custom.axisSoftMin",
+                                      "value": 0
+                                  }
+                              ]
+                          }
+                      ]
+                  },
+                  "gridPos": {
+                      "h": 8,
+                      "w": 24,
+                      "x": 0,
+                      "y": 0
+                  },
+                  "id": 1,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "count(kube_node_info{cluster=\"$cluster\", job=\"kube-state-metrics\"})",
+                          "legendFormat": "nodes"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kubelet_running_pods{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\"})",
+                          "legendFormat": "pods"
+                      }
+                  ],
+                  "title": "Node & Pod Count",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "short"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 8,
+                      "w": 24,
+                      "x": 0,
+                      "y": 8
+                  },
+                  "id": 2,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_node_status_allocatable{cluster=\"$cluster\", job=\"kube-state-metrics\", resource=\"cpu\"})",
+                          "legendFormat": "allocatable"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\"})",
+                          "legendFormat": "requests"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\"})",
+                          "legendFormat": "usage"
+                      }
+                  ],
+                  "title": "CPU Usage",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "bytes"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 8,
+                      "w": 24,
+                      "x": 0,
+                      "y": 16
+                  },
+                  "id": 3,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(kube_node_status_allocatable{cluster=\"$cluster\", job=\"kube-state-metrics\", resource=\"memory\"})",
+                          "legendFormat": "allocatable"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\"})",
+                          "legendFormat": "requests"
+                      },
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum(node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", container!=\"\"})",
+                          "legendFormat": "usage"
+                      }
+                  ],
+                  "title": "Memory Usage",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 8,
+                      "w": 24,
+                      "x": 0,
+                      "y": 24
+                  },
+                  "id": 4,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum by (node) (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_rate5m{cluster=\"$cluster\"})\n/\nsum by (node) (kube_node_status_allocatable{cluster=\"$cluster\", job=\"kube-state-metrics\", resource=\"cpu\"})\n",
+                          "legendFormat": "{{node}}"
+                      }
+                  ],
+                  "title": "CPU Utilization per Node",
+                  "type": "timeseries"
+              },
+              {
+                  "datasource": {
+                      "type": "datasource",
+                      "uid": "-- Mixed --"
+                  },
+                  "fieldConfig": {
+                      "defaults": {
+                          "custom": {
+                              "fillOpacity": 10,
+                              "showPoints": "never",
+                              "spanNulls": true
+                          },
+                          "unit": "percentunit"
+                      }
+                  },
+                  "gridPos": {
+                      "h": 8,
+                      "w": 24,
+                      "x": 0,
+                      "y": 32
+                  },
+                  "id": 5,
+                  "interval": "1m",
+                  "options": {
+                      "legend": {
+                          "asTable": true,
+                          "calcs": [
+                              "lastNotNull"
+                          ],
+                          "displayMode": "table",
+                          "placement": "right",
+                          "showLegend": true
+                      },
+                      "tooltip": {
+                          "mode": "single"
+                      }
+                  },
+                  "pluginVersion": "v11.4.0",
+                  "targets": [
+                      {
+                          "datasource": {
+                              "type": "prometheus",
+                              "uid": "${datasource}"
+                          },
+                          "expr": "sum by (node) (node_namespace_pod_container:container_memory_working_set_bytes{cluster=\"$cluster\", container!=\"\"})\n/\nsum by (node) (kube_node_status_allocatable{cluster=\"$cluster\", job=\"kube-state-metrics\", resource=\"memory\"})\n",
+                          "legendFormat": "{{node}}"
+                      }
+                  ],
+                  "title": "Memory Utilization per Node",
+                  "type": "timeseries"
+              }
+          ],
+          "refresh": "10s",
+          "schemaVersion": 39,
+          "tags": [
+              "kubernetes-mixin"
+          ],
+          "templating": {
+              "list": [
+                  {
+                      "current": {
+                          "selected": true,
+                          "text": "default",
+                          "value": "default"
+                      },
+                      "hide": 0,
+                      "label": "Data source",
+                      "name": "datasource",
+                      "query": "prometheus",
+                      "regex": "",
+                      "type": "datasource"
+                  },
+                  {
+                      "datasource": {
+                          "type": "prometheus",
+                          "uid": "${datasource}"
+                      },
+                      "hide": 0,
+                      "label": "cluster",
+                      "name": "cluster",
+                      "query": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
+                      "refresh": 2,
+                      "sort": 1,
+                      "type": "query"
+                  }
+              ]
+          },
+          "time": {
+              "from": "now-6h",
+              "to": "now"
+          },
+          "timezone": "UTC",
+          "title": "Kubernetes / Compute Resources / Nodes Overview",
+          "uid": "058020e04168bfdea0c52269cb699df2"
+      }
+  kind: ConfigMap
+  metadata:
+    labels:
+      app.kubernetes.io/component: grafana
+      app.kubernetes.io/name: grafana
+      app.kubernetes.io/part-of: kube-prometheus
+      app.kubernetes.io/version: 12.4.2
+    name: grafana-dashboard-k8s-resources-nodes-overview
     namespace: monitoring
 - apiVersion: v1
   data:
@@ -9555,7 +9941,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f/k8s-resources-windows-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
                                           }
                                       ]
                                   }
@@ -9784,7 +10170,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f/k8s-resources-windows-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
                                           }
                                       ]
                                   }
@@ -10045,7 +10431,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/40597a704a610e936dc6ed374a7ce023/k8s-resources-windows-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/40597a704a610e936dc6ed374a7ce023?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -10238,7 +10624,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/40597a704a610e936dc6ed374a7ce023/k8s-resources-windows-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/40597a704a610e936dc6ed374a7ce023?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -10512,7 +10898,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f/k8s-resources-windows-namespace?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
+                                              "url": "/d/490b402361724ab1d4c45666c1fa9b6f?${datasource:queryparam}&var-cluster=$cluster&var-namespace=${__data.fields.Namespace}"
                                           }
                                       ]
                                   }
@@ -11034,7 +11420,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -11227,7 +11613,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -11378,7 +11764,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to pods",
-                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -12169,7 +12555,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to workloads",
-                                              "url": "/d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-type=${__data.fields.Type}&var-workload=${__data.fields.Workload}"
+                                              "url": "/d/a164a7f0339f99e89cea5cb47e9be617?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-type=${__data.fields.Type}&var-workload=${__data.fields.Workload}"
                                           }
                                       ]
                                   }
@@ -12467,7 +12853,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to workloads",
-                                              "url": "/d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-type=${__data.fields.Type}&var-workload=${__data.fields.Workload}"
+                                              "url": "/d/a164a7f0339f99e89cea5cb47e9be617?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-type=${__data.fields.Type}&var-workload=${__data.fields.Workload}"
                                           }
                                       ]
                                   }
@@ -12655,7 +13041,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down to workloads",
-                                              "url": "/d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-type=${__data.fields.Type}&var-workload=${__data.fields.Workload}"
+                                              "url": "/d/a164a7f0339f99e89cea5cb47e9be617?${datasource:queryparam}&var-cluster=$cluster&var-namespace=$namespace&var-type=${__data.fields.Type}&var-workload=${__data.fields.Workload}"
                                           }
                                       ]
                                   }
@@ -14451,7 +14837,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sum(kubelet_running_containers{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", instance=~\"$instance\"})",
+                          "expr": "sum(kubelet_running_containers{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", container_state=\"running\", instance=~\"$instance\"})",
                           "instant": true
                       }
                   ],
@@ -15756,7 +16142,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down",
-                                              "url": "/d/7a18067ce943a40ae25454675c19ff5c/kubernetes-networking-pod?${datasource:queryparam}&var-cluster=${cluster}&var-namespace=${namespace}&var-pod=${__data.fields.Pod}"
+                                              "url": "/d/7a18067ce943a40ae25454675c19ff5c?${datasource:queryparam}&var-cluster=${cluster}&var-namespace=${namespace}&var-pod=${__data.fields.Pod}"
                                           }
                                       ]
                                   }
@@ -16368,7 +16754,7 @@ items:
                                       "value": [
                                           {
                                               "title": "Drill down",
-                                              "url": "/d/728bf77cc1166d2f3133bf25846876cc/kubernetes-networking-workload?${datasource:queryparam}&var-cluster=${cluster}&var-namespace=${namespace}&var-type=${__data.fields.Type}&var-workload=${__data.fields.Workload}"
+                                              "url": "/d/728bf77cc1166d2f3133bf25846876cc?${datasource:queryparam}&var-cluster=${cluster}&var-namespace=${namespace}&var-type=${__data.fields.Type}&var-workload=${__data.fields.Workload}"
                                           }
                                       ]
                                   }
@@ -16390,7 +16776,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    sum by (cluster, namespace, pod) (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod)\n    topk by (cluster, namespace, pod) (\n      1,\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"})\n    )\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16399,7 +16785,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    sum by (cluster, namespace, pod) (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod)\n    topk by (cluster, namespace, pod) (\n      1,\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"})\n    )\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16408,7 +16794,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  avg by (workload, workload_type) (\n    (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  avg by (workload, workload_type) (\n    sum by (cluster, namespace, pod) (8 * rate(container_network_receive_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod)\n    topk by (cluster, namespace, pod) (\n      1,\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"})\n    )\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16417,7 +16803,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  avg by (workload, workload_type) (\n    (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  avg by (workload, workload_type) (\n    sum by (cluster, namespace, pod) (8 * rate(container_network_transmit_bytes_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod)\n    topk by (cluster, namespace, pod) (\n      1,\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"})\n    )\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16426,7 +16812,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (1 * rate(container_network_receive_packets_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    sum by (cluster, namespace, pod) (1 * rate(container_network_receive_packets_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod)\n    topk by (cluster, namespace, pod) (\n      1,\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"})\n    )\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16435,7 +16821,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (1 * rate(container_network_transmit_packets_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    sum by (cluster, namespace, pod) (1 * rate(container_network_transmit_packets_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod)\n    topk by (cluster, namespace, pod) (\n      1,\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"})\n    )\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16444,7 +16830,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (1 * rate(container_network_receive_packets_dropped_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    sum by (cluster, namespace, pod) (1 * rate(container_network_receive_packets_dropped_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod)\n    topk by (cluster, namespace, pod) (\n      1,\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"})\n    )\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       },
@@ -16453,7 +16839,7 @@ items:
                               "type": "prometheus",
                               "uid": "${datasource}"
                           },
-                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    (1 * rate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod) group_left\n    kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"}\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
+                          "expr": "sort_desc(\n  sum by (workload, workload_type) (\n    sum by (cluster, namespace, pod) (1 * rate(container_network_transmit_packets_dropped_total{cluster=\"$cluster\",namespace=\"$namespace\"}[$__rate_interval]))\n    * on (cluster, namespace, pod)\n    topk by (cluster, namespace, pod) (\n      1,\n      max by (cluster, namespace, pod) (kube_pod_info{cluster=\"$cluster\",namespace=\"$namespace\",host_network=\"false\"})\n    )\n    * on (cluster, namespace, pod) group_left (workload, workload_type)\n    namespace_workload_pod:kube_pod_owner:relabel{cluster=\"$cluster\",namespace=\"$namespace\", workload=~\".+\", workload_type=~\"$type\"}\n  )\n)\n",
                           "format": "table",
                           "instant": true
                       }
