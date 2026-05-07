@@ -18,7 +18,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "36e2dbd502b2acab083d8901574d7d4cc66109fd",
+      "version": "0cbc031e7f224102bd1ec42a81f659a2b8c3350c",
       "sum": "XmXkOCriQIZmXwlIIFhqlJMa0e6qGWdxZD+ZDYaN0Po="
     },
     {
@@ -28,7 +28,7 @@
           "subdir": "grafana-mixin"
         }
       },
-      "version": "ddfd6bf64aeeeb393f6cdc5718f37eb362d29f0e",
+      "version": "2d682b98fbc6054c79cfad228e4719d5de26391e",
       "sum": "sRjOJwJhhkCDmMQls7clo/csVix/b47W+Wc3YCzn64Y="
     },
     {
@@ -128,7 +128,7 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "d40135da5044402b520bdd6696b34c75619d2141",
+      "version": "cd5430fd1834f43ffd093e3e22c2af1a625dbe2e",
       "sum": "7FPi/0YmErTgBmFQWavjoI/9WpWe5eL9G+OHnyc9d5A="
     },
     {
@@ -138,7 +138,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "d40135da5044402b520bdd6696b34c75619d2141",
+      "version": "cd5430fd1834f43ffd093e3e22c2af1a625dbe2e",
       "sum": "qclI7LwucTjBef3PkGBkKxF0mfZPbHnn4rlNWKGtR4c="
     },
     {
@@ -148,7 +148,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "79ebbb53b3718efca9120632b69511cf50bd8e77",
+      "version": "fb6b43d3b86e4c161adbf27627e7f00a6fb7a8e9",
       "sum": "gi+knjdxs2T715iIQIntrimbHRgHnpM8IFBJDD1gYfs=",
       "name": "prometheus-operator-mixin"
     },
@@ -159,7 +159,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "79ebbb53b3718efca9120632b69511cf50bd8e77",
+      "version": "fb6b43d3b86e4c161adbf27627e7f00a6fb7a8e9",
       "sum": "fftlgLNJpgRQQjT32E3w/pGqnHK32NIbYX19IiWSTls="
     },
     {
@@ -190,7 +190,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "bd4758a835a89ae46cde18bc5cf51e9465f7fdb3",
+      "version": "da1f89e7360a19c5de2b0df4b43411ac706a76a9",
       "sum": "UuADJwhNploRwfJYGb0sr2mi+MvswKpumoOMXnGs0Dc=",
       "name": "prometheus"
     },
