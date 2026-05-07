@@ -105,8 +105,7 @@ jsonnet -J vendor -m manifests "${1-example.jsonnet}" | xargs -I{} sh -c 'cat {}
 
 # Make sure to remove json files
 find manifests -type f ! -name '*.yaml' -delete
-rm -f kustomization
-
+mv manifests/kustomization.yaml .
 ```
 
 > Note you need `jsonnet` (`go install github.com/google/go-jsonnet/cmd/jsonnet@latest`) and `gojsontoyaml` (`go install github.com/brancz/gojsontoyaml@latest`) installed to run `build.sh`. If you just want json output, not yaml, then you can skip the pipe and everything afterwards.
