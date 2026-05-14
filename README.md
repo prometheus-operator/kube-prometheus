@@ -124,3 +124,13 @@ If you have any questions or feedback regarding kube-prometheus, join the [kube-
 ## License
 
 Apache License 2.0, see [LICENSE](https://github.com/prometheus-operator/kube-prometheus/blob/main/LICENSE).
+
+## Custom Alert Improvements
+
+Added custom Prometheus alert rules to reduce noisy Kubernetes alerts and improve observability.
+
+### Features
+- Excludes system namespaces from crash loop alerts
+- Detects high CPU usage
+- Reduces alert fatigue
+- Adds improved alert annotations
