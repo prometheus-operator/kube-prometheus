@@ -1,0 +1,29 @@
+groups:
+- name: custom-kubernetes-alerts
+  rules:
+
+  - alert: CriticalPodCrashLooping
+    expr: |
+      max_over_time(
+        kube_pod_container_status_waiting_reason{
+          reason="CrashLoopBackOff",
+          namespace!~"kube-system|monitoring|default"
+        }[5m]
+      ) >= 1
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Pod crash looping detected
+      description: Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is repeatedly crashing.
+
+  - alert: HighCPUUsage
+    expr: |
+      sum(rate(container_cpu_usage_seconds_total[5m])) by (pod)
+      > 0.8
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: High CPU usage detected
+      description: Pod {{ $labels.pod }} has high CPU usage.
