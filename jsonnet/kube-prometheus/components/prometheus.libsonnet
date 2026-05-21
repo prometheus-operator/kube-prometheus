@@ -1,4 +1,6 @@
-local defaults = {
+local spec = import 'specs/prometheus-spec.libsonnet';
+
+local defaults = spec {
   local defaults = self,
   // Convention: Top-level fields related to CRDs are public, other fields are hidden
   // If there is no CRD for the component, everything is hidden in defaults.
@@ -336,7 +338,7 @@ function(params) {
     metadata: p._metadata {
       name: p._config.name,
     },
-    spec: {
+    spec: spec {
       replicas: p._config.replicas,
       version: p._config.version,
       image: p._config.image,
