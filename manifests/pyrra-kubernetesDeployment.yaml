@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/component: kubernetes
     app.kubernetes.io/name: pyrra
-    app.kubernetes.io/version: 0.8.4
+    app.kubernetes.io/version: 0.10.0
   name: pyrra-kubernetes
   namespace: monitoring
 spec:
@@ -22,16 +22,19 @@ spec:
       labels:
         app.kubernetes.io/component: kubernetes
         app.kubernetes.io/name: pyrra
-        app.kubernetes.io/version: 0.8.4
+        app.kubernetes.io/version: 0.10.0
     spec:
       containers:
       - args:
         - kubernetes
         - --generic-rules
-        image: ghcr.io/pyrra-dev/pyrra:v0.8.4
+        image: ghcr.io/pyrra-dev/pyrra:v0.10.0
         name: pyrra
         ports:
         - containerPort: 9099
+          name: http
+        - containerPort: 9443
+          name: webhooks
         securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true

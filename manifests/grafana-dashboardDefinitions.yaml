@@ -440,7 +440,7 @@ items:
                       "type": "datasource",
                       "uid": "-- Mixed --"
                   },
-                  "description": "How much error budget is left looking at our 0.990% availability guarantees?",
+                  "description": "How much error budget is left looking at our 99.000% availability guarantee?",
                   "fieldConfig": {
                       "defaults": {
                           "custom": {
@@ -476,10 +476,10 @@ items:
                               "uid": "${datasource}"
                           },
                           "expr": "100 * (apiserver_request:availability30d{verb=\"all\", cluster=\"$cluster\"} - 0.990000)",
-                          "legendFormat": "errorbudget"
+                          "legendFormat": "error budget"
                       }
                   ],
-                  "title": "ErrorBudget (30d) > 99.000%",
+                  "title": "Error Budget (30d) > 99.000%",
                   "type": "timeseries"
               },
               {

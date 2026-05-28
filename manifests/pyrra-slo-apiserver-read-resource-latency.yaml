@@ -11,8 +11,8 @@ spec:
   indicator:
     latency:
       success:
-        metric: apiserver_request_slo_duration_seconds_bucket{verb=~"LIST|GET",le="0.1"}
+        metric: apiserver_request_sli_duration_seconds_bucket{verb=~"LIST|GET",le="0.1"}
       total:
-        metric: apiserver_request_slo_duration_seconds_count{verb=~"LIST|GET"}
+        metric: apiserver_request_sli_duration_seconds_count{verb=~"LIST|GET"}
   target: "99"
   window: 2w

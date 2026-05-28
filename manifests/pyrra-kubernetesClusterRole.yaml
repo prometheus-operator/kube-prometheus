@@ -4,7 +4,7 @@ metadata:
   labels:
     app.kubernetes.io/component: kubernetes
     app.kubernetes.io/name: pyrra
-    app.kubernetes.io/version: 0.8.4
+    app.kubernetes.io/version: 0.10.0
   name: pyrra-kubernetes
   namespace: monitoring
 rules:
@@ -45,4 +45,10 @@ rules:
   verbs:
   - get
   - patch
+  - update
+- apiGroups:
+  - pyrra.dev
+  resources:
+  - servicelevelobjectives/finalizers
+  verbs:
   - update

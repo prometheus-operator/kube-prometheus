@@ -383,11 +383,13 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotaalmostfull
         summary: Namespace quota is going to be full.
       expr: |
-        max without (instance, job, type) (
-          kube_resourcequota{job="kube-state-metrics", type="used"}
+        topk by (cluster, namespace, resource, resourcequota) (1,
+          max without (instance, job, type) (
+            kube_resourcequota{job="kube-state-metrics", type="used"}
+          )
         )
         / on (cluster, namespace, resource, resourcequota) group_left()
-        (
+        topk by (cluster, namespace, resource, resourcequota) (1,
           max without (instance, job, type) (
             kube_resourcequota{job="kube-state-metrics", type="hard"}
           ) > 0
@@ -402,11 +404,13 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotafullyused
         summary: Namespace quota is fully used.
       expr: |
-        max without (instance, job, type) (
-          kube_resourcequota{job="kube-state-metrics", type="used"}
+        topk by (cluster, namespace, resource, resourcequota) (1,
+          max without (instance, job, type) (
+            kube_resourcequota{job="kube-state-metrics", type="used"}
+          )
         )
         / on (cluster, namespace, resource, resourcequota) group_left()
-        (
+        topk by (cluster, namespace, resource, resourcequota) (1,
           max without (instance, job, type) (
             kube_resourcequota{job="kube-state-metrics", type="hard"}
           ) > 0
@@ -421,11 +425,13 @@ spec:
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubequotaexceeded
         summary: Namespace quota has exceeded the limits.
       expr: |
-        max without (instance, job, type) (
-          kube_resourcequota{job="kube-state-metrics", type="used"}
+        topk by (cluster, namespace, resource, resourcequota) (1,
+          max without (instance, job, type) (
+            kube_resourcequota{job="kube-state-metrics", type="used"}
+          )
         )
         / on (cluster, namespace, resource, resourcequota) group_left()
-        (
+        topk by (cluster, namespace, resource, resourcequota) (1,
           max without (instance, job, type) (
             kube_resourcequota{job="kube-state-metrics", type="hard"}
           ) > 0
@@ -579,64 +585,6 @@ spec:
       for: 15m
       labels:
         severity: warning
-  - name: kube-apiserver-slos
-    rules:
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget on cluster {{ $labels.cluster }}.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |
-        sum by(cluster) (apiserver_request:burnrate1h) > (14.40 * 0.01000)
-        and on(cluster)
-        sum by(cluster) (apiserver_request:burnrate5m) > (14.40 * 0.01000)
-      for: 2m
-      labels:
-        long: 1h
-        severity: critical
-        short: 5m
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget on cluster {{ $labels.cluster }}.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |
-        sum by(cluster) (apiserver_request:burnrate6h) > (6.00 * 0.01000)
-        and on(cluster)
-        sum by(cluster) (apiserver_request:burnrate30m) > (6.00 * 0.01000)
-      for: 15m
-      labels:
-        long: 6h
-        severity: critical
-        short: 30m
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget on cluster {{ $labels.cluster }}.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |
-        sum by(cluster) (apiserver_request:burnrate1d) > (3.00 * 0.01000)
-        and on(cluster)
-        sum by(cluster) (apiserver_request:burnrate2h) > (3.00 * 0.01000)
-      for: 1h
-      labels:
-        long: 1d
-        severity: warning
-        short: 2h
-    - alert: KubeAPIErrorBudgetBurn
-      annotations:
-        description: The API server is burning too much error budget on cluster {{ $labels.cluster }}.
-        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubeapierrorbudgetburn
-        summary: The API server is burning too much error budget.
-      expr: |
-        sum by(cluster) (apiserver_request:burnrate3d) > (1.00 * 0.01000)
-        and on(cluster)
-        sum by(cluster) (apiserver_request:burnrate6h) > (1.00 * 0.01000)
-      for: 3h
-      labels:
-        long: 3d
-        severity: warning
-        short: 6h
   - name: kubernetes-system-apiserver
     rules:
     - alert: KubeClientCertificateExpiration

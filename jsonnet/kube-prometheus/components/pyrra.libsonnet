@@ -16,6 +16,11 @@ local defaults = {
 function(params)
   local config = defaults {
     values+:: {
+      common+: {
+        namespace: params.namespace,
+        versions+: { pyrra: params.version },
+        images+: { pyrra: params.image },
+      },
       pyrra+: params,
     },
   };
@@ -23,7 +28,7 @@ function(params)
   assert std.isObject(config.resources);
 
   (pyrra + config).pyrra {
-    // Enable generic rules for kube-promethues by default
+    // Enable generic rules for kube-prometheus by default
     kubernetesDeployment+: {
       spec+: {
         template+: {
@@ -40,4 +45,12 @@ function(params)
         },
       },
     },
+
+    // Suppress upstream SLOs that are redefined in their owning component files
+    // with correct kube-prometheus job selectors and richer metadata.
+    'slo-kubelet-request-errors':: super['slo-kubelet-request-errors'],
+    'slo-kubelet-runtime-errors':: super['slo-kubelet-runtime-errors'],
+    'slo-coredns-response-errors':: super['slo-coredns-response-errors'],
+    'slo-prometheus-operator-reconcile-errors':: super['slo-prometheus-operator-reconcile-errors'],
+    'slo-prometheus-operator-http-errors':: super['slo-prometheus-operator-http-errors'],
   }
