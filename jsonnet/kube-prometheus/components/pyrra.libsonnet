@@ -1,8 +1,6 @@
 local pyrra = import 'github.com/pyrra-dev/pyrra/jsonnet/pyrra/kubernetes.libsonnet';
 
 local defaults = {
-  local defaults = self,
-
   name:: 'pyrra',
   namespace:: error 'must provide namespace',
   version:: error 'must provide version',
