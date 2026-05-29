@@ -1,41 +1,31 @@
 ---
 weight: 303
 toc: true
-title: Expose via Ingress
+title: Expose via Gateway API
 menu:
     docs:
         parent: kube
-lead: This guide will help you deploying a Kubernetes Ingress to expose Prometheus, Alertmanager and Grafana.
+lead: This guide will help you exposing Prometheus, Alertmanager and Grafana using the Gateway API.
 images: []
 draft: false
-description: This guide will help you deploying a Kubernetes Ingress to expose Prometheus, Alertmanager and Grafana.
+description: This guide will help you exposing Prometheus, Alertmanager and Grafana using the Gateway API.
 ---
 
-In order to access the web interfaces via the Internet [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) is a popular option. This guide explains, how Kubernetes Ingress can be setup, in order to expose the Prometheus, Alertmanager and Grafana UIs, that are included in the [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) project.
+In order to access the web interfaces via the Internet, the [Gateway API](https://gateway-api.sigs.k8s.io/) is the recommended option. This guide explains how the Gateway API can be used to expose the Prometheus, Alertmanager and Grafana UIs, that are included in the [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) project.
 
 Note: before continuing, it is recommended to first get familiar with the [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) stack by itself.
 
 ## Prerequisites
 
-Apart from a running Kubernetes cluster with a running [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) stack, a Kubernetes Ingress controller must be installed and functional. This guide was tested with the [nginx-ingress-controller](https://github.com/kubernetes/ingress-nginx). If you wish to reproduce the exact result in as depicted in this guide we recommend using the nginx-ingress-controller.
+Apart from a running Kubernetes cluster with a running [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus) stack, a [Gateway API](https://gateway-api.sigs.k8s.io/) controller must be installed and a `GatewayClass` must be available. The Gateway API is implemented by a number of controllers, for example Istio, Envoy Gateway and Contour; refer to the [list of implementations](https://gateway-api.sigs.k8s.io/) and follow your controller's installation instructions. The `gatewayClassName` referenced below must match a `GatewayClass` that exists in your cluster.
 
-## Setting up Ingress
+## Setting up routing
 
-The setup of Ingress objects is the same for Prometheus, Alertmanager and Grafana. Therefore this guides demonstrates it in detail for Prometheus as it can easily be adapted for the other applications.
+The Gateway API splits the configuration into two resources: a `Gateway`, which defines the entry point (its listeners, ports and protocols) and is usually created once and shared, and an `HTTPRoute`, which attaches to a `Gateway` and forwards traffic to a Service. The setup of `HTTPRoute` objects is the same for Prometheus, Alertmanager and Grafana. Therefore this guide demonstrates it in detail for Prometheus as it can easily be adapted for the other applications.
 
-As monitoring data may contain sensitive data, this guide describes how to setup Ingress with basic auth as an example of minimal security. Of course this should be adapted to the preferred authentication mean of any particular organization, but we feel it is important to at least provide an example with a minimum of security.
+As monitoring data may contain sensitive data, these endpoints should be protected with authentication. The Gateway API does not define a portable authentication mechanism. Authentication is instead configured through the APIs of your Gateway controller — for example an external authorization filter or a policy attached to the `Gateway` or `HTTPRoute` — or by placing an authenticating proxy such as [oauth2-proxy](https://github.com/oauth2-proxy/oauth2-proxy) in front of the Services. Consult the documentation of your Gateway API implementation for the supported options.
 
-In order to setup basic auth, a secret with the `htpasswd` formatted file needs to be created. To do this, first install the [`htpasswd`](https://httpd.apache.org/docs/2.4/programs/htpasswd.html) tool.
-
-To create the `htpasswd` formatted file called `auth` run:
-
-```
-htpasswd -c auth <username>
-```
-
-In order to use this a secret needs to be created containing the name of the `htpasswd`, and with annotations on the Ingress object basic auth can be configured.
-
-Also, the applications provide external links to themselves in alerts and various places. When an ingress is used in front of the applications these links need to be based on the external URL's. This can be configured for each application in jsonnet.
+Also, the applications provide external links to themselves in alerts and various places. When a Gateway is used in front of the applications these links need to be based on the external URL's. This can be configured for each application in jsonnet.
 
 ```jsonnet
 local kp =
@@ -53,60 +43,70 @@ local kp =
         },
       },
     },
-    ingress+:: {
-      'prometheus-k8s': {
-        apiVersion: 'networking.k8s.io/v1',
-        kind: 'Ingress',
+    gatewayAPI+:: {
+      // The Gateway is the entry point for external traffic. It is normally
+      // created once and shared by all routes. 'gatewayClassName' selects the
+      // controller that implements it and must match a GatewayClass in your
+      // cluster.
+      gateway: {
+        apiVersion: 'gateway.networking.k8s.io/v1',
+        kind: 'Gateway',
         metadata: {
-          name: $.prometheus.prometheus.metadata.name,
-          namespace: $.prometheus.prometheus.metadata.namespace,
-          annotations: {
-            'nginx.ingress.kubernetes.io/auth-type': 'basic',
-            'nginx.ingress.kubernetes.io/auth-secret': 'basic-auth',
-            'nginx.ingress.kubernetes.io/auth-realm': 'Authentication Required',
-          },
+          name: 'main',
+          namespace: $.values.common.namespace,
         },
         spec: {
-          rules: [{
-            host: 'prometheus.example.com',
-            http: {
-              paths: [{
-                backend: {
-                  service: {
-                    name: $.prometheus.service.metadata.name,
-                    port: 'web',
-                  },
-                },
-              }],
+          gatewayClassName: 'example',
+          listeners: [{
+            name: 'http',
+            protocol: 'HTTP',
+            port: 80,
+            allowedRoutes: {
+              namespaces: {
+                from: 'Same',
+              },
             },
           }],
         },
-    },
-  } + {
-    ingress+:: {
-      'basic-auth-secret': {
-        apiVersion: 'v1',
-        kind: 'Secret',
+      },
+      // The HTTPRoute attaches to the Gateway and forwards the hostname to the
+      // Prometheus Service. backendRefs use the numeric Service port (9090).
+      'prometheus-k8s': {
+        apiVersion: 'gateway.networking.k8s.io/v1',
+        kind: 'HTTPRoute',
         metadata: {
-          name: 'basic-auth',
-          namespace: $._config.namespace,
+          name: $.prometheus.service.metadata.name,
+          namespace: $.values.common.namespace,
         },
-        data: { auth: std.base64(importstr 'auth') },
-        type: 'Opaque',
+        spec: {
+          parentRefs: [{
+            name: 'main',
+          }],
+          hostnames: ['prometheus.example.com'],
+          rules: [{
+            matches: [{
+              path: {
+                type: 'PathPrefix',
+                value: '/',
+              },
+            }],
+            backendRefs: [{
+              name: $.prometheus.service.metadata.name,
+              port: 9090,
+            }],
+          }],
+        },
       },
     },
   };
 
-// Output a kubernetes List object with both ingresses (k8s-libsonnet)
-k.core.v1.list.new([
-  kp.ingress['prometheus-k8s'],
-  kp.ingress['basic-auth-secret'],
-])
+// Render the Gateway and HTTPRoute objects as individual manifests
+{ ['gateway-api-' + name]: kp.gatewayAPI[name] for name in std.objectFields(kp.gatewayAPI) }
 ```
 
-In order to expose Alertmanager and Grafana, simply create additional fields containing an ingress object, but simply pointing at the `alertmanager` or `grafana` instead of the `prometheus-k8s` Service. Make sure to also use the correct port respectively, for Alertmanager it is also `web`, for Grafana it is `http`. Be sure to also specify the appropriate external URL. Note that the external URL for grafana is set in a different way than the external URL for Prometheus or Alertmanager. See [ingress.jsonnet](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples/ingress.jsonnet) for how to set the Grafana external URL.
+In order to expose Alertmanager and Grafana, simply create additional `HTTPRoute` objects, but simply pointing at the `alertmanager-main` or `grafana` Service instead of the `prometheus-k8s` Service. Make sure to also use the correct numeric port respectively, for Alertmanager it is `9093`, for Grafana it is `3000`. Be sure to also specify the appropriate external URL. Note that the external URL for Grafana is set in a different way than the external URL for Prometheus or Alertmanager. See [ingress.jsonnet](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples/ingress.jsonnet) for how to set the Grafana external URL.
 
-In order to render the ingress objects similar to the other objects use as demonstrated in the [main readme](https://github.com/prometheus-operator/kube-prometheus/tree/main/README.md):
+In order to render the Gateway and `HTTPRoute` objects similar to the other objects use as demonstrated in the [main readme](https://github.com/prometheus-operator/kube-prometheus/tree/main/README.md):
 
 ```jsonnet
 { ['00namespace-' + name]: kp.kubePrometheus[name] for name in std.objectFields(kp.kubePrometheus) } +
@@ -116,20 +116,20 @@ In order to render the ingress objects similar to the other objects use as demon
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) } +
-{ ['ingress-' + name]: kp.ingress[name] for name in std.objectFields(kp.ingress) }
+{ ['gateway-api-' + name]: kp.gatewayAPI[name] for name in std.objectFields(kp.gatewayAPI) }
 ```
 
 Note, that in comparison only the last line was added, the rest is identical to the original.
 
 See [ingress.jsonnet](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples/ingress.jsonnet) for an example implementation.
 
-## Adding Ingress namespace to NetworkPolicies
+## Adding the Gateway namespace to NetworkPolicies
 
 NetworkPolicies restricting access to the components are added by default. These can either be removed as in
-[networkpolicies-disabled.jsonnet](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples/networkpolicies-disabled.jsonnet) or modified as
+[networkpolicies-disabled.jsonnet](https://github.com/prometheus-operator/kube-prometheus/tree/main/examples/networkpolicies-disabled.jsonnet) or modified to allow traffic from the namespace where your Gateway controller's data plane runs, as
 described here.
 
-This is an example for grafana, but the same can be applied to alertmanager and prometheus.
+This is an example for Alertmanager, but the same can be applied to Grafana and Prometheus. Replace `gateway-system` with the namespace of your Gateway controller.
 
 ```jsonnet
 {
@@ -142,7 +142,7 @@ This is an example for grafana, but the same can be applied to alertmanager and 
               {
                 namespaceSelector: {
                   matchLabels: {
-                    'app.kubernetes.io/name': 'ingress-nginx',
+                    'kubernetes.io/metadata.name': 'gateway-system',
                   },
                 },
               },
