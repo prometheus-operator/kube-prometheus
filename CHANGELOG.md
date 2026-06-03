@@ -1,3 +1,7 @@
+## release-0.18 / 2026-06-03
+
+This release brings updated versions for a large number of the components as well as support for Kubernetes 1.36.
+
 ## release-0.17 / 2026-03-19
 
 * [CHANGE] Remove `alertmanagerName` and `thanosSelector` configuration options from `prometheus.libsonnet`. [#2755](https://github.com/prometheus-operator/kube-prometheus/pull/2755)
