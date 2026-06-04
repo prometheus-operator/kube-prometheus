@@ -1,0 +1,18 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: apiserver-read-response-errors
+  namespace: monitoring
+spec:
+  description: ""
+  indicator:
+    ratio:
+      errors:
+        metric: apiserver_request_total{component="apiserver",verb=~"LIST|GET",code=~"5.."}
+      total:
+        metric: apiserver_request_total{component="apiserver",verb=~"LIST|GET"}
+  target: "99"
+  window: 2w

@@ -1,0 +1,22 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: kube-proxy
+    app.kubernetes.io/part-of: kube-prometheus
+    prometheus: k8s
+    pyrra.dev/component: kube-proxy
+    role: alert-rules
+  name: kube-proxy-request-errors
+  namespace: monitoring
+spec:
+  description: ""
+  indicator:
+    ratio:
+      errors:
+        metric: rest_client_requests_total{job="kube-proxy",code=~"5..|<error>"}
+      total:
+        metric: rest_client_requests_total{job="kube-proxy"}
+  target: "90"
+  window: 2w

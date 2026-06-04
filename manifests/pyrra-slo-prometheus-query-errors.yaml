@@ -1,0 +1,20 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: prometheus-query-errors
+  namespace: monitoring
+spec:
+  description: ""
+  indicator:
+    ratio:
+      errors:
+        metric: prometheus_http_requests_total{job="prometheus-k8s",handler=~"/api/v1/query.*",code=~"5.."}
+      grouping:
+      - handler
+      total:
+        metric: prometheus_http_requests_total{job="prometheus-k8s",handler=~"/api/v1/query.*"}
+  target: "99"
+  window: 2w

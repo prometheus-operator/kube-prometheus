@@ -1,0 +1,18 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    prometheus: k8s
+    role: alert-rules
+  name: prometheus-sd-kubernetes-errors
+  namespace: monitoring
+spec:
+  description: If there are too many errors Prometheus is having a bad time discovering new Kubernetes services.
+  indicator:
+    ratio:
+      errors:
+        metric: prometheus_sd_kubernetes_http_request_total{job="prometheus-k8s",status_code=~"5..|<error>"}
+      total:
+        metric: prometheus_sd_kubernetes_http_request_total{job="prometheus-k8s"}
+  target: "99"
+  window: 2w

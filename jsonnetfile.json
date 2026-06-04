@@ -12,6 +12,15 @@
     },
     {
       "source": {
+        "git": {
+          "remote": "https://github.com/pyrra-dev/pyrra.git",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "main"
+    },
+    {
+      "source": {
         "local": {
           "directory": "jsonnet/kube-prometheus"
         }

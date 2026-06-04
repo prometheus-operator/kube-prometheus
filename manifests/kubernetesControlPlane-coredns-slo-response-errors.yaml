@@ -1,0 +1,24 @@
+apiVersion: pyrra.dev/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: coredns
+    app.kubernetes.io/part-of: kube-prometheus
+    prometheus: k8s
+    pyrra.dev/component: coredns
+    role: alert-rules
+  name: coredns-response-errors
+  namespace: monitoring
+spec:
+  description: |
+    CoreDNS runs within a Kubernetes cluster and resolves internal requests and forward external requests.
+    If CoreDNS fails to answer requests applications might be unable to make requests.
+  indicator:
+    ratio:
+      errors:
+        metric: coredns_dns_responses_total{job="coredns",rcode="SERVFAIL"}
+      total:
+        metric: coredns_dns_responses_total{job="coredns"}
+  target: "99.99"
+  window: 2w
