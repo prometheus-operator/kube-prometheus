@@ -28,7 +28,7 @@
           "subdir": "grafana-mixin"
         }
       },
-      "version": "2ede9ce9aa50e7a85e63dc5bbd6cbbaeed61bf21",
+      "version": "4c229975eca85524478e5fd4e626ae368baf62f1",
       "sum": "sRjOJwJhhkCDmMQls7clo/csVix/b47W+Wc3YCzn64Y="
     },
     {
@@ -148,7 +148,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "c3c32a0b079bac64abc66238c0d942a88c7f3447",
+      "version": "83c2231f8e7159a73d3d25f1a2bae4c65e56e591",
       "sum": "gi+knjdxs2T715iIQIntrimbHRgHnpM8IFBJDD1gYfs=",
       "name": "prometheus-operator-mixin"
     },
@@ -159,8 +159,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "c3c32a0b079bac64abc66238c0d942a88c7f3447",
-      "sum": "DNClYGOxj5jHsP09gXMQyjsMAuRli7u/kasaqndLUiQ="
+      "version": "83c2231f8e7159a73d3d25f1a2bae4c65e56e591",
+      "sum": "9NWX9Tmn0BaW44z9PW4AWRmloWkcq7Mj0QbdNOQBxUI="
     },
     {
       "source": {
