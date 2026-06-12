@@ -1,16 +1,36 @@
-local ingress(name, namespace, rules) = {
-  apiVersion: 'networking.k8s.io/v1',
-  kind: 'Ingress',
+// This example exposes Alertmanager, Grafana and Prometheus through the Gateway
+// API. It creates one HTTPRoute per application, each attaching to an existing
+// Gateway and routing a hostname to the matching Service.
+//
+// The Gateway (and its GatewayClass) is provided by your Gateway API controller
+// (for example Istio, Envoy Gateway or Contour) and is not managed by
+// kube-prometheus. This example assumes a Gateway named 'main' already exists in
+// the same namespace and accepts routes from it.
+local httpRoute(name, namespace, hostname, serviceName, servicePort) = {
+  apiVersion: 'gateway.networking.k8s.io/v1',
+  kind: 'HTTPRoute',
   metadata: {
     name: name,
     namespace: namespace,
-    annotations: {
-      'nginx.ingress.kubernetes.io/auth-type': 'basic',
-      'nginx.ingress.kubernetes.io/auth-secret': 'basic-auth',
-      'nginx.ingress.kubernetes.io/auth-realm': 'Authentication Required',
-    },
   },
-  spec: { rules: rules },
+  spec: {
+    parentRefs: [{
+      name: 'main',
+    }],
+    hostnames: [hostname],
+    rules: [{
+      matches: [{
+        path: {
+          type: 'PathPrefix',
+          value: '/',
+        },
+      }],
+      backendRefs: [{
+        name: serviceName,
+        port: servicePort,
+      }],
+    }],
+  },
 };
 
 local kp =
@@ -45,86 +65,12 @@ local kp =
         },
       },
     },
-    // Create ingress objects per application
-    ingress+:: {
-      'alertmanager-main': ingress(
-        'alertmanager-main',
-        $.values.common.namespace,
-        [{
-          host: 'alertmanager.example.com',
-          http: {
-            paths: [{
-              path: '/',
-              pathType: 'Prefix',
-              backend: {
-                service: {
-                  name: 'alertmanager-main',
-                  port: {
-                    name: 'web',
-                  },
-                },
-              },
-            }],
-          },
-        }]
-      ),
-      grafana: ingress(
-        'grafana',
-        $.values.common.namespace,
-        [{
-          host: 'grafana.example.com',
-          http: {
-            paths: [{
-              path: '/',
-              pathType: 'Prefix',
-              backend: {
-                service: {
-                  name: 'grafana',
-                  port: {
-                    name: 'http',
-                  },
-                },
-              },
-            }],
-          },
-        }],
-      ),
-      'prometheus-k8s': ingress(
-        'prometheus-k8s',
-        $.values.common.namespace,
-        [{
-          host: 'prometheus.example.com',
-          http: {
-            paths: [{
-              path: '/',
-              pathType: 'Prefix',
-              backend: {
-                service: {
-                  name: 'prometheus-k8s',
-                  port: {
-                    name: 'web',
-                  },
-                },
-              },
-            }],
-          },
-        }],
-      ),
-    },
-  } + {
-    // Create basic auth secret - replace 'auth' file with your own
-    ingress+:: {
-      'basic-auth-secret': {
-        apiVersion: 'v1',
-        kind: 'Secret',
-        metadata: {
-          name: 'basic-auth',
-          namespace: $.values.common.namespace,
-        },
-        data: { auth: std.base64(importstr 'auth') },
-        type: 'Opaque',
-      },
+    // Create an HTTPRoute object per application
+    httpRoute+:: {
+      'alertmanager-main': httpRoute('alertmanager-main', $.values.common.namespace, 'alertmanager.example.com', 'alertmanager-main', 9093),
+      grafana: httpRoute('grafana', $.values.common.namespace, 'grafana.example.com', 'grafana', 3000),
+      'prometheus-k8s': httpRoute('prometheus-k8s', $.values.common.namespace, 'prometheus.example.com', 'prometheus-k8s', 9090),
     },
   };
 
-{ [name + '-ingress']: kp.ingress[name] for name in std.objectFields(kp.ingress) }
+{ [name + '-httproute']: kp.httpRoute[name] for name in std.objectFields(kp.httpRoute) }
