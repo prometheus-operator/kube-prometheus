@@ -47,3 +47,35 @@ By default, kubeadm will configure kube-proxy to listen on 127.0.0.1 for metrics
 1. Before cluster initialization, the config file passed to kubeadm init should have KubeProxyConfiguration manifest with the field metricsBindAddress set to 0.0.0.0:10249
 2. If the k8s cluster is already up and running, we'll have to modify the configmap kube-proxy in the namespace kube-system and set the metricsBindAddress field. After this kube-proxy daemonset would have to be restarted with
    `kubectl -n kube-system rollout restart daemonset kube-proxy`
+
+## Conflict with an existing metrics-server
+
+kube-prometheus deploys the [Prometheus Adapter](https://github.com/kubernetes-sigs/prometheus-adapter), which serves the Kubernetes resource metrics API by registering the `v1beta1.metrics.k8s.io` APIService. A cluster can only have one provider of that APIService, so if a `metrics-server` is already installed the two conflict.
+
+Installing kube-prometheus on top of an existing `metrics-server` typically fails with:
+
+```
+Error from server (AlreadyExists): error when creating "manifests/prometheus-adapter-apiService.yaml": apiservices.apiregistration.k8s.io "v1beta1.metrics.k8s.io" already exists
+```
+
+and uninstalling kube-prometheus afterwards can delete the shared `v1beta1.metrics.k8s.io` APIService, breaking `kubectl top` and Horizontal Pod Autoscalers that relied on the existing metrics-server.
+
+Because the Prometheus Adapter already provides the resource metrics API, a separate metrics-server is not needed. Remove the existing one before installing kube-prometheus. If it was installed with Helm:
+
+```shell
+helm -n kube-system uninstall metrics-server
+```
+
+If it was installed from manifests, delete its resources, for example:
+
+```shell
+kubectl delete service/metrics-server -n kube-system
+kubectl delete deployment.apps/metrics-server -n kube-system
+kubectl delete apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io
+kubectl delete clusterrole system:aggregated-metrics-reader
+kubectl delete clusterrole system:metrics-server
+kubectl delete clusterrolebinding metrics-server:system:auth-delegator
+kubectl delete clusterrolebinding system:metrics-server
+kubectl delete rolebinding metrics-server-auth-reader -n kube-system
+kubectl delete serviceaccount metrics-server -n kube-system
+```
