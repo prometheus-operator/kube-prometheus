@@ -137,3 +137,15 @@ spec:
       for: 5m
       labels:
         severity: critical
+    - alert: AlertmanagerClusterFailedPeers
+      annotations:
+        description: Alertmanager {{ $labels.namespace }}/{{ $labels.pod}} has {{ $value }} failed peers in the {{$labels.job}} cluster.
+        runbook_url: https://runbooks.prometheus-operator.dev/runbooks/alertmanager/alertmanagerclusterfailedpeers
+        summary: An Alertmanager instance has failed peers in the cluster.
+      expr: |
+        # Without max_over_time, failed scrapes could create false negatives, see
+        # https://www.robustperception.io/alerting-on-gauges-in-prometheus-2-0 for details.
+        max_over_time(alertmanager_cluster_failed_peers{job="alertmanager-main",container="alertmanager",namespace="monitoring"}[5m]) > 0
+      for: 15m
+      labels:
+        severity: warning
