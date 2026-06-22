@@ -18,7 +18,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "22d55b52acba4d981da3d139b6bc8912c7cadd18",
+      "version": "6c84057b0e383532bc59c5957f4945ef0937fb4f",
       "sum": "XmXkOCriQIZmXwlIIFhqlJMa0e6qGWdxZD+ZDYaN0Po="
     },
     {
@@ -28,7 +28,7 @@
           "subdir": "grafana-mixin"
         }
       },
-      "version": "871dc660f046535779780bb595bf35e43f6986ac",
+      "version": "07aba4d7498dd18bc80efdad5ba9dd70ed9a903e",
       "sum": "sRjOJwJhhkCDmMQls7clo/csVix/b47W+Wc3YCzn64Y="
     },
     {
@@ -78,7 +78,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "438843982d666cf50967a41922db4456b2c51d4c",
+      "version": "31e47dee035b00326c8c35ab571e93ae7d756351",
       "sum": "TWpxm5vPO23V3hoF3pdwGs1NvR+PQce9baN716mJq+4="
     },
     {
@@ -88,7 +88,7 @@
           "subdir": "mixin-utils"
         }
       },
-      "version": "438843982d666cf50967a41922db4456b2c51d4c",
+      "version": "31e47dee035b00326c8c35ab571e93ae7d756351",
       "sum": "zVkvwae4zHP6xeIoDvde/wldI6ClprFjnk50mMD9/z4="
     },
     {
@@ -118,8 +118,8 @@
           "subdir": ""
         }
       },
-      "version": "a4a0806a343053dcfaf5ea2086fca724ed35e5b3",
-      "sum": "sisvTQOlYC8YoIDoFgt01Y9hamQOD9fExVFpe/4Q1RY="
+      "version": "349819ffca696c61140103ec4a27c0c508334f18",
+      "sum": "dFblo/XFEgjLPAjt4ycfsvOvWPb3pchSqLoVwnP6SXc="
     },
     {
       "source": {
@@ -128,8 +128,8 @@
           "subdir": "jsonnet/kube-state-metrics"
         }
       },
-      "version": "8630451b2632ded79cade87100efba2d88cf5155",
-      "sum": "7FPi/0YmErTgBmFQWavjoI/9WpWe5eL9G+OHnyc9d5A="
+      "version": "201640af976f831c9f5afb6ad8fbe6e14dd23846",
+      "sum": "xIGXvJMF+93uRKuI5oEoZGOBT3wG9PwzlXmGhOZF0zg="
     },
     {
       "source": {
@@ -138,7 +138,7 @@
           "subdir": "jsonnet/kube-state-metrics-mixin"
         }
       },
-      "version": "8630451b2632ded79cade87100efba2d88cf5155",
+      "version": "201640af976f831c9f5afb6ad8fbe6e14dd23846",
       "sum": "qclI7LwucTjBef3PkGBkKxF0mfZPbHnn4rlNWKGtR4c="
     },
     {
@@ -148,7 +148,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "5103f03c8e4f0006c51cbcd95ad0121e99e82ef0",
+      "version": "33418dcbf48a392482a138830f6bcb2a0a933940",
       "sum": "gi+knjdxs2T715iIQIntrimbHRgHnpM8IFBJDD1gYfs=",
       "name": "prometheus-operator-mixin"
     },
@@ -159,8 +159,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "5103f03c8e4f0006c51cbcd95ad0121e99e82ef0",
-      "sum": "Gsh+vbg7TGfVTFBg+e/5SzPikGk5QnXOvfF4d0LmEWw="
+      "version": "33418dcbf48a392482a138830f6bcb2a0a933940",
+      "sum": "eC71DG3skETpq3oVIOCXEYKr6wyDPhOmrabHfA2E87g="
     },
     {
       "source": {
@@ -169,8 +169,8 @@
           "subdir": "doc/alertmanager-mixin"
         }
       },
-      "version": "d3b133e608b3924f206ea6c1959bb99958a3da10",
-      "sum": "diZM7b/jQKqaIjuVSiseRaxgpgdQyVCtCgh0XhyPnXQ=",
+      "version": "657d43d4b08992d5c0ab45d85c6c831155eb0cdb",
+      "sum": "n7AFz0BnWumd8hvjTG7GWQh7+Jywq9fy5z1mUDD67o8=",
       "name": "alertmanager"
     },
     {
@@ -190,7 +190,7 @@
           "subdir": "documentation/prometheus-mixin"
         }
       },
-      "version": "121eaa1778f363ebde6a3613143885fc8d654332",
+      "version": "fc561264a42bce13a7203e787abcc7ae0c68506f",
       "sum": "UuADJwhNploRwfJYGb0sr2mi+MvswKpumoOMXnGs0Dc=",
       "name": "prometheus"
     },
@@ -201,7 +201,7 @@
           "subdir": "jsonnet/controller-gen"
         }
       },
-      "version": "30d3bc35d3f733350a7399e564ccb5f62adbba7d",
+      "version": "9b5b3bd887b49f45d69fc1d816b241bbb5c47fb3",
       "sum": "vY3+ZELH6GFEpNJ0tKeU8ybCMLOQePKnnqFP4CSLSWo=",
       "name": "pyrra"
     },
@@ -212,7 +212,7 @@
           "subdir": "mixin"
         }
       },
-      "version": "71375471556018610312a21fcf076cc6977b60bc",
+      "version": "421734b2b79d2630da50a12b2a870fa86c55a1eb",
       "sum": "ieCD4eMgGbOlrI8GmckGPHBGQDcLasE1rULYq56W/bs=",
       "name": "thanos-mixin"
     },
