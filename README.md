@@ -92,11 +92,14 @@ To try out this stack, start [minikube](https://github.com/kubernetes/minikube) 
 minikube delete && minikube start --container-runtime=containerd --kubernetes-version=v1.33.1 --memory=6g --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.bind-address=0.0.0.0 --extra-config=controller-manager.bind-address=0.0.0.0
 ```
 
-The kube-prometheus stack includes a resource metrics API server, so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:
+The kube-prometheus stack includes a resource metrics API server (prometheus-adapter by default), so the metrics-server addon is not necessary. Ensure the metrics-server addon is disabled on minikube:
 
 ```shell
 minikube addons disable metrics-server
 ```
+
+> [!NOTE]
+> If you prefer to use the lightweight upstream metrics-server instead of prometheus-adapter, see [Using metrics-server instead of prometheus-adapter](docs/customizations/metrics-server.md).
 
 ## Getting started
 
