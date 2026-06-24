@@ -67,6 +67,7 @@ cat <<-EOF
   "kubeStateMetrics": "$(get_version "kubernetes/kube-state-metrics")",
   "nodeExporter": "$(get_version "prometheus/node_exporter")",
   "prometheus": "$(get_version "prometheus/prometheus")",
+  "metricsServer": "$(get_version "kubernetes-sigs/metrics-server")",
   "prometheusAdapter": "$(get_version "kubernetes-sigs/prometheus-adapter")",
   "prometheusOperator": "$(get_version "prometheus-operator/prometheus-operator")",
   "kubeRbacProxy": "$(get_version "brancz/kube-rbac-proxy")",
