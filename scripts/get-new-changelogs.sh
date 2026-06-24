@@ -43,6 +43,9 @@ get_changelog_urls() {
       prometheus)
         get_changelog_url "prometheus/prometheus" "${version}"
         ;;
+      metricsServer)
+        get_changelog_url "kubernetes-sigs/metrics-server" "${version}"
+        ;;
       prometheusAdapter)
         get_changelog_url "kubernetes-sigs/prometheus-adapter" "${version}"
         ;;
