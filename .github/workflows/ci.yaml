@@ -152,7 +152,7 @@ jobs:
         uses: helm/kind-action@v1.14.0
         with:
           version: ${{ env.kind-version }}
-          node_image: "kindest/node:v1.36.1"
+          node_image: ${{ env.kind-image-metrics-server }}
           wait: 10s
           config: tests/e2e/kind/config.yml
           cluster_name: e2e
