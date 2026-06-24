@@ -16,6 +16,10 @@
       podAntiAffinity: 'soft',
       podAntiAffinityTopologyKey: 'kubernetes.io/hostname',
     },
+    metricsServer+: {
+      podAntiAffinity: 'soft',
+      podAntiAffinityTopologyKey: 'kubernetes.io/hostname',
+    },
   },
 
   antiaffinity(labelSelector, namespace, type, topologyKey):: {
@@ -96,4 +100,20 @@
       },
     },
   },
+
+  metricsServer+: if $.values.common.resourceMetricsAPI == 'metrics-server' then {
+    deployment+: {
+      spec+: {
+        template+: {
+          spec+:
+            $.antiaffinity(
+              $.metricsServer._config.selectorLabels,
+              $.values.metricsServer.namespace,
+              $.values.metricsServer.podAntiAffinity,
+              $.values.metricsServer.podAntiAffinityTopologyKey,
+            ),
+        },
+      },
+    },
+  } else {},
 }

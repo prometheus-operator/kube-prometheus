@@ -42,6 +42,12 @@
       },
     },
 
+    metricsServer+: {
+      resources+: {
+        limits: {},
+      },
+    },
+
     prometheusOperator+: {
       resources+: {
         limits: {},
