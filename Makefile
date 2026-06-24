@@ -42,6 +42,9 @@ generate: manifests
 manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor
 	./build.sh $<
 
+manifests-metrics-server: examples/metrics-server.jsonnet $(GOJSONTOYAML_BIN) vendor
+	./build.sh $<
+
 vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor
 	$(JB_BIN) install
@@ -94,6 +97,10 @@ test: $(JB_BIN)
 .PHONY: test-e2e
 test-e2e:
 	go test -timeout 55m -v ./tests/e2e -count=1
+
+.PHONY: test-e2e-metrics-server
+test-e2e-metrics-server:
+	RESOURCE_METRICS_API=metrics-server go test -timeout 55m -v ./tests/e2e -count=1 -run TestMetricsServerDeployment
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)

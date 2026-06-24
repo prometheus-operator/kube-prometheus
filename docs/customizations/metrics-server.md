@@ -45,18 +45,18 @@ This automatically selects the correct component based on the `resourceMetricsAP
 
 The following hidden fields can be overridden in `values.metricsServer`:
 
-| Field | Default | Description |
-|-------|---------|-------------|
-| `replicas` | `2` | Number of metrics-server replicas |
-| `resources` | `{requests: {cpu: '100m', memory: '200Mi'}}` | Resource requests/limits |
-| `kubeletInsecureTLS` | `false` | Skip kubelet TLS verification |
-| `metricResolution` | `'15s'` | How often metrics are scraped from kubelets |
-| `securePort` | `10250` | Metrics-server HTTPS port |
-| `extraArgs` | `[]` | Additional command-line arguments |
-| `podAntiAffinity` | `'hard'` | Pod anti-affinity type (`'hard'` or `'soft'`) |
-| `podAntiAffinityTopologyKey` | `'kubernetes.io/hostname'` | Topology key for anti-affinity |
-| `insecureSkipTLSVerify` | `true` | APIService TLS verification |
-| `priorityClassName` | `'system-cluster-critical'` | Pod priority class |
+| Field                        | Default                                      | Description                                   |
+|------------------------------|----------------------------------------------|-----------------------------------------------|
+| `replicas`                   | `2`                                          | Number of metrics-server replicas             |
+| `resources`                  | `{requests: {cpu: '100m', memory: '200Mi'}}` | Resource requests/limits                      |
+| `kubeletInsecureTLS`         | `false`                                      | Skip kubelet TLS verification                 |
+| `metricResolution`           | `'15s'`                                      | How often metrics are scraped from kubelets   |
+| `securePort`                 | `10250`                                      | Metrics-server HTTPS port                     |
+| `extraArgs`                  | `[]`                                         | Additional command-line arguments             |
+| `podAntiAffinity`            | `'hard'`                                     | Pod anti-affinity type (`'hard'` or `'soft'`) |
+| `podAntiAffinityTopologyKey` | `'kubernetes.io/hostname'`                   | Topology key for anti-affinity                |
+| `insecureSkipTLSVerify`      | `true`                                       | APIService TLS verification                   |
+| `priorityClassName`          | `'system-cluster-critical'`                  | Pod priority class                            |
 
 #### Full example
 

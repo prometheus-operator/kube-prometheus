@@ -134,17 +134,67 @@ jobs:
           export KUBECONFIG="${HOME}/.kube/config"
           make test-e2e
 
+  e2e-tests-metrics-server:
+    name: E2E tests (metrics-server)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.golang-version }}
+      - name: Build metrics-server manifests
+        run: make manifests-metrics-server
+      - name: Start kind cluster
+        uses: helm/kind-action@v1.14.0
+        with:
+          version: ${{ env.kind-version }}
+          node_image: "kindest/node:v1.36.1"
+          wait: 10s
+          config: tests/e2e/kind/config.yml
+          cluster_name: e2e
+      - name: Install kube-router for NetworkPolicy support
+        run: |
+          kubectl apply -f tests/e2e/kind/kube-router.yaml
+      - name: Install kube-scheduler and kube-controller-manager services
+        run: |
+          kubectl apply -f tests/e2e/kind/kubernetesControlPlane-kubeControllerManagerPrometheusDiscoveryService.yaml && \
+          kubectl apply -f tests/e2e/kind/kubernetesControlPlane-kubeSchedulerPrometheusDiscoveryService.yaml
+      - name: Wait for cluster to finish bootstraping
+        run: kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s
+      - name: Create kube-prometheus stack with metrics-server
+        run: |
+          kubectl create -f manifests/setup
+          until kubectl get servicemonitors --all-namespaces ; do date; sleep 1; echo ""; done
+          kubectl create -f manifests/
+      - name: Wait for kube-prometheus stack to finish bootstraping
+        run: kubectl wait --for=condition=Ready pods --all -n monitoring --timeout=300s
+      - name: Check resources in all namespaces
+        if: always()
+        run: kubectl get services,endpoints,pods,prometheus,alertmanager --all-namespaces
+      - name: Check events in all namespaces
+        if: ${{ failure() }}
+        run: kubectl get events --all-namespaces
+      - name: Run metrics-server e2e tests
+        run: |
+          export KUBECONFIG="${HOME}/.kube/config"
+          make test-e2e-metrics-server
+
   # Added to summarize the matrix and allow easy branch protection rules setup
   e2e-tests-result:
     name: End-to-End Test Results
     if: always()
     needs:
       - e2e-tests
+      - e2e-tests-metrics-server
     runs-on: ubuntu-latest
     steps:
       - name: Mark the job as a success
-        if: needs.e2e-tests.result == 'success'
+        if: needs.e2e-tests.result == 'success' && needs.e2e-tests-metrics-server.result == 'success'
         run: exit 0
       - name: Mark the job as a failure
-        if: needs.e2e-tests.result != 'success'
+        if: needs.e2e-tests.result != 'success' || needs.e2e-tests-metrics-server.result != 'success'
         run: exit 1
