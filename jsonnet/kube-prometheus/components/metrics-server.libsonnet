@@ -64,14 +64,14 @@ function(params) {
   },
 
   local baseArgs = [
-    '--cert-dir=' + ms._config.certDir,
-    '--secure-port=%d' % ms._config.securePort,
-    '--kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname',
-    '--kubelet-use-node-status-port',
-    '--metric-resolution=' + ms._config.metricResolution,
-    '--tls-cipher-suites=' + std.join(',', ms._config.tlsCipherSuites),
-  ] + (if ms._config.kubeletInsecureTLS then ['--kubelet-insecure-tls'] else [])
-    + ms._config.extraArgs,
+                     '--cert-dir=' + ms._config.certDir,
+                     '--secure-port=%d' % ms._config.securePort,
+                     '--kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname',
+                     '--kubelet-use-node-status-port',
+                     '--metric-resolution=' + ms._config.metricResolution,
+                     '--tls-cipher-suites=' + std.join(',', ms._config.tlsCipherSuites),
+                   ] + (if ms._config.kubeletInsecureTLS then ['--kubelet-insecure-tls'] else [])
+                   + ms._config.extraArgs,
 
   serviceAccount: {
     apiVersion: 'v1',
