@@ -11,6 +11,10 @@
     apiService:: null,
   },
 
+  metricsServer+:: {
+    apiService:: null,
+  },
+
   kubernetesControlPlane+: {
     kubeDnsPrometheusStackService: {
       apiVersion: 'v1',
