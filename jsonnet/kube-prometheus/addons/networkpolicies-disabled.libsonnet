@@ -17,6 +17,10 @@
     networkPolicy:: {},
   },
 
+  metricsServer+: {
+    networkPolicy:: {},
+  },
+
   alertmanager+: {
     networkPolicy:: {},
   },
