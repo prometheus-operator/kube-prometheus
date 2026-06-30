@@ -361,7 +361,7 @@ function(params) {
     apiVersion: 'rbac.authorization.k8s.io/v1',
     kind: 'ClusterRoleBinding',
     metadata: pa._metadata_no_ns {
-      name: 'resource-metrics:system:auth-delegator',
+      name: 'resource-metrics-system-auth-delegator',
     },
     roleRef: {
       apiGroup: 'rbac.authorization.k8s.io',
