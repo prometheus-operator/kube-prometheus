@@ -8,6 +8,8 @@ nodes:
     extraMounts:
       - hostPath: /home/runner/work/kube-prometheus/kube-prometheus/.github/workflows/kind/patches
         containerPath: /patches
+  - role: worker
+  - role: worker
 kubeadmConfigPatches:
   - |
     kind: ClusterConfiguration
