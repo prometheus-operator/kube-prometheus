@@ -174,10 +174,16 @@ jobs:
         run: kubectl wait --for=condition=Ready pods --all -n monitoring --timeout=300s
       - name: Check resources in all namespaces
         if: always()
-        run: kubectl get services,endpoints,pods,prometheus,alertmanager --all-namespaces
+        run: |
+          kubectl get nodes -o wide
+          kubectl get services,endpoints,pods,prometheus,alertmanager --all-namespaces
+      - name: Describe non-ready pods
+        if: ${{ failure() }}
+        run: |
+          kubectl get pods -n monitoring --field-selector=status.phase!=Running -o name | xargs -r kubectl describe -n monitoring
       - name: Check events in all namespaces
         if: ${{ failure() }}
-        run: kubectl get events --all-namespaces
+        run: kubectl get events --all-namespaces --sort-by='.lastTimestamp'
       - name: Run metrics-server e2e tests
         run: |
           export KUBECONFIG="${HOME}/.kube/config"
