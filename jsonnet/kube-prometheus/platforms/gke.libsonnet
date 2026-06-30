@@ -10,4 +10,8 @@
   prometheusAdapter+:: {
     apiService:: null,
   },
+
+  metricsServer+:: {
+    apiService:: null,
+  },
 }

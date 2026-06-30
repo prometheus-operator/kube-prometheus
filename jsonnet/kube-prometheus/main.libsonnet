@@ -3,6 +3,7 @@ local blackboxExporter = import './components/blackbox-exporter.libsonnet';
 local grafana = import './components/grafana.libsonnet';
 local kubernetesControlPlane = import './components/k8s-control-plane.libsonnet';
 local kubeStateMetrics = import './components/kube-state-metrics.libsonnet';
+local metricsServer = import './components/metrics-server.libsonnet';
 local customMixin = import './components/mixin/custom.libsonnet';
 local nodeExporter = import './components/node-exporter.libsonnet';
 local prometheusAdapter = import './components/prometheus-adapter.libsonnet';
@@ -19,6 +20,8 @@ local utils = import './lib/utils.libsonnet';
     common: {
       namespace: 'default',
       platform: null,
+      // Resource metrics API implementation. Either 'prometheus-adapter' (default) or 'metrics-server'.
+      resourceMetricsAPI:: 'prometheus-adapter',
       ruleLabels: {
         role: 'alert-rules',
         prometheus: $.values.prometheus.name,
@@ -31,6 +34,7 @@ local utils = import './lib/utils.libsonnet';
         kubeStateMetrics: error 'must provide version',
         nodeExporter: error 'must provide version',
         prometheus: error 'must provide version',
+        metricsServer: error 'must provide version',
         prometheusAdapter: error 'must provide version',
         prometheusOperator: error 'must provide version',
         kubeRbacProxy: error 'must provide version',
@@ -43,6 +47,7 @@ local utils = import './lib/utils.libsonnet';
         kubeStateMetrics: 'registry.k8s.io/kube-state-metrics/kube-state-metrics:v' + $.values.common.versions.kubeStateMetrics,
         nodeExporter: 'quay.io/prometheus/node-exporter:v' + $.values.common.versions.nodeExporter,
         prometheus: 'quay.io/prometheus/prometheus:v' + $.values.common.versions.prometheus,
+        metricsServer: 'registry.k8s.io/metrics-server/metrics-server:v' + $.values.common.versions.metricsServer,
         prometheusAdapter: 'registry.k8s.io/prometheus-adapter/prometheus-adapter:v' + $.values.common.versions.prometheusAdapter,
         prometheusOperator: 'quay.io/prometheus-operator/prometheus-operator:v' + $.values.common.versions.prometheusOperator,
         prometheusOperatorReloader: 'quay.io/prometheus-operator/prometheus-config-reloader:v' + $.values.common.versions.prometheusOperator,
@@ -106,6 +111,11 @@ local utils = import './lib/utils.libsonnet';
       },
       mixin+: { ruleLabels: $.values.common.ruleLabels },
     },
+    metricsServer: {
+      namespace: $.values.common.namespace,
+      version: $.values.common.versions.metricsServer,
+      image: $.values.common.images.metricsServer,
+    },
     prometheusAdapter: {
       namespace: $.values.common.namespace,
       version: $.values.common.versions.prometheusAdapter,
@@ -140,7 +150,14 @@ local utils = import './lib/utils.libsonnet';
   kubeStateMetrics: kubeStateMetrics($.values.kubeStateMetrics),
   nodeExporter: nodeExporter($.values.nodeExporter),
   prometheus: prometheus($.values.prometheus),
-  prometheusAdapter: prometheusAdapter($.values.prometheusAdapter),
+  metricsServer:
+    if $.values.common.resourceMetricsAPI == 'metrics-server' then
+      metricsServer($.values.metricsServer)
+    else {},
+  prometheusAdapter:
+    if $.values.common.resourceMetricsAPI == 'prometheus-adapter' then
+      prometheusAdapter($.values.prometheusAdapter)
+    else {},
   prometheusOperator: prometheusOperator($.values.prometheusOperator),
   kubernetesControlPlane: kubernetesControlPlane($.values.kubernetesControlPlane),
   kubePrometheus: customMixin($.values.kubePrometheus) + {
