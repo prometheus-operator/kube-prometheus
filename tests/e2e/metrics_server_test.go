@@ -54,7 +54,7 @@ func TestMetricsServerDeployment(t *testing.T) {
 		} {
 			t.Run(path, func(t *testing.T) {
 				err := pollCondition(5*time.Minute, func() error {
-					_, err := kClient.RESTClient().Get().AbsPath(path).DoRaw(context.Background())
+					_, err := kClient.Discovery().RESTClient().Get().AbsPath(path).DoRaw(context.Background())
 					return err
 				})
 				if err != nil {
