@@ -60,7 +60,12 @@ Error from server (AlreadyExists): error when creating "manifests/prometheus-ada
 
 and uninstalling kube-prometheus afterwards can delete the shared `v1beta1.metrics.k8s.io` APIService, breaking `kubectl top` and Horizontal Pod Autoscalers that relied on the existing metrics-server.
 
-Because the Prometheus Adapter already provides the resource metrics API, a separate metrics-server is not needed. Remove the existing one before installing kube-prometheus. If it was installed with Helm:
+Because both provide the same resource metrics API, only one can be active. You have two options:
+
+1. **Remove the existing metrics-server** and use prometheus-adapter (the default).
+2. **Switch kube-prometheus to use metrics-server** instead of prometheus-adapter by setting `values.common.resourceMetricsAPI:: 'metrics-server'`. See [Using metrics-server instead of prometheus-adapter](customizations/metrics-server.md) for details.
+
+To remove an existing metrics-server installed with Helm:
 
 ```shell
 helm -n kube-system uninstall metrics-server
