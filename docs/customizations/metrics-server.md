@@ -41,6 +41,18 @@ If you are writing your own top-level jsonnet (instead of using `example.jsonnet
 
 This automatically selects the correct component based on the `resourceMetricsAPI` flag.
 
+#### Single-node clusters
+
+The default configuration deploys 2 replicas with hard pod anti-affinity, which requires at least 2 nodes. On single-node clusters (minikube, single-node kind, etc.), set `replicas:: 1` or switch to soft anti-affinity:
+
+```jsonnet
+values+:: {
+  metricsServer+: {
+    replicas:: 1,
+  },
+},
+```
+
 #### Available configuration
 
 The following hidden fields can be overridden in `values.metricsServer`:
@@ -57,6 +69,21 @@ The following hidden fields can be overridden in `values.metricsServer`:
 | `podAntiAffinityTopologyKey` | `'kubernetes.io/hostname'`                   | Topology key for anti-affinity                |
 | `insecureSkipTLSVerify`      | `true`                                       | APIService TLS verification                   |
 | `priorityClassName`          | `'system-cluster-critical'`                  | Pod priority class                            |
+
+#### Generating and deploying manifests
+
+To generate manifests using the provided example:
+
+```bash
+make manifests-metrics-server
+```
+
+This builds from `examples/metrics-server.jsonnet` and outputs YAML manifests to `manifests/`. Then deploy:
+
+```bash
+kubectl apply --server-side -f manifests/setup
+kubectl apply -f manifests/
+```
 
 #### Full example
 
