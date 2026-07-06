@@ -1,10 +1,10 @@
 {
-  "alertmanager": "0.33.0",
+  "alertmanager": "0.33.1",
   "blackboxExporter": "0.28.0",
-  "grafana": "13.0.3",
+  "grafana": "13.1.0",
   "kubeStateMetrics": "2.19.1",
   "nodeExporter": "1.11.1",
-  "prometheus": "3.12.0",
+  "prometheus": "3.13.0",
   "prometheusAdapter": "0.12.0",
   "prometheusOperator": "0.92.1",
   "kubeRbacProxy": "0.22.0",
