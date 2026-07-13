@@ -42,6 +42,8 @@ spec:
             1, max by(namespace, pod, owner_kind, cluster) (kube_pod_owner{owner_kind!="Job"})
           )
         ) > 0
+        unless on(namespace, pod, cluster)
+        kube_pod_status_reason{job="kube-state-metrics", reason="SchedulingGated"} == 1
       for: 15m
       labels:
         severity: warning
