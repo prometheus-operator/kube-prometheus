@@ -13,6 +13,12 @@ local defaults = {
   namespaces:: ['default', 'kube-system', defaults.namespace],
   replicas: 2,
   externalLabels: {},
+  // histogramMode specifies the strategy for Prometheus histogram ingestion.
+  // Supported values: 
+  // - 'classic': Traditional bucket-based histograms (default).
+  // - 'native': High-resolution sparse histograms (Prometheus v3+).
+  // - 'dual': Parallel ingestion of both formats for migration support.
+  histogramMode:: 'dual',
   enableFeatures: [],
   ruleSelector: {},
   commonLabels:: {
@@ -346,6 +352,8 @@ function(params) {
       serviceDiscoveryRole: p._config.serviceDiscoveryRole,
       externalLabels: p._config.externalLabels,
       enableFeatures: p._config.enableFeatures,
+      scrapeNativeHistograms: p._config.histogramMode == 'native' || p._config.histogramMode == 'dual',
+      scrapeClassicHistograms: p._config.histogramMode == 'classic' || p._config.histogramMode == 'dual',
       serviceAccountName: p.serviceAccount.metadata.name,
       podMonitorSelector: {},
       podMonitorNamespaceSelector: {},
@@ -378,10 +386,13 @@ function(params) {
       selector: {
         matchLabels: p._config.selectorLabels,
       },
-      endpoints: [
+      endpoints: std.map(function(e) e {
+        scrapeNativeHistograms: p._config.histogramMode == 'native' || p._config.histogramMode == 'dual',
+        scrapeClassicHistograms: p._config.histogramMode == 'classic' || p._config.histogramMode == 'dual',
+      }, [
         { port: 'web', interval: '30s' },
         { port: 'reloader-web', interval: '30s' },
-      ],
+      ]),
     },
   },
 
