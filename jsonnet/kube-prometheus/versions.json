@@ -5,7 +5,7 @@
   "kubeStateMetrics": "2.19.1",
   "nodeExporter": "1.12.0",
   "prometheus": "3.13.1",
-  "metricsServer": "0.8.1",
+  "metricsServer": "0.9.0",
   "prometheusAdapter": "0.12.0",
   "prometheusOperator": "0.92.1",
   "kubeRbacProxy": "0.22.1",
