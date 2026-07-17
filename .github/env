@@ -1,2 +1,3 @@
 kind-version=v0.32.0
+kind-image-metrics-server=kindest/node:v1.36.1
 golang-version=1.26
