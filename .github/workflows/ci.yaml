@@ -143,7 +143,7 @@ jobs:
           persist-credentials: false
       - name: Import environment variables from file
         run: cat ".github/env" >> "$GITHUB_ENV"
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7
         with:
           go-version: ${{ env.golang-version }}
       - name: Build metrics-server manifests
