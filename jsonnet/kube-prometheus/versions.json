@@ -4,7 +4,7 @@
   "grafana": "13.1.1",
   "kubeStateMetrics": "2.19.1",
   "nodeExporter": "1.12.1",
-  "prometheus": "3.13.1",
+  "prometheus": "3.13.2",
   "metricsServer": "0.9.0",
   "prometheusAdapter": "0.12.0",
   "prometheusOperator": "0.93.0",
