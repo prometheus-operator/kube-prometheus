@@ -1,14 +1,13 @@
-### Stripping container resource limits
-
-Sometimes in small clusters, the CPU/memory limits can get high enough for alerts to be fired continuously. To prevent this, one can strip off the predefined limits.
-To do that, one can import the following mixin
-
-```jsonnet mdox-exec="cat examples/strip-limits.jsonnet"
-local kp = (import 'kube-prometheus/main.libsonnet') +
-           (import 'kube-prometheus/addons/strip-limits.libsonnet') + {
+local kp = (import 'kube-prometheus/main.libsonnet') + {
   values+:: {
     common+: {
       namespace: 'monitoring',
+    },
+    prometheus+: {
+      resources: {
+        requests: { cpu: '200m', memory: '800Mi' },
+        limits: { cpu: '1', memory: '2Gi' },
+      },
     },
   },
 };
@@ -20,4 +19,3 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
 { ['alertmanager-' + name]: kp.alertmanager[name] for name in std.objectFields(kp.alertmanager) } +
 { ['prometheus-' + name]: kp.prometheus[name] for name in std.objectFields(kp.prometheus) } +
 { ['grafana-' + name]: kp.grafana[name] for name in std.objectFields(kp.grafana) }
-```
