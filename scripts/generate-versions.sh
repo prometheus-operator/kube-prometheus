@@ -72,6 +72,8 @@ cat <<-EOF
   "prometheusOperator": "$(get_version "prometheus-operator/prometheus-operator")",
   "kubeRbacProxy": "$(get_version "brancz/kube-rbac-proxy")",
   "configmapReload": "$(get_version "jimmidyson/configmap-reload")",
-  "pyrra": "$(get_version "pyrra-dev/pyrra")"
+  "pyrra": "$(get_version "pyrra-dev/pyrra")",
+  "perses": "$(get_version "perses/perses")",
+  "persesOperator": "$(get_version "perses/perses-operator")"
 }
 EOF
