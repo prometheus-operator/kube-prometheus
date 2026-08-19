@@ -45,6 +45,9 @@ manifests: examples/kustomize.jsonnet $(GOJSONTOYAML_BIN) vendor
 manifests-metrics-server: examples/metrics-server.jsonnet $(GOJSONTOYAML_BIN) vendor
 	./build.sh $<
 
+manifests-perses: examples/perses.jsonnet $(GOJSONTOYAML_BIN) vendor
+	./build.sh $<
+
 vendor: $(JB_BIN) jsonnetfile.json jsonnetfile.lock.json
 	rm -rf vendor
 	$(JB_BIN) install

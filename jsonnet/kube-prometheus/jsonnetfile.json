@@ -117,6 +117,26 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/perses/perses-operator.git",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "main",
+      "name": "perses-operator"
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/perses/community-mixins.git",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "main",
+      "name": "community-mixins"
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/thanos-io/thanos",
           "subdir": "mixin"
         }
