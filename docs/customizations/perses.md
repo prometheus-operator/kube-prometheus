@@ -12,22 +12,22 @@ description: Replace Grafana with Perses for Kubernetes cluster dashboards using
 ---
 
 > [!NOTE]
-> Perses is currently integrated as an addon. Once dashboard parity with the Grafana dashboards shipped by kube-prometheus is fully validated, it will be promoted to a built-in toggle (similar to the `metrics-server` / `prometheus-adapter` switch).
+> Perses is currently integrated as an addon. Once the integration is mature, it may be promoted to a built-in toggle (similar to the `metrics-server` / `prometheus-adapter` switch).
 
-[Perses](https://perses.dev) is a CNCF Sandbox observability visualization platform. The `perses` addon replaces Grafana with Perses and deploys the same Kubernetes observability dashboards via the [perses-operator](https://github.com/perses/perses-operator) and [community-mixins](https://github.com/perses/community-mixins).
+[Perses](https://perses.dev) is a CNCF Sandbox observability visualization platform. The `perses` addon replaces Grafana with Perses and deploys Kubernetes observability dashboards from [community-mixins](https://github.com/perses/community-mixins) via the [perses-operator](https://github.com/perses/perses-operator).
 
 ## What the addon deploys
 
 | Resource | Kind | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | perses-operator | Deployment, RBAC, ServiceAccount | Manages Perses CRs declaratively |
 | 4 CRDs | CustomResourceDefinition | `Perses`, `PersesDashboard`, `PersesDatasource`, `PersesGlobalDatasource` |
 | Perses instance | `Perses` CR | Runs the Perses server (port 8080) |
 | Prometheus datasource | `PersesGlobalDatasource` CR | Proxies queries to `prometheus-k8s` Service |
-| 18 dashboards | `PersesDashboard` CRs | API Server, Kubelet, Compute Resources, Networking, etc. |
+| Kubernetes dashboards | `PersesDashboard` CRs | Imported from community-mixins (see [Dashboard coverage](#dashboard-coverage)) |
 | ServiceMonitor | `ServiceMonitor` | Scrapes operator metrics |
 | PrometheusRule | `PrometheusRule` | Operator alerting rules |
-| NetworkPolicy patch | `NetworkPolicy` | Allows Perses to query Prometheus |
+| Prometheus NetworkPolicy | `NetworkPolicy` | Allows Perses pods to query Prometheus |
 
 ## Switching from Grafana to Perses
 
@@ -37,7 +37,7 @@ Generate manifests with Perses instead of Grafana:
 make manifests-perses
 ```
 
-This uses [`examples/perses.jsonnet`](../../examples/perses.jsonnet), which imports the Perses addon and disables Grafana automatically. Apply the generated manifests:
+This uses [`examples/perses.jsonnet`](../../examples/perses.jsonnet), which imports the Perses addon and sets `grafana: {}` to omit Grafana. Apply the generated manifests:
 
 ```shell
 # Apply CRDs and namespace first
@@ -57,7 +57,7 @@ kubectl apply -f manifests/
 kubectl --namespace monitoring port-forward svc/perses 8080
 ```
 
-Open Perses at [http://localhost:8080](http://localhost:8080). All 18 Kubernetes dashboards are pre-loaded via `PersesDashboard` CRs and the Prometheus datasource is auto-configured.
+Open Perses at [http://localhost:8080](http://localhost:8080). The operator creates a Service named after the `Perses` CR (`perses` by default). Dashboards and the Prometheus datasource are loaded from CRs.
 
 ### Using a custom jsonnet file
 
@@ -135,9 +135,36 @@ kubectl -n monitoring delete --ignore-not-found=true \
 }
 ```
 
+### Dashboard query selectors
+
+The Perses addon imports pre-generated dashboards from [community-mixins](https://github.com/perses/community-mixins), which use kubernetes-mixin default job labels. kube-prometheus overrides those selectors for Grafana via `kubernetesControlPlane`; the addon applies the same rewiring when importing dashboards:
+
+| community-mixins | kube-prometheus |
+|------------------|-----------------|
+| `job="cadvisor"` | `job="kubelet", metrics_path="/metrics/cadvisor"` |
+| `job="kube-apiserver"` | `job="apiserver"` |
+
+The addon also sets `prometheus.externalLabels.cluster` to `kube-prometheus` so the `cluster` dashboard variable resolves (required by kubernetes-mixin dashboards). Override either if your scrape labels differ:
+
+```jsonnet
+{
+  values+:: {
+    prometheus+: {
+      externalLabels+: {
+        cluster: 'my-cluster',
+      },
+    },
+    perses+: {
+      cadvisorJobSelector: 'job="kubelet", metrics_path="/metrics/cadvisor"',
+      kubeApiserverJobSelector: 'job="apiserver"',
+    },
+  },
+}
+```
+
 ### Change the Prometheus datasource URL
 
-By default the datasource proxies queries through the Perses server to `http://prometheus-k8s.<namespace>.svc.cluster.local:9090`. If your Prometheus Service has a different name:
+By default the datasource proxies queries through the Perses server to `http://prometheus-k8s.<namespace>.svc.cluster.local:9090` (see [`perses.libsonnet`](../../jsonnet/kube-prometheus/addons/perses.libsonnet)). Patch the generated component to use a different URL:
 
 ```jsonnet
 local kp =
@@ -204,28 +231,9 @@ local kp =
 
 ## Dashboard coverage
 
-The addon deploys the following dashboards from [perses/community-mixins](https://github.com/perses/community-mixins), which have functional parity with the Grafana dashboards shipped by kube-prometheus (kubernetes-mixin):
+Dashboards are imported from [community-mixins](https://github.com/perses/community-mixins) and rendered as `PersesDashboard` CRs. The authoritative list is in [`perses.libsonnet`](../../jsonnet/kube-prometheus/addons/perses.libsonnet); run `make manifests-perses` to regenerate manifests after addon or mixin updates.
 
-| Dashboard | Grafana equivalent |
-|-----------|-------------------|
-| API Server Overview | Kubernetes / API server |
-| Controller Manager Overview | Kubernetes / Controller Manager |
-| Kubelet Overview | Kubernetes / Kubelet |
-| Cluster Resources Overview | Kubernetes / Compute Resources / Cluster |
-| Node Resources Overview | Kubernetes / Compute Resources / Node |
-| Namespace Resources Overview | Kubernetes / Compute Resources / Namespace |
-| Pod Resources Overview | Kubernetes / Compute Resources / Pod |
-| Workload Resources Overview | Kubernetes / Compute Resources / Workload |
-| Multi-Cluster Resources Overview | Kubernetes / Compute Resources / Multi-Cluster |
-| Cluster Networking Overview | Kubernetes / Networking / Cluster |
-| Namespace Networking Overview | Kubernetes / Networking / Namespace |
-| Pod Networking Overview | Kubernetes / Networking / Pod |
-| Workload Networking Overview | Kubernetes / Networking / Workload |
-| Workload NS Networking Overview | Kubernetes / Networking / Workload (NS) |
-| Workload NS Resources Overview | Kubernetes / Compute Resources / Workload (NS) |
-| Persistent Volume Overview | Kubernetes / Persistent Volumes |
-| Proxy Overview | Kubernetes / Proxy |
-| Scheduler Overview | Kubernetes / Scheduler |
+For upstream dashboard definitions and changes, see [community-mixins/kubernetes dashboards](https://github.com/perses/community-mixins/tree/main/jsonnet/dashboards/operator/kubernetes).
 
 ## References
 
