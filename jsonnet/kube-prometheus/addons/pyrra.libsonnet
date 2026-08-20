@@ -22,6 +22,11 @@
     namespace:: error 'must provide namespace',
     version:: error 'must provide version',
     image: error 'must provide image',
+    resources: {
+      // TODO(paulfantom): configure limits when we have more operational data
+      // limits: { cpu: '100m', memory: '100Mi' },
+      requests: { memory: '100Mi' },
+    },
     replicas:: 1,
     port:: 9099,
 
@@ -39,7 +44,6 @@
     crd: (
       import 'github.com/pyrra-dev/pyrra/jsonnet/controller-gen/pyrra.dev_servicelevelobjectives.json'
     ),
-
 
     _apiMetadata:: {
       name: pyrra._config.name + '-api',
@@ -72,10 +76,10 @@
         image: pyrra._config.image,
         args: [
           'api',
-          '--api-url=http://%s.%s.svc.cluster.local:9444' % [pyrra.kubernetesService.metadata.name, pyrra.kubernetesService.metadata.namespace],
-          '--prometheus-url=http://prometheus-k8s.%s.svc.cluster.local:9090' % pyrra._config.namespace,
+          '--api-url=http://%s.%s.svc:9444' % [pyrra.kubernetesService.metadata.name, pyrra.kubernetesService.metadata.namespace],
+          '--prometheus-url=http://prometheus-k8s.%s.svc:9090' % pyrra._config.namespace,
         ],
-        // resources: pyrra._config.resources,
+        resources: pyrra._config.resources,
         ports: [{ containerPort: pyrra._config.port }],
         securityContext: {
           allowPrivilegeEscalation: false,
@@ -106,7 +110,10 @@
             spec: {
               containers: [c],
               // serviceAccountName: $.serviceAccount.metadata.name,
-              nodeSelector: { 'kubernetes.io/os': 'linux' },
+              nodeSelector: {
+                'kubernetes.io/os': 'linux',
+                'kubernetes.io/arch': 'amd64',
+              },
             },
           },
         },
@@ -189,7 +196,7 @@
         args: [
           'kubernetes',
         ],
-        // resources: pyrra._config.resources,
+        resources: pyrra._config.resources,
         ports: [{ containerPort: pyrra._config.port }],
         securityContext: {
           allowPrivilegeEscalation: false,
@@ -219,7 +226,10 @@
             spec: {
               containers: [c],
               serviceAccountName: pyrra.kubernetesServiceAccount.metadata.name,
-              nodeSelector: { 'kubernetes.io/os': 'linux' },
+              nodeSelector: {
+                'kubernetes.io/os': 'linux',
+                'kubernetes.io/arch': 'amd64',
+              },
             },
           },
         },
