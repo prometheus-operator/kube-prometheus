@@ -146,6 +146,10 @@ test-e2e: ## Run end-to-end tests
 test-e2e-metrics-server: ## Run metrics-server end-to-end tests
 	RESOURCE_METRICS_API=metrics-server go test -mod=mod -timeout 55m -v ./tests/e2e -count=1 -run TestMetricsServerDeployment
 
+.PHONY: test-e2e-perses
+test-e2e-perses: ## Run perses addon end-to-end tests
+	PERSES_ADDON=true go test -mod=mod -timeout 55m -v ./tests/e2e -count=1 -run TestPersesAddon
+
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
