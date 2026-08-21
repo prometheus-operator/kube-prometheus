@@ -105,6 +105,10 @@ test-e2e:
 test-e2e-metrics-server:
 	RESOURCE_METRICS_API=metrics-server go test -mod=mod -timeout 55m -v ./tests/e2e -count=1 -run TestMetricsServerDeployment
 
+.PHONY: test-e2e-perses
+test-e2e-perses:
+	PERESES_ADDON=true go test -mod=mod -timeout 55m -v ./tests/e2e -count=1 -run TestPersesAddon
+
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
