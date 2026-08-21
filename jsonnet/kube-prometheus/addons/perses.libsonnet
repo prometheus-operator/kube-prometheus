@@ -16,6 +16,7 @@
       image: $.values.common.images.perses,
       operatorVersion: $.values.common.versions.persesOperator,
       operatorImage: $.values.common.images.persesOperator,
+      kubeRbacProxyImage: $.values.common.images.kubeRbacProxy,
     },
     prometheus+: {
       externalLabels+: {
@@ -33,8 +34,28 @@
     image:: error 'must provide image',
     operatorVersion:: error 'must provide operator version',
     operatorImage:: error 'must provide operator image',
+    kubeRbacProxyImage:: error 'must provide kubeRbacProxyImage',
+    kubeRbacProxy:: {
+      resources+: {
+        requests: { cpu: '10m', memory: '20Mi' },
+        limits: { cpu: '20m', memory: '40Mi' },
+      },
+    },
     // Enable conversion webhooks (v1alpha1 <-> v1alpha2). Requires cert-manager.
     enableWebhooks:: false,
+    // community-mixins packages aligned with default kube-prometheus Grafana mixin dashboards.
+    dashboardComponents:: [
+      'kubernetes',
+      'prometheus',
+      'alertmanager',
+      'node-exporter',
+    ],
+    dashboardCommonLabels:: {
+      'app.kubernetes.io/component': 'dashboard',
+      'app.kubernetes.io/name': 'perses-dashboard',
+      'app.kubernetes.io/part-of': 'kube-prometheus',
+    },
+    globalDatasourceName:: 'prometheus-datasource',
     // Rewire community-mixins job selectors to match kube-prometheus kubernetesControlPlane mixin.
     cadvisorJobSelector:: 'job="kubelet", metrics_path="/metrics/cadvisor"',
     kubeApiserverJobSelector:: 'job="apiserver"',
@@ -46,15 +67,20 @@
   },
 
   local persesOperatorLib = import 'github.com/perses/perses-operator/jsonnet/perses-operator.libsonnet',
+  local communityMixinsDashboards = import 'github.com/perses/community-mixins/jsonnet/dashboards.libsonnet',
+  local krp = import '../components/kube-rbac-proxy.libsonnet',
 
-  local perses = function(params) {
-    local p = self,
-    _config:: defaults + params,
-    local ns = p._config.namespace,
+  local dashboardResources(config) = {
+    local importedDashboards = communityMixinsDashboards({
+      namespace: config.namespace,
+      commonLabels: config.dashboardCommonLabels,
+      datasource: config.globalDatasourceName,
+      components: config.dashboardComponents,
+    }).dashboards,
 
     local queryRewrites = [
-      { from: 'job="cadvisor"', to: p._config.cadvisorJobSelector },
-      { from: 'job="kube-apiserver"', to: p._config.kubeApiserverJobSelector },
+      { from: 'job="cadvisor"', to: config.cadvisorJobSelector },
+      { from: 'job="kube-apiserver"', to: config.kubeApiserverJobSelector },
     ],
 
     local rewireQuery(query) =
@@ -64,8 +90,7 @@
         query,
       ),
 
-    local patchDashboard(dashboard) = dashboard {
-      metadata+: { namespace: ns },
+    local rewireDashboard(dashboard) = dashboard {
       spec+: {
         config+: {
           panels: {
@@ -73,13 +98,13 @@
               spec+: if std.objectHas(dashboard.spec.config.panels[panelKey].spec, 'queries') then {
                 queries: [
                   query {
-                    spec+: {
-                      plugin+: if std.objectHas(query.spec.plugin, 'spec') && std.objectHas(query.spec.plugin.spec, 'query') then {
+                    spec+: if std.objectHas(query.spec.plugin, 'spec') && std.objectHas(query.spec.plugin.spec, 'query') then {
+                      plugin+: {
                         spec+: {
                           query: rewireQuery(query.spec.plugin.spec.query),
                         },
-                      } else {},
-                    },
+                      },
+                    } else {},
                   }
                   for query in dashboard.spec.config.panels[panelKey].spec.queries
                 ],
@@ -89,16 +114,16 @@
           },
           variables: if std.objectHas(dashboard.spec.config, 'variables') then [
             variable {
-              spec+: {
-                plugin+: if std.objectHas(variable.spec.plugin, 'spec') && std.objectHas(variable.spec.plugin.spec, 'matchers') then {
+              spec+: if std.objectHas(variable.spec.plugin, 'spec') && std.objectHas(variable.spec.plugin.spec, 'matchers') then {
+                plugin+: {
                   spec+: {
                     matchers: [
                       rewireQuery(matcher)
                       for matcher in variable.spec.plugin.spec.matchers
                     ],
                   },
-                } else {},
-              },
+                },
+              } else {},
             }
             for variable in dashboard.spec.config.variables
           ] else [],
@@ -106,11 +131,37 @@
       },
     },
 
+    resources: std.foldl(
+      function(acc, dashboard) acc {
+        ['dashboard-' + dashboard.metadata.name]: rewireDashboard(dashboard),
+      },
+      importedDashboards,
+      {},
+    ),
+  }.resources,
+
+  local perses = function(params) {
+    local p = self,
+    _config:: defaults + params,
+
     operator:: persesOperatorLib({
       name: p._config.operatorName,
       namespace: p._config.namespace,
       version: p._config.operatorVersion,
       image: p._config.operatorImage,
+    }),
+
+    local operatorSelectorLabels = p.operator.deployment.spec.selector.matchLabels,
+    local operatorLabels = p.operator.deployment.metadata.labels,
+
+    local kubeRbacProxy = krp(p._config.kubeRbacProxy {
+      name: 'kube-rbac-proxy',
+      upstream: 'http://127.0.0.1:8082/',
+      secureListenAddress: ':8443',
+      ports: [
+        { name: 'https', containerPort: 8443 },
+      ],
+      image: p._config.kubeRbacProxyImage,
     }),
 
     '0persesCustomResourceDefinition': p.operator['0persesCustomResourceDefinition'],
@@ -122,18 +173,81 @@
       spec+: {
         template+: {
           spec+: {
+            automountServiceAccountToken: true,
             containers: [
               c {
+                args+: if c.name == 'manager' then ['--metrics-bind-address=127.0.0.1:8082'] else [],
                 env+: if !p._config.enableWebhooks then [{ name: 'ENABLE_WEBHOOKS', value: 'false' }] else [],
               }
               for c in p.operator.deployment.spec.template.spec.containers
-            ],
+            ] + [kubeRbacProxy],
           },
         },
       },
     },
+    operatorService: {
+      apiVersion: 'v1',
+      kind: 'Service',
+      metadata: {
+        name: p._config.operatorName,
+        namespace: p._config.namespace,
+        labels: operatorLabels,
+      },
+      spec: {
+        clusterIP: 'None',
+        ports: [{
+          name: 'https',
+          port: 8443,
+          targetPort: 'https',
+        }],
+        selector: operatorSelectorLabels,
+      },
+    },
     operatorServiceAccount: p.operator.serviceAccount,
-    operatorRole: p.operator.role,
+    operatorRole: p.operator.role {
+      rules+: [
+        {
+          apiGroups: ['authentication.k8s.io'],
+          resources: ['tokenreviews'],
+          verbs: ['create'],
+        },
+        {
+          apiGroups: ['authorization.k8s.io'],
+          resources: ['subjectaccessreviews'],
+          verbs: ['create'],
+        },
+      ],
+    },
+    operatorMetricsReaderClusterRole: (import 'github.com/perses/perses-operator/jsonnet/generated/auth_proxy_client_clusterrole.json') {
+      metadata+: {
+        name: p._config.operatorName + '-metrics-reader',
+        labels: operatorLabels {
+          'app.kubernetes.io/component': 'kube-rbac-proxy',
+          'app.kubernetes.io/instance': 'metrics-reader',
+        },
+      },
+    },
+    operatorMetricsReaderClusterRoleBinding: {
+      apiVersion: 'rbac.authorization.k8s.io/v1',
+      kind: 'ClusterRoleBinding',
+      metadata: {
+        name: p._config.operatorName + '-metrics-reader',
+        labels: operatorLabels {
+          'app.kubernetes.io/component': 'kube-rbac-proxy',
+          'app.kubernetes.io/instance': 'metrics-reader-binding',
+        },
+      },
+      roleRef: {
+        apiGroup: 'rbac.authorization.k8s.io',
+        kind: 'ClusterRole',
+        name: p._config.operatorName + '-metrics-reader',
+      },
+      subjects: [{
+        kind: 'ServiceAccount',
+        name: 'prometheus-k8s',
+        namespace: p._config.namespace,
+      }],
+    },
     operatorRoleBinding: p.operator.roleBinding,
     operatorLeaderElectionRole: p.operator.leaderElectionRole,
     operatorLeaderElectionRoleBinding: p.operator.leaderElectionRoleBinding,
@@ -145,7 +259,49 @@
     operatorPersesDatasourceViewerRole: p.operator.persesDatasourceViewerRole,
     operatorPersesGlobalDatasourceEditorRole: p.operator.persesGlobalDatasourceEditorRole,
     operatorPersesGlobalDatasourceViewerRole: p.operator.persesGlobalDatasourceViewerRole,
-    operatorServiceMonitor: p.operator.serviceMonitor,
+    operatorServiceMonitor: p.operator.serviceMonitor {
+      spec+: {
+        jobLabel: 'app.kubernetes.io/name',
+        endpoints: [{
+          bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+          path: '/metrics',
+          port: 'https',
+          scheme: 'https',
+          tlsConfig: {
+            insecureSkipVerify: true,
+          },
+        }],
+      },
+    },
+    operatorNetworkPolicy: {
+      apiVersion: 'networking.k8s.io/v1',
+      kind: 'NetworkPolicy',
+      metadata: {
+        name: p._config.operatorName,
+        namespace: p._config.namespace,
+        labels: operatorLabels,
+      },
+      spec: {
+        podSelector: {
+          matchLabels: operatorSelectorLabels,
+        },
+        policyTypes: ['Egress', 'Ingress'],
+        egress: [{}],
+        ingress: [{
+          from: [{
+            podSelector: {
+              matchLabels: {
+                'app.kubernetes.io/name': 'prometheus',
+              },
+            },
+          }],
+          ports: [{
+            port: 'https',
+            protocol: 'TCP',
+          }],
+        }],
+      },
+    },
     operatorPrometheusRule: p.operator.prometheusRule,
 
     persesInstance: {
@@ -181,7 +337,7 @@
       apiVersion: 'perses.dev/v1alpha2',
       kind: 'PersesGlobalDatasource',
       metadata: {
-        name: 'prometheus-datasource',
+        name: p._config.globalDatasourceName,
         labels: p._config.commonLabels,
       },
       spec: {
@@ -209,43 +365,6 @@
         },
       },
     },
-
-    'dashboard-api-server-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/api-server-overview.json'),
-    'dashboard-controller-manager-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/controller-manager-overview.json'),
-    'dashboard-kubelet-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubelet-overview.json'),
-    'dashboard-kubernetes-cluster-networking-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-cluster-networking-overview.json'),
-    'dashboard-kubernetes-cluster-resources-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-cluster-resources-overview.json'),
-    'dashboard-kubernetes-multi-cluster-resources-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-multi-cluster-resources-overview.json'),
-    'dashboard-kubernetes-namespace-networking-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-namespace-networking-overview.json'),
-    'dashboard-kubernetes-namespace-resources-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-namespace-resources-overview.json'),
-    'dashboard-kubernetes-node-resources-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-node-resources-overview.json'),
-    'dashboard-kubernetes-persistent-volume-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-persistent-volume-overview.json'),
-    'dashboard-kubernetes-pod-networking-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-pod-networking-overview.json'),
-    'dashboard-kubernetes-pod-resources-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-pod-resources-overview.json'),
-    'dashboard-kubernetes-workload-networking-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-workload-networking-overview.json'),
-    'dashboard-kubernetes-workload-ns-networking-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-workload-ns-networking-overview.json'),
-    'dashboard-kubernetes-workload-ns-resources-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-workload-ns-resources-overview.json'),
-    'dashboard-kubernetes-workload-resources-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/kubernetes-workload-resources-overview.json'),
-    'dashboard-proxy-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/proxy-overview.json'),
-    'dashboard-scheduler-overview':
-      patchDashboard(import 'github.com/perses/community-mixins/jsonnet/dashboards/operator/kubernetes/scheduler-overview.json'),
   },
 
   prometheus+: {
@@ -268,5 +387,5 @@
     },
   },
 
-  perses: perses($.values.perses),
+  perses: perses($.values.perses) + dashboardResources(defaults + $.values.perses),
 }
