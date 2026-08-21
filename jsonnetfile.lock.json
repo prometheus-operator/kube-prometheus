@@ -144,6 +144,28 @@
     {
       "source": {
         "git": {
+          "remote": "https://github.com/perses/community-mixins.git",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "fdc816750458cc6112667214291073994f46afb8",
+      "sum": "pLnaafS4/jflwia9kZH8d83+8vb0iwgcfJ1C8cPLdkQ=",
+      "name": "community-mixins"
+    },
+    {
+      "source": {
+        "git": {
+          "remote": "https://github.com/perses/perses-operator.git",
+          "subdir": "jsonnet"
+        }
+      },
+      "version": "28b82ced25c856799594bea0c733bede85bca18a",
+      "sum": "WgnrJN1Nriyb2k2VzL8YtPwQjIuxKleZbyV9NBQQdUM=",
+      "name": "perses-operator"
+    },
+    {
+      "source": {
+        "git": {
           "remote": "https://github.com/prometheus-operator/prometheus-operator.git",
           "subdir": "jsonnet/mixin"
         }
