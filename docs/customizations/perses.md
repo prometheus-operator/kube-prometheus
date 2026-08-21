@@ -24,7 +24,7 @@ description: Replace Grafana with Perses for Kubernetes cluster dashboards using
 | 4 CRDs | CustomResourceDefinition | `Perses`, `PersesDashboard`, `PersesDatasource`, `PersesGlobalDatasource` |
 | Perses instance | `Perses` CR | Runs the Perses server (port 8080) |
 | Prometheus datasource | `PersesGlobalDatasource` CR | Proxies queries to `prometheus-k8s` Service |
-| Kubernetes dashboards | `PersesDashboard` CRs | Imported from community-mixins (see [Dashboard coverage](#dashboard-coverage)) |
+| Dashboards | `PersesDashboard` CRs | community-mixins (`kubernetes`, `prometheus`, `alertmanager`, `node-exporter`) |
 | ServiceMonitor | `ServiceMonitor` | Scrapes operator metrics |
 | PrometheusRule | `PrometheusRule` | Operator alerting rules |
 | Prometheus NetworkPolicy | `NetworkPolicy` | Allows Perses pods to query Prometheus |
@@ -35,7 +35,10 @@ Generate manifests with Perses instead of Grafana:
 
 ```shell
 make manifests-perses
+make test-e2e-perses
 ```
+
+CI runs `make test-e2e-perses` as part of the main workflow (see [`.github/workflows/ci.yaml`](../../.github/workflows/ci.yaml)).
 
 This uses [`examples/perses.jsonnet`](../../examples/perses.jsonnet), which imports the Perses addon and sets `grafana: {}` to omit Grafana. Apply the generated manifests:
 
@@ -61,28 +64,7 @@ Open Perses at [http://localhost:8080](http://localhost:8080). The operator crea
 
 ### Using a custom jsonnet file
 
-If you need to customize values beyond the defaults, create your own jsonnet file that imports the Perses addon. See [`examples/perses.jsonnet`](../../examples/perses.jsonnet) for reference:
-
-```jsonnet
-local kp =
-  (import 'kube-prometheus/main.libsonnet') +
-  (import 'kube-prometheus/addons/perses.libsonnet') +
-  {
-    values+:: {
-      common+: {
-        namespace: 'monitoring',
-      },
-    },
-    // Disable Grafana when using Perses.
-    grafana: {},
-  };
-```
-
-Then generate manifests with:
-
-```shell
-./build.sh my-perses.jsonnet
-```
+See [`examples/perses.jsonnet`](../../examples/perses.jsonnet). Generate with `./build.sh my-perses.jsonnet`.
 
 ## Switching back to Grafana
 
@@ -231,9 +213,40 @@ local kp =
 
 ## Dashboard coverage
 
-Dashboards are imported from [community-mixins](https://github.com/perses/community-mixins) and rendered as `PersesDashboard` CRs. The authoritative list is in [`perses.libsonnet`](../../jsonnet/kube-prometheus/addons/perses.libsonnet); run `make manifests-perses` to regenerate manifests after addon or mixin updates.
+Dashboards are imported from [community-mixins](https://github.com/perses/community-mixins) via its [`dashboards.libsonnet`](https://github.com/perses/community-mixins/blob/main/jsonnet/dashboards.libsonnet) helper (namespace, datasource, and labels), then rewired for kube-prometheus scrape labels. By default the addon imports **all** community-mixins dashboard packages that map to kube-prometheus stack components (32 `PersesDashboard` CRs):
 
-For upstream dashboard definitions and changes, see [community-mixins/kubernetes dashboards](https://github.com/perses/community-mixins/tree/main/jsonnet/dashboards/operator/kubernetes).
+| Component | Perses dashboards | kube-prometheus component / addon |
+| ----------- | ------------------- | ----------------------------------- |
+| `kubernetes` | 18 Kubernetes / control-plane and workload dashboards | `kubernetesControlPlane` |
+| `prometheus` | `prometheus-overview`, `prometheus-remote-write` | `prometheus` |
+| `alertmanager` | `alertmanager-overview` | `alertmanager` |
+| `node-exporter` | `node-exporter-nodes`, `node-exporter-cluster-use-method` | `nodeExporter` |
+| `blackbox-exporter` | `blackbox-overview` | `blackboxExporter` |
+| `perses` | `perses-overview` | Perses addon |
+| `thanos` | 6 Thanos component dashboards | Prometheus Thanos sidecar (when enabled) |
+| `etcd` | `etcd-overview` | `static-etcd` addon or external etcd monitoring |
+
+These kube-prometheus components have **no Perses dashboard in community-mixins yet**: `kube-state-metrics`, `prometheus-operator`, `prometheus-adapter`, and `metrics-server`. Grafana also ships platform-specific node dashboards (e.g. Darwin/AIX) that community-mixins does not provide as Perses dashboards.
+
+Thanos and etcd dashboards are included by default so they are ready when those targets are scraped; panels may be empty until Thanos sidecar or etcd monitoring is configured.
+
+Authoritative configuration is in [`perses.libsonnet`](../../jsonnet/kube-prometheus/addons/perses.libsonnet). Run `make manifests-perses` after addon or mixin updates.
+
+### Trim dashboard imports
+
+Remove components you do not deploy:
+
+```jsonnet
+{
+  values+:: {
+    perses+: {
+      dashboardComponents: ['kubernetes', 'prometheus', 'alertmanager', 'node-exporter', 'blackbox-exporter', 'perses'],
+    },
+  },
+}
+```
+
+Available component names match [community-mixins `dashboards.libsonnet`](https://github.com/perses/community-mixins/blob/main/jsonnet/dashboards.libsonnet).
 
 ## References
 
