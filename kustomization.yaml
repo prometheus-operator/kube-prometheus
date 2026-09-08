@@ -62,6 +62,7 @@ resources:
 - ./manifests/prometheus-roleSpecificNamespaces.yaml
 - ./manifests/prometheus-service.yaml
 - ./manifests/prometheus-serviceAccount.yaml
+- ./manifests/prometheus-serviceAccountToken.yaml
 - ./manifests/prometheus-serviceMonitor.yaml
 - ./manifests/prometheusAdapter-apiService.yaml
 - ./manifests/prometheusAdapter-clusterRole.yaml
