@@ -94,16 +94,16 @@ update: $(JB_BIN) ## Update jsonnet dependencies
 ##@ Validation
 
 .PHONY: validate
-validate: validate-1.34 validate-1.35 validate-1.36 ## Validate manifests against supported Kubernetes versions
-
-validate-1.34: ## Validate manifests against Kubernetes 1.34
-	KUBE_VERSION=1.34.8 $(MAKE) kubeconform
+validate: validate-1.35 validate-1.36 validate-1.37 ## Validate manifests against supported Kubernetes versions
 
 validate-1.35: ## Validate manifests against Kubernetes 1.35
-	KUBE_VERSION=1.35.5 $(MAKE) kubeconform
+	KUBE_VERSION=1.35.8 $(MAKE) kubeconform
 
 validate-1.36: ## Validate manifests against Kubernetes 1.36
-	KUBE_VERSION=1.36.1 $(MAKE) kubeconform
+	KUBE_VERSION=1.36.4 $(MAKE) kubeconform
+
+validate-1.37: ## Validate manifests against Kubernetes 1.37
+	KUBE_VERSION=1.37.0 $(MAKE) kubeconform
 
 .PHONY: kubeconform
 kubeconform: crdschemas manifests $(KUBECONFORM_BIN) ## Validate manifests against KUBE_VERSION using kubeconform
