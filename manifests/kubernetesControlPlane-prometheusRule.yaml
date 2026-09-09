@@ -217,6 +217,8 @@ spec:
         time() - max by(namespace, job_name, cluster) (kube_job_status_start_time{job="kube-state-metrics"}
           and
         kube_job_status_active{job="kube-state-metrics"} > 0) > 43200
+          unless on(namespace, job_name, cluster)
+        max by(namespace, job_name, cluster) (kube_job_labels{job="kube-state-metrics",label_excluded_from_alerts="true"} == 1)
       labels:
         severity: warning
     - alert: KubeJobFailed
