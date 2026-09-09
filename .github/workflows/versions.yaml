@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "37 7 * * 1"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   versions:
     runs-on: ubuntu-latest

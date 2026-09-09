@@ -2,6 +2,10 @@ name: ci
 on:
   - push
   - pull_request
+# To cancel running workflow when new commits pushed in a pull request
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   generate:
     runs-on: ${{ matrix.os }}
