@@ -30,6 +30,7 @@ local platformPatch(p) = if p != null && std.objectHas(platforms, p) then platfo
     metricsServer: {},
     prometheusOperator: {},
     pyrra: {},
+    perses: {},
   } + platformPatch($.values.common.platform),
 
   alertmanager+: p.alertmanager,
@@ -44,4 +45,5 @@ local platformPatch(p) = if p != null && std.objectHas(platforms, p) then platfo
   kubernetesControlPlane+: p.kubernetesControlPlane,
   kubePrometheus+: p.kubePrometheus,
   pyrra+: p.pyrra,
+  perses+: p.perses,
 }
