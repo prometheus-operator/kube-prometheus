@@ -9,8 +9,8 @@ local defaults = {
   version:: error 'must provide version',
   image:: error 'must provide image',
   resources:: {
-    requests: { cpu: '100m', memory: '100Mi' },
-    limits: { cpu: '200m', memory: '200Mi' },
+    requests: { cpu: '100m', memory: '200Mi' },
+    limits: { cpu: '200m', memory: '512Mi' },
   },
   commonLabels:: {
     'app.kubernetes.io/name': defaults.name,
