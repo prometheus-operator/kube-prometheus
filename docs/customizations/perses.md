@@ -40,10 +40,7 @@ Generate manifests with Perses instead of Grafana:
 
 ```shell
 make manifests-perses
-make test-e2e-perses
 ```
-
-CI runs `make test-e2e-perses` as part of the main workflow (see [`.github/workflows/ci.yaml`](../../.github/workflows/ci.yaml)).
 
 This uses [`examples/perses.jsonnet`](../../examples/perses.jsonnet), which imports the Perses addon and sets `grafana: {}` to omit Grafana. Apply the generated manifests:
 
@@ -57,17 +54,6 @@ kubectl wait \
 
 # Apply the remaining manifests
 kubectl apply -f manifests/
-```
-
-On an **existing** kube-prometheus cluster, `kubectl apply` does not remove resources that disappeared from the generated manifests. After applying the Perses manifests, delete Grafana explicitly (expect brief dashboard downtime while switching):
-
-```shell
-kubectl -n monitoring delete --ignore-not-found=true \
-  deployment grafana \
-  service grafana \
-  configmap/grafana-dashboards \
-  configmap/grafana-dashboard-definitions-0 \
-  secret/grafana-config
 ```
 
 ### Access the Perses UI
@@ -228,6 +214,37 @@ Remove components you do not deploy:
 ```
 
 Available component names match [community-mixins `dashboards.libsonnet`](https://github.com/perses/community-mixins/blob/main/jsonnet/dashboards.libsonnet).
+
+## Removing Grafana (optional)
+
+On an **existing** kube-prometheus cluster, `kubectl apply` does not remove resources that disappeared from the generated manifests, so Grafana will keep running alongside Perses. This is fine for evaluation — you can run both UIs in parallel while migrating dashboards or verifying coverage.
+
+Once you are satisfied with Perses, delete Grafana explicitly:
+
+```shell
+kubectl -n monitoring delete --ignore-not-found=true \
+  deployment grafana \
+  service grafana \
+  configmap/grafana-dashboards \
+  configmap/grafana-dashboard-definitions-0 \
+  secret/grafana-config
+```
+
+## Testing
+
+`make test-e2e-perses` runs Go end-to-end tests against a cluster that already has the Perses stack deployed. It does **not** generate or apply manifests — run those steps first:
+
+```shell
+make manifests-perses
+kubectl apply --server-side -f manifests/setup
+kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
+kubectl apply -f manifests/
+
+export KUBECONFIG=~/.kube/config   # point at your test cluster
+make test-e2e-perses
+```
+
+CI follows the same order: generate manifests, deploy to a kind cluster, then run `make test-e2e-perses` (see [`.github/workflows/ci.yaml`](../../.github/workflows/ci.yaml)).
 
 ## References
 

@@ -216,36 +216,6 @@
         },
       ],
     },
-    operatorMetricsReaderClusterRole: (import 'github.com/perses/perses-operator/jsonnet/generated/auth_proxy_client_clusterrole.json') {
-      metadata+: {
-        name: p._config.operatorName + '-metrics-reader',
-        labels: operatorLabels {
-          'app.kubernetes.io/component': 'kube-rbac-proxy',
-          'app.kubernetes.io/instance': 'metrics-reader',
-        },
-      },
-    },
-    operatorMetricsReaderClusterRoleBinding: {
-      apiVersion: 'rbac.authorization.k8s.io/v1',
-      kind: 'ClusterRoleBinding',
-      metadata: {
-        name: p._config.operatorName + '-metrics-reader',
-        labels: operatorLabels {
-          'app.kubernetes.io/component': 'kube-rbac-proxy',
-          'app.kubernetes.io/instance': 'metrics-reader-binding',
-        },
-      },
-      roleRef: {
-        apiGroup: 'rbac.authorization.k8s.io',
-        kind: 'ClusterRole',
-        name: p._config.operatorName + '-metrics-reader',
-      },
-      subjects: [{
-        kind: 'ServiceAccount',
-        name: 'prometheus-k8s',
-        namespace: p._config.namespace,
-      }],
-    },
     operatorRoleBinding: p.operator.roleBinding,
     operatorLeaderElectionRole: p.operator.leaderElectionRole,
     operatorLeaderElectionRoleBinding: p.operator.leaderElectionRoleBinding,
