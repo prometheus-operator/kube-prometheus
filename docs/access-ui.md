@@ -37,6 +37,16 @@ kubectl --namespace monitoring port-forward svc/grafana 3000
 Open Grafana on [localhost:3000](https://localhost:3000) in your browser.
 You can login with the username `admin` and password `admin`.
 
+## Perses (alternative to Grafana)
+
+If you have enabled the [Perses addon](customizations/perses.md) instead of Grafana:
+
+```shell
+kubectl --namespace monitoring port-forward svc/perses 8080
+```
+
+Open Perses on [localhost:8080](http://localhost:8080) in your browser. The bundled [community-mixins](https://github.com/perses/community-mixins) dashboards for the default kube-prometheus stack are loaded from `PersesDashboard` CRs, and a Prometheus datasource is auto-configured. See [dashboard coverage](customizations/perses.md#dashboard-coverage) for details.
+
 ## Alertmanager
 
 ```shell

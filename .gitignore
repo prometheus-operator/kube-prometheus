@@ -6,5 +6,12 @@ vendor/
 crdschemas/
 .mdoxcache
 
+# Generated locally by make manifests-metrics-server
+manifests/metrics-server-*
+
+# Generated locally by make manifests-perses
+manifests/perses-*
+manifests/setup/0perses*
+
 developer-workspace/gitpod/_output
 developer-workspace/codespaces/kind 

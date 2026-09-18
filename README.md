@@ -21,6 +21,10 @@ Components included in this package:
 * [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics)
 * [Grafana](https://grafana.com/)
 
+Optional addon:
+
+* [Perses](https://perses.dev/) — CNCF Sandbox alternative to Grafana (see [Using Perses instead of Grafana](docs/customizations/perses.md))
+
 This stack is meant for cluster monitoring, so it is pre-configured to collect metrics from all Kubernetes components. In addition to that it delivers a default set of dashboards and alerting rules. Many of the useful dashboards and alerts come from the [kubernetes-mixin project](https://github.com/kubernetes-monitoring/kubernetes-mixin), similar to this project it provides composable jsonnet as a library for users to customize to their needs.
 
 ## Prerequisites

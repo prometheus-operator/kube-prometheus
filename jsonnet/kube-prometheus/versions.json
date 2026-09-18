@@ -10,5 +10,7 @@
   "prometheusOperator": "0.93.1",
   "kubeRbacProxy": "0.22.1",
   "configmapReload": "0.15.0",
-  "pyrra": "0.10.1"
+  "pyrra": "0.10.1",
+  "perses": "0.54.0",
+  "persesOperator": "0.5.0"
 }
