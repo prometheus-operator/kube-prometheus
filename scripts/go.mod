@@ -7,7 +7,7 @@ require (
 	github.com/bwplotka/mdox v0.9.1-0.20220718065926-6a6aac7d5d30
 	github.com/google/go-jsonnet v0.22.0
 	github.com/jsonnet-bundler/jsonnet-bundler v0.6.0
-	github.com/yannh/kubeconform v0.8.0
+	github.com/yannh/kubeconform v0.8.1-0.20260613115322-05632000e17d
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
 

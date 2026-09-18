@@ -14,8 +14,8 @@ jobs:
       matrix:
         branch:
           # testing will be done against last two release branches and main branch
-          - "release-0.16"
           - "release-0.17"
+          - "release-0.18"
           - "main"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
