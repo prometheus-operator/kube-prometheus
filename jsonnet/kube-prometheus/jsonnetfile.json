@@ -27,7 +27,7 @@
           "subdir": "contrib/mixin"
         }
       },
-      "version": "v3.7.1"
+      "version": "v3.7.2"
     },
     {
       "source": {
@@ -55,7 +55,7 @@
           "subdir": ""
         }
       },
-      "version": "7f47ec17cfb9be7ff4bd4e830648f50124459ebb"
+      "version": "13235f75380f9b651cdc35cc3b050e7e24062ac4"
     },
     {
       "source": {
@@ -111,7 +111,7 @@
           "subdir": "jsonnet/controller-gen"
         }
       },
-      "version": "v0.10.1",
+      "version": "v0.10.2",
       "name": "pyrra"
     },
     {
