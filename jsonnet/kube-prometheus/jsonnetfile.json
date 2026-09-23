@@ -36,7 +36,7 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "v0.94.0"
+      "version": "v0.94.1"
     },
     {
       "source": {
@@ -45,7 +45,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "v0.94.0",
+      "version": "v0.94.1",
       "name": "prometheus-operator-mixin"
     },
     {

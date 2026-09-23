@@ -78,7 +78,7 @@
           "subdir": "grafana-builder"
         }
       },
-      "version": "29105ceda225ca384834445a5b84a813aac7de00",
+      "version": "10b0fbc6f6bffbf774067de9c07982bf8454a211",
       "sum": "FqEJAICz9T90PMJLW8i4HXazyWQPNzi68A8UauXa7GQ="
     },
     {
@@ -88,7 +88,7 @@
           "subdir": "mixin-utils"
         }
       },
-      "version": "29105ceda225ca384834445a5b84a813aac7de00",
+      "version": "10b0fbc6f6bffbf774067de9c07982bf8454a211",
       "sum": "pdZBifAdc1FjwhKRZIpSF/Hi2C9P9nsExGJxgxNHGRk="
     },
     {
@@ -159,7 +159,7 @@
           "subdir": "jsonnet"
         }
       },
-      "version": "a766fa52d23f818f0aa1205f00cfa92fe056bb5f",
+      "version": "d6eeb23301c9ec60c31ba0a6eb9b1ddc9bc391f7",
       "sum": "F9dRxMazayrNHBzXAhysvF5fy45K4l+MCmdavprhsb8=",
       "name": "perses-operator"
     },
@@ -170,7 +170,7 @@
           "subdir": "jsonnet/mixin"
         }
       },
-      "version": "d507ed802a17fca1c88a9d6fd5c92fb759b52905",
+      "version": "59bcbfd38c2d2ae7421a1425e0b3f46d17e5f245",
       "sum": "gi+knjdxs2T715iIQIntrimbHRgHnpM8IFBJDD1gYfs=",
       "name": "prometheus-operator-mixin"
     },
@@ -181,8 +181,8 @@
           "subdir": "jsonnet/prometheus-operator"
         }
       },
-      "version": "d507ed802a17fca1c88a9d6fd5c92fb759b52905",
-      "sum": "tFhS9e/ovOav8WZNOs4oYTYXG1rkN1WPI9+0VEMfot4="
+      "version": "59bcbfd38c2d2ae7421a1425e0b3f46d17e5f245",
+      "sum": "y5K8OVfJ/ad9D1RU3NqpjBykUQPHITjoeyTVr5tAC4s="
     },
     {
       "source": {
