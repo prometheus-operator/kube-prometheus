@@ -10,7 +10,7 @@ This repository collects Kubernetes manifests, [Grafana](http://grafana.com/) da
 
 The content of this project is written in [jsonnet](http://jsonnet.org/). This project could both be described as a package as well as a library.
 
-Components included in this package:
+**Components included in this package**:
 
 * The [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator)
 * Highly available [Prometheus](https://prometheus.io/)
@@ -21,9 +21,9 @@ Components included in this package:
 * [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics)
 * [Grafana](https://grafana.com/)
 
-Optional addon:
+**Optional addon:**
 
-* [Perses](https://perses.dev/) — CNCF Sandbox alternative to Grafana (see [Using Perses instead of Grafana](docs/customizations/perses.md))
+* [Perses](https://perses.dev/) is CNCF Sandbox alternative to Grafana (see [Using Perses instead of Grafana](docs/customizations/perses.md))
 
 This stack is meant for cluster monitoring, so it is pre-configured to collect metrics from all Kubernetes components. In addition to that it delivers a default set of dashboards and alerting rules. Many of the useful dashboards and alerts come from the [kubernetes-mixin project](https://github.com/kubernetes-monitoring/kubernetes-mixin), similar to this project it provides composable jsonnet as a library for users to customize to their needs.
 
@@ -48,11 +48,11 @@ The following Kubernetes versions are supported and work as we test against thes
 > [!NOTE]
 > In CI we will be testing only last two releases and main branch on a regular basis.
 
-| kube-prometheus stack                                                                      | Kubernetes 1.32 | Kubernetes 1.33 | Kubernetes 1.34 | Kubernetes 1.35 | Kubernetes 1.36 |
+| kube-prometheus stack                                                                      | Kubernetes 1.33 | Kubernetes 1.34 | Kubernetes 1.35 | Kubernetes 1.36 | Kubernetes 1.37 |
 |--------------------------------------------------------------------------------------------|-----------------|-----------------|-----------------|-----------------|-----------------|
-| [`release-0.16`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.16) | ✔               | ✔               | ✔               | x               | x               |
-| [`release-0.17`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.17) | x               | ✔               | ✔               | ✔               | x               |
-| [`release-0.18`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.18) | x               | ✔               | ✔               | ✔               | ✔               |
+| [`release-0.17`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.17) | ✔               | ✔               | ✔               | x               | x               |
+| [`release-0.18`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.18) | ✔               | ✔               | ✔               | ✔               | x               |
+| [`release-0.19`](https://github.com/prometheus-operator/kube-prometheus/tree/release-0.19) | x               | x               | ✔               | ✔               | ✔               |
 | [`main`](https://github.com/prometheus-operator/kube-prometheus/tree/main)                 | x               | x               | ✔               | ✔               | ✔               |
 
 ## Quickstart
