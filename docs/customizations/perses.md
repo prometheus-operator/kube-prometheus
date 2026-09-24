@@ -14,35 +14,39 @@ description: Replace Grafana with Perses for Kubernetes cluster dashboards using
 > [!NOTE]
 > Perses is currently integrated as an addon. Once the integration is mature, it may be promoted to a built-in toggle (similar to the `metrics-server` / `prometheus-adapter` switch).
 
-[Perses](https://perses.dev) is a CNCF Sandbox observability visualization platform. The `perses` addon replaces Grafana with Perses and deploys Kubernetes observability dashboards from [community-mixins](https://github.com/perses/community-mixins) via the [perses-operator](https://github.com/perses/perses-operator).
+[Perses](https://perses.dev) is a CNCF Sandbox observability visualization platform. The `perses` addon deploys Perses and Kubernetes observability dashboards from [community-mixins](https://github.com/perses/community-mixins) via the [perses-operator](https://github.com/perses/perses-operator). In jsonnet, Grafana is omitted by setting `grafana: {}` (see [`examples/perses.jsonnet`](../../examples/perses.jsonnet)). On an existing cluster, `kubectl apply` does not delete Grafana — remove it explicitly after you are ready (see [Remove Grafana](#remove-grafana-optional)).
 
 ## What the addon deploys
 
-| Resource                 | Kind                             | Description                                                                    |
-|--------------------------|----------------------------------|--------------------------------------------------------------------------------|
-| perses-operator          | Deployment, RBAC, ServiceAccount | Manages Perses CRs declaratively                                               |
-| 4 CRDs                   | CustomResourceDefinition         | `Perses`, `PersesDashboard`, `PersesDatasource`, `PersesGlobalDatasource`      |
-| Perses instance          | `Perses` CR                      | Runs the Perses server (port 8080)                                             |
-| Prometheus datasource    | `PersesGlobalDatasource` CR      | Proxies queries to `prometheus-k8s` Service                                    |
-| Dashboards               | `PersesDashboard` CRs            | community-mixins (`kubernetes`, `prometheus`, `alertmanager`, `node-exporter`) |
-| ServiceMonitor           | `ServiceMonitor`                 | Scrapes operator metrics                                                       |
-| PrometheusRule           | `PrometheusRule`                 | Operator alerting rules                                                        |
-| Prometheus NetworkPolicy | `NetworkPolicy`                  | Allows Perses pods to query Prometheus                                         |
+| Resource              | Kind                             | Description                                                                    |
+|-----------------------|----------------------------------|--------------------------------------------------------------------------------|
+| perses-operator       | Deployment, RBAC, ServiceAccount | Manages Perses CRs declaratively                                               |
+| 4 CRDs                | CustomResourceDefinition         | `Perses`, `PersesDashboard`, `PersesDatasource`, `PersesGlobalDatasource`      |
+| Perses instance       | `Perses` CR                      | Runs the Perses server (port 8080)                                             |
+| Prometheus datasource | `PersesGlobalDatasource` CR      | Proxies queries to `prometheus-k8s` Service                                    |
+| Dashboards            | `PersesDashboard` CRs            | Default community-mixins packages (see [Dashboard coverage](#dashboard-coverage)) |
+| ServiceMonitor        | `ServiceMonitor`                 | Scrapes operator metrics                                                       |
+| PrometheusRule        | `PrometheusRule`                 | Operator alerting rules                                                        |
+
+The addon also patches the existing Prometheus `NetworkPolicy` so Perses pods can query Prometheus.
 
 > [!NOTE]
 > **Security:** Perses runs with authentication disabled by default, matching the bundled Grafana setup in kube-prometheus. Enable auth and secure cookies for production deployments.
 >
 > **Storage:** Dashboards and datasource configuration are stored in Kubernetes CRs. The Perses server uses ephemeral file storage for runtime state; pod restarts do not remove `PersesDashboard` or `PersesGlobalDatasource` objects.
 
-## Switching from Grafana to Perses
+## Generate and apply
 
-Generate manifests with Perses instead of Grafana:
+Generate the full stack with Perses instead of Grafana:
 
 ```shell
 make manifests-perses
 ```
 
-This uses [`examples/perses.jsonnet`](../../examples/perses.jsonnet), which imports the Perses addon and sets `grafana: {}` to omit Grafana. Apply the generated manifests:
+> [!IMPORTANT]
+> `make manifests-perses` regenerates the entire `manifests/` tree from [`examples/perses.jsonnet`](../../examples/perses.jsonnet) (not only Perses objects).
+
+Apply the generated manifests:
 
 ```shell
 # Apply CRDs and namespace first
@@ -59,7 +63,7 @@ kubectl apply -f manifests/
 ### Access the Perses UI
 
 ```shell
-kubectl --namespace monitoring port-forward svc/perses 8080
+kubectl --namespace monitoring port-forward svc/perses 8080:8080
 ```
 
 Open Perses at [http://localhost:8080](http://localhost:8080). The operator creates a Service named after the `Perses` CR (`perses` by default). Dashboards and the Prometheus datasource are loaded from CRs.
@@ -68,23 +72,16 @@ Open Perses at [http://localhost:8080](http://localhost:8080). The operator crea
 
 See [`examples/perses.jsonnet`](../../examples/perses.jsonnet). Generate with `./build.sh my-perses.jsonnet`.
 
-## Switching back to Grafana
+## Remove Grafana (optional)
 
-To revert to Grafana, regenerate manifests using the default target and reapply:
+On an **existing** kube-prometheus cluster, `kubectl apply` does not remove resources that disappeared from the generated manifests, so Grafana keeps running alongside Perses. That is fine for evaluation — you can run both UIs in parallel while verifying coverage.
+
+Once you are satisfied with Perses, delete Grafana by label:
 
 ```shell
-# Rebuild with Grafana (default)
-make manifests
-kubectl apply --server-side -f manifests/setup
-kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
-kubectl apply -f manifests/
-
-# Remove Perses-specific resources no longer in manifests
 kubectl -n monitoring delete --ignore-not-found=true \
-  perses perses \
-  persesglobaldatasources.perses.dev prometheus-datasource \
-  persesdashboards.perses.dev --all \
-  deployment perses-operator
+  deployment,service,serviceaccount,servicemonitor,networkpolicy,prometheusrule,secret,configmap \
+  -l app.kubernetes.io/name=grafana
 ```
 
 ## Customization
@@ -105,6 +102,8 @@ kubectl -n monitoring delete --ignore-not-found=true \
 ```
 
 ### Override images (e.g. internal registry)
+
+Default images are `persesdev/perses:v<version>` and `persesdev/perses-operator:v<version>`.
 
 ```jsonnet
 {
@@ -178,36 +177,36 @@ local kp =
   };
 ```
 
-## Dashboard coverage
+### Select dashboard packages
 
-Dashboards are imported from [community-mixins](https://github.com/perses/community-mixins) via its [`dashboards.libsonnet`](https://github.com/perses/community-mixins/blob/main/jsonnet/dashboards.libsonnet) helper (namespace, datasource, and labels), then rewired for kube-prometheus scrape labels. By default the addon imports four community-mixins packages (`kubernetes`, `prometheus`, `alertmanager`, `node-exporter`), which renders **23** `PersesDashboard` CRs:
+Override `dashboardComponents` to change which community-mixins packages are imported. Defaults are `kubernetes`, `prometheus`, `alertmanager`, and `node-exporter`.
 
-| Component           | Perses dashboards                                         | kube-prometheus component / addon               |
-|---------------------|-----------------------------------------------------------|-------------------------------------------------|
-| `kubernetes`        | 18 Kubernetes / control-plane and workload dashboards     | `kubernetesControlPlane`                        |
-| `prometheus`        | `prometheus-overview`, `prometheus-remote-write`          | `prometheus`                                    |
-| `alertmanager`      | `alertmanager-overview`                                   | `alertmanager`                                  |
-| `node-exporter`     | `node-exporter-nodes`, `node-exporter-cluster-use-method` | `nodeExporter`                                  |
-| `blackbox-exporter` | `blackbox-overview`                                       | `blackboxExporter`                              |
-| `perses`            | `perses-overview`                                         | Perses addon                                    |
-| `thanos`            | 6 Thanos component dashboards                             | Prometheus Thanos sidecar (when enabled)        |
-| `etcd`              | `etcd-overview`                                           | `static-etcd` addon or external etcd monitoring |
-
-These kube-prometheus components have **no Perses dashboard in community-mixins yet**: `kube-state-metrics`, `prometheus-operator`, `prometheus-adapter`, and `metrics-server`. Grafana also ships platform-specific node dashboards (e.g. Darwin/AIX) that community-mixins does not provide as Perses dashboards.
-
-Add optional packages via `dashboardComponents` (see below). Thanos and etcd dashboards can be enabled when those targets are scraped; panels may be empty until sidecar or etcd monitoring is configured.
-
-Authoritative configuration is in [`perses.libsonnet`](../../jsonnet/kube-prometheus/addons/perses.libsonnet). Run `make manifests-perses` after addon or mixin updates.
-
-### Trim dashboard imports
-
-Remove components you do not deploy:
+Trim to a subset:
 
 ```jsonnet
 {
   values+:: {
     perses+: {
-      dashboardComponents: ['kubernetes', 'prometheus', 'alertmanager', 'node-exporter', 'blackbox-exporter', 'perses'],
+      dashboardComponents: ['kubernetes', 'prometheus', 'alertmanager'],
+    },
+  },
+}
+```
+
+Include optional packages (for example blackbox-exporter and Perses overview):
+
+```jsonnet
+{
+  values+:: {
+    perses+: {
+      dashboardComponents: [
+        'kubernetes',
+        'prometheus',
+        'alertmanager',
+        'node-exporter',
+        'blackbox-exporter',
+        'perses',
+      ],
     },
   },
 }
@@ -215,31 +214,77 @@ Remove components you do not deploy:
 
 Available component names match [community-mixins `dashboards.libsonnet`](https://github.com/perses/community-mixins/blob/main/jsonnet/dashboards.libsonnet).
 
-## Removing Grafana (optional)
+## Dashboard coverage
 
-On an **existing** kube-prometheus cluster, `kubectl apply` does not remove resources that disappeared from the generated manifests, so Grafana will keep running alongside Perses. This is fine for evaluation — you can run both UIs in parallel while migrating dashboards or verifying coverage.
+> [!NOTE]
+> The counts and component lists below reflect the state of [community-mixins](https://github.com/perses/community-mixins) vendored at the time of this release. Community-mixins is under active development and may add new dashboards or components at any time. Check the upstream repository for the latest coverage.
 
-Once you are satisfied with Perses, delete Grafana explicitly:
+Dashboards are imported from community-mixins via its [`dashboards.libsonnet`](https://github.com/perses/community-mixins/blob/main/jsonnet/dashboards.libsonnet) helper (namespace, datasource, and labels), then rewired for kube-prometheus scrape labels.
+
+### Default packages (23 `PersesDashboard` CRs)
+
+| Component       | Perses dashboards                                         | kube-prometheus component |
+|-----------------|-----------------------------------------------------------|---------------------------|
+| `kubernetes`    | 18 Kubernetes / control-plane and workload dashboards     | `kubernetesControlPlane`  |
+| `prometheus`    | `prometheus-overview`, `prometheus-remote-write`          | `prometheus`              |
+| `alertmanager`  | `alertmanager-overview`                                   | `alertmanager`            |
+| `node-exporter` | `node-exporter-nodes`, `node-exporter-cluster-use-method` | `nodeExporter`            |
+
+### Optional packages
+
+Enable these via `dashboardComponents` (see [Select dashboard packages](#select-dashboard-packages)). Thanos and etcd panels may be empty until those targets are scraped.
+
+| Component           | Perses dashboards     | kube-prometheus component / addon               |
+|---------------------|-----------------------|-------------------------------------------------|
+| `blackbox-exporter` | `blackbox-overview`   | `blackboxExporter`                              |
+| `perses`            | `perses-overview`     | Perses addon                                    |
+| `thanos`            | 6 Thanos component dashboards | Prometheus Thanos sidecar (when enabled) |
+| `etcd`              | `etcd-overview`       | `static-etcd` addon or external etcd monitoring |
+
+These kube-prometheus components have **no Perses dashboard in community-mixins yet**: `kube-state-metrics`, `prometheus-operator`, `prometheus-adapter`, and `metrics-server`.
+
+Authoritative configuration is in [`perses.libsonnet`](../../jsonnet/kube-prometheus/addons/perses.libsonnet). Run `make manifests-perses` after addon or mixin updates.
+
+## Switching back to Grafana
+
+To revert to Grafana, regenerate default manifests and reapply, then remove Perses resources that are no longer in the manifests:
 
 ```shell
-kubectl -n monitoring delete --ignore-not-found=true \
-  deployment grafana \
-  service grafana \
-  configmap/grafana-dashboards \
-  configmap/grafana-dashboard-definitions-0 \
-  secret/grafana-config
-```
-
-## Testing
-
-`make test-e2e-perses` runs Go end-to-end tests against a cluster that already has the Perses stack deployed. It does **not** generate or apply manifests — run those steps first:
-
-```shell
-make manifests-perses
+make manifests
 kubectl apply --server-side -f manifests/setup
 kubectl wait --for condition=Established --all CustomResourceDefinition --namespace=monitoring
 kubectl apply -f manifests/
 
+# Perses CRs (instance and dashboards are namespaced; global datasource is cluster-scoped)
+kubectl -n monitoring delete --ignore-not-found=true perses/perses
+kubectl delete --ignore-not-found=true \
+  persesglobaldatasources.perses.dev/prometheus-datasource
+kubectl -n monitoring delete --ignore-not-found=true \
+  persesdashboards.perses.dev --all
+
+# Operator resources (all carry app.kubernetes.io/part-of=perses-operator)
+kubectl -n monitoring delete --ignore-not-found=true \
+  deployment,service,serviceaccount,servicemonitor,networkpolicy,prometheusrule,role,rolebinding \
+  -l app.kubernetes.io/part-of=perses-operator
+kubectl delete --ignore-not-found=true clusterrole,clusterrolebinding \
+  -l app.kubernetes.io/part-of=perses-operator
+```
+
+Optionally, remove the `perses.dev` CRDs if you no longer need them:
+
+```shell
+kubectl delete --ignore-not-found=true crd \
+  perses.perses.dev \
+  persesdashboards.perses.dev \
+  persesdatasources.perses.dev \
+  persesglobaldatasources.perses.dev
+```
+
+## Testing
+
+`make test-e2e-perses` runs Go end-to-end tests against a cluster that already has the Perses stack deployed. It does **not** generate or apply manifests — follow [Generate and apply](#generate-and-apply) first, then:
+
+```shell
 export KUBECONFIG=~/.kube/config   # point at your test cluster
 make test-e2e-perses
 ```
