@@ -53,7 +53,7 @@ spec:
     rules:
     - alert: NodeNetworkInterfaceFlapping
       annotations:
-        description: Network interface "{{ $labels.device }}" changing its up status often on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}
+        description: The network interface "{{ $labels.device }}" at "{{ $labels.instance }}" changing its up status often on node-exporter {{ $labels.namespace }}/{{ $labels.pod }}
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/general/nodenetworkinterfaceflapping
         summary: Network interface is often changing its status
       expr: |
