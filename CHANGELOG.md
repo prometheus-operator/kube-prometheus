@@ -1,3 +1,11 @@
+## release-0.19 / 2026-09-24
+
+This release brings updated versions for a large number of the components as well as support for Kubernetes 1.37.
+
+* [CHANGE] Increase Grafana memory requests/limits for Grafana 13.x. [#2890](https://github.com/prometheus-operator/kube-prometheus/pull/2890)
+* [FEATURE] Add metrics-server as an alternative to prometheus-adapter. [#2851](https://github.com/prometheus-operator/kube-prometheus/pull/2851)
+* [FEATURE] Add Perses addon as an optional Grafana alternative. [#2882](https://github.com/prometheus-operator/kube-prometheus/pull/2882)
+
 ## release-0.18 / 2026-06-03
 
 This release brings updated versions for a large number of the components as well as support for Kubernetes 1.36.
