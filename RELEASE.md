@@ -116,11 +116,15 @@ From the Github UI, draft a new [release](https://github.com/prometheus-operator
 
 ## Create follow-up pull request
 
-### Unpin Jsonnet dependencies
+After the release is published, trigger the
+[post-release workflow](https://github.com/prometheus-operator/kube-prometheus/actions/workflows/post-release.yaml)
+manually (`workflow_dispatch`) with the new release branch name (e.g.
+`release-0.19`). The bot will open a single PR that:
 
-Revert previous changes made when pinning the jsonnet dependencies since we want
-the main branch to be in sync with the latest changes of its dependencies.
+1. **Unpins jsonnet dependencies** — resets `jsonnetfile.json` to floating
+   default branches so `main` tracks upstream changes again.
+2. **Updates the versions workflow branch matrix** — adds the new release
+   branch and removes the oldest from `.github/workflows/versions.yaml`.
+3. **Regenerates manifests** — runs `make update` and `make generate`.
 
-### Update CI workflow
-
-Update the [versions workflow](.github/workflows/versions.yaml) to include the latest release branch and remove the oldest one to reflect the list of supported releases.
+Review and merge that PR.
