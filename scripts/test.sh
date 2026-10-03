@@ -25,7 +25,7 @@ $(<examples/jsonnet-build-snippet/build-snippet.jsonnet)"
     rm -rf "${TESTFILE}"
 done
 
-for i in examples/*.jsonnet; do
+for i in examples/*.jsonnet tests/*.jsonnet; do
     [ -f "$i" ] || break
     echo "Testing: ${i}"
     echo ""
