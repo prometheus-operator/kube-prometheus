@@ -21,6 +21,7 @@ local defaults = {
   },
   listenAddress:: '127.0.0.1',
   filesystemMountPointsExclude:: '^/(dev|proc|sys|run/k3s/containerd/.+|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)',
+  exportersExclude:: ['wifi', 'btrfs', 'hwmon'],
   // NOTE: ignore veth network interface associated with containers.
   // OVN renames veth.* to <rand-hex>@if<X> where X is /sys/class/net/<if>/ifindex
   // thus [a-z0-9] regex below
@@ -216,13 +217,10 @@ function(params) {
         '--path.rootfs=/host/root',
         '--path.procfs=/host/root/proc',
         '--path.udev.data=/host/root/run/udev/data',
-        '--no-collector.wifi',
-        '--no-collector.hwmon',
-        '--no-collector.btrfs',
         '--collector.filesystem.mount-points-exclude=' + ne._config.filesystemMountPointsExclude,
         '--collector.netclass.ignored-devices=' + ne._config.ignoredNetworkDevices,
         '--collector.netdev.device-exclude=' + ne._config.ignoredNetworkDevices,
-      ],
+      ] + std.map (function (x) std.format ( '--no-collector.%s', x), ne._config.exportersExclude),
       volumeMounts: [
         { name: 'sys', mountPath: '/host/sys', mountPropagation: 'HostToContainer', readOnly: true },
         { name: 'root', mountPath: '/host/root', mountPropagation: 'HostToContainer', readOnly: true },
