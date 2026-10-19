@@ -4,6 +4,8 @@ metadata:
   name: grafana-backend
   namespace: monitoring
 spec:
+  securityPolicy:
+    name: "cloud-armor-gcp-policy"
   timeoutSec: 720
   connectionDraining:
     drainingTimeoutSec: 360
