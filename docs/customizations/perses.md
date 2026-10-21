@@ -18,15 +18,15 @@ description: Replace Grafana with Perses for Kubernetes cluster dashboards using
 
 ## What the addon deploys
 
-| Resource              | Kind                             | Description                                                                    |
-|-----------------------|----------------------------------|--------------------------------------------------------------------------------|
-| perses-operator       | Deployment, RBAC, ServiceAccount | Manages Perses CRs declaratively                                               |
-| 4 CRDs                | CustomResourceDefinition         | `Perses`, `PersesDashboard`, `PersesDatasource`, `PersesGlobalDatasource`      |
-| Perses instance       | `Perses` CR                      | Runs the Perses server (port 8080)                                             |
-| Prometheus datasource | `PersesGlobalDatasource` CR      | Proxies queries to `prometheus-k8s` Service                                    |
+| Resource              | Kind                             | Description                                                                       |
+|-----------------------|----------------------------------|-----------------------------------------------------------------------------------|
+| perses-operator       | Deployment, RBAC, ServiceAccount | Manages Perses CRs declaratively                                                  |
+| 4 CRDs                | CustomResourceDefinition         | `Perses`, `PersesDashboard`, `PersesDatasource`, `PersesGlobalDatasource`         |
+| Perses instance       | `Perses` CR                      | Runs the Perses server (port 8080)                                                |
+| Prometheus datasource | `PersesGlobalDatasource` CR      | Proxies queries to `prometheus-k8s` Service                                       |
 | Dashboards            | `PersesDashboard` CRs            | Default community-mixins packages (see [Dashboard coverage](#dashboard-coverage)) |
-| ServiceMonitor        | `ServiceMonitor`                 | Scrapes operator metrics                                                       |
-| PrometheusRule        | `PrometheusRule`                 | Operator alerting rules                                                        |
+| ServiceMonitor        | `ServiceMonitor`                 | Scrapes operator metrics                                                          |
+| PrometheusRule        | `PrometheusRule`                 | Operator alerting rules                                                           |
 
 The addon also patches the existing Prometheus `NetworkPolicy` so Perses pods can query Prometheus.
 
@@ -234,12 +234,12 @@ Dashboards are imported from community-mixins via its [`dashboards.libsonnet`](h
 
 Enable these via `dashboardComponents` (see [Select dashboard packages](#select-dashboard-packages)). Thanos and etcd panels may be empty until those targets are scraped.
 
-| Component           | Perses dashboards     | kube-prometheus component / addon               |
-|---------------------|-----------------------|-------------------------------------------------|
-| `blackbox-exporter` | `blackbox-overview`   | `blackboxExporter`                              |
-| `perses`            | `perses-overview`     | Perses addon                                    |
-| `thanos`            | 6 Thanos component dashboards | Prometheus Thanos sidecar (when enabled) |
-| `etcd`              | `etcd-overview`       | `static-etcd` addon or external etcd monitoring |
+| Component           | Perses dashboards             | kube-prometheus component / addon               |
+|---------------------|-------------------------------|-------------------------------------------------|
+| `blackbox-exporter` | `blackbox-overview`           | `blackboxExporter`                              |
+| `perses`            | `perses-overview`             | Perses addon                                    |
+| `thanos`            | 6 Thanos component dashboards | Prometheus Thanos sidecar (when enabled)        |
+| `etcd`              | `etcd-overview`               | `static-etcd` addon or external etcd monitoring |
 
 These kube-prometheus components have **no Perses dashboard in community-mixins yet**: `kube-state-metrics`, `prometheus-operator`, `prometheus-adapter`, and `metrics-server`.
 

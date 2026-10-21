@@ -2,7 +2,7 @@
 
 The [Windows hostprocess addon](../examples/windows-hostprocess.jsonnet) adds the dashboards and rules from [kubernetes-monitoring/kubernetes-mixin](https://github.com/kubernetes-monitoring/kubernetes-mixin#dashboards-for-windows-nodes).
 
-It also deploys [windows_exporter](https://github.com/prometheus-community/windows_exporter) as a [hostprocess pod](https://github.com/prometheus-community/windows_exporter/blob/master/kubernetes/kubernetes.md) as Kubernetes now supports HostProcess containers on Windows nodes (as of [v1.22](https://kubernetes.io/blog/2021/08/16/windows-hostprocess-containers/)). The cluster should be using containerd runtime.
+It also deploys [windows_exporter](https://github.com/prometheus-community/windows_exporter) as a [hostprocess pod](https://github.com/prometheus-community/windows_exporter/blob/master/docs/kubernetes/kubernetes.md) as Kubernetes now supports HostProcess containers on Windows nodes (as of [v1.22](https://kubernetes.io/blog/2021/08/16/windows-hostprocess-containers/)). The cluster should be using containerd runtime.
 
 ```
 local kp = (import 'kube-prometheus/main.libsonnet') +
