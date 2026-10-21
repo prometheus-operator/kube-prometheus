@@ -162,8 +162,14 @@ function(params) (import 'github.com/kubernetes/kube-state-metrics/jsonnet/kube-
           automountServiceAccountToken: true,
           containers: std.map(function(c) c {
             ports:: null,
-            livenessProbe:: null,
-            readinessProbe:: null,
+            livenessProbe: { timeoutSeconds: 5, initialDelaySeconds: 5, httpGet: {
+              port: 'http-metrics',
+              path: '/livez',
+            } },
+            readinessProbe: { timeoutSeconds: 5, initialDelaySeconds: 5, httpGet: {
+              port: 'telemetry',
+              path: '/readyz',
+            } },
             securityContext+: {
               runAsGroup: 65534,
             },
