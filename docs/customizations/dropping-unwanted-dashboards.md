@@ -1,6 +1,6 @@
 ### Dropping unwanted dashboards
 
-When deploying kube-prometheus, your Grafana instance is deployed with a lot of dashboards by default. All those dashboards are comming from upstream projects like [kubernetes-mixin](https://github.com/kubernetes-monitoring/kubernetes-mixin), [prometheus-mixin](https://github.com/prometheus/prometheus/tree/main/documentation/prometheus-mixin) and [node-exporter-mixin](https://github.com/prometheus/node_exporter/tree/master/docs/node-mixin), among others.
+When deploying kube-prometheus, your Grafana instance is deployed with a lot of dashboards by default. All those dashboards are coming from upstream projects like [kubernetes-mixin](https://github.com/kubernetes-monitoring/kubernetes-mixin), [prometheus-mixin](https://github.com/prometheus/prometheus/tree/main/documentation/prometheus-mixin) and [node-exporter-mixin](https://github.com/prometheus/node_exporter/tree/master/docs/node-mixin), among others.
 
 In case you find out that you don't need some of them, you can choose to remove those dashboards like in the example below, which removes the [`alertmanager-overview.json`](https://github.com/prometheus/alertmanager/blob/main/doc/alertmanager-mixin/dashboards/overview.libsonnet) dashboard.
 

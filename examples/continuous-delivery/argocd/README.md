@@ -1,6 +1,6 @@
 ## ArgoCD Example
 
-This is the simplest, working example of an argocd app, the JSON object built is now an array of objects as that is the prefered format for ArgoCD. And ArgoCD specific annotations are added to manifests.
+This is the simplest, working example of an argocd app, the JSON object built is now an array of objects as that is the preferred format for ArgoCD. And ArgoCD specific annotations are added to manifests.
 
 Requirements:
 

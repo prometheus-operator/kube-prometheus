@@ -1,4 +1,4 @@
-// Custom metrics API allows the HPA v2 to scale based on arbirary metrics.
+// Custom metrics API allows the HPA v2 to scale based on arbitrary metrics.
 // For more details on usage visit https://github.com/DirectXMan12/k8s-prometheus-adapter#quick-links
 
 {

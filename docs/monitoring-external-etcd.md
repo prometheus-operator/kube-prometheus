@@ -29,13 +29,13 @@ If using kube-aws, you will need to edit the etcd security group inbound, specif
 With kube-aws, each etcd node has two IP addresses:
 
 * EC2 instance IP
-* EIP or ENI (depending on the chosen method in yuour cluster.yaml)
+* EIP or ENI (depending on the chosen method in your cluster.yaml)
 
-For some reason, some etcd node answer to :2379/metrics on the intance IP (eth0), some others on the EIP|ENI address (eth1). See [issue](https://github.com/kubernetes-incubator/kube-aws/issues/923)
-It would be of course much better if we could hit the EPI/ENI all the time as they don't change even if the underlying EC2 intance goes down.
-If specifying the Instance IP (eth0) in the Prometheus Operator ServiceMonitor, and the EC2 intance goes down, one would have to update the ServiceMonitor.
+For some reason, some etcd node answer to :2379/metrics on the instance IP (eth0), some others on the EIP|ENI address (eth1). See [issue](https://github.com/kubernetes-incubator/kube-aws/issues/923)
+It would be of course much better if we could hit the EIP/ENI all the time as they don't change even if the underlying EC2 instance goes down.
+If specifying the Instance IP (eth0) in the Prometheus Operator ServiceMonitor, and the EC2 instance goes down, one would have to update the ServiceMonitor.
 
-Another idea woud be to use the DNS entries of etcd, but those are not currently supported for EndPoints objects in Kubernetes.
+Another idea would be to use the DNS entries of etcd, but those are not currently supported for EndPoints objects in Kubernetes.
 
 # Step 2: verify
 
