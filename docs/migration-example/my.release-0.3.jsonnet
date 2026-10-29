@@ -95,7 +95,7 @@ local kp =
     alertmanager+:: {
       alertmanager+: {
         spec+: {
-          // See https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md
+          // See https://prometheus-operator.dev/docs/api-reference/api/
           // See https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/exposing-prometheus-and-alertmanager.md
           externalUrl: 'https://' + alert_manager_host,
         },
@@ -244,11 +244,11 @@ local kp =
     prometheus+:: {
       prometheus+: {
         spec+: {
-          // See https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#prometheusspec
+          // See https://prometheus-operator.dev/docs/api-reference/api/#monitoring.coreos.com/v1.PrometheusSpec
           externalLabels: {
             cluster: cluster_identifier,
           },
-          // See https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md
+          // See https://prometheus-operator.dev/docs/api-reference/api/
           // See https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/exposing-prometheus-and-alertmanager.md
           externalUrl: 'https://' + prometheus_host,
           // Override reuest memory

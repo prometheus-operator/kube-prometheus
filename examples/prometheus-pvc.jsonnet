@@ -14,7 +14,7 @@ local kp =
 
     prometheus+:: {
       prometheus+: {
-        spec+: {  // https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#prometheusspec
+        spec+: {  // https://prometheus-operator.dev/docs/api-reference/api/#monitoring.coreos.com/v1.PrometheusSpec
           // If a value isn't specified for 'retention', then by default the '--storage.tsdb.retention=24h' arg will be passed to prometheus by prometheus-operator.
           // The possible values for a prometheus <duration> are:
           //  * https://github.com/prometheus/common/blob/c7de230/model/time.go#L178 specifies "^([0-9]+)(y|w|d|h|m|s|ms)$" (years weeks days hours minutes seconds milliseconds)
@@ -25,7 +25,7 @@ local kp =
           // This 'storage.volumeClaimTemplate' causes the following to be automatically created (via dynamic provisioning) for each prometheus pod:
           //  * PersistentVolumeClaim (and a corresponding PersistentVolume)
           //  * the actual volume (per the StorageClassName specified below)
-          storage: {  // https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#storagespec
+          storage: {  // https://prometheus-operator.dev/docs/api-reference/api/#monitoring.coreos.com/v1.StorageSpec
             volumeClaimTemplate: {  // https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#persistentvolumeclaim-v1-core (defines variable named 'spec' of type 'PersistentVolumeClaimSpec')
               apiVersion: 'v1',
               kind: 'PersistentVolumeClaim',
