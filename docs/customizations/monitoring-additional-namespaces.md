@@ -30,7 +30,7 @@ In order to Prometheus be able to discovery and scrape services inside the addit
 
 > Typically it is up to the users of a namespace to provision the ServiceMonitor resource, but in case you want to generate it with the same tooling as the rest of the cluster monitoring infrastructure, this is a guide on how to achieve this.
 
-You can define ServiceMonitor resources in your `jsonnet` spec. See the snippet bellow:
+You can define ServiceMonitor resources in your `jsonnet` spec. See the snippet below:
 
 ```jsonnet mdox-exec="cat examples/additional-namespaces-servicemonitor.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') + {

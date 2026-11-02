@@ -255,7 +255,7 @@ local kp =
 
           // See https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/exposing-prometheus-alertmanager-grafana-ingress.md
           externalUrl: 'https://' + prometheus_host,
-          // Override reuest memory
+          // Override request memory
           resources: {
             requests: {
               memory: prometheus_request_memory,

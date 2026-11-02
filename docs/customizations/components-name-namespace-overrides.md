@@ -13,7 +13,7 @@ local kp = (import 'kube-prometheus/main.libsonnet') +
 };
 ```
 
-If prefered, it can be changed individually by component. It is also possible to change the name of Prometheus and Alertmanager Custom Resources, like shown below:
+If preferred, it can be changed individually by component. It is also possible to change the name of Prometheus and Alertmanager Custom Resources, like shown below:
 
 ```jsonnet mdox-exec="cat examples/name-namespace-overrides.jsonnet"
 local kp = (import 'kube-prometheus/main.libsonnet') +

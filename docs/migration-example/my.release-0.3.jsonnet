@@ -251,7 +251,7 @@ local kp =
           // See https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md
           // See https://github.com/coreos/prometheus-operator/blob/master/Documentation/user-guides/exposing-prometheus-and-alertmanager.md
           externalUrl: 'https://' + prometheus_host,
-          // Override reuest memory
+          // Override request memory
           resources: {
             requests: {
               memory: prometheus_request_memory,

@@ -2,7 +2,7 @@ local defaults = {
   /* name of rule groups to exclude */
   excludedRuleGroups: [],
   /* Rule match is based on field "alert" or "record" for excludedRules and patchedRules.
-   * When multiple match is found, we can use a "index" field to distingush each rule,
+   * When multiple match is found, we can use a "index" field to distinguish each rule,
    * which represents their order of appearance. For example, if we have two rules:
    * [
    *  {
