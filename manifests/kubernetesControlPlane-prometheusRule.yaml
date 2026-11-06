@@ -750,7 +750,7 @@ spec:
       annotations:
         description: '{{ $labels.node }} on cluster {{ $labels.cluster }} has active Condition {{ $labels.condition }}. This is caused by resource usage exceeding eviction thresholds.'
         runbook_url: https://runbooks.prometheus-operator.dev/runbooks/kubernetes/kubenodepressure
-        summary: Node has as active Condition.
+        summary: Node has {{ $labels.condition }} as an active Condition.
       expr: |
         kube_node_status_condition{job="kube-state-metrics",condition=~"(MemoryPressure|DiskPressure|PIDPressure)",status="true"} == 1
         and on (cluster, node)

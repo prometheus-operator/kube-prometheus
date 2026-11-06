@@ -47,6 +47,22 @@ function(params) {
         super.groups
       ),
     },
+  } + {
+    // Include the active node condition in the KubeNodePressure summary.
+    prometheusAlerts+:: {
+      groups: std.map(
+        function(g) g {
+          rules: std.map(
+            function(r)
+              if std.objectHas(r, 'alert') && r.alert == 'KubeNodePressure' then
+                r { annotations+: { summary: 'Node has {{ $labels.condition }} as an active Condition.' } }
+              else r,
+            g.rules
+          ),
+        },
+        super.groups
+      ),
+    },
   },
 
   prometheusRule: {
