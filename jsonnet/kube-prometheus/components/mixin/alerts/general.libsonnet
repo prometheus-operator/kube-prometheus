@@ -28,7 +28,7 @@
                 "DeadMansSnitch" integration in PagerDuty.
               |||,
             },
-            expr: 'vector(1)',
+            expr: 'present_over_time(prometheus_tsdb_head_max_time[1m]) != 0',
             labels: {
               severity: 'none',
             },
