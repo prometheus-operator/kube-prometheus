@@ -1,5 +1,8 @@
 version: 1
 
+# Allow slow sites more time than the HTTP client's default of 10 seconds.
+timeout: 30s
+
 validators:
   # Ignore localhost links.
   - regex: 'localhost'
