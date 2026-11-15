@@ -3,7 +3,6 @@ kind: AppProject
 metadata:
   annotations:
     recipients.argocd-notifications.argoproj.io: slack:alerts
-  generation: 1
   name: monitoring
   namespace: argocd
 spec:
