@@ -34,6 +34,37 @@ spec:
         runAsUser: 472
         fsGroup: 472
         fsGroupChangePolicy: "OnRootMismatch"
+      initContainers:
+      # Native sidecar: LiteLLM prod Cloud SQL on 127.0.0.1:5432 via Workload Identity (GP-4583)
+      - name: cloud-sql-proxy
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.28.0
+        restartPolicy: Always
+        args:
+        - --address=127.0.0.1
+        - --port=5432
+        - --structured-logs
+        - --health-check
+        - --http-address=0.0.0.0
+        - --http-port=9801
+        - goa-litellm-prod:europe-west4:litellm-prod
+        startupProbe:
+          httpGet:
+            path: /startup
+            port: 9801
+          periodSeconds: 2
+          failureThreshold: 30
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
       containers:
       - env: []
         image: grafana/grafana:12.4.2
@@ -45,6 +76,8 @@ spec:
           httpGet:
             path: /api/health
             port: http
+        securityContext:
+          allowPrivilegeEscalation: false
         resources:
           limits:
             cpu: 2000m

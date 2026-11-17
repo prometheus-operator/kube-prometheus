@@ -10,6 +10,7 @@ resources:
   - default-app-monitor.yaml
   - kserve-monitor-clusterrole.yaml
   - kserve-monitor-clusterrolebinding.yaml
+  - grafana-serviceAccount.yaml
   - grafana-statefulset.yaml
   - prometheus-prometheus.yaml
   - prometheus-podDisruptionBudget.yaml
