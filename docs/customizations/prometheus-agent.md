@@ -14,7 +14,6 @@ local kp =
         resources: {
           requests: { memory: '100Mi' },
         },
-        enableFeatures: ['agent'],
       },
     },
     prometheus+: {
@@ -32,7 +31,7 @@ local kp =
               args+: [
                 '--config.file=/etc/prometheus/config_out/prometheus.env.yaml',
                 '--storage.agent.path=/prometheus',
-                '--enable-feature=agent',
+                '--agent',
                 '--web.enable-lifecycle',
               ],
             },
