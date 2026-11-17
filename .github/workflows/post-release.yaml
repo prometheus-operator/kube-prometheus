@@ -1,0 +1,83 @@
+name: Post-release follow-up
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_branch:
+        description: "New release branch (e.g. release-0.19)"
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  post-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+      - name: Import environment variables from file
+        run: cat ".github/env" >> "$GITHUB_ENV"
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version: ${{ env.golang-version }}
+      - name: Validate release branch exists
+        run: |
+          if ! git ls-remote --exit-code --heads origin "${{ inputs.new_branch }}" > /dev/null 2>&1; then
+            echo "error: branch '${{ inputs.new_branch }}' does not exist on remote" >&2
+            echo "Create the release branch before running this workflow." >&2
+            exit 1
+          fi
+          echo "Verified: ${{ inputs.new_branch }} exists on remote"
+      - name: Unpin jsonnet dependencies
+        run: bash scripts/unpin-jsonnet-deps.sh
+      - name: Update versions workflow branch matrix
+        run: bash scripts/update-versions-branches.sh "${{ inputs.new_branch }}"
+      - name: Update jsonnet dependencies and regenerate manifests
+        run: |
+          make update
+          make generate
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          commit-message: "[bot] Post-release follow-up for ${{ inputs.new_branch }}"
+          title: "[bot] Post-release follow-up for ${{ inputs.new_branch }}"
+          body: |
+            ## Description
+
+            Automated post-release follow-up after cutting `${{ inputs.new_branch }}`:
+
+            1. **Unpin jsonnet dependencies** — resets `jsonnetfile.json` versions
+               to floating default branches (`main`/`master`) so `main` tracks
+               upstream mixin changes again.
+            2. **Update versions workflow branches** — adds `${{ inputs.new_branch }}`
+               and removes the oldest release branch from the
+               `.github/workflows/versions.yaml` matrix.
+            3. **Regenerate** — runs `make update` and `make generate` with the
+               unpinned dependencies.
+
+            Please review carefully — unpinning can pull in breaking mixin changes.
+
+            Configuration of the workflow is located in
+            `.github/workflows/post-release.yaml`.
+
+            ## Type of change
+
+            - [x] `NONE` (if none of the other choices apply. Example, tooling, build system, CI, docs, etc.)
+
+            ## Changelog entry
+
+            ```release-note
+
+            ```
+          team-reviewers: kube-prometheus-reviewers
+          committer: Prometheus Operator Bot <prom-op-bot@users.noreply.github.com>
+          author: Prometheus Operator Bot <prom-op-bot@users.noreply.github.com>
+          branch: automated-post-release
+          delete-branch: true
+          # GITHUB_TOKEN cannot be used as it won't trigger CI in a created PR
+          # More in https://github.com/peter-evans/create-pull-request/issues/155
+          token: ${{ secrets.PROM_OP_BOT_PAT }}
