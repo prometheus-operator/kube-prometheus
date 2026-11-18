@@ -29,7 +29,9 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-      - env: []
+      - env:
+        - name: GF_PLUGINS_PREINSTALL_AUTO_UPDATE
+          value: "false"
         image: grafana/grafana:13.2.4
         name: grafana
         ports:
