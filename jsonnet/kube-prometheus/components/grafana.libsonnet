@@ -39,7 +39,6 @@ function(params)
 
   kubernetesGrafana(config) {
     local g = self,
-    _config+:: config,
     _metadata:: {
       name: 'grafana',
       namespace: g._config.namespace,
